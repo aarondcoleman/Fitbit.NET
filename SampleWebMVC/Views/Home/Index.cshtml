@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Welcome</h2>
+@if (ViewBag.FitbitConnected == false)
+{ 
+    <p>Welcome. Please connect your Fitbit account <a href="/Fitbit/Authorize">here</a>.</p>
+    <p style="font-style:italic">(TIP: if local debugging, copy this page URL to the clipboard. On your return, make sure your callback url is correct, port number + /fitbit/callback?" )</p>
+}
+else
+{ 
+    <p>Welcome Fitbit User @Session["FitbitUserId"].ToString()</p>
+    <ul>
+        <li><a href="/Fitbit/LastWeekActiveScore">View Last Week Active Score</a></li>
+    </ul>
+    
+}
+

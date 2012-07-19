@@ -50,4 +50,4 @@ Lots of ways to contribute
 
 ### Meta
 
-This is an open source project in progress. If you're interested in getting involved and want to chat about it, please email me at aaron@smallstepslabs.com
+This is an open source project in progress. If you're interested in getting involved and want to chat about it, please email me at aaron@smallstepslabs.com or twitter @aarondcoleman

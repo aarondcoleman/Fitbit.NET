@@ -14,7 +14,7 @@ namespace Fitbit.IntegrationTests
         public readonly static string AccessTokenUrl = "http://api.fitbit.com/oauth/access_token";
         public readonly static string AuthorizeUrl = "http://api.fitbit.com/oauth/authorize";
 
-        //Step 2 of Auth -- Inser this after first test runs and using the outputted authUrl
+        //Step 2 of Auth -- Insert this after first test runs and using the outputted authUrl
         public readonly static string TempAuthToken = "YOUR_TEMP_AUTH_TOKEN_HERE";
         public readonly static string TempAuthVerifier = "YOUR_TEMP_AUTH_VERIFIER_HERE";
 

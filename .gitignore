@@ -3,6 +3,9 @@
 .svn
 .svn/
 
+#Fitbit.NET specific files
+Configuration.cs
+
 ################
 ## Eclipse
 #################

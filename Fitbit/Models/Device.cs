@@ -19,7 +19,7 @@ namespace Fitbit.Models
         public string Battery { get; set; } //this should probably be something clever or a helper method to make it an emum
         public string Id { get; set; }
         public DateTime LastSyncTime { get; set; }
-        public string Type { get; set; }            //again, maybe a helper method
+        public DeviceType Type { get; set; }            //again, maybe a helper method
         public string DeviceVersion { get; set; }   //again, maybe a helper method
     }
 }

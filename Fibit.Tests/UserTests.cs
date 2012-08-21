@@ -8,6 +8,7 @@ using Fibit.Tests.Helpers;
 using Fitbit.Models;
 using RestSharp;
 using System.Xml.Linq;
+using Fitbit.Api;
 
 namespace Fibit.Tests
 {
@@ -258,6 +259,93 @@ namespace Fibit.Tests
 
             //Assert.AreEqual(8, result.Count);
 
+        }
+
+        /// <summary>
+        /// This is the response that we'd get back from Fitbit when a resource or multiple resources have been updated
+        /// </summary>
+        [Test]
+        public void Can_Deserialize_Subscription_Notification()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("UpdatedResources.txt"));
+
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            //var deserializer = new RestSharp.Deserializers.JsonDeserializer();
+            //deserializer.DateFormat = "HH:mm:ss";
+            //TimeSeriesResourceType type = TimeSeriesResourceType.Steps.GetRootElement();
+
+            //deserializer.RootElement = "dataset";
+            //deserializer.RootElement = "updates";
+
+            List<UpdatedResource> result = deserializer.Deserialize<List<UpdatedResource>>(new RestResponse() { Content = content });
+            //var result = deserializer.Deserialize<dynamic>(new RestResponse() { Content = content });
+
+            Assert.AreEqual(2, result.Count);
+
+        }
+
+        [Test]
+        public void Can_Process_Incoming_Updated_Resource_Stream()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("SubscriptionUpdateSigned.txt"));
+
+            SubscriptionManager subScriptionManager = new SubscriptionManager();
+            List<UpdatedResource> updatedResources = subScriptionManager.ProcessUpdateReponseBody(content);
+
+            Assert.AreEqual(1, updatedResources.Count);
+            Assert.AreEqual(new DateTime(2012, 7, 25), updatedResources[0].Date);
+            Assert.AreEqual("2242TQ", updatedResources[0].OwnerId);
+            Assert.AreEqual("activities", updatedResources[0].CollectionType);
+            Assert.AreEqual("user", updatedResources[0].OwnerType);
+            Assert.AreEqual("b4b6dc1a5ead4b4e84f7b7f5b2f16b21-activities", updatedResources[0].SubscriptionId);
+
+        }
+
+        [Test]
+        public void Can_Process_Incoming_Updated_Multiple_Resource_Stream()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("SubscriptionUpdateSignedMultiple.txt"));
+
+            SubscriptionManager subScriptionManager = new SubscriptionManager();
+            List<UpdatedResource> updatedResources = subScriptionManager.ProcessUpdateReponseBody(content);
+
+            Assert.AreEqual(2, updatedResources.Count);
+
+            Assert.AreEqual(new DateTime(2012, 7, 25), updatedResources[0].Date);
+            Assert.AreEqual("2242TQ", updatedResources[0].OwnerId);
+            Assert.AreEqual("activities", updatedResources[0].CollectionType);
+            Assert.AreEqual("user", updatedResources[0].OwnerType);
+            Assert.AreEqual("b4b6dc1a5ead4b4e84f7b7f5b2f16b21-activities", updatedResources[0].SubscriptionId);
+
+            Assert.AreEqual(new DateTime(2012, 7, 24), updatedResources[1].Date);
+            Assert.AreEqual("228S74", updatedResources[1].OwnerId);
+            Assert.AreEqual("foods", updatedResources[1].CollectionType);
+            Assert.AreEqual("user", updatedResources[1].OwnerType);
+            Assert.AreEqual("1234", updatedResources[1].SubscriptionId);
+
+        }
+
+        [Test]
+        public void Can_Deserialize_Api_Subscription_List()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("ListApiSubscriptions.txt"));
+
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            //var deserializer = new RestSharp.Deserializers.JsonDeserializer();
+            //deserializer.DateFormat = "HH:mm:ss";
+            //TimeSeriesResourceType type = TimeSeriesResourceType.Steps.GetRootElement();
+
+            //deserializer.RootElement = "dataset";
+            //deserializer.RootElement = "updates";
+
+            List<ApiSubscription> result = deserializer.Deserialize<List<ApiSubscription>>(new RestResponse() { Content = content });
+            //var result = deserializer.Deserialize<dynamic>(new RestResponse() { Content = content });
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(APICollectionType.user, result[0].CollectionType);
+            Assert.AreEqual("227YZL", result[0].OwnerId);
+            Assert.AreEqual("1", result[0].SubscriberId);
+            Assert.AreEqual("323", result[0].SubscriptionId);
         }
     }
 }

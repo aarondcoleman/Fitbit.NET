@@ -6,6 +6,9 @@ using Fitbit.Models;
 using RestSharp;
 using RestSharp.Authenticators;
 using System.Xml.Linq;
+using System.Web;
+using System.Runtime.InteropServices;
+using System.Net;
 
 namespace Fitbit.Api
 {
@@ -147,20 +150,6 @@ namespace Fitbit.Api
             HandleResponseCode(response.StatusCode);
 
             return response.Data;
-
-        }
-
-        public void SubscribeToActivities(string identifier)
-        {
-            string ApiSubscriptionCallUrl = "/1/user/-/activities/apiSubscriptions/" + identifier + "-activities.xml";
-
-            var requestSubscription = new RestRequest(ApiSubscriptionCallUrl);
-            requestSubscription.Method = Method.POST;
-
-            var responseSubscription = restClient.Execute<SubscriptionResponse>(requestSubscription);
-
-            if (responseSubscription.Data == null)
-                throw new Exception("tried to set subscription and failed");
 
         }
 
@@ -399,6 +388,116 @@ namespace Fitbit.Api
 
         }
 
+        public List<ApiSubscription> GetSubscriptions()
+        {
+            RestRequest request = new RestRequest("/1/user/-/apiSubscriptions.xml");
+
+            var response = restClient.Execute<List<ApiSubscription>>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+
+        }
+
+        public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
+        {
+            
+            string subscriptionAPIEndpoint = null;
+            //POST /1/user/-/apiSubscriptions/320.xml
+            //POST /1/user/-/activities/apiSubscriptions/320-activities.xml
+            //POST /1/user/-/foods/apiSubscriptions/320-foods.json
+            //POST /1/user/-/sleep/apiSubscriptions/320-sleep.json
+            //POST /1/user/-/body/apiSubscriptions/320-body.json
+            if (apiCollectionType == APICollectionType.activities)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/activities/apiSubscriptions/{0}-activities.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.body)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/body/apiSubscriptions/{0}-body.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.foods)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/foods/apiSubscriptions/{0}-foods.xml", uniqueSubscriptionId);
+            }                
+            else if (apiCollectionType == APICollectionType.meals)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/meals/apiSubscriptions/{0}-meals.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.sleep)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/sleep/apiSubscriptions/{0}-sleep.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.user)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/apiSubscriptions/{0}-user.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.weight) //untested and the docs don't show it, but the Fitbit4J enum does have this
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/weight/apiSubscriptions/{0}-weight.xml", uniqueSubscriptionId);
+            }
+
+            RestRequest request = new RestRequest(subscriptionAPIEndpoint);
+            request.Method = Method.POST;
+            var response = restClient.Execute<ApiSubscription>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+
+
+
+        }
+
+        public ApiSubscription RemoveSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
+        {
+
+            string subscriptionAPIEndpoint = null;
+            //POST /1/user/-/apiSubscriptions/320.xml
+            //POST /1/user/-/activities/apiSubscriptions/320-activities.xml
+            //POST /1/user/-/foods/apiSubscriptions/320-foods.json
+            //POST /1/user/-/sleep/apiSubscriptions/320-sleep.json
+            //POST /1/user/-/body/apiSubscriptions/320-body.json
+            if (apiCollectionType == APICollectionType.activities)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/activities/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.body)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/body/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.foods)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/foods/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.meals)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/meals/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.sleep)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/sleep/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.user)
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+            }
+            else if (apiCollectionType == APICollectionType.weight) //untested and the docs don't show it, but the Fitbit4J enum does have this
+            {
+                subscriptionAPIEndpoint = string.Format("/1/user/-/weight/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+            }
+
+            RestRequest request = new RestRequest(subscriptionAPIEndpoint);
+            request.Method = Method.DELETE;
+            var response = restClient.Execute<ApiSubscription>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
+        #region Helpers
 
         /// <summary>
         /// Generic handling of status responses
@@ -417,7 +516,8 @@ namespace Fitbit.Api
             {
                 Console.WriteLine("HttpError:" + httpStatusCode.ToString());
 
-                throw new Exception("Http Error:" + httpStatusCode.ToString());
+                throw new FitbitException("Http Error:" + httpStatusCode.ToString(), httpStatusCode);
+
             }
         }
 
@@ -427,5 +527,9 @@ namespace Fitbit.Api
             return string.Format(ApiExtention, activityDate.Year.ToString(), activityDate.Month.ToString(), activityDate.Day.ToString());
         }
 
+
+        #endregion
+
+        
     }
 }

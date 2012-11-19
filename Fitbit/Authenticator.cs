@@ -64,12 +64,20 @@ namespace Fitbit.Api
             return url;
         }
 
+        /// <summary>
+        /// For Desktop authentication. Your code should direct the user to the FitBit website to get
+        /// Their pin, they can then enter it here.
+        /// </summary>
+        /// <param name="pin"></param>
+        /// <returns></returns>
         public AuthCredential GetAuthCredentialFromPin(string pin)
         {
             var baseUrl = "https://api.fitbit.com";
+        
             var client = new RestClient(baseUrl);
             var request = new RestRequest("oauth/access_token", Method.POST);
             client.Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, RequestToken, RequestTokenSecret,pin);
+            
             var response = client.Execute(request);
             var qs = RestSharp.Contrib.HttpUtility.ParseQueryString(response.Content);
 

@@ -15,7 +15,9 @@ namespace Fitbit.Api
         private string ConsumerSecret;
         private string RequestTokenUrl;
         private string AccessTokenUrl;
-        private string AuthorizeUrl; 
+        private string AuthorizeUrl;
+        private string RequestToken;
+        private string RequestTokenSecret;
 
         public Authenticator(string ConsumerKey, string ConsumerSecret, string RequestTokenUrl, string AccessTokenUrl, string AuthorizeUrl)
         {
@@ -48,18 +50,35 @@ namespace Fitbit.Api
                 throw new Exception("Request Token Step Failed");
 
 			var qs = HttpUtility.ParseQueryString(response.Content);
-			var oauth_token = qs["oauth_token"];
-			var oauth_token_secret = qs["oauth_token_secret"];
+			RequestToken = qs["oauth_token"];
+			RequestTokenSecret = qs["oauth_token_secret"];
 
 			//Assert.NotNull(oauth_token);
 			//Assert.NotNull(oauth_token_secret);
 
 			request = new RestRequest("oauth/authorize");
-			request.AddParameter("oauth_token", oauth_token);
+            request.AddParameter("oauth_token", RequestToken);
 			var url = client.BuildUri(request).ToString();
 			//Process.Start(url);
 
             return url;
+        }
+
+        public AuthCredential GetAuthCredentialFromPin(string pin)
+        {
+            var baseUrl = "https://api.fitbit.com";
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("oauth/access_token", Method.POST);
+            client.Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, RequestToken, RequestTokenSecret,pin);
+            var response = client.Execute(request);
+            var qs = RestSharp.Contrib.HttpUtility.ParseQueryString(response.Content);
+
+            return new AuthCredential()
+            {
+                AuthToken = qs["oauth_token"],
+                AuthTokenSecret = qs["oauth_token_secret"],
+                UserId = qs["encoded_user_id"]
+            };
         }
 
         public AuthCredential ProcessApprovedAuthCallback(string TempAuthToken, string Verifier)

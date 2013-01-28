@@ -497,6 +497,39 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        #region Derived Methods from API Calls
+
+        /// <summary>
+        /// Helps to figure out when the first device usage is. Uses the Fitbit time series for steps to find the first day of steps
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public DateTime? GetActivityTrackerFirstDay()
+        {
+            
+            DateTime firstActivityDay = GetUserProfile().MemberSince;
+
+            while (firstActivityDay < DateTime.UtcNow)
+            {
+                var stepsFromStart = GetTimeSeriesInt(TimeSeriesResourceType.Steps, firstActivityDay, firstActivityDay.AddYears(1));
+
+                foreach (var day in stepsFromStart.DataList)
+                {
+                    if (day.Value > 0)
+                    {
+                        return day.DateTime; //this is the most likely exit point -- we find the day with the first steps in it
+                    }
+                }
+
+                firstActivityDay = firstActivityDay.AddYears(1); //advance the search in to the next year. 
+                //Not likely an account will be activated a full year before a device is used
+            }
+
+            return null; //this is an account where the device 
+        }
+
+        #endregion
+
         #region Helpers
 
         /// <summary>

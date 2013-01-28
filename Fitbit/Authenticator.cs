@@ -33,31 +33,36 @@ namespace Fitbit.Api
         /// <returns></returns>
         public string GetAuthUrlToken()
         {
-			var baseUrl = "https://api.fitbit.com";
-			var client = new RestClient(baseUrl);
-			client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
-            
+            return GenerateAuthUrlToken(false);
+        }
+
+        public string GetAuthUrlTokenForcePromptingLogin()
+        {
+            return GenerateAuthUrlToken(true);
+        }
+
+        private string GenerateAuthUrlToken(bool forceLogoutBeforeAuth)
+        {
+            var baseUrl = "https://api.fitbit.com";
+            var client = new RestClient(baseUrl);
+            client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
+
             var request = new RestRequest("oauth/request_token", Method.POST);
-			var response = client.Execute(request);
+            var response = client.Execute(request);
 
-
-			//Assert.NotNull(response);
-			//Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception("Request Token Step Failed");
 
-			var qs = HttpUtility.ParseQueryString(response.Content);
-			var oauth_token = qs["oauth_token"];
-			var oauth_token_secret = qs["oauth_token_secret"];
+            var qs = HttpUtility.ParseQueryString(response.Content);
+            var oauth_token = qs["oauth_token"];
+            var oauth_token_secret = qs["oauth_token_secret"];
 
-			//Assert.NotNull(oauth_token);
-			//Assert.NotNull(oauth_token_secret);
-
-			request = new RestRequest("oauth/authorize");
-			request.AddParameter("oauth_token", oauth_token);
-			var url = client.BuildUri(request).ToString();
-			//Process.Start(url);
+            if(forceLogoutBeforeAuth)
+                request = new RestRequest("oauth/logout_and_authorize"); //this url will force the user to type in username and password
+            else
+                request = new RestRequest("oauth/authorize");           //this url will show allow/deny if a user is currently logged in
+            request.AddParameter("oauth_token", oauth_token);
+            var url = client.BuildUri(request).ToString();
 
             return url;
         }

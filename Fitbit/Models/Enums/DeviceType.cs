@@ -7,7 +7,7 @@ namespace Fitbit.Models
 {
     public enum DeviceType
     {
-        Tracker = 1
-        //Hopefully soon there will be functionality for scale
+        Tracker = 1,
+        Scale = 2
     }
 }

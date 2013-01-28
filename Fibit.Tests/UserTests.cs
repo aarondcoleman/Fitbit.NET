@@ -104,7 +104,7 @@ namespace Fibit.Tests
             Assert.AreEqual("473384", result[0].Id);
             //TODO: compare the date
 
-            Assert.AreEqual("TRACKER", result[0].Type);
+            Assert.AreEqual(DeviceType.Tracker, result[0].Type);
             Assert.AreEqual("Ultra", result[0].DeviceVersion);
 
 
@@ -125,13 +125,15 @@ namespace Fibit.Tests
             Assert.AreEqual("Full", result[0].Battery);
             Assert.AreEqual("123456", result[0].Id);
             //test date
-            Assert.AreEqual("TRACKER", result[0].Type);
+            //Assert.AreEqual("TRACKER", result[0].Type);
+            Assert.AreEqual(DeviceType.Tracker, result[0].Type);
+
             Assert.AreEqual("Ultra", result[0].DeviceVersion);
 
             Assert.AreEqual("High", result[1].Battery);
             //test date
             Assert.AreEqual("987654", result[1].Id);
-            Assert.AreEqual("SCALE", result[1].Type);
+            Assert.AreEqual(DeviceType.Scale, result[1].Type);
             Assert.AreEqual("Aria", result[1].DeviceVersion);
 
             //TODO: More tests of the data objects coming in
@@ -261,6 +263,38 @@ namespace Fibit.Tests
 
         }
 
+        [Test]
+        public void Can_Deserialize_IntradayActivitiesCalories()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("IntradayActivitiesCalories.txt"));
+
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            //var deserializer = new RestSharp.Deserializers.JsonDeserializer();
+            deserializer.DateFormat = "HH:mm:ss";
+            //TimeSeriesResourceType type = TimeSeriesResourceType.Steps.GetRootElement();
+
+            //deserializer.RootElement = "dataset";
+            deserializer.RootElement = "activities-log-calories-intraday";
+
+            IntradayData result = deserializer.Deserialize<IntradayData>(new RestResponse() { Content = content });
+            //var result = deserializer.Deserialize<dynamic>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+
+            Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day), result.DataSet[0].Time);
+            Assert.AreEqual("1.3125", result.DataSet[0].Value);
+            Assert.AreEqual("0", result.DataSet[0].Level);
+
+            Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 1, 0), result.DataSet[1].Time);
+            Assert.AreEqual("1.3125", result.DataSet[1].Value);
+            Assert.AreEqual("1", result.DataSet[1].Level);
+
+            //Assert.AreEqual(1440, result.DataSet.Count);
+
+            //Assert.AreEqual(8, result.Count);
+
+        }
+
         /// <summary>
         /// This is the response that we'd get back from Fitbit when a resource or multiple resources have been updated
         /// </summary>
@@ -295,8 +329,8 @@ namespace Fibit.Tests
             Assert.AreEqual(1, updatedResources.Count);
             Assert.AreEqual(new DateTime(2012, 7, 25), updatedResources[0].Date);
             Assert.AreEqual("2242TQ", updatedResources[0].OwnerId);
-            Assert.AreEqual("activities", updatedResources[0].CollectionType);
-            Assert.AreEqual("user", updatedResources[0].OwnerType);
+            Assert.AreEqual(APICollectionType.activities, updatedResources[0].CollectionType);
+            Assert.AreEqual(ResourceOwnerType.User, updatedResources[0].OwnerType);
             Assert.AreEqual("b4b6dc1a5ead4b4e84f7b7f5b2f16b21-activities", updatedResources[0].SubscriptionId);
 
         }
@@ -313,14 +347,14 @@ namespace Fibit.Tests
 
             Assert.AreEqual(new DateTime(2012, 7, 25), updatedResources[0].Date);
             Assert.AreEqual("2242TQ", updatedResources[0].OwnerId);
-            Assert.AreEqual("activities", updatedResources[0].CollectionType);
-            Assert.AreEqual("user", updatedResources[0].OwnerType);
+            Assert.AreEqual(APICollectionType.activities, updatedResources[0].CollectionType);
+            Assert.AreEqual(ResourceOwnerType.User, updatedResources[0].OwnerType);
             Assert.AreEqual("b4b6dc1a5ead4b4e84f7b7f5b2f16b21-activities", updatedResources[0].SubscriptionId);
 
             Assert.AreEqual(new DateTime(2012, 7, 24), updatedResources[1].Date);
             Assert.AreEqual("228S74", updatedResources[1].OwnerId);
-            Assert.AreEqual("foods", updatedResources[1].CollectionType);
-            Assert.AreEqual("user", updatedResources[1].OwnerType);
+            Assert.AreEqual(APICollectionType.foods, updatedResources[1].CollectionType);
+            Assert.AreEqual(ResourceOwnerType.User, updatedResources[1].OwnerType);
             Assert.AreEqual("1234", updatedResources[1].SubscriptionId);
 
         }

@@ -58,5 +58,32 @@ namespace Fitbit.IntegrationTests
                 Console.WriteLine("Device:" + device.Id + " - " + device.DeviceVersion + " - " + device.Type + " - Battery:" + device.Battery);
             }
         }
+
+        [Test]
+        public void Retrieve_Intraday_Calories()
+        {
+            IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2012, 10, 1, 0, 0, 0), new TimeSpan(24,0,0));
+
+            Assert.IsNotNull(intradayData);
+            Assert.IsTrue(intradayData.DataSet.Count() == 1440);
+
+            //Console.WriteLine("# of devices:" + userDevices.Count);
+            //foreach (Device device in userDevices)
+            //{
+            //    Console.WriteLine("Device:" + device.Id + " - " + device.DeviceVersion + " - " + device.Type + " - Battery:" + device.Battery);
+            //}
+        }
+
+        [Test]
+        public void Retrieve_Tracker_First_Sync_Day()
+        {
+            DateTime? firstReportDate = client.GetActivityTrackerFirstDay();
+
+            Assert.IsNotNull(firstReportDate);
+
+            if(firstReportDate.HasValue)
+                Console.WriteLine("User's First Tracker Sync Day:" + firstReportDate.ToString());
+
+        }
     }
 }

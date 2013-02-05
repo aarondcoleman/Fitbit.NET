@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -181,15 +181,7 @@ namespace Fitbit.Api
         public List<Device> GetDevices()
         {
             RestRequest request = new RestRequest("/1/user/-/devices.xml");
-
-            //hack to force this done in xml - there is a bug in the api
-            //which returns the content type as json
-            //bug reported: https://groups.google.com/forum/?fromgroups#!topic/fitbit-api/kPrHJjK9IBs
-            request.OnBeforeDeserialization = resp => { 
-                resp.ContentType = "application/xml"; 
-            }; 
-
-            
+           
             var response = restClient.Execute<List<Device>>(request);
 
             HandleResponseCode(response.StatusCode);
@@ -528,6 +520,17 @@ namespace Fitbit.Api
             return null; //this is an account where the device 
         }
 
+        public SleepData GetSleep(DateTime sleepDate)
+        {
+            string apiCall = string.Format("/1/user/-/sleep/date/{0}.xml", sleepDate.ToString("yyyy-MM-dd"));
+            RestRequest request = new RestRequest(apiCall);
+            var response = restClient.Execute<SleepData>(request);
+
+            HandleResponseCode(response.StatusCode);
+            return response.Data;
+
+        }
+
         #endregion
 
         #region Helpers
@@ -559,7 +562,6 @@ namespace Fitbit.Api
             const string ApiExtention = "/1/user/-/activities/date/{0}-{1}-{2}.xml";
             return string.Format(ApiExtention, activityDate.Year.ToString(), activityDate.Month.ToString(), activityDate.Day.ToString());
         }
-
 
         #endregion
 

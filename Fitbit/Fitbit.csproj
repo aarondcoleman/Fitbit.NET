@@ -65,7 +65,12 @@
     <Compile Include="Models\AuthCredential.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />
     <Compile Include="Models\Enums\DeviceType.cs" />
+    <Compile Include="Models\Enums\MealType.cs" />
     <Compile Include="Models\Enums\ResourceOwnerType.cs" />
+    <Compile Include="Models\FoodLog.cs" />
+    <Compile Include="Models\FoodUnit.cs" />
+    <Compile Include="Models\LoggedFood.cs" />
+    <Compile Include="Models\NutritionalValue.cs" />
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\Friend.cs" />

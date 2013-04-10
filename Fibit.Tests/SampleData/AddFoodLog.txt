@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<result>
+    <foodLog>
+        <isFavorite>true</isFavorite>
+        <logDate>2011-06-29</logDate>
+        <logId>21632</logId>
+        <loggedFood>
+            <accessLevel>PUBLIC</accessLevel>
+            <amount>2.55</amount>
+            <brand/>
+            <calories>370</calories>
+            <foodId>82294</foodId>
+            <mealTypeId>7</mealTypeId>
+            <locale>en_US</locale>
+            <name>Chips</name>
+            <unit>
+                <id>304</id>
+                <name>serving</name>
+                <plural>servings</plural>
+            </unit>
+            <units>
+                <long>304</long>
+                <long>226</long>
+                <long>180</long>
+                <long>147</long>
+                <long>389</long>
+            </units>
+        </loggedFood>
+        <nutritionalValues>
+            <calories>370</calories>
+            <carbs>47</carbs>
+            <fat>17.5</fat>
+            <fiber>5</fiber>
+            <protein>5</protein>
+            <sodium>325</sodium>
+        </nutritionalValues>
+    </foodLog>
+</result>

@@ -497,6 +497,39 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        public List<FoodLog> GetFoodLogs(DateTime date, string userId)
+        {
+            // GET /1/user/12A345/foods/log/date/2010-03-27.xml
+            RestRequest request = new RestRequest(string.Format("/1/user/{0}/foods/log/date/{1}.xml", userId, date.ToString("yyyy-MM-dd")));
+            request.RootElement = "foods";
+
+            var response = restClient.Execute<List<FoodLog>>(request);
+            HandleResponseCode(response.StatusCode);
+            
+            return response.Data;
+        }
+
+        public FoodLog AddFoodLog(FoodLog food, DateTime date)
+        {
+            // POST /1/user/-/foods/log.xml
+            RestRequest request = new RestRequest("/1/user/-/foods/log.xml");
+            request.Method = Method.POST;
+            request.RootElement = "foodLog";
+
+            request.AddParameter("foodId", food.LoggedFood.FoodId);
+            request.AddParameter("calories", food.LoggedFood.Calories);
+            request.AddParameter("mealTypeId", food.LoggedFood.MealTypeId);
+            request.AddParameter("unitId", food.LoggedFood.Unit.Id);
+            request.AddParameter("amount", food.LoggedFood.Amount);
+            request.AddParameter("date", date.ToString("yyyy-MM-dd"));
+
+            var response = restClient.Execute<FoodLog>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         #region Derived Methods from API Calls
 
         /// <summary>

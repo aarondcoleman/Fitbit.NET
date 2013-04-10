@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<result>
+    <foods>
+        <foodLog>
+            <isFavorite>false</isFavorite>
+            <logDate>2013-03-17</logDate>
+            <logId>170523831</logId>
+            <loggedFood>
+                <accessLevel>PUBLIC</accessLevel>
+                <amount>3.2</amount>
+                <brand>Wegmans</brand>
+                <calories>96</calories>
+                <foodId>31613</foodId>
+                <locale>en_US</locale>
+                <mealTypeId>3</mealTypeId>
+                <name>Plainville No Salt Added Turkey Breast Deli</name>
+                <unit>
+                    <id>226</id>
+                    <name>oz</name>
+                    <plural>oz</plural>
+                </unit>
+                <units>
+                    <long>226</long>
+                    <long>180</long>
+                    <long>147</long>
+                    <long>389</long>
+                </units>
+            </loggedFood>
+            <nutritionalValues>
+                <calories>96</calories>
+                <carbs>1.5</carbs>
+                <fat>1</fat>
+                <fiber>0</fiber>
+                <protein>24</protein>
+                <sodium>88</sodium>
+            </nutritionalValues>
+        </foodLog>
+    </foods>
+    <goals>
+        <calories>1814</calories>
+    </goals>
+    <summary>
+        <calories>1443</calories>
+        <carbs>125.6050796508789</carbs>
+        <fat>32.90934371948242</fat>
+        <fiber>17.44683074951172</fiber>
+        <protein>161.97186279296875</protein>
+        <sodium>2018.1942138671875</sodium>
+        <water>0</water>
+    </summary>
+</result>

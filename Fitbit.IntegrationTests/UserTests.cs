@@ -85,5 +85,24 @@ namespace Fitbit.IntegrationTests
                 Console.WriteLine("User's First Tracker Sync Day:" + firstReportDate.ToString());
 
         }
+
+        [Test]
+        public void Retrieve_Weight_Last_Week()
+        {
+            DateTime startDate = DateTime.Now.AddDays(-7);
+            DateTime endDate = DateTime.Now;
+            Weight weights = client.GetWeight(startDate, endDate);
+
+            Assert.IsNotNull(weights);
+            Assert.IsNotNull(weights.Weights);
+
+            Assert.IsTrue(weights.Weights.Count > 0);
+            WeightLog firstWeight = weights.Weights[0];
+            Assert.GreaterOrEqual(firstWeight.DateTime, startDate.Date);
+            Assert.Less(firstWeight.DateTime, endDate.AddDays(1).Date);
+            Assert.IsTrue(firstWeight.LogId > 0);
+            Assert.IsTrue(firstWeight.Bmi > 0);
+            Assert.IsTrue(firstWeight.Weight > 0);
+        }
     }
 }

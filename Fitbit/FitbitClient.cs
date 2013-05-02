@@ -117,6 +117,28 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        public Weight GetWeight(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = String.Format("/1/user/-/body/log/weight/date/{}.xml", startDate.ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), endDate.Value.ToString("yyyy-MM-dd"));
+            }
+
+            RestRequest request = new RestRequest(apiCall);
+            request.RootElement = "weight";
+
+            var response = restClient.Execute<Fitbit.Models.Weight>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         /// <summary>
         /// Get current authenticated user's profile
         /// </summary>

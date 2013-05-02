@@ -86,6 +86,7 @@
     <Content Include="SampleData\TimeSeriesActivitiesSteps.txt" />
     <Content Include="SampleData\UpdatedResources.txt" />
     <Content Include="SampleData\UserProfile.txt" />
+    <Content Include="SampleData\Weight.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

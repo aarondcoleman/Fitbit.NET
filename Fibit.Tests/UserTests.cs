@@ -16,6 +16,35 @@ namespace Fibit.Tests
     public class UserTests
     {
         [Test]
+        public void Can_Deserialize_Weight()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("Weight.txt"));
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            deserializer.RootElement = "weight";
+
+            Weight result = deserializer.Deserialize<Weight>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Weights.Count == 2);
+
+            WeightLog log = result.Weights[0];
+            Assert.AreEqual(log.LogId, 1330991999000);
+            Assert.AreEqual(log.Bmi, 23.566633224487305);
+            Assert.AreEqual(log.Date, new DateTime(2012, 3, 5));
+            Assert.AreEqual(log.Time, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59));
+            Assert.AreEqual(log.Weight, 73);
+            Assert.AreEqual(log.DateTime, new DateTime(2012, 3, 5, 23, 59, 59));
+
+            log = result.Weights[1];
+            Assert.AreEqual(log.LogId, 1330991999000);
+            Assert.AreEqual(log.Bmi, 22.566633224487305);
+            Assert.AreEqual(log.Date, new DateTime(2012, 3, 5));
+            Assert.AreEqual(log.Time, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 21, 10, 59));
+            Assert.AreEqual(log.Weight, 72.5);
+            Assert.AreEqual(log.DateTime, new DateTime(2012, 3, 5, 21, 10, 59));
+        }
+
+        [Test]
         public void Can_Deserialize_Profile()
         {
             string content = File.ReadAllText(SampleData.PathFor("UserProfile.txt"));

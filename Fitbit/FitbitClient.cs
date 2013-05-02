@@ -139,6 +139,28 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        public Fat GetFat(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = String.Format("/1/user/-/body/log/fat/date/{}.xml", startDate.ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), endDate.Value.ToString("yyyy-MM-dd"));
+            }
+
+            RestRequest request = new RestRequest(apiCall);
+            request.RootElement = "fat";
+
+            var response = restClient.Execute<Fitbit.Models.Fat>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         /// <summary>
         /// Get current authenticated user's profile
         /// </summary>

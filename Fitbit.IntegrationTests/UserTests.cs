@@ -104,5 +104,23 @@ namespace Fitbit.IntegrationTests
             Assert.IsTrue(firstWeight.Bmi > 0);
             Assert.IsTrue(firstWeight.Weight > 0);
         }
+
+        [Test]
+        public void Retrieve_Fat_Last_Week()
+        {
+            DateTime startDate = DateTime.Now.AddDays(-7);
+            DateTime endDate = DateTime.Now;
+            Fat fat = client.GetFat(startDate, endDate);
+
+            Assert.IsNotNull(fat);
+            Assert.IsNotNull(fat.FatLogs);
+
+            Assert.IsTrue(fat.FatLogs.Count > 0);
+            FatLog firstFat = fat.FatLogs[0];
+            Assert.GreaterOrEqual(firstFat.DateTime, startDate.Date);
+            Assert.Less(firstFat.DateTime, endDate.AddDays(1).Date);
+            Assert.IsTrue(firstFat.LogId > 0);
+            Assert.IsTrue(firstFat.Fat > 0);
+        }
     }
 }

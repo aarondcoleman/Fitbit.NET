@@ -63,6 +63,8 @@
     </Compile>
     <Compile Include="Models\ApiSubscription.cs" />
     <Compile Include="Models\AuthCredential.cs" />
+    <Compile Include="Models\Fat.cs" />
+    <Compile Include="Models\FatLog.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />
     <Compile Include="Models\Enums\DateRangePeriod.cs" />
     <Compile Include="Models\Enums\DeviceType.cs" />

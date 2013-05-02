@@ -45,6 +45,33 @@ namespace Fibit.Tests
         }
 
         [Test]
+        public void Can_Deserialize_Fat()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("Fat.txt"));
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            deserializer.RootElement = "fat";
+
+            Fat result = deserializer.Deserialize<Fat>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.FatLogs.Count == 2);
+
+            FatLog log = result.FatLogs[0];
+            Assert.AreEqual(log.LogId, 1330991999000);
+            Assert.AreEqual(log.Date, new DateTime(2012, 3, 5));
+            Assert.AreEqual(log.Time, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59));
+            Assert.AreEqual(log.Fat, 14);
+            Assert.AreEqual(log.DateTime, new DateTime(2012, 3, 5, 23, 59, 59));
+
+            log = result.FatLogs[1];
+            Assert.AreEqual(log.LogId, 1330991999000);
+            Assert.AreEqual(log.Date, new DateTime(2012, 3, 5));
+            Assert.AreEqual(log.Time, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 21, 20, 59));
+            Assert.AreEqual(log.Fat, 13.5);
+            Assert.AreEqual(log.DateTime, new DateTime(2012, 3, 5, 21, 20, 59));
+        }
+
+        [Test]
         public void Can_Deserialize_Profile()
         {
             string content = File.ReadAllText(SampleData.PathFor("UserProfile.txt"));

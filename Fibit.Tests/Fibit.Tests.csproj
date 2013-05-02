@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="SampleData\Fat.txt" />
     <Content Include="SampleData\IntradayActivitiesCalories.txt" />
     <Content Include="SampleData\ListApiSubscriptions.txt" />
     <Content Include="SampleData\SubscriptionUpdateSignedMultiple.txt" />

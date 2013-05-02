@@ -72,6 +72,58 @@ namespace Fibit.Tests
         }
 
         [Test]
+        public void Can_Deserialize_Food()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("Food.txt"));
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+
+            Food result = deserializer.Deserialize<Food>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Foods);
+            Assert.IsNotNull(result.Goals);
+            Assert.IsNotNull(result.Summary);
+
+            Assert.IsTrue(result.Foods.Count == 1);
+            FoodLog food = result.Foods[0];
+            Assert.IsTrue(food.IsFavorite);
+            Assert.AreEqual(food.LogDate, new DateTime(2011,06,29));
+            Assert.AreEqual(food.LogId, 1924);
+
+            Assert.IsNotNull(food.LoggedFood);
+            LoggedFood logged = food.LoggedFood;
+            Assert.AreEqual(logged.AccessLevel, "PUBLIC");
+            Assert.AreEqual(logged.Amount, 132.57f);
+            Assert.IsNull(logged.Brand);
+            Assert.AreEqual(logged.Calories, 752);
+            Assert.AreEqual(logged.FoodId, 18828);
+            Assert.AreEqual(logged.MealTypeId, 4);
+            Assert.AreEqual(logged.Locale, "en_US");
+            Assert.AreEqual(logged.Name, "Chocolate, Milk");
+
+            Assert.IsNotNull(food.NutritionalValues);
+            NutritionalValues values = food.NutritionalValues;
+            Assert.AreEqual(values.Calories, 752);
+            Assert.AreEqual(values.Carbs, 66.5);
+            Assert.AreEqual(values.Fat, 49);
+            Assert.AreEqual(values.Fiber, .5);
+            Assert.AreEqual(values.Protein, 12.5);
+            Assert.AreEqual(values.Sodium, 186);
+
+            FoodSummary summary = result.Summary;
+            Assert.AreEqual(summary.Calories, 752);
+            Assert.AreEqual(summary.Carbs, 66.5);
+            Assert.AreEqual(summary.Fat, 49);
+            Assert.AreEqual(summary.Fiber, .5);
+            Assert.AreEqual(summary.Protein, 12.5);
+            Assert.AreEqual(summary.Sodium, 186);
+            Assert.AreEqual(summary.Water, 0);
+
+            FoodGoals goals = result.Goals;
+            Assert.AreEqual(goals.Calories, 2286);
+        }
+
+        [Test]
         public void Can_Deserialize_Profile()
         {
             string content = File.ReadAllText(SampleData.PathFor("UserProfile.txt"));

@@ -161,6 +161,23 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        public Food GetFood(DateTime date, string userId = null)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/foods/log/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.Food>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         /// <summary>
         /// Get current authenticated user's profile
         /// </summary>

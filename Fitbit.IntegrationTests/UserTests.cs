@@ -122,5 +122,22 @@ namespace Fitbit.IntegrationTests
             Assert.IsTrue(firstFat.LogId > 0);
             Assert.IsTrue(firstFat.Fat > 0);
         }
+
+        [Test]
+        public void Retrieve_Food_Yesterday()
+        {
+            Food food = client.GetFood(DateTime.Today);
+
+            Assert.IsNotNull(food);
+            Assert.IsNotNull(food.Foods);
+            Assert.IsNotNull(food.Goals);
+            Assert.IsNotNull(food.Summary);
+
+            Assert.IsTrue(food.Foods.Count > 0);
+            FoodLog foodLog = food.Foods[0];
+            Assert.AreEqual(foodLog.LogDate, DateTime.Today.Date);
+            Assert.IsNotNull(foodLog.LoggedFood);
+            Assert.IsNotNull(foodLog.NutritionalValues);
+        }
     }
 }

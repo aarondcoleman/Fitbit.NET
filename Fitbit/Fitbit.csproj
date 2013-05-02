@@ -69,6 +69,11 @@
     <Compile Include="Models\Enums\DateRangePeriod.cs" />
     <Compile Include="Models\Enums\DeviceType.cs" />
     <Compile Include="Models\Enums\ResourceOwnerType.cs" />
+    <Compile Include="Models\Food.cs" />
+    <Compile Include="Models\FoodGoals.cs" />
+    <Compile Include="Models\FoodLog.cs" />
+    <Compile Include="Models\FoodSummary.cs" />
+    <Compile Include="Models\NutritionalValues.cs" />
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\Friend.cs" />

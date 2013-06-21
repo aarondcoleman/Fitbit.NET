@@ -85,5 +85,59 @@ namespace Fitbit.IntegrationTests
                 Console.WriteLine("User's First Tracker Sync Day:" + firstReportDate.ToString());
 
         }
+
+        [Test]
+        public void Retrieve_Weight_Last_Week()
+        {
+            DateTime startDate = DateTime.Now.AddDays(-7);
+            DateTime endDate = DateTime.Now;
+            Weight weights = client.GetWeight(startDate, endDate);
+
+            Assert.IsNotNull(weights);
+            Assert.IsNotNull(weights.Weights);
+
+            Assert.IsTrue(weights.Weights.Count > 0);
+            WeightLog firstWeight = weights.Weights[0];
+            Assert.GreaterOrEqual(firstWeight.DateTime, startDate.Date);
+            Assert.Less(firstWeight.DateTime, endDate.AddDays(1).Date);
+            Assert.IsTrue(firstWeight.LogId > 0);
+            Assert.IsTrue(firstWeight.Bmi > 0);
+            Assert.IsTrue(firstWeight.Weight > 0);
+        }
+
+        [Test]
+        public void Retrieve_Fat_Last_Week()
+        {
+            DateTime startDate = DateTime.Now.AddDays(-7);
+            DateTime endDate = DateTime.Now;
+            Fat fat = client.GetFat(startDate, endDate);
+
+            Assert.IsNotNull(fat);
+            Assert.IsNotNull(fat.FatLogs);
+
+            Assert.IsTrue(fat.FatLogs.Count > 0);
+            FatLog firstFat = fat.FatLogs[0];
+            Assert.GreaterOrEqual(firstFat.DateTime, startDate.Date);
+            Assert.Less(firstFat.DateTime, endDate.AddDays(1).Date);
+            Assert.IsTrue(firstFat.LogId > 0);
+            Assert.IsTrue(firstFat.Fat > 0);
+        }
+
+        [Test]
+        public void Retrieve_Food_Yesterday()
+        {
+            Food food = client.GetFood(DateTime.Today);
+
+            Assert.IsNotNull(food);
+            Assert.IsNotNull(food.Foods);
+            Assert.IsNotNull(food.Goals);
+            Assert.IsNotNull(food.Summary);
+
+            Assert.IsTrue(food.Foods.Count > 0);
+            FoodLog foodLog = food.Foods[0];
+            Assert.AreEqual(foodLog.LogDate, DateTime.Today.Date);
+            Assert.IsNotNull(foodLog.LoggedFood);
+            Assert.IsNotNull(foodLog.NutritionalValues);
+        }
     }
 }

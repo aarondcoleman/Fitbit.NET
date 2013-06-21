@@ -17,10 +17,4 @@ namespace Fitbit.Models
         public List<IntradayDataValues> DataSet { get; set; }
     }
 
-    /*
-    public class IntradayDataListTwo
-    {
-        public IntradayDataSet Set { get; set; }
-    }
-    */
 }

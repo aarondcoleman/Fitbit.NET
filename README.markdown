@@ -50,4 +50,9 @@ Lots of ways to contribute
 
 ### Meta
 
-This is an open source project in progress. If you're interested in getting involved and want to chat about it, please email me at aaron@smallstepslabs.com or twitter @aarondcoleman
+This is an open source project in progress. If you're interested in getting involved and want to chat about it, please email me at aaron@smallstepslabs.com or twitter @aaronc
+
+Additional Thanks to:
+Gavin Draper - github.com/gavdraper - desktop auth
+Jonathan Walz - github.com/jonathanwalz - food and weight logs
+Chris Fletcher - github.com/cfletcher - sleep data

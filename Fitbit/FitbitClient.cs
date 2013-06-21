@@ -117,6 +117,67 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        public Weight GetWeight(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = String.Format("/1/user/-/body/log/weight/date/{}.xml", startDate.ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), endDate.Value.ToString("yyyy-MM-dd"));
+            }
+
+            RestRequest request = new RestRequest(apiCall);
+            request.RootElement = "weight";
+
+            var response = restClient.Execute<Fitbit.Models.Weight>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
+        public Fat GetFat(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = String.Format("/1/user/-/body/log/fat/date/{}.xml", startDate.ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), endDate.Value.ToString("yyyy-MM-dd"));
+            }
+
+            RestRequest request = new RestRequest(apiCall);
+            request.RootElement = "fat";
+
+            var response = restClient.Execute<Fitbit.Models.Fat>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
+        public Food GetFood(DateTime date, string userId = null)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/foods/log/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.Food>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         /// <summary>
         /// Get current authenticated user's profile
         /// </summary>
@@ -210,6 +271,21 @@ namespace Fitbit.Api
             return GetTimeSeries(timeSeriesResourceType, startDate, endDate, null);
         }
 
+        public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string userId)
+        {
+            return GetTimeSeries(timeSeriesResourceType, startDate, endDate.ToString("yyyy-MM-dd"), userId);
+        }
+
+        public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period)
+        {
+            return GetTimeSeries(timeSeriesResourceType, endDate, period, null);
+        }
+
+        public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string userId)
+        {
+            return GetTimeSeries(timeSeriesResourceType, endDate, StringEnum.GetStringValue(period), userId);
+        }
+
         /// <summary>
         /// Get TimeSeries data for another user accessible with this user's credentials
         /// </summary>
@@ -218,14 +294,14 @@ namespace Fitbit.Api
         /// <param name="endDate"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string userId)
+        private TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string userId)
         {
 
             string userSignifier = "-"; //used for current user
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
             RestRequest request = new RestRequest(requestUrl);
 
             request.OnBeforeDeserialization = resp => {
@@ -270,6 +346,21 @@ namespace Fitbit.Api
             return GetTimeSeriesInt(timeSeriesResourceType, startDate, endDate, null);
         }
 
+        public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string userId)
+        {
+            return GetTimeSeriesInt(timeSeriesResourceType, startDate, endDate.ToString("yyyy-MM-dd"), userId);
+        }
+
+        public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period)
+        {
+            return GetTimeSeriesInt(timeSeriesResourceType, endDate, period, null);
+        }
+
+        public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string userId)
+        {
+            return GetTimeSeriesInt(timeSeriesResourceType, endDate, StringEnum.GetStringValue(period), userId);
+        }
+
         /// <summary>
         /// Get TimeSeries data for another user accessible with this user's credentials
         /// </summary>
@@ -278,14 +369,14 @@ namespace Fitbit.Api
         /// <param name="endDate"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string userId)
+        public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string userId)
         {
 
             string userSignifier = "-"; //used for current user
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
             RestRequest request = new RestRequest(requestUrl);
 
             request.OnBeforeDeserialization = resp =>

@@ -16,6 +16,114 @@ namespace Fibit.Tests
     public class UserTests
     {
         [Test]
+        public void Can_Deserialize_Weight()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("Weight.txt"));
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            deserializer.RootElement = "weight";
+
+            Weight result = deserializer.Deserialize<Weight>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Weights.Count == 2);
+
+            WeightLog log = result.Weights[0];
+            Assert.AreEqual(log.LogId, 1330991999000);
+            Assert.AreEqual(log.Bmi, 23.566633224487305);
+            Assert.AreEqual(log.Date, new DateTime(2012, 3, 5));
+            Assert.AreEqual(log.Time, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59));
+            Assert.AreEqual(log.Weight, 73);
+            Assert.AreEqual(log.DateTime, new DateTime(2012, 3, 5, 23, 59, 59));
+
+            log = result.Weights[1];
+            Assert.AreEqual(log.LogId, 1330991999000);
+            Assert.AreEqual(log.Bmi, 22.566633224487305);
+            Assert.AreEqual(log.Date, new DateTime(2012, 3, 5));
+            Assert.AreEqual(log.Time, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 21, 10, 59));
+            Assert.AreEqual(log.Weight, 72.5);
+            Assert.AreEqual(log.DateTime, new DateTime(2012, 3, 5, 21, 10, 59));
+        }
+
+        [Test]
+        public void Can_Deserialize_Fat()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("Fat.txt"));
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            deserializer.RootElement = "fat";
+
+            Fat result = deserializer.Deserialize<Fat>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.FatLogs.Count == 2);
+
+            FatLog log = result.FatLogs[0];
+            Assert.AreEqual(log.LogId, 1330991999000);
+            Assert.AreEqual(log.Date, new DateTime(2012, 3, 5));
+            Assert.AreEqual(log.Time, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59));
+            Assert.AreEqual(log.Fat, 14);
+            Assert.AreEqual(log.DateTime, new DateTime(2012, 3, 5, 23, 59, 59));
+
+            log = result.FatLogs[1];
+            Assert.AreEqual(log.LogId, 1330991999000);
+            Assert.AreEqual(log.Date, new DateTime(2012, 3, 5));
+            Assert.AreEqual(log.Time, new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 21, 20, 59));
+            Assert.AreEqual(log.Fat, 13.5);
+            Assert.AreEqual(log.DateTime, new DateTime(2012, 3, 5, 21, 20, 59));
+        }
+
+        [Test]
+        public void Can_Deserialize_Food()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("Food.txt"));
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+
+            Food result = deserializer.Deserialize<Food>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Foods);
+            Assert.IsNotNull(result.Goals);
+            Assert.IsNotNull(result.Summary);
+
+            Assert.IsTrue(result.Foods.Count == 1);
+            FoodLog food = result.Foods[0];
+            Assert.IsTrue(food.IsFavorite);
+            Assert.AreEqual(food.LogDate, new DateTime(2011,06,29));
+            Assert.AreEqual(food.LogId, 1924);
+
+            Assert.IsNotNull(food.LoggedFood);
+            LoggedFood logged = food.LoggedFood;
+            Assert.AreEqual(logged.AccessLevel, "PUBLIC");
+            Assert.AreEqual(logged.Amount, 132.57f);
+            Assert.IsNull(logged.Brand);
+            Assert.AreEqual(logged.Calories, 752);
+            Assert.AreEqual(logged.FoodId, 18828);
+            Assert.AreEqual(logged.MealTypeId, 4);
+            Assert.AreEqual(logged.Locale, "en_US");
+            Assert.AreEqual(logged.Name, "Chocolate, Milk");
+
+            Assert.IsNotNull(food.NutritionalValues);
+            NutritionalValues values = food.NutritionalValues;
+            Assert.AreEqual(values.Calories, 752);
+            Assert.AreEqual(values.Carbs, 66.5);
+            Assert.AreEqual(values.Fat, 49);
+            Assert.AreEqual(values.Fiber, .5);
+            Assert.AreEqual(values.Protein, 12.5);
+            Assert.AreEqual(values.Sodium, 186);
+
+            FoodSummary summary = result.Summary;
+            Assert.AreEqual(summary.Calories, 752);
+            Assert.AreEqual(summary.Carbs, 66.5);
+            Assert.AreEqual(summary.Fat, 49);
+            Assert.AreEqual(summary.Fiber, .5);
+            Assert.AreEqual(summary.Protein, 12.5);
+            Assert.AreEqual(summary.Sodium, 186);
+            Assert.AreEqual(summary.Water, 0);
+
+            FoodGoals goals = result.Goals;
+            Assert.AreEqual(goals.Calories, 2286);
+        }
+
+        [Test]
         public void Can_Deserialize_Profile()
         {
             string content = File.ReadAllText(SampleData.PathFor("UserProfile.txt"));

@@ -75,7 +75,6 @@
     <Compile Include="Models\FoodSummary.cs" />
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
-    <Compile Include="Models\Enums\APICollectionType.cs" />
     <Compile Include="Models\Enums\DeviceType.cs" />
     <Compile Include="Models\Enums\ResourceOwnerType.cs" />
     <Compile Include="Models\TimeSeriesDataListInt.cs" />

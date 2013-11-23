@@ -13,6 +13,12 @@ else
     <p>Welcome Fitbit User @Session["FitbitUserId"].ToString()</p>
     <ul>
         <li><a href="/Fitbit/LastWeekActiveScore">View Last Week Active Score</a></li>
+        <li><a href="/Fitbit/LastWeekSteps">View Last Week Active Score</a></li>
+        <li><a href="/Fitbit/LastYearWeight">View Last Year Weight</a></li>
+        <li><a href="/Fitbit/LastYearFat">View Last Year Fat (Time Series API)</a></li>
+        <li><a href="/Fitbit/MonthFat/@DateTime.UtcNow.AddDays(-30).ToString("yyyy-MM-dd")">View Last Month Fat (Body API)</a></li>
+        <li><a href="/Fitbit/LastYearWeight">View Last Year Weight (Time Series API)</a></li>
+        <li><a href="/Fitbit/MonthWeight/@DateTime.UtcNow.AddDays(-30).ToString("yyyy-MM-dd")">View Last Month Weight (Body API)</a></li>
     </ul>
     
 }

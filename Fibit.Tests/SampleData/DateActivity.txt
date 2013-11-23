@@ -17,14 +17,12 @@
         </activityLog>
     </activities>
     <goals>
-        <activeScore>1000</activeScore>
         <caloriesOut>2826</caloriesOut>
         <distance>8.05</distance>
         <floors>150</floors>
         <steps>10000</steps>
     </goals>
     <summary>
-        <activeScore>1</activeScore>
         <activityCalories>230</activityCalories>
         <caloriesOut>644</caloriesOut>
         <distances>

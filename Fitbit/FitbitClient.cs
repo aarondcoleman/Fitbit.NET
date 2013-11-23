@@ -17,7 +17,7 @@ namespace Fitbit.Api
     /// For reference on some inspired structure: 
     /// https://github.com/Fitbit/fitbit4j/blob/master/fitbit4j/src/main/java/com/fitbit/api/client/FitbitApiClientAgent.java
     /// </summary>
-    public class FitbitClient
+    public class FitbitClient : IFitbitClient
     {
         private string consumerKey;
         private string consumerSecret;
@@ -77,7 +77,6 @@ namespace Fitbit.Api
             this.restClient = restClient;
 
             restClient.Authenticator = OAuth1Authenticator.ForProtectedResource(this.consumerKey, this.consumerSecret, this.accessToken, this.accessSecret);
-
         }
 
         public ActivitySummary GetDayActivitySummary(DateTime activityDate)
@@ -119,10 +118,13 @@ namespace Fitbit.Api
 
         public Weight GetWeight(DateTime startDate, DateTime? endDate = null)
         {
+            if (startDate.AddDays(31) < endDate)
+                throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Weight-Fat");
+
             string apiCall;
             if (endDate == null)
             {
-                apiCall = String.Format("/1/user/-/body/log/weight/date/{}.xml", startDate.ToString("yyyy-MM-dd"));
+                apiCall = String.Format("/1/user/-/body/log/weight/date/{0}.xml", startDate.ToString("yyyy-MM-dd"));
             }
             else
             {
@@ -139,12 +141,32 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        public Weight GetWeight(DateTime startDate, DateRangePeriod period)
+        {
+            if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
+                throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
+
+            string apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period));
+
+            RestRequest request = new RestRequest(apiCall);
+            request.RootElement = "weight";
+
+            var response = restClient.Execute<Fitbit.Models.Weight>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         public Fat GetFat(DateTime startDate, DateTime? endDate = null)
         {
+            if (startDate.AddDays(31) < endDate)
+                throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
+
             string apiCall;
             if (endDate == null)
             {
-                apiCall = String.Format("/1/user/-/body/log/fat/date/{}.xml", startDate.ToString("yyyy-MM-dd"));
+                apiCall = String.Format("/1/user/-/body/log/fat/date/{0}.xml", startDate.ToString("yyyy-MM-dd"));
             }
             else
             {
@@ -160,6 +182,31 @@ namespace Fitbit.Api
 
             return response.Data;
         }
+
+        /// <summary>
+        /// Get Fat for a period of time starting at date.
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="period"></param>
+        /// <returns></returns>
+        public Fat GetFat(DateTime startDate, DateRangePeriod period)
+        {
+            if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
+                throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
+
+            string apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period));
+
+            RestRequest request = new RestRequest(apiCall);
+            request.RootElement = "fat";
+
+            var response = restClient.Execute<Fitbit.Models.Fat>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+
+        }
+
 
         public Food GetFood(DateTime date, string userId = null)
         {
@@ -618,6 +665,49 @@ namespace Fitbit.Api
             var response = restClient.Execute<SleepData>(request);
 
             HandleResponseCode(response.StatusCode);
+
+
+            foreach (var sleepLog in response.Data.Sleep)
+            {
+                int startSleepSeconds = sleepLog.StartTime.Hour * 60 * 60;
+                startSleepSeconds += sleepLog.StartTime.Minute * 60;
+                startSleepSeconds += sleepLog.StartTime.Second;
+
+                for(int i=0 ; i < sleepLog.MinuteData.Count; i++)
+                {
+                    var minuteData = sleepLog.MinuteData[i]; //work with a local
+
+                    int currentSeconds = minuteData.DateTime.Hour * 60 * 60; //hours * minutes * seconds
+                    currentSeconds += minuteData.DateTime.Minute * 60;
+                    currentSeconds += minuteData.DateTime.Second;
+
+                    if (currentSeconds < startSleepSeconds) //we've gone over midnight and to the next day
+                    {
+                        DateTime nextDay = sleepLog.StartTime.AddDays(1);
+
+                        sleepLog.MinuteData[i].DateTime = new DateTime(
+                                                    nextDay.Year,
+                                                    nextDay.Month,
+                                                    nextDay.Day,
+                                                    minuteData.DateTime.Hour,
+                                                    minuteData.DateTime.Minute,
+                                                    minuteData.DateTime.Second);
+                    }
+                    else //still in the same day
+                    {
+                        DateTime currentDay = sleepLog.StartTime;
+
+                        sleepLog.MinuteData[i].DateTime = new DateTime(
+                                                    currentDay.Year,
+                                                    currentDay.Month,
+                                                    currentDay.Day,
+                                                    minuteData.DateTime.Hour,
+                                                    minuteData.DateTime.Minute,
+                                                    minuteData.DateTime.Second);
+                    }
+                }
+            }
+
             return response.Data;
 
         }

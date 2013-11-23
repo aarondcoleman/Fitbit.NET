@@ -1,0 +1,26 @@
+﻿@model Fitbit.Models.Weight
+
+@{
+    ViewBag.Title = "LastMonthWeight";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Last Month Weight</h2>
+
+<table>
+    <tr>
+        <th>DateTime</th>
+        <th>BMI</th>
+        <th>Weight</th>
+        <th>LogId</th>
+    </tr>
+@foreach (Fitbit.Models.WeightLog log in Model.Weights)
+{ 
+    <tr>
+        <td>@log.DateTime</td>
+        <td>@log.Bmi</td>
+        <td>@log.Weight</td>
+        <td>@log.LogId</td>
+    </tr>
+}
+</table>

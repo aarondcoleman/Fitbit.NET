@@ -33,8 +33,9 @@ namespace Fitbit.Models
         MinutesFairlyActive,
         [StringValue("/activities/minutesVeryActive")]
         MinutesVeryActive,
-        [StringValue("/activities/activeScore")]
-        ActiveScore,
+        // removed from Fitbit API:  https://groups.google.com/forum/#!topic/fitbit-api/8IRaX6RW7g4
+        //[StringValue("/activities/activeScore")]
+        //ActiveScore,
         [StringValue("/activities/activityCalories")]
         ActivityCalories,
         [StringValue("/activities/floors")]
@@ -48,8 +49,9 @@ namespace Fitbit.Models
         StepsTracker,
         [StringValue("/activities/tracker/distance")]
         DistanceTracker,
-        [StringValue("/activities/tracker/activeScore")]
-        ActiveScoreTracker,
+        // removed from Fitbit API:  https://groups.google.com/forum/#!topic/fitbit-api/8IRaX6RW7g4
+        //[StringValue("/activities/tracker/activeScore")]
+        //ActiveScoreTracker,
         [StringValue("/activities/tracker/activityCalories")]
         ActivityCaloriesTracker,
         [StringValue("/activities/tracker/floors")]

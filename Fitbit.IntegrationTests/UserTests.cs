@@ -139,5 +139,30 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(foodLog.LoggedFood);
             Assert.IsNotNull(foodLog.NutritionalValues);
         }
+
+        [Test]
+        public void Retrieve_Sleep_On_Date()
+        {
+            DateTime sleepRecordDate = new DateTime(2013, 7, 13); //find a date you know your user has sleep logs
+            SleepData sleepData = client.GetSleep(sleepRecordDate);
+
+            Assert.IsNotNull(sleepData);
+            //Assert.IsTrue(sleepData.Sleep.SleepLog.Count > 0);
+
+            Assert.IsNotNull(sleepData.Summary);
+            Assert.IsTrue(sleepData.Summary.TotalMinutesAsleep > 0);
+
+            Assert.AreEqual(sleepRecordDate.Day, sleepData.Sleep.First().StartTime.Day);
+            Assert.IsTrue(sleepData.Sleep.Count > 0); //make sure there is at least one sleep log
+        }
+
+        [Test]
+        public void Retrieve_Sleep_TimeSeries()
+        {
+            TimeSeriesDataListInt dataList = client.GetTimeSeriesInt(TimeSeriesResourceType.MinutesAsleep, DateTime.UtcNow, DateRangePeriod.Max, null);
+
+            Assert.IsNotNull(dataList);
+
+        }
     }
 }

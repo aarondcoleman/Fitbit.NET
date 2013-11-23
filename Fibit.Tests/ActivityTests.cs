@@ -32,7 +32,6 @@ namespace Fibit.Tests
             var output = xml.Deserialize<Fitbit.Models.ActivitySummary>(new RestResponse { Content = doc });
 
             Assert.IsNotNull(output);
-            Assert.IsNotNull(output.ActiveScore);
             Assert.IsNotNull(output.CaloriesOut);
             Assert.IsNotNull(output.Distances);
             Assert.IsNotNull(output.Steps);
@@ -83,7 +82,6 @@ namespace Fibit.Tests
             Assert.AreEqual(1, result.Activities.Count); //has 1 activity log
             Assert.AreEqual(51007, result.Activities[0].ActivityId);
             Assert.AreEqual(3783, result.Activities[0].Steps);
-            Assert.AreEqual(1000, result.Goals.ActiveScore);
             Assert.AreEqual(10000, result.Goals.Steps);
 
 

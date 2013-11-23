@@ -4,7 +4,7 @@ namespace Fitbit.Models
 {
     public class SleepData
     {
-        public Sleep Sleep { get; set; }
+        public List<SleepLog> Sleep { get; set; }
         public SleepSummary Summary { get; set; }
     }
 }

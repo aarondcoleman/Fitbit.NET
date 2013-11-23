@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Fitbit.Models
 {
+    //https://wiki.fitbit.com/display/API/API-Get-Body-Fat
     public class FatLog
     {
         public long LogId { get; set; }

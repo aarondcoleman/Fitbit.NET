@@ -318,29 +318,6 @@ namespace Fibit.Tests
         }
 
         [Test]
-        public void Can_Deserialize_TimeSeriesActivitiesActiveScore()
-        {
-            string content = File.ReadAllText(SampleData.PathFor("TimeSeriesActivitiesActiveScore.txt"));
-
-            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
-            //var deserializer = new RestSharp.Deserializers.JsonDeserializer();
-
-            //TimeSeriesResourceType type = TimeSeriesResourceType.Steps.GetRootElement();
-
-            deserializer.RootElement = "activities-activeScore";
-
-            List<TimeSeriesDataList.Data> result = deserializer.Deserialize<List<TimeSeriesDataList.Data>>(new RestResponse() { Content = content });
-
-            Assert.IsNotNull(result);
-
-            Assert.AreEqual(new DateTime(2012, 5, 19), result[0].DateTime);
-            Assert.AreEqual("910", result[0].Value);
-
-            Assert.AreEqual(8, result.Count);
-
-        }
-
-        [Test]
         public void Can_Deserialize_IntradayActivitiesSteps()
         {
             string content = File.ReadAllText(SampleData.PathFor("IntradayActivitiesSteps.txt"));
@@ -489,5 +466,47 @@ namespace Fibit.Tests
             Assert.AreEqual("1", result[0].SubscriberId);
             Assert.AreEqual("323", result[0].SubscriptionId);
         }
+
+        [Test]
+        public void Can_Deserialize_Sleep_SingleSleepLog()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("SleepData-SingleSleepLog.txt"));
+
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            //var deserializer = new RestSharp.Deserializers.JsonDeserializer();
+            //deserializer.DateFormat = "HH:mm:ss";
+            //TimeSeriesResourceType type = TimeSeriesResourceType.Steps.GetRootElement();
+
+            //deserializer.RootElement = "sleep";
+            //deserializer.RootElement = "updates";
+
+            SleepData result = deserializer.Deserialize<SleepData>(new RestResponse() { Content = content });
+            //var result = deserializer.Deserialize<dynamic>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+            //Assert.IsTrue(result.Sleep.SleepLog.Count > 0);
+
+            Assert.IsNotNull(result.Summary);
+            
+            Assert.AreEqual(497, result.Summary.TotalMinutesAsleep);
+            Assert.AreEqual(1, result.Summary.TotalSleepRecords);
+            Assert.AreEqual(578, result.Summary.TotalTimeInBed);
+
+            Assert.AreEqual(1, result.Sleep.Count);
+            Assert.AreEqual(578, result.Sleep.First().MinuteData.Count); //this particular sleep had 578 minutes
+
+            Assert.AreEqual(2, result.Sleep.First().MinuteData[1].Value);
+            /*
+            Assert.AreEqual(APICollectionType.user, result[0].CollectionType);
+            Assert.AreEqual("227YZL", result[0].OwnerId);
+            Assert.AreEqual("1", result[0].SubscriberId);
+            Assert.AreEqual("323", result[0].SubscriptionId);
+             */
+        }
+
+
+
+
+
     }
 }

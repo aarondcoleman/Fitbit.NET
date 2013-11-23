@@ -6,7 +6,8 @@ namespace Fitbit.Models
 {
     public class ActivitySummary
     {
-        public int ActiveScore{ get; set; }
+        // removed from Fitbit API:  https://groups.google.com/forum/#!topic/fitbit-api/8IRaX6RW7g4
+        //public int ActiveScore{ get; set; }
 
         public int CaloriesOut
         {

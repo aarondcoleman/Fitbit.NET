@@ -78,12 +78,9 @@ namespace SampleWebMVC.Controllers
 
         public string TestTimeSeries()
         {
-            FitbitClient client = new FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
-                ConfigurationManager.AppSettings["FitbitConsumerSecret"],
-                Session["FitbitAuthToken"].ToString(),
-                Session["FitbitAuthTokenSecret"].ToString());
+            FitbitClient client = GetFitbitClient();
 
-            var results = client.GetTimeSeries(TimeSeriesResourceType.ActiveScore, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+            var results = client.GetTimeSeries(TimeSeriesResourceType.ActivityCalories, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
 
             string sOutput = "";
             foreach (var result in results.DataList)
@@ -95,16 +92,73 @@ namespace SampleWebMVC.Controllers
 
         }
 
-        public ActionResult LastWeekActiveScore()
-        {
-            FitbitClient client = new FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
-                ConfigurationManager.AppSettings["FitbitConsumerSecret"],
-                Session["FitbitAuthToken"].ToString(),
-                Session["FitbitAuthTokenSecret"].ToString());
 
-            TimeSeriesDataList results = client.GetTimeSeries(TimeSeriesResourceType.ActiveScore, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
-            
+        public ActionResult LastWeekSteps()
+        {
+            FitbitClient client = GetFitbitClient();
+
+            TimeSeriesDataList results = client.GetTimeSeries(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+
             return View(results);
+
+        }
+
+        //example using the direct API call getting all the individual logs
+        public ActionResult MonthFat(string id)
+        {
+            DateTime dateStart = Convert.ToDateTime(id);
+
+            FitbitClient client = GetFitbitClient();
+
+            Fat fat = client.GetFat(dateStart, DateRangePeriod.OneMonth);
+
+            if (fat == null || fat.FatLogs == null) //succeeded but no records
+            {
+                fat = new Fat();
+                fat.FatLogs = new List<FatLog>();
+            }
+            return View(fat);
+
+        }
+
+        //example using the time series, one per day
+        public ActionResult LastYearFat()
+        {
+            FitbitClient client = GetFitbitClient();
+
+            TimeSeriesDataList fatSeries = client.GetTimeSeries(TimeSeriesResourceType.Fat, DateTime.UtcNow, DateRangePeriod.OneYear);
+
+            return View(fatSeries);
+
+        }
+
+        //example using the direct API call getting all the individual logs
+        public ActionResult MonthWeight(string id)
+        {
+            DateTime dateStart = Convert.ToDateTime(id);
+
+            FitbitClient client = GetFitbitClient();
+
+            Weight weight = client.GetWeight(dateStart, DateRangePeriod.OneMonth);
+
+            if (weight == null || weight.Weights== null) //succeeded but no records
+            {
+                weight = new Weight();
+                weight.Weights = new List<WeightLog>();
+            }
+            return View(weight);
+
+        }
+
+        //example using the time series, one per day
+        public ActionResult LastYearWeight()
+        {
+            FitbitClient client = GetFitbitClient();
+
+            TimeSeriesDataList weightSeries = client.GetTimeSeries(TimeSeriesResourceType.Weight, DateTime.UtcNow, DateRangePeriod.OneYear);
+
+            return View(weightSeries);
+
         }
 
         /// <summary>
@@ -129,6 +183,16 @@ namespace SampleWebMVC.Controllers
 
             return result;
 
+        }
+
+        private FitbitClient GetFitbitClient()
+        {
+            FitbitClient client = new FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
+                ConfigurationManager.AppSettings["FitbitConsumerSecret"],
+                Session["FitbitAuthToken"].ToString(),
+                Session["FitbitAuthTokenSecret"].ToString());
+
+            return client;
         }
     }
 }

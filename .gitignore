@@ -71,8 +71,9 @@ local.properties
 .builds
 *.dotCover
 
-## TODO: If you have NuGet Package Restore enabled, uncomment this
-#packages/
+## NuGet Packages (binarties etc) excluded. NuGet Package Restore needs to be enabled
+# see: http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages
+packages/
 
 # Visual C++ cache files
 ipch/

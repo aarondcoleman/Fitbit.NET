@@ -10,10 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fibit.Tests</RootNamespace>
     <AssemblyName>Fibit.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Steptopia\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Moq">
@@ -66,16 +69,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fitbit\Fitbit.csproj">
-      <Project>{D2C08C58-269F-45DE-8A25-C5492BC625F8}</Project>
+      <Project>{d2c08c58-269f-45de-8a25-c5492bc625f8}</Project>
       <Name>Fitbit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="SampleData\Food.txt" />
     <Content Include="SampleData\Fat.txt" />
     <Content Include="SampleData\IntradayActivitiesCalories.txt" />
     <Content Include="SampleData\ListApiSubscriptions.txt" />
+    <Content Include="SampleData\SleepData-SingleSleepLog.txt" />
     <Content Include="SampleData\SubscriptionUpdateSignedMultiple.txt" />
     <Content Include="SampleData\GetDevices-Double.txt" />
     <Content Include="SampleData\DateActivity.txt" />
@@ -84,11 +87,13 @@
     <Content Include="SampleData\IntradayActivitiesSteps.txt" />
     <Content Include="SampleData\SubscriptionResponse.txt" />
     <Content Include="SampleData\SubscriptionUpdateSigned.txt" />
-    <Content Include="SampleData\TimeSeriesActivitiesActiveScore.txt" />
     <Content Include="SampleData\TimeSeriesActivitiesSteps.txt" />
     <Content Include="SampleData\UpdatedResources.txt" />
     <Content Include="SampleData\UserProfile.txt" />
     <Content Include="SampleData\Weight.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

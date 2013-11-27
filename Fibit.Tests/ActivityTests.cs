@@ -31,8 +31,7 @@ namespace Fibit.Tests
 
             var output = xml.Deserialize<Fitbit.Models.ActivitySummary>(new RestResponse { Content = doc });
 
-            Assert.IsNotNull(output);
-            Assert.IsNotNull(output.CaloriesOut);
+            Assert.IsNotNull(output);            Assert.IsNotNull(output.CaloriesOut);
             Assert.IsNotNull(output.Distances);
             Assert.IsNotNull(output.Steps);
 

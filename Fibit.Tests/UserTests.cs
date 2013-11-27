@@ -317,6 +317,8 @@ namespace Fibit.Tests
 
         }
 
+        //removed from Fitbit API 2013-10-28
+        /*
         [Test]
         public void Can_Deserialize_IntradayActivitiesSteps()
         {
@@ -347,6 +349,8 @@ namespace Fibit.Tests
             //Assert.AreEqual(8, result.Count);
 
         }
+
+         */
 
         [Test]
         public void Can_Deserialize_IntradayActivitiesCalories()

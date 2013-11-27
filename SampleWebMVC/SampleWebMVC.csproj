@@ -165,6 +165,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Fitbit\LastWeekDistance.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\Fitbit\LastWeekSteps.cshtml" />
   </ItemGroup>
   <ItemGroup>

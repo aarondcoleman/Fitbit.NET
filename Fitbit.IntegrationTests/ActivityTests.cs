@@ -30,6 +30,9 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(activitySummary.Steps);
             Console.WriteLine("Steps: " + activitySummary.Steps);
             
+            Assert.IsNotNull(activitySummary.SedentaryMinutes);
+            Console.WriteLine("SedentaryMinutes: " + activitySummary.SedentaryMinutes);
+
             Assert.IsNotNull(activitySummary.Distances);
         }
 

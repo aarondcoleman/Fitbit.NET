@@ -80,7 +80,7 @@ namespace SampleWebMVC.Controllers
         {
             FitbitClient client = GetFitbitClient();
 
-            var results = client.GetTimeSeries(TimeSeriesResourceType.ActivityCalories, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+            var results = client.GetTimeSeries(TimeSeriesResourceType.DistanceTracker, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
 
             string sOutput = "";
             foreach (var result in results.DataList)
@@ -92,6 +92,14 @@ namespace SampleWebMVC.Controllers
 
         }
 
+        public ActionResult LastWeekDistance()
+        {
+            FitbitClient client = GetFitbitClient();
+
+            TimeSeriesDataList results = client.GetTimeSeries(TimeSeriesResourceType.Distance, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+            
+            return View(results);
+        }
 
         public ActionResult LastWeekSteps()
         {

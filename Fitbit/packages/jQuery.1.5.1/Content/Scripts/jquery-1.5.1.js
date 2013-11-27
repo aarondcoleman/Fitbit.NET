@@ -1,21 +1,18 @@
 /*!
-* Note: While Microsoft is not the author of this file, Microsoft is
-* offering you a license subject to the terms of the Microsoft Software
-* License Terms for Microsoft ASP.NET Model View Controller 3.
-* Microsoft reserves all other rights. The notices below are provided
-* for informational purposes only and are not the license terms under
-* which Microsoft distributed this file.
-*
-* jQuery JavaScript Library v1.5.1
-* http://jquery.com/
-* Copyright 2011, John Resig
-*
-* Includes Sizzle.js
-* http://sizzlejs.com/
-* Copyright 2011, The Dojo Foundation
-*
-* Date: Thu Nov 11 19:04:53 2010 -0500
-*/
+ * jQuery JavaScript Library v1.5.1
+ * http://jquery.com/
+ *
+ * Copyright 2011, John Resig
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * Includes Sizzle.js
+ * http://sizzlejs.com/
+ * Copyright 2011, The Dojo Foundation
+ * Released under the MIT, BSD, and GPL Licenses.
+ *
+ * Date: Wed Feb 23 13:55:29 2011 -0500
+ */
 (function( window, undefined ) {
 
 // Use the correct document accordingly with window argument (sandbox)
@@ -3298,15 +3295,9 @@ jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblcl
 
 
 /*!
- * Note: While Microsoft is not the author of this file, Microsoft is
- * offering you a license subject to the terms of the Microsoft Software
- * License Terms for Microsoft ASP.NET Model View Controller 3.
- * Microsoft reserves all other rights. The notices below are provided
- * for informational purposes only and are not the license terms under
- * which Microsoft distributed this file.
- *
  * Sizzle CSS Selector Engine
  *  Copyright 2011, The Dojo Foundation
+ *  Released under the MIT, BSD, and GPL Licenses.
  *  More information: http://sizzlejs.com/
  */
 (function(){

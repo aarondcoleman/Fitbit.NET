@@ -153,6 +153,38 @@ namespace Fitbit.Api
 			//Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 		}
 
+        public string GetRequestToken
+        {
+            get
+            {
+                return this.RequestToken;
+            }
+
+        }
+        public string SetRequestToken
+        {
+            set
+            {
+                this.RequestToken = value;
+            }
+
+        }
+        public string GetRequestTokenSecret
+        {
+            get
+            {
+                return this.RequestTokenSecret;
+            }
+
+        }
+        public string SetRequestTokenSecret
+        {
+            set
+            {
+                this.RequestTokenSecret = value;
+            }
+        }
+
 
 	}
 }

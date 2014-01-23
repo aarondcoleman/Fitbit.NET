@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -11,6 +12,8 @@ namespace Fitbit.Api
 {
 	public class Authenticator
 	{
+		const string FitBitBaseUrl = "https://api.fitbit.com";
+
 		private string ConsumerKey;
 		private string ConsumerSecret;
 		private string RequestTokenUrl;
@@ -18,14 +21,17 @@ namespace Fitbit.Api
 		private string AuthorizeUrl;
 		private string RequestToken;
 		private string RequestTokenSecret;
+		private readonly IRestClient client;
 
-		public Authenticator(string ConsumerKey, string ConsumerSecret, string RequestTokenUrl, string AccessTokenUrl, string AuthorizeUrl)
+		public Authenticator(string ConsumerKey, string ConsumerSecret, string RequestTokenUrl, string AccessTokenUrl,
+		                     string AuthorizeUrl, IRestClient restClient = null)
 		{
 			this.ConsumerKey = ConsumerKey;
 			this.ConsumerSecret = ConsumerSecret;
 			this.RequestTokenUrl = RequestTokenUrl;
 			this.AccessTokenUrl = AccessTokenUrl;
 			this.AuthorizeUrl = AuthorizeUrl;
+			client = restClient ?? new RestClient(FitBitBaseUrl);
 		}
 
 		/// <summary>
@@ -45,8 +51,6 @@ namespace Fitbit.Api
 
 		private string GenerateAuthUrlToken(bool forceLogoutBeforeAuth)
 		{
-			var baseUrl = "https://api.fitbit.com";
-			var client = new RestClient(baseUrl);
 			client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
 
 			var request = new RestRequest("oauth/request_token", Method.POST);
@@ -77,9 +81,6 @@ namespace Fitbit.Api
 		/// <returns></returns>
 		public AuthCredential GetAuthCredentialFromPin(string pin)
 		{
-			var baseUrl = "https://api.fitbit.com";
-		
-			var client = new RestClient(baseUrl);
 			var request = new RestRequest("oauth/access_token", Method.POST);
 			client.Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, RequestToken, RequestTokenSecret,pin);
 			
@@ -96,10 +97,6 @@ namespace Fitbit.Api
 
 		public AuthCredential ProcessApprovedAuthCallback(string TempAuthToken, string Verifier)
 		{
-			//var verifier = "123456"; // <-- Breakpoint here (set verifier in debugger)
-			
-			var baseUrl = "https://api.fitbit.com";
-			var client = new RestClient(baseUrl);
 			client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
 
 			var request = new RestRequest("oauth/access_token", Method.POST);
@@ -113,6 +110,9 @@ namespace Fitbit.Api
 
 			//Assert.NotNull(response);
 			//Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+			if (response.StatusCode != HttpStatusCode.OK)
+				throw new FitbitException(response.Content, response.StatusCode);
 
 			var qs = HttpUtility.ParseQueryString(response.Content); //not actually parsing querystring, but body is formatted like htat
 			var oauth_token = qs["oauth_token"];

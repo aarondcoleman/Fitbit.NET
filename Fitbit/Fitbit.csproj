@@ -90,6 +90,7 @@
     <Compile Include="Models\FoodSummary.cs" />
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
+    <Compile Include="Models\RequestToken.cs" />
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\Friend.cs" />

@@ -19,9 +19,13 @@ namespace Fitbit.Api
 		private string RequestTokenUrl;
 		private string AccessTokenUrl;
 		private string AuthorizeUrl;
-		private string RequestToken;
-		private string RequestTokenSecret;
-		private readonly IRestClient client;
+
+        //note: these removed as part of a major breaking change refactor
+        //https://github.com/aarondcoleman/Fitbit.NET/wiki/Breaking-Change-on-1-24-2014-as-a-result-of-OAuth-update-in-Fitbit-API
+		//private string RequestToken;
+		//private string RequestTokenSecret;
+		
+        private readonly IRestClient client;
 
 		public Authenticator(string ConsumerKey, string ConsumerSecret, string RequestTokenUrl, string AccessTokenUrl,
 		                     string AuthorizeUrl, IRestClient restClient = null)
@@ -34,6 +38,11 @@ namespace Fitbit.Api
 			client = restClient ?? new RestClient(FitBitBaseUrl);
 		}
 
+        // note, these removed as part of a major breaking change refactor. 
+        // Use GenerateAuthUrlFromRequestToken instead
+        // more info: https://github.com/aarondcoleman/Fitbit.NET/wiki/Breaking-Change-on-1-24-2014-as-a-result-of-OAuth-update-in-Fitbit-API
+
+        /*
 		/// <summary>
 		/// Use this method first to retrieve the url to redirect the user to to allow the url.
 		/// Once they are done there, Fitbit will redirect them back to the predetermined completion URL
@@ -49,29 +58,45 @@ namespace Fitbit.Api
 			return GenerateAuthUrlToken(true);
 		}
 
-		private string GenerateAuthUrlToken(bool forceLogoutBeforeAuth)
+        */
+        public string GenerateAuthUrlFromRequestToken(RequestToken token, bool forceLogoutBeforeAuth)
 		{
-			client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
-
-			var request = new RestRequest("oauth/request_token", Method.POST);
-			var response = client.Execute(request);
-
-			var qs = HttpUtility.ParseQueryString(response.Content);
-			RequestToken = qs["oauth_token"];
-			RequestTokenSecret = qs["oauth_token_secret"];
-
-			if (response.StatusCode != System.Net.HttpStatusCode.OK)
-				throw new Exception("Request Token Step Failed");
+            RestRequest request = null;
 
 			if(forceLogoutBeforeAuth)
 				request = new RestRequest("oauth/logout_and_authorize"); //this url will force the user to type in username and password
 			else
 				request = new RestRequest("oauth/authorize");           //this url will show allow/deny if a user is currently logged in
-			request.AddParameter("oauth_token", RequestToken);
+			request.AddParameter("oauth_token", token.Token);
 			var url = client.BuildUri(request).ToString();
 
 			return url;
-		}
+		} 
+
+        /// <summary>
+        /// First step in the OAuth process is to ask Fitbit for a temporary request token. 
+        /// From this you should store the RequestToken returned for later processing the auth token.
+        /// </summary>
+        /// <returns></returns>
+        public RequestToken GetRequestToken()
+        {
+            client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
+
+            var request = new RestRequest("oauth/request_token", Method.POST);
+            var response = client.Execute(request);
+
+            var qs = HttpUtility.ParseQueryString(response.Content);
+
+            RequestToken token = new RequestToken();
+
+            token.Token = qs["oauth_token"];
+            token.Secret = qs["oauth_token_secret"];
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                throw new Exception("Request Token Step Failed");
+
+            return token;
+        }
 
 		/// <summary>
 		/// For Desktop authentication. Your code should direct the user to the FitBit website to get
@@ -79,10 +104,10 @@ namespace Fitbit.Api
 		/// </summary>
 		/// <param name="pin"></param>
 		/// <returns></returns>
-		public AuthCredential GetAuthCredentialFromPin(string pin)
+		public AuthCredential GetAuthCredentialFromPin(string pin, RequestToken token)
 		{
 			var request = new RestRequest("oauth/access_token", Method.POST);
-			client.Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, RequestToken, RequestTokenSecret,pin);
+			client.Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, token.Token, token.Secret, pin);
 			
 			var response = client.Execute(request);
 			var qs = RestSharp.Contrib.HttpUtility.ParseQueryString(response.Content);
@@ -95,15 +120,19 @@ namespace Fitbit.Api
 			};
 		}
 
-		public AuthCredential ProcessApprovedAuthCallback(string TempAuthToken, string Verifier)
+		public AuthCredential ProcessApprovedAuthCallback(RequestToken token)
 		{
+            if (string.IsNullOrWhiteSpace(token.Token))
+                throw new Exception("RequestToken.Token must not be null");
+            //else if 
+
 			client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
 
 			var request = new RestRequest("oauth/access_token", Method.POST);
 			
 
 			client.Authenticator = OAuth1Authenticator.ForAccessToken(
-				this.ConsumerKey, this.ConsumerSecret, TempAuthToken, "123456", Verifier
+				this.ConsumerKey, this.ConsumerSecret, token.Token, token.Secret, token.Verifier
 			);
 			
 			var response = client.Execute(request);

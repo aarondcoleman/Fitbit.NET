@@ -143,7 +143,7 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Retrieve_Sleep_On_Date()
         {
-            DateTime sleepRecordDate = new DateTime(2013, 7, 13); //find a date you know your user has sleep logs
+            DateTime sleepRecordDate = new DateTime(2013, 12, 10); //find a date you know your user has sleep logs
             SleepData sleepData = client.GetSleep(sleepRecordDate);
 
             Assert.IsNotNull(sleepData);
@@ -159,7 +159,17 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Retrieve_Sleep_TimeSeries()
         {
-            TimeSeriesDataListInt dataList = client.GetTimeSeriesInt(TimeSeriesResourceType.MinutesAsleep, DateTime.UtcNow, DateRangePeriod.Max, null);
+            TimeSeriesDataListInt dataList = client.GetTimeSeriesInt(TimeSeriesResourceType.TimeInBed, DateTime.UtcNow, DateRangePeriod.Max, null);
+
+            List<TimeSeriesDataListInt.Data> dataNotZero = new List<TimeSeriesDataListInt.Data>();
+
+            foreach(var timeSeriesEvent in dataList.DataList)
+            {
+                if (timeSeriesEvent.Value > 0)
+                    dataNotZero.Add(timeSeriesEvent);
+            }
+
+            Console.WriteLine("Total Nonzero in Time Series:" + dataNotZero.Count);
 
             Assert.IsNotNull(dataList);
 

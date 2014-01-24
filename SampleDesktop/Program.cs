@@ -1,4 +1,5 @@
 ﻿using Fitbit.Api;
+using Fitbit.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,14 +22,17 @@ namespace SampleDesktop
             var authorizeUrl = "http://www.fitbit.com/oauth/authorize";
 
             var a = new Authenticator(consumerKey, consumerSecret,requestTokenUrl,accessTokenUrl,authorizeUrl);
-            var url = a.GetAuthUrlToken();
+
+            RequestToken token = a.GetRequestToken();
+
+            var url = a.GenerateAuthUrlFromRequestToken(token, false);
 
             Process.Start(url);
 
             Console.WriteLine("Enter the verification code from the website");
             var pin = Console.ReadLine();
 
-            var credentials = a.GetAuthCredentialFromPin(pin);
+            var credentials = a.GetAuthCredentialFromPin(pin, token);
 
 
             //If you already have your credentials stored then rather than getting the users PIN again

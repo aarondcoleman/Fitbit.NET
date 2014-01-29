@@ -143,7 +143,7 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Retrieve_Sleep_On_Date()
         {
-            DateTime sleepRecordDate = new DateTime(2013, 7, 13); //find a date you know your user has sleep logs
+            DateTime sleepRecordDate = new DateTime(2014, 1, 28); //find a date you know your user has sleep logs
             SleepData sleepData = client.GetSleep(sleepRecordDate);
 
             Assert.IsNotNull(sleepData);
@@ -152,7 +152,7 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(sleepData.Summary);
             Assert.IsTrue(sleepData.Summary.TotalMinutesAsleep > 0);
 
-            Assert.AreEqual(sleepRecordDate.Day, sleepData.Sleep.First().StartTime.Day);
+            Assert.LessOrEqual(sleepData.Sleep.First().StartTime, sleepRecordDate);
             Assert.IsTrue(sleepData.Sleep.Count > 0); //make sure there is at least one sleep log
         }
 
@@ -163,6 +163,47 @@ namespace Fitbit.IntegrationTests
 
             Assert.IsNotNull(dataList);
 
+        }
+
+        [Test]
+        public void Log_Single_Heart_Rate_Today()
+        {
+            HeartRateLog log = new HeartRateLog
+            {
+                logId = -1,
+                heartRate = 99,
+                time = DateTime.Now,
+                tracker = "Resting Heart Rate"
+            };
+
+           HeartRateLog response =  client.LogHeartRate(log);
+        }
+
+        [Test]
+        public void Delete_Heart_Rates_Today()
+        {
+            DateTime heartRecordDate = DateTime.Now;
+            HeartRates heartRateData = client.GetHeartRates(heartRecordDate);
+
+            foreach(var hr in heartRateData.Heart)
+            {
+                Assert.Greater(hr.logId, 0);
+                client.DeleteHeartRateLog(hr.logId);
+            }
+
+            heartRateData = client.GetHeartRates(heartRecordDate);
+            Assert.AreEqual(heartRateData.Heart.Count, 0);
+        }
+
+        [Test] 
+        public void Retrieve_HeartRates_Today()
+        {
+            DateTime heartRecordDate = DateTime.Now; 
+            HeartRates heartRateData = client.GetHeartRates(heartRecordDate);
+
+            Assert.IsNotNull(heartRateData);
+            Assert.IsNotNull(heartRateData.Average);
+            Assert.IsNotNull(heartRateData.Heart);
         }
     }
 }

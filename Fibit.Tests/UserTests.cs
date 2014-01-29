@@ -9,6 +9,7 @@ using Fitbit.Models;
 using RestSharp;
 using System.Xml.Linq;
 using Fitbit.Api;
+using System.Xml.Serialization;
 
 namespace Fibit.Tests
 {
@@ -508,9 +509,25 @@ namespace Fibit.Tests
              */
         }
 
+        [Test]
+        public void Can_Deserialize_HeartRateResponse()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("HeartLogResponse.txt"));
 
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
 
+            HeartRateLog result = deserializer.Deserialize<HeartRateLog>(new RestResponse() { Content = content });
 
+            Assert.IsNotNull(result);
 
+            Assert.AreEqual(150, result.heartRate);
+            Assert.AreEqual(1424, result.logId);
+
+            var now = DateTime.Now;
+            DateTime expected = new DateTime(now.Year, now.Month, now.Day, 12, 20, 0);
+            Assert.AreEqual(expected, result.time);
+
+            Assert.AreEqual("Running", result.tracker);
+        }
     }
 }

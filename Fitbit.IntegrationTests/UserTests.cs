@@ -180,20 +180,19 @@ namespace Fitbit.IntegrationTests
         {
             HeartRateLog log = new HeartRateLog
             {
-                logId = -1,
-                heartRate = 99,
-                time = DateTime.Now,
-                tracker = "Resting Heart Rate"
+                LogId = -1,
+                HeartRate = 99,
+                Time = DateTime.Now,
+                Tracker = "Resting Heart Rate"
             };
 
-            var expectedTime = new DateTime(log.time.Year, log.time.Month, log.time.Day, log.time.Hour, log.time.Minute, 0);
+            var expectedTime = new DateTime(log.Time.Year, log.Time.Month, log.Time.Day, log.Time.Hour, log.Time.Minute, 0);
 
             HeartRateLog response = client.LogHeartRate(log);
-            Assert.AreEqual(log.heartRate, response.heartRate);
-            Assert.AreNotEqual(-1, response.logId);
-            Assert.AreEqual(expectedTime, response.time);
-            Assert.AreEqual(log.tracker, response.tracker);
-
+            Assert.AreEqual(log.HeartRate, response.HeartRate);
+            Assert.AreNotEqual(-1, response.LogId);
+            Assert.AreEqual(expectedTime, response.Time);
+            Assert.AreEqual(log.Tracker, response.Tracker);
         }
 
         [Test]
@@ -204,8 +203,8 @@ namespace Fitbit.IntegrationTests
 
             foreach (var hr in heartRateData.Heart)
             {
-                Assert.Greater(hr.logId, 0);
-                client.DeleteHeartRateLog(hr.logId);
+                Assert.Greater(hr.LogId, 0);
+                client.DeleteHeartRateLog(hr.LogId);
             }
 
             heartRateData = client.GetHeartRates(heartRecordDate);
@@ -221,6 +220,12 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(heartRateData);
             Assert.IsNotNull(heartRateData.Average);
             Assert.IsNotNull(heartRateData.Heart);
+        }
+
+        [Test]
+        public void Log_Body_Measurements_Today()
+        {
+            
         }
     }
 }

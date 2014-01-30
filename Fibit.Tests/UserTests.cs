@@ -515,19 +515,20 @@ namespace Fibit.Tests
             string content = File.ReadAllText(SampleData.PathFor("HeartLogResponse.txt"));
 
             var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            deserializer.RootElement = "heartLog";
 
             HeartRateLog result = deserializer.Deserialize<HeartRateLog>(new RestResponse() { Content = content });
 
             Assert.IsNotNull(result);
 
-            Assert.AreEqual(150, result.heartRate);
-            Assert.AreEqual(1424, result.logId);
+            Assert.AreEqual(150, result.HeartRate);
+            Assert.AreEqual(1424, result.LogId);
 
             var now = DateTime.Now;
             DateTime expected = new DateTime(now.Year, now.Month, now.Day, 12, 20, 0);
-            Assert.AreEqual(expected, result.time);
+            Assert.AreEqual(expected, result.Time);
 
-            Assert.AreEqual("Running", result.tracker);
+            Assert.AreEqual("Running", result.Tracker);
         }
     }
 }

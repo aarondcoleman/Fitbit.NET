@@ -651,10 +651,10 @@ namespace Fitbit.Api
             string subscriptionAPIEndpoint = string.Format("/1/user/{0}/heart.xml", userSignifier);
             RestRequest request = new RestRequest(subscriptionAPIEndpoint, Method.POST);
 
-            AddPostParameter(request, "tracker", log.tracker);
-            AddPostParameter(request, "heartRate", log.heartRate);
-            AddPostParameter(request, "date", log.time.ToString("yyyy-MM-dd"));
-            AddPostParameter(request, "time", log.time.ToString("HH:mm"));
+            AddPostParameter(request, "tracker", log.Tracker);
+            AddPostParameter(request, "heartRate", log.HeartRate);
+            AddPostParameter(request, "date", log.Time.ToString("yyyy-MM-dd"));
+            AddPostParameter(request, "time", log.Time.ToString("HH:mm"));
             var response = restClient.Execute<HeartRateLog>(request);
 
             HandleResponseCode(response.StatusCode);

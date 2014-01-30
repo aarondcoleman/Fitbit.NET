@@ -9,9 +9,11 @@ namespace Fitbit.Models
 {
     public class HeartRateLog
     {
-        public int heartRate { get; set; }
-        public int logId { get; set; }
-        public DateTime time { get; set; }
-        public string tracker { get; set; }
+        [SerializeAs(Name="heartRate")]
+        public int HeartRate { get; set; }
+        [SerializeAs(Name = "logId")]
+        public int LogId { get; set; }
+        public DateTime Time { get; set; }
+        public string Tracker { get; set; }
     }
 }

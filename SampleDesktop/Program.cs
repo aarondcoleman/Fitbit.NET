@@ -13,8 +13,8 @@ namespace SampleDesktop
 {
     class Program
     {
-        const string consumerKey = "a9e9e4f0c8ec491b918b9aebe3fa6b06";
-        const string consumerSecret = "c4c9745caa3a4a2e803e8bd87ee964d9";
+        const string consumerKey = "YOUR_CONSUMER_KEY_HERE";
+        const string consumerSecret = "YOUR_CONSUMER_SECRET_HERE";
 
         static void Main(string[] args)
         {

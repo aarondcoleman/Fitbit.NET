@@ -657,6 +657,8 @@ namespace Fitbit.Api
             AddPostParameter(request, "time", log.time.ToString("HH:mm"));
             var response = restClient.Execute<HeartRateLog>(request);
 
+            HandleResponseCode(response.StatusCode);
+
             return response.Data;
         }
 
@@ -665,6 +667,7 @@ namespace Fitbit.Api
             string subscriptionAPIEndpoint = string.Format("/1/user/-/heart/{0}.xml", logId);
             RestRequest request = new RestRequest(subscriptionAPIEndpoint, Method.DELETE);
             var response = restClient.Execute(request);
+            HandleResponseCode(response.StatusCode);
         }
 
         #endregion 

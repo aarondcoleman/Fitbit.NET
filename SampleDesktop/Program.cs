@@ -13,8 +13,8 @@ namespace SampleDesktop
 {
     class Program
     {
-        const string consumerKey = "YOUR_CONSUMER_KEY_HERE";
-        const string consumerSecret = "YOUR_CONSUMER_SECRET_HERE";
+        const string consumerKey = "a9e9e4f0c8ec491b918b9aebe3fa6b06";
+        const string consumerSecret = "c4c9745caa3a4a2e803e8bd87ee964d9";
 
         static void Main(string[] args)
         {
@@ -44,14 +44,17 @@ namespace SampleDesktop
             var authorizeUrl = "http://www.fitbit.com/oauth/authorize";
 
             var a = new Authenticator(consumerKey, consumerSecret, requestTokenUrl, accessTokenUrl, authorizeUrl);
-            var url = a.GetAuthUrlToken();
+
+            RequestToken token = a.GetRequestToken();
+
+            var url = a.GenerateAuthUrlFromRequestToken(token, false);
 
             Process.Start(url);
 
             Console.WriteLine("Enter the verification code from the website");
             var pin = Console.ReadLine();
 
-            var credentials = a.GetAuthCredentialFromPin(pin);
+            var credentials = a.GetAuthCredentialFromPin(pin, token);
             return credentials;
         }
 
@@ -93,7 +96,7 @@ namespace SampleDesktop
 
         static string GetAppDataPath()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FitbitSample");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Fitbit");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

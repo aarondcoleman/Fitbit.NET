@@ -34,7 +34,12 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Can_Retrieve_Access_Token_Authorization_Url()
         {
-            string authUrl = authenticator.GetAuthUrlToken();
+            RequestToken token = new RequestToken();
+            token.Token = Configuration.TempAuthToken;
+            //token.Secret = Configuration.TempAuthTokenSecret;
+            token.Verifier = Configuration.TempAuthVerifier;
+
+            string authUrl = authenticator.GenerateAuthUrlFromRequestToken(token, false);
             
             Assert.IsNotNull(authUrl);
             Console.Write("authUrl:" + authUrl);
@@ -49,7 +54,13 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Can_Retrieve_Access_Token_And_Access_Token_Secret()
         {
-            AuthCredential authCredential = authenticator.ProcessApprovedAuthCallback(Configuration.TempAuthToken, Configuration.TempAuthVerifier);
+            RequestToken token = new RequestToken();
+            token.Token = Configuration.TempAuthToken;
+            //token.Secret = Configuration.TempAuthTokenSecret;
+            token.Verifier = Configuration.TempAuthVerifier;
+
+
+            AuthCredential authCredential = authenticator.ProcessApprovedAuthCallback(token);
 
             Assert.IsNotNull(authCredential.AuthToken);
             Console.WriteLine("AuthToken: " + authCredential.AuthToken);

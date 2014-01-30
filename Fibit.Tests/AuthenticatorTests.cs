@@ -46,7 +46,10 @@ namespace Fibit.Tests
 
 		private void WhenProcessApprovedAuthCallback()
 		{
-			_credential = Authenticator().ProcessApprovedAuthCallback("TAT", "V");
+            RequestToken token = new RequestToken();
+            token.Token = "TAT";
+            token.Verifier = "V";
+			_credential = Authenticator().ProcessApprovedAuthCallback(token);
 		}
 
 		private void ThenCredentialIs(string authtoken, string authtokensecret, string userid)

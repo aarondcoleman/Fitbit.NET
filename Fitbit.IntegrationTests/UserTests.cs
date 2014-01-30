@@ -38,7 +38,7 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(userFriends);
 
             Console.WriteLine("# of friends:" + userFriends.Count);
-            foreach(UserProfile friend in userFriends)
+            foreach (UserProfile friend in userFriends)
             {
                 Console.WriteLine("Friend:" + friend.DisplayName + " - " + friend.EncodedId);
             }
@@ -62,7 +62,7 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Retrieve_Intraday_Calories()
         {
-            IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2012, 10, 1, 0, 0, 0), new TimeSpan(24,0,0));
+            IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2012, 10, 1, 0, 0, 0), new TimeSpan(24, 0, 0));
 
             Assert.IsNotNull(intradayData);
             Assert.IsTrue(intradayData.DataSet.Count() == 1440);
@@ -81,7 +81,7 @@ namespace Fitbit.IntegrationTests
 
             Assert.IsNotNull(firstReportDate);
 
-            if(firstReportDate.HasValue)
+            if (firstReportDate.HasValue)
                 Console.WriteLine("User's First Tracker Sync Day:" + firstReportDate.ToString());
 
         }
@@ -163,7 +163,7 @@ namespace Fitbit.IntegrationTests
 
             List<TimeSeriesDataListInt.Data> dataNotZero = new List<TimeSeriesDataListInt.Data>();
 
-            foreach(var timeSeriesEvent in dataList.DataList)
+            foreach (var timeSeriesEvent in dataList.DataList)
             {
                 if (timeSeriesEvent.Value > 0)
                     dataNotZero.Add(timeSeriesEvent);
@@ -186,7 +186,14 @@ namespace Fitbit.IntegrationTests
                 tracker = "Resting Heart Rate"
             };
 
-           HeartRateLog response =  client.LogHeartRate(log);
+            var expectedTime = new DateTime(log.time.Year, log.time.Month, log.time.Day, log.time.Hour, log.time.Minute, 0);
+
+            HeartRateLog response = client.LogHeartRate(log);
+            Assert.AreEqual(log.heartRate, response.heartRate);
+            Assert.AreNotEqual(-1, response.logId);
+            Assert.AreEqual(expectedTime, response.time);
+            Assert.AreEqual(log.tracker, response.tracker);
+
         }
 
         [Test]
@@ -195,7 +202,7 @@ namespace Fitbit.IntegrationTests
             DateTime heartRecordDate = DateTime.Now;
             HeartRates heartRateData = client.GetHeartRates(heartRecordDate);
 
-            foreach(var hr in heartRateData.Heart)
+            foreach (var hr in heartRateData.Heart)
             {
                 Assert.Greater(hr.logId, 0);
                 client.DeleteHeartRateLog(hr.logId);
@@ -205,10 +212,10 @@ namespace Fitbit.IntegrationTests
             Assert.AreEqual(heartRateData.Heart.Count, 0);
         }
 
-        [Test] 
+        [Test]
         public void Retrieve_HeartRates_Today()
         {
-            DateTime heartRecordDate = DateTime.Now; 
+            DateTime heartRecordDate = DateTime.Now;
             HeartRates heartRateData = client.GetHeartRates(heartRecordDate);
 
             Assert.IsNotNull(heartRateData);

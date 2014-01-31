@@ -1,5 +1,8 @@
 # Set default behaviour, in case users don't have core.autocrlf set.
+* text=crlf
 
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
 
 # Custom for Visual Studio
 *.cs     diff=csharp

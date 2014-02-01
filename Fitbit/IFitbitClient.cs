@@ -31,6 +31,7 @@ namespace Fitbit.Api
         Fitbit.Models.ApiSubscription RemoveSubscription(Fitbit.Models.APICollectionType apiCollectionType, string uniqueSubscriptionId);
         Fitbit.Models.HeartRateLog LogHeartRate(Fitbit.Models.HeartRateLog log, string userId);
         Fitbit.Models.HeartRates GetHeartRates(DateTime date);
+        Fitbit.Models.BodyMeasurement LogBodyMeasurement(Fitbit.Models.BodyMeasurement log, DateTime date);
         void DeleteHeartRateLog(int logId);
     }
 }

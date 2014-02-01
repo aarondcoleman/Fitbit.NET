@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Models\ApiSubscription.cs" />
     <Compile Include="Models\AuthCredential.cs" />
+    <Compile Include="Models\BodyMeasurement.cs" />
     <Compile Include="Models\Fat.cs" />
     <Compile Include="Models\FatLog.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />

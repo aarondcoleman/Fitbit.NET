@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<result>
+    <heartLog>
+        <heartRate>150</heartRate>
+        <logId>1424</logId>
+        <time>12:20</time>
+        <tracker>Running</tracker>
+    </heartLog>
+</result>

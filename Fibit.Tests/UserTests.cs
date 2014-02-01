@@ -530,5 +530,29 @@ namespace Fibit.Tests
 
             Assert.AreEqual("Running", result.Tracker);
         }
+
+        [Test]
+        public void Can_Deserialize_BodyMeasurementResponse()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("BodyMeasurement.txt"));
+
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            deserializer.RootElement = "body";
+
+            BodyMeasurement result = deserializer.Deserialize<BodyMeasurement>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+
+            Assert.AreEqual(10.3, result.Bicep);
+            Assert.AreEqual(11.2, result.Calf);
+            Assert.AreEqual(43.2, result.Chest);
+            Assert.AreEqual(14.3, result.Fat);
+            Assert.AreEqual(22.3, result.Forearm);
+            Assert.AreEqual(34.3, result.Hips);
+            Assert.AreEqual(12.3, result.Neck);
+            Assert.AreEqual(10.3, result.Thigh);
+            Assert.AreEqual(33.4, result.Waist);
+            Assert.AreEqual(180, result.Weight);
+        }
     }
 }

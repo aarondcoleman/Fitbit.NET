@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using System.Web;
 using System.Runtime.InteropServices;
 using System.Net;
+using System.Globalization;
 
 namespace Fitbit.Api
 {
@@ -648,13 +649,15 @@ namespace Fitbit.Api
                 userSignifier = userId;
             }
 
-            string subscriptionAPIEndpoint = string.Format("/1/user/{0}/heart.xml", userSignifier);
-            RestRequest request = new RestRequest(subscriptionAPIEndpoint, Method.POST);
+            string endPoint = string.Format("/1/user/{0}/heart.xml", userSignifier);
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+            request.RootElement = "heartLog";
 
             AddPostParameter(request, "tracker", log.Tracker);
             AddPostParameter(request, "heartRate", log.HeartRate);
             AddPostParameter(request, "date", log.Time.ToString("yyyy-MM-dd"));
             AddPostParameter(request, "time", log.Time.ToString("HH:mm"));
+
             var response = restClient.Execute<HeartRateLog>(request);
 
             HandleResponseCode(response.StatusCode);
@@ -668,6 +671,33 @@ namespace Fitbit.Api
             RestRequest request = new RestRequest(subscriptionAPIEndpoint, Method.DELETE);
             var response = restClient.Execute(request);
             HandleResponseCode(response.StatusCode);
+        }
+
+        public BodyMeasurement LogBodyMeasurement(BodyMeasurement log, DateTime date)
+        {
+            string endPoint = "/1/user/-/body.xml";
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+
+            var language = CultureInfo.CurrentCulture.Name.Replace("-","_");
+            request.AddHeader("Accept-Language", language);
+            request.RootElement = "body";
+
+            AddPostParameter(request, "bicep", log.Bicep);
+            AddPostParameter(request, "calf", log.Calf);
+            AddPostParameter(request, "chest", log.Chest);
+            AddPostParameter(request, "forearm", log.Forearm);
+            AddPostParameter(request, "hips", log.Hips);
+            AddPostParameter(request, "neck", log.Neck);
+            AddPostParameter(request, "thigh", log.Thigh);
+            AddPostParameter(request, "waist", log.Waist);
+            AddPostParameter(request, "weight", log.Weight);
+            AddPostParameter(request, "date", date.ToString("yyyy-MM-dd"));
+
+            var response = restClient.Execute<BodyMeasurement>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
         }
 
         #endregion 
@@ -799,6 +829,5 @@ namespace Fitbit.Api
         }
 
         #endregion
-
     }
 }

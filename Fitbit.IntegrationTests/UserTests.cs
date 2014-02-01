@@ -225,7 +225,31 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Log_Body_Measurements_Today()
         {
-            
+            BodyMeasurement log = new BodyMeasurement()
+            {
+                Bicep = 10.3,
+                Calf = 11.2,
+                Chest = 26.2,
+                Fat = 14.3,
+                Forearm = 22.3,
+                Hips = 10.3,
+                Neck = 10.3,
+                Thigh = 10.3,
+                Waist = 33,
+                Weight = 180,
+            };
+
+            var response = client.LogBodyMeasurement(log, DateTime.Now);
+
+            Assert.AreEqual(log.Bicep, response.Bicep);
+            Assert.AreEqual(log.Calf, response.Calf);
+            Assert.AreEqual(log.Chest, response.Chest);
+            Assert.AreEqual(log.Forearm, response.Forearm);
+            Assert.AreEqual(log.Hips, response.Hips);
+            Assert.AreEqual(log.Neck, response.Neck);
+            Assert.AreEqual(log.Thigh, response.Thigh);
+            Assert.AreEqual(log.Waist, response.Waist);
+            Assert.AreEqual(log.Weight, response.Weight);
         }
     }
 }

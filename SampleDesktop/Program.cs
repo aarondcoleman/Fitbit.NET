@@ -15,7 +15,7 @@ namespace SampleDesktop
     {
         const string consumerKey = "YOUR_CONSUMER_KEY_HERE";
         const string consumerSecret = "YOUR_CONSUMER_SECRET_HERE";
-
+        
         static void Main(string[] args)
         {
             //Example of getting the Auth credentials for the first time by directoring the

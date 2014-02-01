@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using System.Web;
 using System.Runtime.InteropServices;
 using System.Net;
+using System.Globalization;
 
 namespace Fitbit.Api
 {
@@ -518,6 +519,17 @@ namespace Fitbit.Api
 
         }
 
+        public HeartRates GetHeartRates(DateTime date)
+        {
+            string apiCall = string.Format("/1/user/-/heart/date/{0}.xml", date.ToString("yyyy-MM-dd"));
+            RestRequest request = new RestRequest(apiCall);
+            var response = restClient.Execute<HeartRates>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;   
+        }
+
         public List<ApiSubscription> GetSubscriptions()
         {
             RestRequest request = new RestRequest("/1/user/-/apiSubscriptions.xml");
@@ -626,6 +638,69 @@ namespace Fitbit.Api
 
             return response.Data;
         }
+
+        #region Log Methods
+
+        public HeartRateLog LogHeartRate(HeartRateLog log, string userId = null)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/heart.xml", userSignifier);
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+            request.RootElement = "heartLog";
+
+            AddPostParameter(request, "tracker", log.Tracker);
+            AddPostParameter(request, "heartRate", log.HeartRate);
+            AddPostParameter(request, "date", log.Time.ToString("yyyy-MM-dd"));
+            AddPostParameter(request, "time", log.Time.ToString("HH:mm"));
+
+            var response = restClient.Execute<HeartRateLog>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
+        public void DeleteHeartRateLog(int logId)
+        {
+            string subscriptionAPIEndpoint = string.Format("/1/user/-/heart/{0}.xml", logId);
+            RestRequest request = new RestRequest(subscriptionAPIEndpoint, Method.DELETE);
+            var response = restClient.Execute(request);
+            HandleResponseCode(response.StatusCode);
+        }
+
+        public BodyMeasurement LogBodyMeasurement(BodyMeasurement log, DateTime date)
+        {
+            string endPoint = "/1/user/-/body.xml";
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+
+            var language = CultureInfo.CurrentCulture.Name.Replace("-","_");
+            request.AddHeader("Accept-Language", language);
+            request.RootElement = "body";
+
+            AddPostParameter(request, "bicep", log.Bicep);
+            AddPostParameter(request, "calf", log.Calf);
+            AddPostParameter(request, "chest", log.Chest);
+            AddPostParameter(request, "forearm", log.Forearm);
+            AddPostParameter(request, "hips", log.Hips);
+            AddPostParameter(request, "neck", log.Neck);
+            AddPostParameter(request, "thigh", log.Thigh);
+            AddPostParameter(request, "waist", log.Waist);
+            AddPostParameter(request, "weight", log.Weight);
+            AddPostParameter(request, "date", date.ToString("yyyy-MM-dd"));
+
+            var response = restClient.Execute<BodyMeasurement>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
+        #endregion 
 
         #region Derived Methods from API Calls
 
@@ -744,8 +819,15 @@ namespace Fitbit.Api
             return string.Format(ApiExtention, activityDate.Year.ToString(), activityDate.Month.ToString(), activityDate.Day.ToString());
         }
 
-        #endregion
+        private void AddPostParameter(IRestRequest request, string name, object value)
+        {
+            Parameter p = new Parameter();
+            p.Type = ParameterType.GetOrPost;
+            p.Name = name;
+            p.Value = value;
+            request.AddParameter(p);
+        }
 
-        
+        #endregion
     }
 }

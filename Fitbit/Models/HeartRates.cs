@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Fitbit.Models
 {
-    public class RequestToken
+    public class HeartRates
     {
-        public string Token { get; set; }
-        public string Secret { get; set; }
-        public string Verifier { get; set; }
-
+        public List<HeartRateSummary> Average { get; set; }
+        public List<HeartRateLog> Heart { get; set; }
     }
 }

@@ -9,7 +9,6 @@ using Fitbit.Models;
 using RestSharp;
 using System.Xml.Linq;
 using Fitbit.Api;
-using System.Xml.Serialization;
 
 namespace Fibit.Tests
 {
@@ -509,50 +508,9 @@ namespace Fibit.Tests
              */
         }
 
-        [Test]
-        public void Can_Deserialize_HeartRateResponse()
-        {
-            string content = File.ReadAllText(SampleData.PathFor("HeartLogResponse.txt"));
 
-            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
-            deserializer.RootElement = "heartLog";
 
-            HeartRateLog result = deserializer.Deserialize<HeartRateLog>(new RestResponse() { Content = content });
 
-            Assert.IsNotNull(result);
 
-            Assert.AreEqual(150, result.HeartRate);
-            Assert.AreEqual(1424, result.LogId);
-
-            var now = DateTime.Now;
-            DateTime expected = new DateTime(now.Year, now.Month, now.Day, 12, 20, 0);
-            Assert.AreEqual(expected, result.Time);
-
-            Assert.AreEqual("Running", result.Tracker);
-        }
-
-        [Test]
-        public void Can_Deserialize_BodyMeasurementResponse()
-        {
-            string content = File.ReadAllText(SampleData.PathFor("BodyMeasurement.txt"));
-
-            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
-            deserializer.RootElement = "body";
-
-            BodyMeasurement result = deserializer.Deserialize<BodyMeasurement>(new RestResponse() { Content = content });
-
-            Assert.IsNotNull(result);
-
-            Assert.AreEqual(10.3, result.Bicep);
-            Assert.AreEqual(11.2, result.Calf);
-            Assert.AreEqual(43.2, result.Chest);
-            Assert.AreEqual(14.3, result.Fat);
-            Assert.AreEqual(22.3, result.Forearm);
-            Assert.AreEqual(34.3, result.Hips);
-            Assert.AreEqual(12.3, result.Neck);
-            Assert.AreEqual(10.3, result.Thigh);
-            Assert.AreEqual(33.4, result.Waist);
-            Assert.AreEqual(180, result.Weight);
-        }
     }
 }

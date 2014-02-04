@@ -76,11 +76,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SampleData\BodyMeasurement.txt" />
     <Content Include="SampleData\DateActivity.txt" />
     <Content Include="SampleData\Food.txt" />
     <Content Include="SampleData\Fat.txt" />
-    <Content Include="SampleData\HeartLogResponse.txt" />
     <Content Include="SampleData\IntradayActivitiesCalories.txt" />
     <Content Include="SampleData\ListApiSubscriptions.txt" />
     <Content Include="SampleData\SleepData-SingleSleepLog.txt" />

@@ -11,14 +11,12 @@ namespace SampleDesktop
 {
     class Program
     {
-        const string consumerKey = "YOUR_CONSUMER_KEY_HERE";
-        const string consumerSecret = "YOUR_CONSUMER_SECRET_HERE";
-
         static void Main(string[] args)
         {
             //Example of getting the Auth credentials for the first time by directoring the
             //user to the fitbit site to get a PIN. 
-           
+            var consumerKey = "YOUR_CONSUMER_KEY_HERE";
+            var consumerSecret = "YOUR_CONSUMER_SECRET_HERE";
             var requestTokenUrl = "http://api.fitbit.com/oauth/request_token";
             var accessTokenUrl = "http://api.fitbit.com/oauth/access_token";
             var authorizeUrl = "http://www.fitbit.com/oauth/authorize";

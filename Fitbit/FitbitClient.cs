@@ -249,7 +249,7 @@ namespace Fitbit.Api
             else
                 apiCall = string.Format("/1/user/{0}/profile.xml", encodedUserId);
 
-            RestRequest request = new RestRequest("/1/user/-/profile.xml");
+            RestRequest request = new RestRequest(apiCall);
             request.RootElement = "user";
 
             //var response = restClient.Execute<List<Friend>>(request);

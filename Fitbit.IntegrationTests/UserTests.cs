@@ -183,7 +183,6 @@ namespace Fitbit.IntegrationTests
 
             Assert.IsNotNull(measurements);
             Assert.IsNotNull(measurements.Body);
-            Assert.IsNotNull(measurements.Goals);
 
         }
 

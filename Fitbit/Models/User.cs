@@ -24,48 +24,12 @@ namespace Fitbit.Models
 
 	public class User
 	{
-		public DateTime dateOfBirth
-		{
-			get;
-			set;
-		}
-
-		public string displayName
-		{
-			get;
-			set;
-		}
-
-		public string encodedId
-		{
-			get;
-			set;
-		}
-
-		public string gender
-		{
-			get;
-			set;
-		}
-
-		public decimal height
-		{
-			get;
-			set;
-		}
-
-		public long offsetFromUTCMillis
-		{
-			get;
-			set;
-		}
-
-		public decimal weight
-		{
-			get;
-			set;
-		}
-
-
+		public DateTime dateOfBirth { get; set; }
+		public string displayName { get; set; }
+		public string encodedId { get; set; }
+		public string gender { get; set; }
+		public decimal height { get; set; }
+		public long offsetFromUTCMillis { get; set; }
+		public decimal weight { get; set; }
 	}
 }

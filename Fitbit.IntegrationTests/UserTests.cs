@@ -186,5 +186,15 @@ namespace Fitbit.IntegrationTests
 
         }
 
+        [Test]
+        public void Retrieve_BloodPressure_Yesterday()
+        {
+            BloodPressureData bpData = client.GetBloodPressure(DateTime.Today.AddDays(-1));
+
+            Assert.IsNotNull(bpData);
+            Assert.IsNotNull(bpData.BP);
+
+        }
+
     }
 }

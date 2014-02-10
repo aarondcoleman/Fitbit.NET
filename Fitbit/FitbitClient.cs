@@ -660,6 +660,27 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        public Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date)
+        {
+            return GetBloodPressure(date, string.Empty);
+        }
+        public Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date, string userId)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/bp/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.BloodPressureData>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         #region Derived Methods from API Calls
 
         /// <summary>

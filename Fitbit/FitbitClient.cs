@@ -649,7 +649,7 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string apiCall = String.Format("/1/user/{0}/foods/log/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+            string apiCall = String.Format("/1/user/{0}/body/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
 
             RestRequest request = new RestRequest(apiCall);
 

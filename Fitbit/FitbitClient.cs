@@ -639,6 +639,27 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date)
+        {
+            return GetBodyMeasurements(date, string.Empty);
+        }
+        public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date, string userId)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/foods/log/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.BodyMeasurements>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         #region Derived Methods from API Calls
 
         /// <summary>

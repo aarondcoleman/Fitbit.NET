@@ -80,7 +80,11 @@ namespace Fitbit.Api
         /// <returns></returns>
         public RequestToken GetRequestToken()
         {
-            client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
+            return GetRequestToken(string.Empty);
+        }
+        public RequestToken GetRequestToken(string callback)
+        {
+            client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret, callback);
 
             var request = new RestRequest("oauth/request_token", Method.POST);
             var response = client.Execute(request);

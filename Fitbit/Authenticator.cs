@@ -43,20 +43,20 @@ namespace Fitbit.Api
         // more info: https://github.com/aarondcoleman/Fitbit.NET/wiki/Breaking-Change-on-1-24-2014-as-a-result-of-OAuth-update-in-Fitbit-API
 
         /*
-        /// <summary>
-        /// Use this method first to retrieve the url to redirect the user to to allow the url.
-        /// Once they are done there, Fitbit will redirect them back to the predetermined completion URL
-        /// </summary>
-        /// <returns></returns>
-        public string GetAuthUrlToken()
-        {
-            return GenerateAuthUrlToken(false);
-        }
+		/// <summary>
+		/// Use this method first to retrieve the url to redirect the user to to allow the url.
+		/// Once they are done there, Fitbit will redirect them back to the predetermined completion URL
+		/// </summary>
+		/// <returns></returns>
+		public string GetAuthUrlToken()
+		{
+			return GenerateAuthUrlToken(false);
+		}
 
-        public string GetAuthUrlTokenForcePromptingLogin()
-        {
-            return GenerateAuthUrlToken(true);
-        }
+		public string GetAuthUrlTokenForcePromptingLogin()
+		{
+			return GenerateAuthUrlToken(true);
+		}
 
         */
         public string GenerateAuthUrlFromRequestToken(RequestToken token, bool forceLogoutBeforeAuth)

@@ -10,33 +10,33 @@ using Fitbit.Models;
 
 namespace Fitbit.Api
 {
-    public class Authenticator
-    {
-        const string FitBitBaseUrl = "https://api.fitbit.com";
+	public class Authenticator
+	{
+		const string FitBitBaseUrl = "https://api.fitbit.com";
 
-        private string ConsumerKey;
-        private string ConsumerSecret;
-        private string RequestTokenUrl;
-        private string AccessTokenUrl;
-        private string AuthorizeUrl;
+		private string ConsumerKey;
+		private string ConsumerSecret;
+		private string RequestTokenUrl;
+		private string AccessTokenUrl;
+		private string AuthorizeUrl;
 
         //note: these removed as part of a major breaking change refactor
         //https://github.com/aarondcoleman/Fitbit.NET/wiki/Breaking-Change-on-1-24-2014-as-a-result-of-OAuth-update-in-Fitbit-API
-        //private string RequestToken;
-        //private string RequestTokenSecret;
-
+		//private string RequestToken;
+		//private string RequestTokenSecret;
+		
         private readonly IRestClient client;
 
-        public Authenticator(string ConsumerKey, string ConsumerSecret, string RequestTokenUrl, string AccessTokenUrl,
-                             string AuthorizeUrl, IRestClient restClient = null)
-        {
-            this.ConsumerKey = ConsumerKey;
-            this.ConsumerSecret = ConsumerSecret;
-            this.RequestTokenUrl = RequestTokenUrl;
-            this.AccessTokenUrl = AccessTokenUrl;
-            this.AuthorizeUrl = AuthorizeUrl;
-            client = restClient ?? new RestClient(FitBitBaseUrl);
-        }
+		public Authenticator(string ConsumerKey, string ConsumerSecret, string RequestTokenUrl, string AccessTokenUrl,
+		                     string AuthorizeUrl, IRestClient restClient = null)
+		{
+			this.ConsumerKey = ConsumerKey;
+			this.ConsumerSecret = ConsumerSecret;
+			this.RequestTokenUrl = RequestTokenUrl;
+			this.AccessTokenUrl = AccessTokenUrl;
+			this.AuthorizeUrl = AuthorizeUrl;
+			client = restClient ?? new RestClient(FitBitBaseUrl);
+		}
 
         // note, these removed as part of a major breaking change refactor. 
         // Use GenerateAuthUrlFromRequestToken instead
@@ -60,18 +60,18 @@ namespace Fitbit.Api
 
         */
         public string GenerateAuthUrlFromRequestToken(RequestToken token, bool forceLogoutBeforeAuth)
-        {
+		{
             RestRequest request = null;
 
-            if (forceLogoutBeforeAuth)
-                request = new RestRequest("oauth/logout_and_authorize"); //this url will force the user to type in username and password
-            else
-                request = new RestRequest("oauth/authorize");           //this url will show allow/deny if a user is currently logged in
-            request.AddParameter("oauth_token", token.Token);
-            var url = client.BuildUri(request).ToString();
+			if(forceLogoutBeforeAuth)
+				request = new RestRequest("oauth/logout_and_authorize"); //this url will force the user to type in username and password
+			else
+				request = new RestRequest("oauth/authorize");           //this url will show allow/deny if a user is currently logged in
+			request.AddParameter("oauth_token", token.Token);
+			var url = client.BuildUri(request).ToString();
 
-            return url;
-        }
+			return url;
+		} 
 
         /// <summary>
         /// First step in the OAuth process is to ask Fitbit for a temporary request token. 
@@ -98,90 +98,90 @@ namespace Fitbit.Api
             return token;
         }
 
-        /// <summary>
-        /// For Desktop authentication. Your code should direct the user to the FitBit website to get
-        /// Their pin, they can then enter it here.
-        /// </summary>
-        /// <param name="pin"></param>
-        /// <returns></returns>
-        public AuthCredential GetAuthCredentialFromPin(string pin, RequestToken token)
-        {
-            var request = new RestRequest("oauth/access_token", Method.POST);
-            client.Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, token.Token, token.Secret, pin);
+		/// <summary>
+		/// For Desktop authentication. Your code should direct the user to the FitBit website to get
+		/// Their pin, they can then enter it here.
+		/// </summary>
+		/// <param name="pin"></param>
+		/// <returns></returns>
+		public AuthCredential GetAuthCredentialFromPin(string pin, RequestToken token)
+		{
+			var request = new RestRequest("oauth/access_token", Method.POST);
+			client.Authenticator = OAuth1Authenticator.ForAccessToken(ConsumerKey, ConsumerSecret, token.Token, token.Secret, pin);
+			
+			var response = client.Execute(request);
+			var qs = RestSharp.Contrib.HttpUtility.ParseQueryString(response.Content);
 
-            var response = client.Execute(request);
-            var qs = RestSharp.Contrib.HttpUtility.ParseQueryString(response.Content);
+			return new AuthCredential()
+			{
+				AuthToken = qs["oauth_token"],
+				AuthTokenSecret = qs["oauth_token_secret"],
+				UserId = qs["encoded_user_id"]
+			};
+		}
 
-            return new AuthCredential()
-            {
-                AuthToken = qs["oauth_token"],
-                AuthTokenSecret = qs["oauth_token_secret"],
-                UserId = qs["encoded_user_id"]
-            };
-        }
-
-        public AuthCredential ProcessApprovedAuthCallback(RequestToken token)
-        {
+		public AuthCredential ProcessApprovedAuthCallback(RequestToken token)
+		{
             if (string.IsNullOrWhiteSpace(token.Token))
                 throw new Exception("RequestToken.Token must not be null");
             //else if 
 
-            client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
+			client.Authenticator = OAuth1Authenticator.ForRequestToken(this.ConsumerKey, this.ConsumerSecret);
 
-            var request = new RestRequest("oauth/access_token", Method.POST);
+			var request = new RestRequest("oauth/access_token", Method.POST);
+			
+
+			client.Authenticator = OAuth1Authenticator.ForAccessToken(
+				this.ConsumerKey, this.ConsumerSecret, token.Token, token.Secret, token.Verifier
+			);
+			
+			var response = client.Execute(request);
+
+			//Assert.NotNull(response);
+			//Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+			if (response.StatusCode != HttpStatusCode.OK)
+				throw new FitbitException(response.Content, response.StatusCode);
+
+			var qs = HttpUtility.ParseQueryString(response.Content); //not actually parsing querystring, but body is formatted like htat
+			var oauth_token = qs["oauth_token"];
+			var oauth_token_secret = qs["oauth_token_secret"];
+			var encoded_user_id = qs["encoded_user_id"];
+			//Assert.NotNull(oauth_token);
+			//Assert.NotNull(oauth_token_secret);
+
+			/*
+			request = new RestRequest("account/verify_credentials.xml");
+			client.Authenticator = OAuth1Authenticator.ForProtectedResource(
+				this.ConsumerKey, this.ConsumerSecret, oauth_token, oauth_token_secret
+			);
+
+			response = client.Execute(request);
+
+			 */
+
+			return new AuthCredential()
+			{
+				AuthToken = oauth_token,
+				AuthTokenSecret = oauth_token_secret,
+				UserId = encoded_user_id
+			};
+
+			//Assert.NotNull(response);
+			//Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+			//request = new RestRequest("statuses/update.json", Method.POST);
+			//request.AddParameter("status", "Hello world! " + DateTime.Now.Ticks.ToString());
+			//client.Authenticator = OAuth1Authenticator.ForProtectedResource(
+			//    consumerKey, consumerSecret, oauth_token, oauth_token_secret
+			//);
+
+			//response = client.Execute(request);
+
+			//Assert.NotNull(response);
+			//Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+		}
 
 
-            client.Authenticator = OAuth1Authenticator.ForAccessToken(
-                this.ConsumerKey, this.ConsumerSecret, token.Token, token.Secret, token.Verifier
-            );
-
-            var response = client.Execute(request);
-
-            //Assert.NotNull(response);
-            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            if (response.StatusCode != HttpStatusCode.OK)
-                throw new FitbitException(response.Content, response.StatusCode);
-
-            var qs = HttpUtility.ParseQueryString(response.Content); //not actually parsing querystring, but body is formatted like htat
-            var oauth_token = qs["oauth_token"];
-            var oauth_token_secret = qs["oauth_token_secret"];
-            var encoded_user_id = qs["encoded_user_id"];
-            //Assert.NotNull(oauth_token);
-            //Assert.NotNull(oauth_token_secret);
-
-            /*
-            request = new RestRequest("account/verify_credentials.xml");
-            client.Authenticator = OAuth1Authenticator.ForProtectedResource(
-                this.ConsumerKey, this.ConsumerSecret, oauth_token, oauth_token_secret
-            );
-
-            response = client.Execute(request);
-
-             */
-
-            return new AuthCredential()
-            {
-                AuthToken = oauth_token,
-                AuthTokenSecret = oauth_token_secret,
-                UserId = encoded_user_id
-            };
-
-            //Assert.NotNull(response);
-            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            //request = new RestRequest("statuses/update.json", Method.POST);
-            //request.AddParameter("status", "Hello world! " + DateTime.Now.Ticks.ToString());
-            //client.Authenticator = OAuth1Authenticator.ForProtectedResource(
-            //    consumerKey, consumerSecret, oauth_token, oauth_token_secret
-            //);
-
-            //response = client.Execute(request);
-
-            //Assert.NotNull(response);
-            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-
-
-    }
+	}
 }

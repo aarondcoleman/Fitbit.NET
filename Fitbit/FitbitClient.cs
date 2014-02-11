@@ -77,13 +77,12 @@ namespace Fitbit.Api
             this.restClient = restClient;
 
             restClient.Authenticator = OAuth1Authenticator.ForProtectedResource(this.consumerKey, this.consumerSecret, this.accessToken, this.accessSecret);
-
         }
 
         public ActivitySummary GetDayActivitySummary(DateTime activityDate)
         {
             //RestClient client = new RestClient(baseApiUrl);
-
+                        
             string apiCall = GetActivityApiExtentionURL(activityDate);
 
             RestRequest request = new RestRequest(apiCall);
@@ -249,7 +248,7 @@ namespace Fitbit.Api
             else
                 apiCall = string.Format("/1/user/{0}/profile.xml", encodedUserId);
 
-            RestRequest request = new RestRequest(apiCall);
+            RestRequest request = new RestRequest("/1/user/-/profile.xml");
             request.RootElement = "user";
 
             //var response = restClient.Execute<List<Friend>>(request);
@@ -267,7 +266,7 @@ namespace Fitbit.Api
         {
             RestRequest request = new RestRequest("/1/user/-/friends.xml");
             request.RootElement = "friends";
-
+            
 
 
             var response = restClient.Execute<List<Friend>>(request);
@@ -290,7 +289,7 @@ namespace Fitbit.Api
         public List<Device> GetDevices()
         {
             RestRequest request = new RestRequest("/1/user/-/devices.xml");
-
+           
             var response = restClient.Execute<List<Device>>(request);
 
             HandleResponseCode(response.StatusCode);
@@ -344,8 +343,7 @@ namespace Fitbit.Api
             string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
             RestRequest request = new RestRequest(requestUrl);
 
-            request.OnBeforeDeserialization = resp =>
-            {
+            request.OnBeforeDeserialization = resp => {
                 XDocument doc = XDocument.Parse(resp.Content);
                 //IEnumerable<XElement> links = doc.Descendants("result");
                 var rootElement = doc.Descendants("result").FirstOrDefault().Descendants().FirstOrDefault();
@@ -354,10 +352,10 @@ namespace Fitbit.Api
 
                 //foreach (XElement link in links)
                 //{
-                //RemoveDuplicateElement(link, "category"); 
-                //RemoveDuplicateElement(link, "click-commission"); 
-                //RemoveDuplicateElement(link, "creative-height"); 
-                //RemoveDuplicateElement(link, "creative-width"); 
+                    //RemoveDuplicateElement(link, "category"); 
+                    //RemoveDuplicateElement(link, "click-commission"); 
+                    //RemoveDuplicateElement(link, "creative-height"); 
+                    //RemoveDuplicateElement(link, "creative-width"); 
                 //}
 
 
@@ -366,7 +364,7 @@ namespace Fitbit.Api
             //request.RootElement = timeSeriesResourceType.GetRootElement();
 
             var response = restClient.Execute<TimeSeriesDataList>(request);
-
+            
 
             HandleResponseCode(response.StatusCode);
             /*
@@ -451,7 +449,7 @@ namespace Fitbit.Api
 
         }
 
-
+        
         public IntradayData GetIntraDayTimeSeries(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan)
         {
 
@@ -460,17 +458,17 @@ namespace Fitbit.Api
             if (intraDayTimeSpan > new TimeSpan(0, 1, 0) && //the timespan is greater than a minute
                 dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day //adding the timespan doesn't go in to the next day
             )
-            {
-                requestUrl = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.xml",
-                                        StringEnum.GetStringValue(timeSeriesResourceType),
-                                        dayAndStartTime.ToString("yyyy-MM-dd"),
-                                        dayAndStartTime.ToString("HH:mm"),
+            { 
+                requestUrl = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.xml", 
+                                        StringEnum.GetStringValue(timeSeriesResourceType), 
+                                        dayAndStartTime.ToString("yyyy-MM-dd"), 
+                                        dayAndStartTime.ToString("HH:mm"), 
                                         dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"));
             }
             else //just get the today data, there was a date specified but the timerange was likely too large or negative
             {
-                requestUrl = string.Format("/1/user/-{0}/date/{1}/1d.xml",
-                                        StringEnum.GetStringValue(timeSeriesResourceType),
+                requestUrl = string.Format("/1/user/-{0}/date/{1}/1d.xml", 
+                                        StringEnum.GetStringValue(timeSeriesResourceType), 
                                         dayAndStartTime.ToString("yyyy-MM-dd"));
             }
             //                /1/user/-/activities/calories/date/2011-07-05/1d/time/12:20/12:45.xml
@@ -479,7 +477,7 @@ namespace Fitbit.Api
             request.OnBeforeDeserialization = resp =>
             {
                 XDocument doc = XDocument.Parse(resp.Content);
-
+                
                 //find the name of the 2nd level element that contains "-intraday" and set it as the rootElement to start parsing through
                 var rootElement = doc.Descendants("result").FirstOrDefault().Descendants().Where(t => t.Name.LocalName.Contains("-intraday")).FirstOrDefault();
 
@@ -503,7 +501,7 @@ namespace Fitbit.Api
             HandleResponseCode(response.StatusCode);
 
             //after the deserialization, need to set the date parts correctly
-            for (int i = 0; i < response.Data.DataSet.Count; i++)
+            for(int i=0; i < response.Data.DataSet.Count; i++)
             {
                 //the serializing gets the time right, but we have to set the explicit time part from passed in
                 response.Data.DataSet[i].Time = new DateTime(
@@ -531,7 +529,7 @@ namespace Fitbit.Api
             return response.Data;
 
         }
-        
+
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
         {
             return AddSubscription(apiCollectionType, uniqueSubscriptionId, string.Empty);
@@ -539,7 +537,7 @@ namespace Fitbit.Api
 
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId)
         {
-
+            
             string subscriptionAPIEndpoint = null;
             //POST /1/user/-/apiSubscriptions/320.xml
             //POST /1/user/-/activities/apiSubscriptions/320-activities.xml
@@ -557,7 +555,7 @@ namespace Fitbit.Api
             else if (apiCollectionType == APICollectionType.foods)
             {
                 subscriptionAPIEndpoint = string.Format("/1/user/-/foods/apiSubscriptions/{0}-foods.xml", uniqueSubscriptionId);
-            }
+            }                
             else if (apiCollectionType == APICollectionType.meals)
             {
                 subscriptionAPIEndpoint = string.Format("/1/user/-/meals/apiSubscriptions/{0}-meals.xml", uniqueSubscriptionId);
@@ -581,7 +579,6 @@ namespace Fitbit.Api
             {
                 request.AddHeader("X-Fitbit-Subscriber-Id", subscriberId);
             }
-
             var response = restClient.Execute<ApiSubscription>(request);
 
             HandleResponseCode(response.StatusCode);
@@ -638,7 +635,7 @@ namespace Fitbit.Api
 
             return response.Data;
         }
-
+		
         public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date)
         {
             return GetBodyMeasurements(date, string.Empty);
@@ -690,7 +687,7 @@ namespace Fitbit.Api
         /// <returns></returns>
         public DateTime? GetActivityTrackerFirstDay()
         {
-
+            
             DateTime firstActivityDay = GetUserProfile().MemberSince;
 
             while (firstActivityDay < DateTime.UtcNow)
@@ -727,7 +724,7 @@ namespace Fitbit.Api
                 startSleepSeconds += sleepLog.StartTime.Minute * 60;
                 startSleepSeconds += sleepLog.StartTime.Second;
 
-                for (int i = 0; i < sleepLog.MinuteData.Count; i++)
+                for(int i=0 ; i < sleepLog.MinuteData.Count; i++)
                 {
                     var minuteData = sleepLog.MinuteData[i]; //work with a local
 
@@ -800,6 +797,6 @@ namespace Fitbit.Api
 
         #endregion
 
-
+        
     }
 }

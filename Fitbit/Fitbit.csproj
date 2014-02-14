@@ -67,6 +67,9 @@
     <Compile Include="Authenticator.cs" />
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitException.cs" />
+    <Compile Include="HeartRateLog.cs" />
+    <Compile Include="HeartRates.cs" />
+    <Compile Include="HeartRateSummary.cs" />
     <Compile Include="Helpers\StringEnum.cs" />
     <Compile Include="IFitbitClient.cs" />
     <Compile Include="Models\Activity.cs" />

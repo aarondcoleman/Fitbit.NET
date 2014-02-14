@@ -174,5 +174,52 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(dataList);
 
         }
+
+        [Test]
+        public void Log_Single_Heart_Rate_Today()
+        {
+            HeartRateLog log = new HeartRateLog
+            {
+                LogId = -1,
+                HeartRate = 99,
+                Time = DateTime.Now,
+                Tracker = "Resting Heart Rate"
+            };
+
+            var expectedTime = new DateTime(log.Time.Year, log.Time.Month, log.Time.Day, log.Time.Hour, log.Time.Minute, 0);
+
+            HeartRateLog response = client.LogHeartRate(log);
+            Assert.AreEqual(log.HeartRate, response.HeartRate);
+            Assert.AreNotEqual(-1, response.LogId);
+            Assert.AreEqual(expectedTime, response.Time);
+            Assert.AreEqual(log.Tracker, response.Tracker);
+        }
+
+        [Test]
+        public void Delete_Heart_Rates_Today()
+        {
+            DateTime heartRecordDate = DateTime.Now;
+            HeartRates heartRateData = client.GetHeartRates(heartRecordDate);
+
+            foreach (var hr in heartRateData.Heart)
+            {
+                Assert.Greater(hr.LogId, 0);
+                client.DeleteHeartRateLog(hr.LogId);
+            }
+
+            heartRateData = client.GetHeartRates(heartRecordDate);
+            Assert.AreEqual(heartRateData.Heart.Count, 0);
+        }
+
+        [Test]
+        public void Retrieve_HeartRates_Today()
+        {
+            DateTime heartRecordDate = DateTime.Now;
+            HeartRates heartRateData = client.GetHeartRates(heartRecordDate);
+
+            Assert.IsNotNull(heartRateData);
+            Assert.IsNotNull(heartRateData.Average);
+            Assert.IsNotNull(heartRateData.Heart);
+        }
     }
 }

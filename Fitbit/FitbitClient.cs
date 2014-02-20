@@ -298,6 +298,19 @@ namespace Fitbit.Api
 
         }
 
+        public List<TrackerAlarm> GetAlarms(string deviceId)
+        {
+            RestRequest request =
+                new RestRequest(string.Format("/1/user/-/devices/tracker/{0}/alarms.xml", deviceId));
+            request.RootElement = "trackerAlarms";
+
+            var response = restClient.Execute<List<TrackerAlarm>>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         /// <summary>
         /// Get TimeSeries data for this authenticated user
         /// </summary>

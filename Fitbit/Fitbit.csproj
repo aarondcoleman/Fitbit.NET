@@ -69,6 +69,7 @@
     <Compile Include="FitbitException.cs" />
     <Compile Include="Helpers\StringEnum.cs" />
     <Compile Include="IFitbitClient.cs" />
+    <Compile Include="Models\ActivitiesStats.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityDistance.cs" />
     <Compile Include="Models\ActivityGoals.cs" />

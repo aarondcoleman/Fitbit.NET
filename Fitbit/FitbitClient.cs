@@ -116,6 +116,19 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        /// <summary>
+        /// Gets the activities stats.
+        /// </summary>
+        /// <returns></returns>
+        public ActivitiesStats GetActivitiesStats()
+        {
+            IRestResponse<ActivitiesStats> restResponse = restClient.Execute<ActivitiesStats>((IRestRequest)new RestRequest("/1/user/-/activities.xml"));
+
+            this.HandleResponseCode(restResponse.StatusCode);
+
+            return restResponse.Data;
+        }
+
         public Weight GetWeight(DateTime startDate, DateTime? endDate = null)
         {
             if (startDate.AddDays(31) < endDate)

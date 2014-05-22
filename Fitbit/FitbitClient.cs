@@ -744,7 +744,18 @@ namespace Fitbit.Api
                     errors = new List<ApiError>();
                 }
 
-                throw new FitbitException("Http Error:" + httpStatusCode.ToString(), httpStatusCode, errors);
+                FitbitException exception = new FitbitException("Http Error:" + httpStatusCode.ToString(), httpStatusCode, errors);
+
+                var retryAfterHeader = response.Headers.FirstOrDefault(h => h.Name == "Retry-After");
+                if (retryAfterHeader != null)
+                {
+                    int retryAfter;
+                    if (int.TryParse(retryAfterHeader.Value.ToString(), out retryAfter))
+                    {
+                        exception.retryAfter = retryAfter;
+                    }
+                }
+                throw exception;
             }
         }
 

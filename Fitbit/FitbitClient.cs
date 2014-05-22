@@ -90,7 +90,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<Fitbit.Models.ActivitySummary>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             //Console.WriteLine(response.ToString());
             //Console.WriteLine(response.Content);
@@ -107,7 +107,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<Fitbit.Models.Activity>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             //Console.WriteLine(response.ToString());
             //Console.WriteLine(response.Content);
@@ -136,7 +136,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<Fitbit.Models.Weight>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
         }
@@ -153,7 +153,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<Fitbit.Models.Weight>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
         }
@@ -178,7 +178,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<Fitbit.Models.Fat>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
         }
@@ -201,7 +201,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<Fitbit.Models.Fat>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
 
@@ -220,7 +220,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<Fitbit.Models.Food>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
         }
@@ -255,7 +255,7 @@ namespace Fitbit.Api
             var response = restClient.Execute<UserProfile>(request);
 
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
 
@@ -271,7 +271,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<List<Friend>>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             List<UserProfile> userProfiles = new List<UserProfile>();
 
@@ -292,7 +292,7 @@ namespace Fitbit.Api
            
             var response = restClient.Execute<List<Device>>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
 
@@ -366,7 +366,7 @@ namespace Fitbit.Api
             var response = restClient.Execute<TimeSeriesDataList>(request);
             
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
             /*
             */
             return response.Data;
@@ -442,7 +442,7 @@ namespace Fitbit.Api
             var response = restClient.Execute<TimeSeriesDataListInt>(request);
 
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
             /*
             */
             return response.Data;
@@ -498,7 +498,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<IntradayData>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             //after the deserialization, need to set the date parts correctly
             for(int i=0; i < response.Data.DataSet.Count; i++)
@@ -524,7 +524,7 @@ namespace Fitbit.Api
 
             var response = restClient.Execute<List<ApiSubscription>>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
 
@@ -572,7 +572,7 @@ namespace Fitbit.Api
             request.Method = Method.POST;
             var response = restClient.Execute<ApiSubscription>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
 
@@ -622,7 +622,7 @@ namespace Fitbit.Api
             request.Method = Method.DELETE;
             var response = restClient.Execute<ApiSubscription>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
             return response.Data;
         }
@@ -664,7 +664,7 @@ namespace Fitbit.Api
             RestRequest request = new RestRequest(apiCall);
             var response = restClient.Execute<SleepData>(request);
 
-            HandleResponseCode(response.StatusCode);
+            HandleResponse(response);
 
 
             foreach (var sleepLog in response.Data.Sleep)
@@ -721,20 +721,30 @@ namespace Fitbit.Api
         /// See: https://wiki.fitbit.com/display/API/API+Response+Format+And+Errors
         /// </summary>
         /// <param name="httpStatusCode"></param>
-        private void HandleResponseCode(System.Net.HttpStatusCode httpStatusCode)
+        private void HandleResponse(IRestResponse response)
         {
+            System.Net.HttpStatusCode httpStatusCode = response.StatusCode;
             if (httpStatusCode == System.Net.HttpStatusCode.OK ||        //200
                 httpStatusCode == System.Net.HttpStatusCode.Created ||   //201
                 httpStatusCode == System.Net.HttpStatusCode.NoContent)   //204
             {
                 return;
             }
-            else //TODO: Get more granular than this
+            else
             {
                 Console.WriteLine("HttpError:" + httpStatusCode.ToString());
+                IList<ApiError> errors;
+                try
+                {
+                    var xmlDeserializer = new RestSharp.Deserializers.XmlDeserializer() { RootElement = "errors" };
+                    errors = xmlDeserializer.Deserialize<List<ApiError>>(new RestResponse { Content = response.Content });
+                }
+                catch (Exception) // If there's an issue deserializing the error we still want to raise a fitbit exception
+                {
+                    errors = new List<ApiError>();
+                }
 
-                throw new FitbitException("Http Error:" + httpStatusCode.ToString(), httpStatusCode);
-
+                throw new FitbitException("Http Error:" + httpStatusCode.ToString(), httpStatusCode, errors);
             }
         }
 

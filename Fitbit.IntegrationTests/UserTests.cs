@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Fitbit.Api;
 using RestSharp;
 using Fitbit.Models;
+using System.Net;
 
 
 namespace Fitbit.IntegrationTests
@@ -173,6 +174,18 @@ namespace Fitbit.IntegrationTests
 
             Assert.IsNotNull(dataList);
 
+        }
+
+        [Test]
+        public void Error_Retrieving_Fake_User_Profile_Data()
+        {
+            FitbitException exception = Assert.Throws<FitbitException>(() => client.GetUserProfile("123") );
+
+            Assert.IsTrue(exception.ApiErrors.Count == 1);
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.HttpStatusCode);
+            ApiError error = exception.ApiErrors.First();
+            Assert.AreEqual(ErrorType.Validation, error.ErrorType);
+            Assert.AreEqual("resource owner", error.FieldName);
         }
     }
 }

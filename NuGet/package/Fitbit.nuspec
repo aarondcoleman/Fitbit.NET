@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Fitbit.NET</id>
+    <version>1.0.0</version>
+    <title>Fitbit.NET</title>
+    <authors>ducas</authors>
+    <owners>ducas</owners>
+    <licenseUrl>https://github.com/aarondcoleman/Fitbit.NET</licenseUrl>
+    <projectUrl>https://github.com/aarondcoleman/Fitbit.NET</projectUrl>
+    <iconUrl>http://static3.fitbit.com/simple.b-dis-png.h76d53d8e6a0653b38326a825b2b9cf57.pack?items=%2Fimages%2Fcommon%2Fbg_branding_b.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Fitbit API client for .NET</description>
+    <summary>Authenticates with the Fitbit API using OAuth to allow .NET project to make structured calls for a user's data.</summary>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>Fitbit OAuth API</tags>
+    <dependencies>
+      <dependency id="RestSharp" version="104.4.0" />
+    </dependencies>
+  </metadata>
+</package>

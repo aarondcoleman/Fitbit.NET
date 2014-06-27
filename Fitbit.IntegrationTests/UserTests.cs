@@ -62,7 +62,7 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Retrieve_Intraday_Calories()
         {
-            IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2012, 10, 1, 0, 0, 0), new TimeSpan(24,0,0));
+            IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2014, 3, 30, 0, 0, 0), new TimeSpan(24,0,0));
 
             Assert.IsNotNull(intradayData);
             Assert.IsTrue(intradayData.DataSet.Count() == 1440);

@@ -84,6 +84,7 @@
     <Compile Include="Models\Food.cs" />
     <Compile Include="Models\FoodGoals.cs" />
     <Compile Include="Models\FoodLog.cs" />
+    <Compile Include="Models\FoodLogUnit.cs" />
     <Compile Include="Models\FoodSummary.cs" />
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\NutritionalValues.cs" />

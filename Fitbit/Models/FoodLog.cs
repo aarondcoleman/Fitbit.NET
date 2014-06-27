@@ -12,5 +12,6 @@ namespace Fitbit.Models
         public long LogId { get; set; }
         public LoggedFood LoggedFood { get; set; }
         public NutritionalValues NutritionalValues { get; set; }
+        public FoodLogUnit Unit { get; set; }
     }
 }

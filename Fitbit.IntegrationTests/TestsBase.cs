@@ -24,7 +24,7 @@ namespace Fitbit.IntegrationTests
             
         }
 
-        protected FitbitClient client;
+        protected IFitbitClient client;
 
     }
 }

@@ -38,7 +38,7 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(userFriends);
 
             Console.WriteLine("# of friends:" + userFriends.Count);
-            foreach(UserProfile friend in userFriends)
+            foreach (UserProfile friend in userFriends)
             {
                 Console.WriteLine("Friend:" + friend.DisplayName + " - " + friend.EncodedId);
             }
@@ -62,7 +62,11 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Retrieve_Intraday_Calories()
         {
+<<<<<<< HEAD
             IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2014, 3, 30, 0, 0, 0), new TimeSpan(24,0,0));
+=======
+            IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2012, 10, 1, 0, 0, 0), new TimeSpan(24, 0, 0));
+>>>>>>> 85b224abca046d465d63c6e0d53e8bbdd8ed812f
 
             Assert.IsNotNull(intradayData);
             Assert.IsTrue(intradayData.DataSet.Count() == 1440);
@@ -81,7 +85,7 @@ namespace Fitbit.IntegrationTests
 
             Assert.IsNotNull(firstReportDate);
 
-            if(firstReportDate.HasValue)
+            if (firstReportDate.HasValue)
                 Console.WriteLine("User's First Tracker Sync Day:" + firstReportDate.ToString());
 
         }
@@ -163,7 +167,7 @@ namespace Fitbit.IntegrationTests
 
             List<TimeSeriesDataListInt.Data> dataNotZero = new List<TimeSeriesDataListInt.Data>();
 
-            foreach(var timeSeriesEvent in dataList.DataList)
+            foreach (var timeSeriesEvent in dataList.DataList)
             {
                 if (timeSeriesEvent.Value > 0)
                     dataNotZero.Add(timeSeriesEvent);
@@ -174,5 +178,27 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(dataList);
 
         }
+
+
+        [Test]
+        public void Retrieve_BodyMeasurements_Yesterday()
+        {
+            BodyMeasurements measurements = client.GetBodyMeasurements(DateTime.Today.AddDays(-1));
+
+            Assert.IsNotNull(measurements);
+            Assert.IsNotNull(measurements.Body);
+
+        }
+
+        [Test]
+        public void Retrieve_BloodPressure_Yesterday()
+        {
+            BloodPressureData bpData = client.GetBloodPressure(DateTime.Today.AddDays(-1));
+
+            Assert.IsNotNull(bpData);
+            Assert.IsNotNull(bpData.BP);
+
+        }
+
     }
 }

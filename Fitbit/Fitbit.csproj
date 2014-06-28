@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\BitsmackGTAPI\packages\Fitbit.NET\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -97,6 +97,7 @@
     <Compile Include="Models\SubscriptionResponse.cs" />
     <Compile Include="Models\TimeSeriesDataList.cs" />
     <Compile Include="Models\Enums\TimeSeriesResourceType.cs" />
+    <Compile Include="Models\TrackerAlarm.cs" />
     <Compile Include="Models\UpdatedResource.cs" />
     <Compile Include="Models\Updates.cs" />
     <Compile Include="Models\Weight.cs" />

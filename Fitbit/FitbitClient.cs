@@ -298,6 +298,19 @@ namespace Fitbit.Api
 
         }
 
+        public List<TrackerAlarm> GetAlarms(string deviceId)
+        {
+            RestRequest request =
+                new RestRequest(string.Format("/1/user/-/devices/tracker/{0}/alarms.xml", deviceId));
+            request.RootElement = "trackerAlarms";
+
+            var response = restClient.Execute<List<TrackerAlarm>>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
         /// <summary>
         /// Get TimeSeries data for this authenticated user
         /// </summary>
@@ -623,6 +636,24 @@ namespace Fitbit.Api
             var response = restClient.Execute<ApiSubscription>(request);
 
             HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
+        public ActivityGoals SetStepGoal(int newStepGoal)
+        {
+            string apiCall = "/1/user/-/activities/goals/daily.json";
+
+            var request = new RestRequest(apiCall) { RootElement = "goals", Method = Method.POST };
+            request.AddParameter("steps", newStepGoal);
+
+            var response = restClient.Execute<Fitbit.Models.ActivityGoals>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            //Console.WriteLine(response.ToString());
+            //Console.WriteLine(response.Content);
+            //Console.WriteLine(response.Data.steps);
 
             return response.Data;
         }

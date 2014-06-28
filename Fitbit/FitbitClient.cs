@@ -494,20 +494,11 @@ namespace Fitbit.Api
                 //find the name of the 2nd level element that contains "-intraday" and set it as the rootElement to start parsing through
                 var rootElement = doc.Descendants("result").FirstOrDefault().Descendants().Where(t => t.Name.LocalName.Contains("-intraday")).FirstOrDefault();
 
-                request.RootElement = rootElement.Name.LocalName;
-
-                //foreach (XElement link in links)
-                //{
-                //RemoveDuplicateElement(link, "category"); 
-                //RemoveDuplicateElement(link, "click-commission"); 
-                //RemoveDuplicateElement(link, "creative-height"); 
-                //RemoveDuplicateElement(link, "creative-width"); 
-                //}
-
+                //sometimes the API doesn't return that node, for isnstance a date queried before the start of an account 
+                if(rootElement != null && !string.IsNullOrWhiteSpace(rootElement.Name.LocalName))
+                    request.RootElement = rootElement.Name.LocalName;
 
             };
-
-            //request.RootElement = timeSeriesResourceType.GetRootElement();
 
             var response = restClient.Execute<IntradayData>(request);
 

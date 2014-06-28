@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
     <Compile Include="FitbitClient.cs" />
+    <Compile Include="Models\Enums\ErrorType.cs" />
+    <Compile Include="Models\ApiError.cs" />
     <Compile Include="FitbitException.cs" />
     <Compile Include="HeartRateLog.cs" />
     <Compile Include="HeartRates.cs" />

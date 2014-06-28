@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<result>
+    <errors>
+        <apiError>
+            <errorType>request</errorType>
+            <fieldName>n/a</fieldName>
+            <message>Rate limit exceeded for the user with the access token 28263b9a29e79f9d6f07539ab9109aba. Please try again at the start of the hour. More information about rate limiting is at &lt;https://dev.fitbit.com/&gt;.</message>
+        </apiError>
+    </errors>
+</result>

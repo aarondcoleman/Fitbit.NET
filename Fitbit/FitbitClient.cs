@@ -545,6 +545,11 @@ namespace Fitbit.Api
 
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
         {
+            return AddSubscription(apiCollectionType, uniqueSubscriptionId, string.Empty);
+        }
+
+        public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId)
+        {
             
             string subscriptionAPIEndpoint = null;
             //POST /1/user/-/apiSubscriptions/320.xml
@@ -583,6 +588,10 @@ namespace Fitbit.Api
 
             RestRequest request = new RestRequest(subscriptionAPIEndpoint);
             request.Method = Method.POST;
+            if (!string.IsNullOrWhiteSpace(subscriberId))
+            {
+                request.AddHeader("X-Fitbit-Subscriber-Id", subscriberId);
+            }
             var response = restClient.Execute<ApiSubscription>(request);
 
             HandleResponseCode(response.StatusCode);
@@ -634,6 +643,48 @@ namespace Fitbit.Api
             RestRequest request = new RestRequest(subscriptionAPIEndpoint);
             request.Method = Method.DELETE;
             var response = restClient.Execute<ApiSubscription>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+		
+        public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date)
+        {
+            return GetBodyMeasurements(date, string.Empty);
+        }
+        public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date, string userId)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/body/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.BodyMeasurements>(request);
+
+            HandleResponseCode(response.StatusCode);
+
+            return response.Data;
+        }
+
+        public Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date)
+        {
+            return GetBloodPressure(date, string.Empty);
+        }
+        public Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date, string userId)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/bp/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.BloodPressureData>(request);
 
             HandleResponseCode(response.StatusCode);
 

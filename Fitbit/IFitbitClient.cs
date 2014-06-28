@@ -4,7 +4,12 @@ namespace Fitbit.Api
     public interface IFitbitClient
     {
         Fitbit.Models.ApiSubscription AddSubscription(Fitbit.Models.APICollectionType apiCollectionType, string uniqueSubscriptionId);
+        Fitbit.Models.ApiSubscription AddSubscription(Fitbit.Models.APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId);
         DateTime? GetActivityTrackerFirstDay();
+        Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date);
+        Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date, string userId);
+        Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date);
+        Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date, string userId);
         Fitbit.Models.Activity GetDayActivity(DateTime activityDate);
         Fitbit.Models.ActivitySummary GetDayActivitySummary(DateTime activityDate);
         System.Collections.Generic.List<Fitbit.Models.Device> GetDevices();

@@ -34,5 +34,8 @@ namespace Fitbit.Api
         Fitbit.Models.Weight GetWeight(DateTime startDate, Fitbit.Models.DateRangePeriod period);
         Fitbit.Models.Weight GetWeight(DateTime startDate, DateTime? endDate = null);
         Fitbit.Models.ApiSubscription RemoveSubscription(Fitbit.Models.APICollectionType apiCollectionType, string uniqueSubscriptionId);
+        Fitbit.Models.HeartRateLog LogHeartRate(Fitbit.Models.HeartRateLog log, string userId);
+        Fitbit.Models.HeartRates GetHeartRates(DateTime date);
+        void DeleteHeartRateLog(int logId);
     }
 }

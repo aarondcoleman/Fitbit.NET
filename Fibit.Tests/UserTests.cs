@@ -508,9 +508,26 @@ namespace Fibit.Tests
              */
         }
 
+        [Test]
+        public void Can_Deserialize_HeartRateResponse()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("HeartLogResponse.txt"));
 
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            deserializer.RootElement = "heartLog";
 
+            HeartRateLog result = deserializer.Deserialize<HeartRateLog>(new RestResponse() { Content = content });
 
+            Assert.IsNotNull(result);
 
+            Assert.AreEqual(150, result.HeartRate);
+            Assert.AreEqual(1424, result.LogId);
+
+            var now = DateTime.Now;
+            DateTime expected = new DateTime(now.Year, now.Month, now.Day, 12, 20, 0);
+            Assert.AreEqual(expected, result.Time);
+
+            Assert.AreEqual("Running", result.Tracker);
+        }
     }
 }

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Fitbit.Api;
 using RestSharp;
 using Fitbit.Models;
+using System.Net;
 
 
 namespace Fitbit.IntegrationTests
@@ -62,11 +63,7 @@ namespace Fitbit.IntegrationTests
         [Test]
         public void Retrieve_Intraday_Calories()
         {
-<<<<<<< HEAD
             IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2014, 3, 30, 0, 0, 0), new TimeSpan(24,0,0));
-=======
-            IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2012, 10, 1, 0, 0, 0), new TimeSpan(24, 0, 0));
->>>>>>> 85b224abca046d465d63c6e0d53e8bbdd8ed812f
 
             Assert.IsNotNull(intradayData);
             Assert.IsTrue(intradayData.DataSet.Count() == 1440);
@@ -179,8 +176,6 @@ namespace Fitbit.IntegrationTests
 
         }
 
-<<<<<<< HEAD
-
         [Test]
         public void Retrieve_BodyMeasurements_Yesterday()
         {
@@ -201,7 +196,6 @@ namespace Fitbit.IntegrationTests
 
         }
 
-=======
         [Test]
         public void Log_Single_Heart_Rate_Today()
         {
@@ -215,7 +209,7 @@ namespace Fitbit.IntegrationTests
 
             var expectedTime = new DateTime(log.Time.Year, log.Time.Month, log.Time.Day, log.Time.Hour, log.Time.Minute, 0);
 
-            HeartRateLog response = client.LogHeartRate(log);
+            HeartRateLog response = client.LogHeartRate(log, null);
             Assert.AreEqual(log.HeartRate, response.HeartRate);
             Assert.AreNotEqual(-1, response.LogId);
             Assert.AreEqual(expectedTime, response.Time);
@@ -248,6 +242,17 @@ namespace Fitbit.IntegrationTests
             Assert.IsNotNull(heartRateData.Average);
             Assert.IsNotNull(heartRateData.Heart);
         }
->>>>>>> 85871a127c8a664d2774f1678e71da9861d8256d
+
+        [Test]
+        public void Error_Retrieving_Fake_User_Profile_Data()
+        {
+            FitbitException exception = Assert.Throws<FitbitException>(() => client.GetUserProfile("123") );
+
+            Assert.IsTrue(exception.ApiErrors.Count == 1);
+            Assert.AreEqual(HttpStatusCode.BadRequest, exception.HttpStatusCode);
+            ApiError error = exception.ApiErrors.First();
+            Assert.AreEqual(ErrorType.Validation, error.ErrorType);
+            Assert.AreEqual("resource owner", error.FieldName);
+        }
     }
 }

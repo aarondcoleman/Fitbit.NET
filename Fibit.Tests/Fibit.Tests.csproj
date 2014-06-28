@@ -81,6 +81,7 @@
     <Content Include="SampleData\Fat.txt" />
     <Content Include="SampleData\IntradayActivitiesCalories.txt" />
     <Content Include="SampleData\ListApiSubscriptions.txt" />
+    <Content Include="SampleData\RateLimitError.txt" />
     <Content Include="SampleData\SleepData-SingleSleepLog.txt" />
     <Content Include="SampleData\SubscriptionUpdateSignedMultiple.txt" />
     <Content Include="SampleData\GetDevices-Double.txt" />

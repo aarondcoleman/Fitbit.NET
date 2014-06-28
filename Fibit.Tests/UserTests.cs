@@ -529,5 +529,20 @@ namespace Fibit.Tests
 
             Assert.AreEqual("Running", result.Tracker);
         }
+
+        public void Can_Deserialize_Rate_Limit()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("RateLimitError.txt"));
+
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+
+            List<ApiError> result = deserializer.Deserialize<List<ApiError>>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Count == 1);
+            ApiError error = result.First();
+            Assert.AreEqual(ErrorType.Request, error.ErrorType);
+            Assert.AreEqual("n/a", error.FieldName);
+        }
     }
 }

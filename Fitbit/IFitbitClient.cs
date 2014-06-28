@@ -1,4 +1,6 @@
 ﻿using System;
+using Fitbit.Models;
+
 namespace Fitbit.Api
 {
     public interface IFitbitClient
@@ -29,5 +31,6 @@ namespace Fitbit.Api
         Fitbit.Models.Weight GetWeight(DateTime startDate, Fitbit.Models.DateRangePeriod period);
         Fitbit.Models.Weight GetWeight(DateTime startDate, DateTime? endDate = null);
         Fitbit.Models.ApiSubscription RemoveSubscription(Fitbit.Models.APICollectionType apiCollectionType, string uniqueSubscriptionId);
+        ActivitiesStats GetActivitiesStats();
     }
 }

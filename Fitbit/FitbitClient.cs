@@ -361,7 +361,8 @@ namespace Fitbit.Api
                 //IEnumerable<XElement> links = doc.Descendants("result");
                 var rootElement = doc.Descendants("result").FirstOrDefault().Descendants().FirstOrDefault();
 
-                request.RootElement = rootElement.Name.LocalName;
+                if (rootElement != null && !string.IsNullOrWhiteSpace(rootElement.Name.LocalName))
+                    request.RootElement = rootElement.Name.LocalName;
 
                 //foreach (XElement link in links)
                 //{
@@ -437,7 +438,9 @@ namespace Fitbit.Api
                 //IEnumerable<XElement> links = doc.Descendants("result");
                 var rootElement = doc.Descendants("result").FirstOrDefault().Descendants().FirstOrDefault();
 
-                request.RootElement = rootElement.Name.LocalName;
+
+                if (rootElement != null && !string.IsNullOrWhiteSpace(rootElement.Name.LocalName))
+                    request.RootElement = rootElement.Name.LocalName;
 
                 //foreach (XElement link in links)
                 //{

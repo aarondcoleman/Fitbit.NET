@@ -66,9 +66,6 @@
     <Compile Include="Models\Enums\ErrorType.cs" />
     <Compile Include="Models\ApiError.cs" />
     <Compile Include="FitbitException.cs" />
-    <Compile Include="HeartRateLog.cs" />
-    <Compile Include="HeartRates.cs" />
-    <Compile Include="HeartRateSummary.cs" />
     <Compile Include="Helpers\StringEnum.cs" />
     <Compile Include="IFitbitClient.cs" />
     <Compile Include="Models\Activity.cs" />
@@ -97,6 +94,9 @@
     <Compile Include="Models\FoodLog.cs" />
     <Compile Include="Models\FoodLogUnit.cs" />
     <Compile Include="Models\FoodSummary.cs" />
+    <Compile Include="Models\HeartRateLog.cs" />
+    <Compile Include="Models\HeartRates.cs" />
+    <Compile Include="Models\HeartRateSummary.cs" />
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
     <Compile Include="Models\RequestToken.cs" />

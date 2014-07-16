@@ -56,7 +56,7 @@ namespace Fitbit.Api.Portable
         public async Task<AuthCredential> GetAuthCredentialFromPinAsync(string pin, RequestToken token)
         {
             var oauthRequestToken = new AsyncOAuth.RequestToken(token.Token, token.Secret);
-            var authorizer = new AsyncOAuth.OAuthAuthorizer(ConsumerKey, ConsumerSecret);
+            var authorizer = new OAuthAuthorizer(ConsumerKey, ConsumerSecret);
             var accessTokenResponse = await authorizer.GetAccessToken(Constants.BaseApiUrl + Constants.TemporaryCredentialsAccessTokenUri, oauthRequestToken, pin);
             // save access token.
             var accessToken = accessTokenResponse.Token;
@@ -76,7 +76,7 @@ namespace Fitbit.Api.Portable
                 throw new ArgumentNullException("token", "RequestToken.Token must not be null");
 
             var oauthRequestToken = new AsyncOAuth.RequestToken(token.Token, token.Secret);
-            var authorizer = new AsyncOAuth.OAuthAuthorizer(ConsumerKey, ConsumerSecret);
+            var authorizer = new OAuthAuthorizer(ConsumerKey, ConsumerSecret);
             var accessToken = await authorizer.GetAccessToken(Constants.BaseApiUrl + Constants.TemporaryCredentialsAccessTokenUri, oauthRequestToken, token.Verifier);
 
             var result = new AuthCredential

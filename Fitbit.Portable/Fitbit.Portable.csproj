@@ -43,6 +43,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authenticator.cs" />
+    <Compile Include="FitbitClient.cs" />
+    <Compile Include="IFitbitClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -76,7 +76,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ApiSubscription.cs" />
-    <Compile Include="Models\AuthCredential.cs" />
     <Compile Include="Models\BloodPressure.cs" />
     <Compile Include="Models\BloodPressureAverage.cs" />
     <Compile Include="Models\BloodPressureData.cs" />
@@ -99,7 +98,6 @@
     <Compile Include="Models\HeartRateSummary.cs" />
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
-    <Compile Include="Models\RequestToken.cs" />
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\Friend.cs" />

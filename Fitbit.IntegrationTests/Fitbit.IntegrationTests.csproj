@@ -67,6 +67,10 @@
     <Compile Include="UserTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fitbit.Common\Fitbit.Common.csproj">
+      <Project>{37636456-5640-4258-adf5-11292e6b422e}</Project>
+      <Name>Fitbit.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fitbit\Fitbit.csproj">
       <Project>{D2C08C58-269F-45DE-8A25-C5492BC625F8}</Project>
       <Name>Fitbit</Name>

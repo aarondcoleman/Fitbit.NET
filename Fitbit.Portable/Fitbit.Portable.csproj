@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="FitbitClient.cs" />
     <Compile Include="IFitbitClient.cs" />
     <Compile Include="JsonDotNetSerializer.cs" />

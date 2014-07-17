@@ -26,6 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable.Tests", "..\Fitbit.Portable.Tests\Fitbit.Portable.Tests.csproj", "{F811594D-3323-4147-9780-D3A1F930B99F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable.IntegrationTests", "Fitbit.Portable.IntegrationTests\Fitbit.Portable.IntegrationTests.csproj", "{D3AA6C6E-E0B7-4FB5-BBC7-75486405BCDF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{37636456-5640-4258-ADF5-11292E6B422E} = {37636456-5640-4258-ADF5-11292E6B422E}
+		{1358D3B4-0698-4003-97EB-B6D489E04138} = {1358D3B4-0698-4003-97EB-B6D489E04138}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portable", "Portable", "{750B7532-1468-4300-959C-3E23AFE7BE54}"
 EndProject

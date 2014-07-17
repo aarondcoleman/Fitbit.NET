@@ -148,7 +148,6 @@ namespace Fibit.Tests
             Assert.AreEqual("en_US", result.HeightUnit);
             Assert.AreEqual("en_GB", result.Locale);
             Assert.AreEqual(new DateTime(2010, 2, 7), result.MemberSince);
-            Assert.AreEqual("Nick", result.Nickname);
             Assert.AreEqual(-25200000, result.OffsetFromUTCMillis);
             Assert.AreEqual("CA", result.State);
             Assert.AreEqual(0, result.StrideLengthRunning);

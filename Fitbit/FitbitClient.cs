@@ -876,7 +876,7 @@ namespace Fitbit.Api
                     int retryAfter;
                     if (int.TryParse(retryAfterHeader.Value.ToString(), out retryAfter))
                     {
-                        exception.retryAfter = retryAfter;
+                        exception.RetryAfter = retryAfter;
                     }
                 }
                 throw exception;

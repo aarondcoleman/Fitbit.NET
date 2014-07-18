@@ -67,7 +67,7 @@ namespace Fitbit.Api.Portable
             };
         }
 
-        public async Task<AuthCredential> ProcessApprovedAuthCallback(RequestToken token)
+        public async Task<AuthCredential> ProcessApprovedAuthCallbackAsync(RequestToken token)
         {
             if (token == null)
                 throw new ArgumentNullException("token", "RequestToken cannot be null");

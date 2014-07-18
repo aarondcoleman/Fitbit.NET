@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Fitbit;
@@ -23,7 +24,7 @@ namespace SampleWebMVC.Controllers
         //
         // GET: /FitbitAuth/
         // Setup - prepare the user redirect to Fitbit.com to prompt them to authorize this app.
-        public ActionResult Authorize()
+        public async Task<ActionResult> Authorize()
         {
 
             //make sure you've set these up in Web.Config under <appSettings>:
@@ -31,24 +32,19 @@ namespace SampleWebMVC.Controllers
             string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
 
 
-            Fitbit.Api.Authenticator authenticator = new Fitbit.Api.Authenticator(ConsumerKey,
-                                                                                    ConsumerSecret,
-                                                                                    "http://api.fitbit.com/oauth/request_token",
-                                                                                    "http://api.fitbit.com/oauth/access_token",
-                                                                                    "http://api.fitbit.com/oauth/authorize");
-            RequestToken token = authenticator.GetRequestToken();
+            var authenticator = new Fitbit.Api.Portable.Authenticator(ConsumerKey, ConsumerSecret);
+            RequestToken token = await authenticator.GetRequestTokenAsync();
             Session.Add("FitbitRequestTokenSecret", token.Secret.ToString()); //store this somehow, like in Session as we'll need it after the Callback() action
             
             //note: at this point the RequestToken object only has the Token and Secret properties supplied. Verifier happens later.
 
             string authUrl = authenticator.GenerateAuthUrlFromRequestToken(token, true);
 
-
             return Redirect(authUrl);
         }
 
         //Final step. Take this authorization information and use it in the app
-        public ActionResult Callback()
+        public async Task<ActionResult> Callback()
         {
             RequestToken token = new RequestToken();
             token.Token = Request.Params["oauth_token"];
@@ -61,15 +57,11 @@ namespace SampleWebMVC.Controllers
             //this is going to go back to Fitbit one last time (server to server) and get the user's permanent auth credentials
 
             //create the Authenticator object
-            Fitbit.Api.Authenticator authenticator = new Fitbit.Api.Authenticator(ConsumerKey,
-                                                                                    ConsumerSecret,
-                                                                                    "http://api.fitbit.com/oauth/request_token",
-                                                                                    "http://api.fitbit.com/oauth/access_token",
-                                                                                    "http://api.fitbit.com/oauth/authorize");
+            var authenticator = new Fitbit.Api.Portable.Authenticator(ConsumerKey, ConsumerSecret);
 
 
             //execute the Authenticator request to Fitbit
-            AuthCredential credential = authenticator.ProcessApprovedAuthCallback(token);
+            AuthCredential credential = await authenticator.ProcessApprovedAuthCallbackAsync(token);
 
             //here, we now have everything we need for the future to go back to Fitbit's API (STORE THESE):
             //  credential.AuthToken;
@@ -83,6 +75,16 @@ namespace SampleWebMVC.Controllers
             
             return RedirectToAction("Index", "Home");
 
+        }
+
+        public async Task<ActionResult> UserProfile()
+        {
+            var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
+            ConfigurationManager.AppSettings["FitbitConsumerSecret"],
+            Session["FitbitAuthToken"].ToString(),
+            Session["FitbitAuthTokenSecret"].ToString());
+
+            return View(await client.GetUserProfileAsync());
         }
 
         public string TestTimeSeries()

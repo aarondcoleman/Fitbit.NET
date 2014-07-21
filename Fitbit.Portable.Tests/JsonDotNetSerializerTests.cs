@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Fitbit.Tests
+namespace Fitbit.Portable.Tests
 {
     [TestFixture]
     public class JsonDotNetSerializerTests

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Web;
+﻿using System.Security.Cryptography;
 using System.Web.Mvc;
 using System.Web.Routing;
-using AsyncOAuth;
 
 namespace SampleWebMVC
 {
@@ -33,9 +28,7 @@ namespace SampleWebMVC
 
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
-
-            OAuthUtility.ComputeHash = (key, buffer) => { using (var hmac = new HMACSHA1(key)) { return hmac.ComputeHash(buffer); } };
+            AreaRegistration.RegisterAllAreas();         
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);

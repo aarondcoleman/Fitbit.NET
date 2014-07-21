@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portable", "Portable", "{75
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Regular", "Regular", "{96879064-63D7-4832-90B1-D516DD4CE08E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebMVC.Portable", "..\SampleWebMVC.Portable\SampleWebMVC.Portable.csproj", "{59BAB4ED-CF16-4F5F-BA00-620AB7448970}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,12 @@ Global
 		{D3AA6C6E-E0B7-4FB5-BBC7-75486405BCDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D3AA6C6E-E0B7-4FB5-BBC7-75486405BCDF}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{D3AA6C6E-E0B7-4FB5-BBC7-75486405BCDF}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
+		{59BAB4ED-CF16-4F5F-BA00-620AB7448970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59BAB4ED-CF16-4F5F-BA00-620AB7448970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59BAB4ED-CF16-4F5F-BA00-620AB7448970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59BAB4ED-CF16-4F5F-BA00-620AB7448970}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59BAB4ED-CF16-4F5F-BA00-620AB7448970}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{59BAB4ED-CF16-4F5F-BA00-620AB7448970}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

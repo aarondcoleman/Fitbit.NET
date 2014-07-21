@@ -123,6 +123,11 @@ namespace Fitbit.Models
         public DateTime MemberSince { get; set; }
 
 #if REQUIRES_JSONNET
+        [JsonProperty("nickname")]
+#endif
+        public string Nickname { get; set; }
+
+#if REQUIRES_JSONNET
         [JsonProperty("offsetFromUTCMillis")]
 #endif
         public int OffsetFromUTCMillis { get; set; }
@@ -131,6 +136,11 @@ namespace Fitbit.Models
         [JsonProperty("startDayOfWeek")]
 #endif
         public string StartDayOfWeek { get; set; }
+
+#if REQUIRES_JSONNET
+        [JsonProperty("state")]
+#endif
+        public string State { get; set; }
 
 #if REQUIRES_JSONNET
         [JsonProperty("strideLengthRunning")]
@@ -148,6 +158,11 @@ namespace Fitbit.Models
         public string Timezone { get; set; }
 
 #if REQUIRES_JSONNET
+        [JsonProperty("volumeUnit")]
+#endif
+        public string VolumeUnit { get; set; }
+
+#if REQUIRES_JSONNET
         [JsonProperty("waterUnit")]
 #endif
         public string WaterUnit { get; set; }
@@ -161,21 +176,6 @@ namespace Fitbit.Models
         [JsonProperty("weightUnit")]
 #endif
         public string WeightUnit { get; set; }
-
-#if REQUIRES_JSONNET
-        [JsonProperty("nickname")]
-#endif
-        public string Nickname { get; set; }
-
-#if REQUIRES_JSONNET
-        [JsonProperty("state")]
-#endif
-        public string State { get; set; }
-
-#if REQUIRES_JSONNET
-        [JsonProperty("volumeUnit")]
-#endif
-        public string VolumeUnit { get; set; }
 
         //public string EncodedId{ get; set;}
         //public string DisplayName { get; set; }

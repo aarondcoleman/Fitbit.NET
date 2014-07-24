@@ -13,7 +13,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Profile()
         {
-            string content = File.ReadAllText(SampleData.PathFor("UserProfile.txt"));
+            string content = File.ReadAllText(SampleData.PathFor("UserProfile.json"));
             var deserializer = new JsonDotNetSerializer();
             deserializer.RootProperty = "user";
 

@@ -14,7 +14,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ApiError()
         {
-            string content = File.ReadAllText(SampleData.PathFor("ApiError.txt"));
+            string content = File.ReadAllText(SampleData.PathFor("ApiError.json"));
 
             var deserializer = new JsonDotNetSerializer();
             deserializer.RootProperty = "errors";

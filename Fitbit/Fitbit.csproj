@@ -92,7 +92,6 @@
     <Compile Include="Models\FatLog.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />
     <Compile Include="Models\Enums\DateRangePeriod.cs" />
-    <Compile Include="Models\Enums\DeviceType.cs" />
     <Compile Include="Models\Enums\ResourceOwnerType.cs" />
     <Compile Include="Models\Food.cs" />
     <Compile Include="Models\FoodGoals.cs" />
@@ -105,7 +104,6 @@
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
-    <Compile Include="Models\Device.cs" />
     <Compile Include="Models\Friend.cs" />
     <Compile Include="Models\IntradayData.cs" />
     <Compile Include="Models\Enums\IntradayResourceType.cs" />

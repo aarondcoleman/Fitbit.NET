@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Fitbit.Models;
 using RestSharp;
 using RestSharp.Authenticators;
 using System.Xml.Linq;
-using System.Web;
-using System.Runtime.InteropServices;
-using System.Net;
 
 namespace Fitbit.Api
 {
@@ -146,7 +142,7 @@ namespace Fitbit.Api
             if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
                 throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
 
-            string apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period));
+            string apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), period.GetStringValue());
 
             RestRequest request = new RestRequest(apiCall);
             request.RootElement = "weight";
@@ -194,7 +190,7 @@ namespace Fitbit.Api
             if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
                 throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
 
-            string apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period));
+            string apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), period.GetStringValue());
 
             RestRequest request = new RestRequest(apiCall);
             request.RootElement = "fat";
@@ -335,7 +331,7 @@ namespace Fitbit.Api
 
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string userId)
         {
-            return GetTimeSeries(timeSeriesResourceType, endDate, StringEnum.GetStringValue(period), userId);
+            return GetTimeSeries(timeSeriesResourceType, endDate, period.GetStringValue(), userId);
         }
 
         /// <summary>
@@ -353,7 +349,7 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
+            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, timeSeriesResourceType.GetStringValue(), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
             RestRequest request = new RestRequest(requestUrl);
 
             request.OnBeforeDeserialization = resp => {
@@ -411,7 +407,7 @@ namespace Fitbit.Api
 
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string userId)
         {
-            return GetTimeSeriesInt(timeSeriesResourceType, endDate, StringEnum.GetStringValue(period), userId);
+            return GetTimeSeriesInt(timeSeriesResourceType, endDate, period.GetStringValue(), userId);
         }
 
         /// <summary>
@@ -429,7 +425,7 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
+            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, timeSeriesResourceType.GetStringValue(), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
             RestRequest request = new RestRequest(requestUrl);
 
             request.OnBeforeDeserialization = resp =>
@@ -476,7 +472,7 @@ namespace Fitbit.Api
             )
             { 
                 requestUrl = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.xml", 
-                                        StringEnum.GetStringValue(timeSeriesResourceType), 
+                                        timeSeriesResourceType.GetStringValue(), 
                                         dayAndStartTime.ToString("yyyy-MM-dd"), 
                                         dayAndStartTime.ToString("HH:mm"), 
                                         dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"));
@@ -484,7 +480,7 @@ namespace Fitbit.Api
             else //just get the today data, there was a date specified but the timerange was likely too large or negative
             {
                 requestUrl = string.Format("/1/user/-{0}/date/{1}/1d.xml", 
-                                        StringEnum.GetStringValue(timeSeriesResourceType), 
+                                        timeSeriesResourceType.GetStringValue(), 
                                         dayAndStartTime.ToString("yyyy-MM-dd"));
             }
             //                /1/user/-/activities/calories/date/2011-07-05/1d/time/12:20/12:45.xml

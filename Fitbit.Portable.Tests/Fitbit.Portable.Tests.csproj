@@ -92,11 +92,14 @@
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\SampleData.cs" />
+    <Compile Include="DeviceTests.cs" />
     <Compile Include="UserProfileTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="SampleData\GetDevices-Double.json" />
+    <None Include="SampleData\GetDevices-Single.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fitbit.Common\Fitbit.Common.csproj">
@@ -109,8 +112,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SampleData\ApiError.txt" />
-    <Content Include="SampleData\UserProfile.txt" />
+    <None Include="SampleData\ApiError.json" />
+    <None Include="SampleData\UserProfile.json" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

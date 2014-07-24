@@ -52,6 +52,20 @@ namespace Fitbit.Api.Portable
             return user;
         }
 
+        public async Task<List<Device>> GetDevicesAsync()
+        {
+            var fullCall = PrepareUrl("/1/user/-/devices.json");
+
+            HttpResponseMessage response = await httpClient.GetAsync(fullCall);
+            HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            var serializer = new JsonDotNetSerializer();
+            var devices = serializer.Deserialize<List<Device>>(responseBody);
+            return devices;
+        }
+
         private string PrepareUrl(string apiCall)
         {
             if (apiCall.StartsWith("/"))

@@ -78,5 +78,15 @@ namespace SampleWebMVC.Portable.Controllers
 
             return View(await client.GetUserProfileAsync());
         }
+
+        public async Task<ActionResult> Devices()
+        {
+            var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
+            ConfigurationManager.AppSettings["FitbitConsumerSecret"],
+            Session["FitbitAuthToken"].ToString(),
+            Session["FitbitAuthTokenSecret"].ToString());
+
+            return View(await client.GetDevicesAsync());
+        }
     }
 }

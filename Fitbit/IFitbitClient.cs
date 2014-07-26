@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Fitbit.Api
 {
     public interface IFitbitClient
@@ -6,6 +8,7 @@ namespace Fitbit.Api
         Fitbit.Models.ApiSubscription AddSubscription(Fitbit.Models.APICollectionType apiCollectionType, string uniqueSubscriptionId);
         Fitbit.Models.ApiSubscription AddSubscription(Fitbit.Models.APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId);
         DateTime? GetActivityTrackerFirstDay();
+        List<Fitbit.Models.TrackerAlarm> GetAlarms(string deviceId);
         Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date);
         Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date, string userId);
         Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date);
@@ -19,6 +22,7 @@ namespace Fitbit.Api
         System.Collections.Generic.List<Fitbit.Models.UserProfile> GetFriends();
         Fitbit.Models.IntradayData GetIntraDayTimeSeries(Fitbit.Models.IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan);
         Fitbit.Models.SleepData GetSleep(DateTime sleepDate);
+        Fitbit.Models.ActivityGoals SetStepGoal(int newStepGoal);
         System.Collections.Generic.List<Fitbit.Models.ApiSubscription> GetSubscriptions();
         Fitbit.Models.TimeSeriesDataList GetTimeSeries(Fitbit.Models.TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, Fitbit.Models.DateRangePeriod period);
         Fitbit.Models.TimeSeriesDataList GetTimeSeries(Fitbit.Models.TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, Fitbit.Models.DateRangePeriod period, string userId);

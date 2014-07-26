@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<result>
-    <collectionType>user</collectionType>
-    <ownerId>227YZL</ownerId>
-    <ownerType>user</ownerType>
-    <subscriberId>1</subscriberId>
-    <subscriptionId>323</subscriptionId>
-</result>

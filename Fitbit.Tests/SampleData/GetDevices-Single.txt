@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<devices>
+	<device>
+		<battery>Medium</battery>
+		<deviceVersion>Ultra</deviceVersion>
+		<id>473384</id>
+		<lastSyncTime>2012-07-17T09:35:23.000</lastSyncTime>
+		<type>TRACKER</type>
+	</device>
+</devices>

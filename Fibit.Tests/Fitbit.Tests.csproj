@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C07EA170-B8A0-4269-980D-389E883D208D}</ProjectGuid>
+    <ProjectGuid>{D7C6CB76-5296-4F10-927B-CBA106706AF3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fitbit.Tests</RootNamespace>

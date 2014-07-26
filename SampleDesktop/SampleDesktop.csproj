@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Fitbit\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\Fitbit\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
@@ -54,6 +58,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fitbit.Common\Fitbit.Common.csproj">
+      <Project>{37636456-5640-4258-adf5-11292e6b422e}</Project>
+      <Name>Fitbit.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fitbit\Fitbit.csproj">
       <Project>{d2c08c58-269f-45de-8a25-c5492bc625f8}</Project>
       <Name>Fitbit</Name>

@@ -22,6 +22,7 @@ namespace Fitbit.Models
 	}"
 	 */
 
+    [Obsolete("Use UserProfile instead")]
 	public class User
 	{
 		public DateTime dateOfBirth { get; set; }

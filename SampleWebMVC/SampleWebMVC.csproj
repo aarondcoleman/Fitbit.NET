@@ -51,12 +51,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Fitbit\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Fitbit\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -192,6 +199,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fitbit.Common\Fitbit.Common.csproj">
+      <Project>{37636456-5640-4258-adf5-11292e6b422e}</Project>
+      <Name>Fitbit.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fitbit\Fitbit.csproj">
       <Project>{D2C08C58-269F-45DE-8A25-C5492BC625F8}</Project>
       <Name>Fitbit</Name>
@@ -214,6 +225,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Fitbit\MonthWeight.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fitbit\UserProfile.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

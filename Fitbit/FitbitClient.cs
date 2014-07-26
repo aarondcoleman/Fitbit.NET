@@ -225,6 +225,7 @@ namespace Fitbit.Api
         /// Get current authenticated user's profile
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         public UserProfile GetUserProfile()
         {
             return GetUserProfile(null);
@@ -235,6 +236,7 @@ namespace Fitbit.Api
         /// </summary>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
+        [Obsolete]
         public UserProfile GetUserProfile(string encodedUserId)
         {
             string apiCall;
@@ -282,6 +284,7 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete]
         public List<Device> GetDevices()
         {
             RestRequest request = new RestRequest("/1/user/-/devices.xml");
@@ -291,7 +294,6 @@ namespace Fitbit.Api
             HandleResponse(response);
 
             return response.Data;
-
         }
 
         public List<TrackerAlarm> GetAlarms(string deviceId)

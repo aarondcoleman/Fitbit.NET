@@ -1,6 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
+VisualStudioVersion = 12.0.20827.3
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C284DD15-3355-4C6A-9EE0-D0A3BEA4D8A5}"
@@ -11,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C284DD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit", "Fitbit.csproj", "{D2C08C58-269F-45DE-8A25-C5492BC625F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fibit.Tests", "..\Fibit.Tests\Fibit.Tests.csproj", "{C07EA170-B8A0-4269-980D-389E883D208D}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Tests", "..\Fibit.Tests\Fitbit.Tests.csproj", "{C07EA170-B8A0-4269-980D-389E883D208D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.IntegrationTests", "..\Fitbit.IntegrationTests\Fitbit.IntegrationTests.csproj", "{D918CF21-DA5D-4AA9-81B3-6E4A03920E07}"

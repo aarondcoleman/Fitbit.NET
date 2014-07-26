@@ -19,5 +19,9 @@ namespace Fitbit.Models
         public int MinutesToFallAsleep { get; set; }
         public DateTime StartTime { get; set; }
         public int TimeInBed { get; set; }
+        public int AwakeCount { get; set; }
+        public int AwakeDuration { get; set; }
+        public int RestlessCount { get; set; }
+        public int RestlessDuration { get; set; }
     }
 }

@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\BitsmackGTAPI\packages\Fitbit.NET\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -58,6 +58,10 @@
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
     <Compile Include="FitbitClient.cs" />
+    <Compile Include="Models\Enums\ErrorType.cs" />
+    <Compile Include="Models\ApiError.cs" />
+    <Compile Include="FitbitException.cs" />
+    <Compile Include="Helpers\StringEnum.cs" />
     <Compile Include="IFitbitClient.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityDistance.cs" />

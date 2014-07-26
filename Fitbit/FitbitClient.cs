@@ -36,7 +36,6 @@ namespace Fitbit.Api
             this.consumerSecret = consumerSecret;
         }
 
-
         /// <summary>
         /// Initialize the FitbitClient using the provided access and the default API endpoint and RestSharp RestClient
         /// </summary>
@@ -203,7 +202,6 @@ namespace Fitbit.Api
 
         }
 
-
         public Food GetFood(DateTime date, string userId = null)
         {
             string userSignifier = "-"; //used for current user
@@ -258,7 +256,6 @@ namespace Fitbit.Api
             return response.Data;
 
         }
-
 
         public List<UserProfile> GetFriends()
         {
@@ -463,7 +460,6 @@ namespace Fitbit.Api
 
         }
 
-        
         public IntradayData GetIntraDayTimeSeries(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan)
         {
 

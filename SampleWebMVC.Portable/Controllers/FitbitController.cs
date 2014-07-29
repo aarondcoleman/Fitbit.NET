@@ -10,26 +10,23 @@ namespace SampleWebMVC.Portable.Controllers
         // GET: Fitbit
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         //
-        // GET: /FitbitAuth/
+        // GET: /Authorize/
         // Setup - prepare the user redirect to Fitbit.com to prompt them to authorize this app.
         public async Task<ActionResult> Authorize()
         {
-
             //make sure you've set these up in Web.Config under <appSettings>:
-            string ConsumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
-            string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
+            string consumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
+            string consumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
 
-
-            var authenticator = new Fitbit.Api.Portable.Authenticator(ConsumerKey, ConsumerSecret);
+            var authenticator = new Fitbit.Api.Portable.Authenticator(consumerKey, consumerSecret);
             RequestToken token = await authenticator.GetRequestTokenAsync();
-            Session.Add("FitbitRequestTokenSecret", token.Secret.ToString()); //store this somehow, like in Session as we'll need it after the Callback() action
+            Session.Add("FitbitRequestTokenSecret", token.Secret); //store this somehow, like in Session as we'll need it after the Callback() action
 
             //note: at this point the RequestToken object only has the Token and Secret properties supplied. Verifier happens later.
-
             string authUrl = authenticator.GenerateAuthUrlFromRequestToken(token, true);
 
             return Redirect(authUrl);
@@ -43,14 +40,13 @@ namespace SampleWebMVC.Portable.Controllers
             token.Secret = Session["FitbitRequestTokenSecret"].ToString();
             token.Verifier = Request.Params["oauth_verifier"];
 
-            string ConsumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
-            string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
+            string consumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
+            string consumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
 
             //this is going to go back to Fitbit one last time (server to server) and get the user's permanent auth credentials
 
             //create the Authenticator object
-            var authenticator = new Fitbit.Api.Portable.Authenticator(ConsumerKey, ConsumerSecret);
-
+            var authenticator = new Fitbit.Api.Portable.Authenticator(consumerKey, consumerSecret);
 
             //execute the Authenticator request to Fitbit
             AuthCredential credential = await authenticator.ProcessApprovedAuthCallbackAsync(token);
@@ -66,27 +62,36 @@ namespace SampleWebMVC.Portable.Controllers
             Session["FitbitUserId"] = credential.UserId;
 
             return RedirectToAction("Index", "Home");
-
-        }
-
-        public async Task<ActionResult> UserProfile()
-        {
-            var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
-            ConfigurationManager.AppSettings["FitbitConsumerSecret"],
-            Session["FitbitAuthToken"].ToString(),
-            Session["FitbitAuthTokenSecret"].ToString());
-
-            return View(await client.GetUserProfileAsync());
         }
 
         public async Task<ActionResult> Devices()
         {
             var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
-            ConfigurationManager.AppSettings["FitbitConsumerSecret"],
-            Session["FitbitAuthToken"].ToString(),
-            Session["FitbitAuthTokenSecret"].ToString());
+                                                              ConfigurationManager.AppSettings["FitbitConsumerSecret"],
+                                                              Session["FitbitAuthToken"].ToString(),
+                                                              Session["FitbitAuthTokenSecret"].ToString());
 
             return View(await client.GetDevicesAsync());
+        }
+
+        public async Task<ActionResult> Friends()
+        {
+            var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
+                                                              ConfigurationManager.AppSettings["FitbitConsumerSecret"],
+                                                              Session["FitbitAuthToken"].ToString(),
+                                                              Session["FitbitAuthTokenSecret"].ToString());
+
+            return View(await client.GetFriendsAsync());
+        }
+
+        public async Task<ActionResult> UserProfile()
+        {
+            var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
+                                                              ConfigurationManager.AppSettings["FitbitConsumerSecret"],
+                                                              Session["FitbitAuthToken"].ToString(),
+                                                              Session["FitbitAuthTokenSecret"].ToString());
+
+            return View(await client.GetUserProfileAsync());
         }
     }
 }

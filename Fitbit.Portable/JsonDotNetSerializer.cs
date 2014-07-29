@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Fitbit.Api.Portable
 {
@@ -18,16 +16,19 @@ namespace Fitbit.Api.Portable
                 return default(T);
             }
 
-            // use the generic JToken to allow for any data structure to be processed including arrays
             JToken o = JToken.Parse(data);
+            return Deserialize<T>(o);
+        }
 
-            if (o == null)
+        public T Deserialize<T>(JToken token)
+        {
+            if (token == null)
             {
                 return default(T);
             }
 
-            T result = string.IsNullOrWhiteSpace(RootProperty) ? o.ToObject<T>() : o[RootProperty].ToObject<T>();
-            return result;
+            T result = string.IsNullOrWhiteSpace(RootProperty) ? token.ToObject<T>() : token[RootProperty].ToObject<T>();
+            return result;            
         }
     }
 }

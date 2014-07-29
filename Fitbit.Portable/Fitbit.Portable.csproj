@@ -48,6 +48,7 @@
     <Compile Include="FitbitClient.cs" />
     <Compile Include="IFitbitClient.cs" />
     <Compile Include="JsonDotNetSerializer.cs" />
+    <Compile Include="JsonDotNetSerializerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

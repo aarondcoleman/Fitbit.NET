@@ -13,12 +13,6 @@ namespace Fitbit.Api.Portable
         private string _accessToken;
         private string _accessSecret;
         private HttpClient httpClient;
-        
-        public FitbitClient(string consumerKey, string consumerSecret)
-        {
-            _consumerKey = consumerKey;
-            _consumerSecret = consumerSecret;
-        }
 
         public FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret)
         {
@@ -28,6 +22,39 @@ namespace Fitbit.Api.Portable
             _accessSecret = accessSecret;
 
             httpClient = AsyncOAuth.OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, new AsyncOAuth.AccessToken(_accessToken, _accessSecret));
+        }
+
+        public async Task<List<Device>> GetDevicesAsync()
+        {
+            var fullCall = PrepareUrl("/1/user/-/devices.json");
+
+            HttpResponseMessage response = await httpClient.GetAsync(fullCall);
+            HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<List<Device>>(responseBody);
+        }
+
+        public async Task<IEnumerable<UserProfile>> GetFriendsAsync(string encodedUserId = default(string))
+        {
+            string apiCall;
+
+            if (string.IsNullOrWhiteSpace(encodedUserId))
+                apiCall = "/1/user/-/friends.json";
+            else
+                apiCall = string.Format("/1/user/{0}/friends.json", encodedUserId);
+
+            var fullCall = PrepareUrl(apiCall);
+
+            HttpResponseMessage response = await httpClient.GetAsync(fullCall);
+            HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            var serializer = new JsonDotNetSerializer();
+            return serializer.GetFriends(responseBody);
         }
 
         public async Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string))
@@ -47,32 +74,7 @@ namespace Fitbit.Api.Portable
             string responseBody = await response.Content.ReadAsStringAsync();
 
             var serializer = new JsonDotNetSerializer {RootProperty = "user"};
-            var user = serializer.Deserialize<UserProfile>(responseBody);
-
-            return user;
-        }
-
-        public async Task<List<Device>> GetDevicesAsync()
-        {
-            var fullCall = PrepareUrl("/1/user/-/devices.json");
-
-            HttpResponseMessage response = await httpClient.GetAsync(fullCall);
-            HandleResponse(response);
-
-            string responseBody = await response.Content.ReadAsStringAsync();
-
-            var serializer = new JsonDotNetSerializer();
-            var devices = serializer.Deserialize<List<Device>>(responseBody);
-            return devices;
-        }
-
-        private string PrepareUrl(string apiCall)
-        {
-            if (apiCall.StartsWith("/"))
-            {
-                apiCall = apiCall.TrimStart(new[] { '/' });
-            }
-            return Constants.BaseApiUrl + apiCall;
+            return serializer.Deserialize<UserProfile>(responseBody);
         }
 
         private async void HandleResponse(HttpResponseMessage response)
@@ -83,7 +85,7 @@ namespace Fitbit.Api.Portable
             IList<ApiError> errors = null;
             try
             {
-                var serializer = new JsonDotNetSerializer {RootProperty = "errors"};
+                var serializer = new JsonDotNetSerializer { RootProperty = "errors" };
                 errors = serializer.Deserialize<List<ApiError>>(await response.Content.ReadAsStringAsync());
             }
             finally
@@ -107,6 +109,15 @@ namespace Fitbit.Api.Portable
             }
 
             throw exception;
+        }
+
+        private string PrepareUrl(string apiCall)
+        {
+            if (apiCall.StartsWith("/"))
+            {
+                apiCall = apiCall.TrimStart(new[] { '/' });
+            }
+            return Constants.BaseApiUrl + apiCall;
         }
     }
 }

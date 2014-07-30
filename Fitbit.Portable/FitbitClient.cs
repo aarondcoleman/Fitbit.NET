@@ -21,9 +21,9 @@ namespace Fitbit.Api.Portable
         /// <returns>List of <see cref="Device"/></returns>
         public async Task<List<Device>> GetDevicesAsync()
         {
-            var fullCall = "/1/user/-/devices.json".ToFullUrl();
+            var apiCall = "/1/user/-/devices.json".ToFullUrl();
 
-            HttpResponseMessage response = await httpClient.GetAsync(fullCall);
+            HttpResponseMessage response = await httpClient.GetAsync(apiCall);
             HandleResponse(response);
 
             string responseBody = await response.Content.ReadAsStringAsync();

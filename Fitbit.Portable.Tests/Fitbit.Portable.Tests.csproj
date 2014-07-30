@@ -80,6 +80,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ApiErrorTests.cs" />
+    <Compile Include="FitbitClientTests.cs" />
     <Compile Include="FriendsTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

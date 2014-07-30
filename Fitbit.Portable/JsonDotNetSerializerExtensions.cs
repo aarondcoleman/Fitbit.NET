@@ -23,8 +23,8 @@ namespace Fitbit.Api.Portable
 
             // todo: additional error checking of json string required
             serializer.RootProperty = "user";
-            var users = JToken.Parse(friendsJson)["friends"];
-            return users.Children().Select(serializer.Deserialize<UserProfile>).ToList();           
+            var friends = JToken.Parse(friendsJson)["friends"];
+            return friends.Children().Select(serializer.Deserialize<UserProfile>).ToList();           
         }
     }
 }

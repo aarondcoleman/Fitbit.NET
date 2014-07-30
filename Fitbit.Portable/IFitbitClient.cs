@@ -7,7 +7,7 @@ namespace Fitbit.Api.Portable
     public interface IFitbitClient
     {
         Task<List<Device>> GetDevicesAsync();
-        Task<IEnumerable<UserProfile>> GetFriendsAsync(string encodedUserId = default(string));
+        Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string));
         Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string));
     }
 }

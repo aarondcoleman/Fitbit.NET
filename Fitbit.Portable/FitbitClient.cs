@@ -8,25 +8,20 @@ namespace Fitbit.Api.Portable
 {
     public class FitbitClient : IFitbitClient
     {
-        private string _consumerKey;
-        private string _consumerSecret;
-        private string _accessToken;
-        private string _accessSecret;
         private HttpClient httpClient;
 
         public FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret)
         {
-            _consumerKey = consumerKey;
-            _consumerSecret = consumerSecret;
-            _accessToken = accessToken;
-            _accessSecret = accessSecret;
-
-            httpClient = AsyncOAuth.OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, new AsyncOAuth.AccessToken(_accessToken, _accessSecret));
+            httpClient = AsyncOAuth.OAuthUtility.CreateOAuthClient(consumerKey, consumerSecret, new AsyncOAuth.AccessToken(accessToken, accessSecret));
         }
 
+        /// <summary>
+        /// Requests the devices for the current logged in user
+        /// </summary>
+        /// <returns>List of <see cref="Device"/></returns>
         public async Task<List<Device>> GetDevicesAsync()
         {
-            var fullCall = PrepareUrl("/1/user/-/devices.json");
+            var fullCall = "/1/user/-/devices.json".ToFullUrl();
 
             HttpResponseMessage response = await httpClient.GetAsync(fullCall);
             HandleResponse(response);
@@ -37,7 +32,12 @@ namespace Fitbit.Api.Portable
             return serializer.Deserialize<List<Device>>(responseBody);
         }
 
-        public async Task<IEnumerable<UserProfile>> GetFriendsAsync(string encodedUserId = default(string))
+        /// <summary>
+        /// Requests the friends of the encoded user id or if none supplied the current logged in user
+        /// </summary>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>List of <see cref="UserProfile"/></returns>
+        public async Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string))
         {
             string apiCall;
 
@@ -46,9 +46,7 @@ namespace Fitbit.Api.Portable
             else
                 apiCall = string.Format("/1/user/{0}/friends.json", encodedUserId);
 
-            var fullCall = PrepareUrl(apiCall);
-
-            HttpResponseMessage response = await httpClient.GetAsync(fullCall);
+            HttpResponseMessage response = await httpClient.GetAsync(apiCall.ToFullUrl());
             HandleResponse(response);
 
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -57,6 +55,11 @@ namespace Fitbit.Api.Portable
             return serializer.GetFriends(responseBody);
         }
 
+        /// <summary>
+        /// Requests the user profile of the encoded user id or if none specified the current logged in user
+        /// </summary>
+        /// <param name="encodedUserId"></param>
+        /// <returns><see cref="UserProfile"/></returns>
         public async Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string))
         {
             string apiCall;
@@ -66,9 +69,7 @@ namespace Fitbit.Api.Portable
             else
                 apiCall = string.Format("/1/user/{0}/profile.json", encodedUserId);
 
-            var fullCall = PrepareUrl(apiCall);
-
-            HttpResponseMessage response = await httpClient.GetAsync(fullCall);
+            HttpResponseMessage response = await httpClient.GetAsync(apiCall.ToFullUrl());
             HandleResponse(response);
 
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -109,15 +110,6 @@ namespace Fitbit.Api.Portable
             }
 
             throw exception;
-        }
-
-        private string PrepareUrl(string apiCall)
-        {
-            if (apiCall.StartsWith("/"))
-            {
-                apiCall = apiCall.TrimStart(new[] { '/' });
-            }
-            return Constants.BaseApiUrl + apiCall;
         }
     }
 }

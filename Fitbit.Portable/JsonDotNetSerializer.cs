@@ -20,7 +20,7 @@ namespace Fitbit.Api.Portable
             return Deserialize<T>(o);
         }
 
-        public T Deserialize<T>(JToken token)
+        internal T Deserialize<T>(JToken token)
         {
             if (token == null)
             {

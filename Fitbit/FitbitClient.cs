@@ -257,13 +257,12 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete]
         public List<UserProfile> GetFriends()
         {
             RestRequest request = new RestRequest("/1/user/-/friends.xml");
             request.RootElement = "friends";
             
-
-
             var response = restClient.Execute<List<Friend>>(request);
 
             HandleResponse(response);
@@ -278,7 +277,6 @@ namespace Fitbit.Api
             return userProfiles;
 
             //return response.Data;
-
         }
 
         [Obsolete]

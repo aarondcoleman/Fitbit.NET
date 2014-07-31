@@ -39,12 +39,11 @@ namespace Fitbit.Api.Portable
         /// <returns>List of <see cref="UserProfile"/></returns>
         public async Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string))
         {
-            string apiCall;
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(encodedUserId))
+                userSignifier = encodedUserId;
 
-            if (string.IsNullOrWhiteSpace(encodedUserId))
-                apiCall = "/1/user/-/friends.json";
-            else
-                apiCall = string.Format("/1/user/{0}/friends.json", encodedUserId);
+            string apiCall = string.Format("/1/user/{0}/friends.json", userSignifier);
 
             HttpResponseMessage response = await httpClient.GetAsync(apiCall.ToFullUrl());
             HandleResponse(response);
@@ -62,12 +61,11 @@ namespace Fitbit.Api.Portable
         /// <returns><see cref="UserProfile"/></returns>
         public async Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string))
         {
-            string apiCall;
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(encodedUserId))
+                userSignifier = encodedUserId;
 
-            if (string.IsNullOrWhiteSpace(encodedUserId))
-                apiCall = "/1/user/-/profile.json";
-            else
-                apiCall = string.Format("/1/user/{0}/profile.json", encodedUserId);
+            string apiCall = string.Format("/1/user/{0}/profile.json", userSignifier);
 
             HttpResponseMessage response = await httpClient.GetAsync(apiCall.ToFullUrl());
             HandleResponse(response);

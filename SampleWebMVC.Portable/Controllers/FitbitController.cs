@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Fitbit.Api.Portable;
 using Fitbit.Models;
 
 namespace SampleWebMVC.Portable.Controllers
@@ -22,7 +23,7 @@ namespace SampleWebMVC.Portable.Controllers
             string consumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
             string consumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
 
-            var authenticator = new Fitbit.Api.Portable.Authenticator(consumerKey, consumerSecret);
+            var authenticator = new Authenticator(consumerKey, consumerSecret);
             RequestToken token = await authenticator.GetRequestTokenAsync();
             Session.Add("FitbitRequestTokenSecret", token.Secret); //store this somehow, like in Session as we'll need it after the Callback() action
 
@@ -46,7 +47,7 @@ namespace SampleWebMVC.Portable.Controllers
             //this is going to go back to Fitbit one last time (server to server) and get the user's permanent auth credentials
 
             //create the Authenticator object
-            var authenticator = new Fitbit.Api.Portable.Authenticator(consumerKey, consumerSecret);
+            var authenticator = new Authenticator(consumerKey, consumerSecret);
 
             //execute the Authenticator request to Fitbit
             AuthCredential credential = await authenticator.ProcessApprovedAuthCallbackAsync(token);
@@ -66,32 +67,28 @@ namespace SampleWebMVC.Portable.Controllers
 
         public async Task<ActionResult> Devices()
         {
-            var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
-                                                              ConfigurationManager.AppSettings["FitbitConsumerSecret"],
-                                                              Session["FitbitAuthToken"].ToString(),
-                                                              Session["FitbitAuthTokenSecret"].ToString());
-
+            var client = GetClient();
             return View(await client.GetDevicesAsync());
         }
 
         public async Task<ActionResult> Friends()
         {
-            var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
-                                                              ConfigurationManager.AppSettings["FitbitConsumerSecret"],
-                                                              Session["FitbitAuthToken"].ToString(),
-                                                              Session["FitbitAuthTokenSecret"].ToString());
-
+            var client = GetClient();
             return View(await client.GetFriendsAsync());
         }
 
         public async Task<ActionResult> UserProfile()
         {
-            var client = new Fitbit.Api.Portable.FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
+            var client = GetClient();
+            return View(await client.GetUserProfileAsync());
+        }
+
+        private IFitbitClient GetClient()
+        {
+            return new FitbitClient(ConfigurationManager.AppSettings["FitbitConsumerKey"],
                                                               ConfigurationManager.AppSettings["FitbitConsumerSecret"],
                                                               Session["FitbitAuthToken"].ToString(),
                                                               Session["FitbitAuthTokenSecret"].ToString());
-
-            return View(await client.GetUserProfileAsync());
         }
     }
 }

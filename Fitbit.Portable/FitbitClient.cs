@@ -68,6 +68,11 @@ namespace Fitbit.Api.Portable
             return serializer.Deserialize<UserProfile>(responseBody);
         }
 
+        /// <summary>
+        /// General error checking of the response before specific processing is done. This checks that a valid
+        /// http status is returned and if not then a FitbitException is raised with the details of the errors
+        /// </summary>
+        /// <param name="response"></param>
         private async void HandleResponse(HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode)

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
-using Fitbit.Portable.Tests.Helpers;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -14,7 +12,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ApiError()
         {
-            string content = File.ReadAllText(SampleData.PathFor("ApiError.json"));
+            string content = "ApiError.json".GetContent();
 
             var deserializer = new JsonDotNetSerializer();
             deserializer.RootProperty = "errors";

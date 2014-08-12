@@ -80,11 +80,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ApiErrorTests.cs" />
+    <Compile Include="FakeResponseHandler.cs" />
     <Compile Include="FitbitClientTests.cs" />
     <Compile Include="FriendsTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers\SampleData.cs" />
+    <Compile Include="SampleDataHelper.cs" />
     <Compile Include="DeviceTests.cs" />
     <Compile Include="UserProfileTests.cs" />
   </ItemGroup>

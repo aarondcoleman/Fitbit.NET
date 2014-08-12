@@ -65,5 +65,22 @@ namespace Fitbit.Portable.Tests
             Assert.IsFalse(string.IsNullOrWhiteSpace(apiCall));
             Assert.AreEqual("https://api.fitbit.com/1/user/2KNXXX/friends.json", apiCall);
         }
+
+        //[Test]
+        //public async void Test()
+        //{
+        //    var fakeResponseHandler = new FakeResponseHandler();
+        //    fakeResponseHandler.AddResponse(new Uri("http://example.org/test"), new HttpResponseMessage(HttpStatusCode.OK));
+
+        //    var httpClient = new HttpClient(fakeResponseHandler);
+
+        //    var response1 = await httpClient.GetAsync("http://example.org/notthere");
+        //    var response2 = await httpClient.GetAsync("http://example.org/test");
+
+        //    Assert.AreEqual(response1.StatusCode, HttpStatusCode.NotFound);
+        //    Assert.AreEqual(response2.StatusCode, HttpStatusCode.OK);
+
+        //    Assert.AreEqual(2, fakeResponseHandler.CallCount);
+        //}
     }
 }

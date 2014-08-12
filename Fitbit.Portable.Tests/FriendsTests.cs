@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
-using Fitbit.Portable.Tests.Helpers;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -12,6 +10,10 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class FriendsTests
     {
+
+        // todo: fitbit client calls for friends resource
+
+
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throws_Exception_With_Empty_String()
@@ -39,7 +41,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Friends_Multiple()
         {
-            string content = File.ReadAllText(SampleData.PathFor("GetFriends-Multiple.json"));
+            string content = "GetFriends-Multiple.json".GetContent();
             var deserializer = new JsonDotNetSerializer();
             
             List<UserProfile> friends = deserializer.GetFriends(content);
@@ -114,7 +116,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Friends_Single()
         {
-            string content = File.ReadAllText(SampleData.PathFor("GetFriends-Single.json"));
+            string content = "GetFriends-Single.json".GetContent();
             var deserializer = new JsonDotNetSerializer();
 
             List<UserProfile> friends = deserializer.GetFriends(content);
@@ -146,7 +148,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Friends_None()
         {
-            string content = File.ReadAllText(SampleData.PathFor("GetFriends-None.json"));
+            string content = "GetFriends-None.json".GetContent();
             var deserializer = new JsonDotNetSerializer();
 
             List<UserProfile> friends = deserializer.GetFriends(content);

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
-using Fitbit.Portable.Tests.Helpers;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -13,7 +11,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Profile()
         {
-            string content = File.ReadAllText(SampleData.PathFor("UserProfile.json"));
+            string content = "UserProfile.json".GetContent();
             var deserializer = new JsonDotNetSerializer();
             deserializer.RootProperty = "user";
 

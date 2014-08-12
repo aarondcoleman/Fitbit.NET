@@ -6,8 +6,8 @@ namespace Fitbit.Api.Portable
 {
     public interface IFitbitClient
     {
-        Task<List<Device>> GetDevicesAsync();
-        Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string));
-        Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string));
+        Task<FitbitResponse<List<Device>>> GetDevicesAsync();
+        Task<FitbitResponse<List<UserProfile>>> GetFriendsAsync(string encodedUserId = default(string));
+        Task<FitbitResponse<UserProfile>> GetUserProfileAsync(string encodedUserId = default(string));
     }
 }

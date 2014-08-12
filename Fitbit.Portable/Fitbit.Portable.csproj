@@ -47,6 +47,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitClientExtensions.cs" />
+    <Compile Include="FitbitResponse.cs" />
     <Compile Include="IFitbitClient.cs" />
     <Compile Include="JsonDotNetSerializer.cs" />
     <Compile Include="JsonDotNetSerializerExtensions.cs" />

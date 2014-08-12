@@ -68,19 +68,43 @@ namespace SampleWebMVC.Portable.Controllers
         public async Task<ActionResult> Devices()
         {
             var client = GetClient();
-            return View(await client.GetDevicesAsync());
+            var response = await client.GetDevicesAsync();
+            if (response.Success)
+            {
+                return View(response.Data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public async Task<ActionResult> Friends()
         {
             var client = GetClient();
-            return View(await client.GetFriendsAsync());
+            var response = await client.GetFriendsAsync();
+            if (response.Success)
+            {
+                return View(response.Data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+}
         }
 
         public async Task<ActionResult> UserProfile()
         {
             var client = GetClient();
-            return View(await client.GetUserProfileAsync());
+            var response = await client.GetUserProfileAsync();
+            if (response.Success)
+            {
+                return View(response.Data);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         private IFitbitClient GetClient()

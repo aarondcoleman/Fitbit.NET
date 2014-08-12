@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
-using Fitbit.Portable.Tests.Helpers;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -13,9 +13,67 @@ namespace Fitbit.Portable.Tests
     public class DeviceTests
     {
         [Test]
+        public async void GetDevicesAsync_Success()
+        {
+            string content = "GetDevices-Single.json".GetContent();
+
+            var fakeResponseHandler = new FakeResponseHandler();
+            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/devices.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+
+            var httpClient = new HttpClient(fakeResponseHandler);
+            var fitbitClient = new FitbitClient(httpClient);
+
+            var response = await fitbitClient.GetDevicesAsync();
+            Assert.IsTrue(response.Success);
+            fakeResponseHandler.AssertAllCalled();
+
+            var devices = response.Data;
+            
+            Assert.AreEqual(1, devices.Count);
+            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+        }
+
+        [Test]
+        public async void GetDevicesAsync_Success_Mulitiple()
+        {
+            string content = "GetDevices-Double.json".GetContent();
+
+            var fakeResponseHandler = new FakeResponseHandler();
+            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/devices.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+
+            var httpClient = new HttpClient(fakeResponseHandler);
+            var fitbitClient = new FitbitClient(httpClient);
+
+            var response = await fitbitClient.GetDevicesAsync();
+            Assert.IsTrue(response.Success);
+            fakeResponseHandler.AssertAllCalled();
+
+            var devices = response.Data;
+
+            Assert.AreEqual(2, devices.Count);
+            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+        }
+
+        [Test]
+        public async void GetDevicesAsync_Failure_Errors()
+        {
+            string content = "GetDevices-Single.json".GetContent();
+
+            var fakeResponseHandler = new FakeResponseHandler();
+            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/qwert/devices.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+
+            var httpClient = new HttpClient(fakeResponseHandler);
+            var fitbitClient = new FitbitClient(httpClient);
+
+            var response = await fitbitClient.GetDevicesAsync();
+            Assert.IsFalse(response.Success);
+            Assert.IsNull(response.Data);
+        }
+
+        [Test]
         public void Can_Deserialise_Single_Device_Details()
         {
-            string content = File.ReadAllText(SampleData.PathFor("GetDevices-Single.json"));
+            string content = "GetDevices-Single.json".GetContent();
             var deserializer = new JsonDotNetSerializer();
             
             List<Device> result = deserializer.Deserialize<List<Device>>(content);
@@ -35,7 +93,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialise_Multiple_Device_Details()
         {
-            string content = File.ReadAllText(SampleData.PathFor("GetDevices-Double.json"));
+            string content = "GetDevices-Double.json".GetContent();
             var deserializer = new JsonDotNetSerializer();
             
             List<Device> result = deserializer.Deserialize<List<Device>>(content);

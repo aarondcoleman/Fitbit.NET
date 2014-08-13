@@ -90,7 +90,7 @@ namespace SampleWebMVC.Portable.Controllers
             else
             {
                 return RedirectToAction("Index", "Home");
-}
+            }
         }
 
         public async Task<ActionResult> UserProfile()

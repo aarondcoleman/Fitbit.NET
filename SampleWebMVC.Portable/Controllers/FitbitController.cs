@@ -73,10 +73,7 @@ namespace SampleWebMVC.Portable.Controllers
             {
                 return View(response.Data);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<ActionResult> Friends()
@@ -87,10 +84,7 @@ namespace SampleWebMVC.Portable.Controllers
             {
                 return View(response.Data);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<ActionResult> UserProfile()
@@ -101,10 +95,7 @@ namespace SampleWebMVC.Portable.Controllers
             {
                 return View(response.Data);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         private IFitbitClient GetClient()

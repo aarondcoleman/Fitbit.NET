@@ -97,15 +97,13 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// General error checking of the response before specific processing is done. This checks that a valid
-        /// http status is returned and if not then a FitbitException is raised with the details of the errors
+        /// General error checking of the response before specific processing is done.
         /// </summary>
         /// <param name="response"></param>
         private async Task<FitbitResponse<T>> HandleResponse<T>(HttpResponseMessage response) where T : class
         {
             var errors = new List<ApiError>();
-            var retryAfterInSeconds = 0;
-
+            
             if (!response.IsSuccessStatusCode)
             {
                 try
@@ -115,20 +113,12 @@ namespace Fitbit.Api.Portable
                 }
                 catch
                 {
+                    // if there is an error with the serialization then we need to default the errors back to an instantiated list
                     errors = new List<ApiError>();
-                }
-
-                var retryAfterHeader = response.Headers.RetryAfter;
-                if (retryAfterHeader != null)
-                {
-                    if (retryAfterHeader.Delta.HasValue)
-                    {
-                        retryAfterInSeconds = retryAfterHeader.Delta.Value.Seconds;
-                    }
-                }    
+                }  
             }
 
-            return new FitbitResponse<T>(response.StatusCode, retryAfterInSeconds, errors);
+            return new FitbitResponse<T>(response.StatusCode, response.Headers, errors);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
+using System.Net.Http.Headers;
 using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
@@ -14,7 +14,7 @@ namespace Fitbit.Api.Portable
 
         public HttpStatusCode StatusCode { get; private set; }
 
-        public int RetryAfterInSeconds { get; private set; }
+        public HttpHeaders HttpHeaders { get; private set; }
 
         public bool Success
         {
@@ -31,10 +31,10 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        public FitbitResponse(HttpStatusCode httpStatusCode, int retryAfterInSeconds, List<ApiError> errors)
+        internal FitbitResponse(HttpStatusCode httpStatusCode, HttpHeaders httpHeaders, List<ApiError> errors)
         {
             StatusCode = httpStatusCode;
-            RetryAfterInSeconds = retryAfterInSeconds;
+            HttpHeaders = httpHeaders;
             Errors = errors ?? new List<ApiError>();
         }
     }

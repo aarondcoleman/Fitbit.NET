@@ -8,7 +8,7 @@
         /// <param name="apiCall"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public static string ToFullUrl(this string apiCall, string encodedUserId = default(string))
+        internal static string ToFullUrl(this string apiCall, string encodedUserId = default(string))
         {
             string userSignifier = "-"; //used for current user
             if (!string.IsNullOrWhiteSpace(encodedUserId))

@@ -9,7 +9,7 @@ namespace Fitbit.Api.Portable
         /// </summary>
         public string RootProperty { get; set; }
 
-        public T Deserialize<T>(string data)
+        internal T Deserialize<T>(string data)
         {
             if (string.IsNullOrWhiteSpace(data))
             {

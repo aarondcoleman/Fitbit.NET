@@ -93,7 +93,6 @@
     <Compile Include="Models\IntradayData.cs" />
     <Compile Include="Models\Enums\IntradayResourceType.cs" />
     <Compile Include="Models\SubscriptionResponse.cs" />
-    <Compile Include="Models\Enums\TimeSeriesResourceType.cs" />
     <Compile Include="Models\TrackerAlarm.cs" />
     <Compile Include="Models\UpdatedResource.cs" />
     <Compile Include="Models\Updates.cs" />

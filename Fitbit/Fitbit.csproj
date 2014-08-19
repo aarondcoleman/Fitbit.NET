@@ -76,7 +76,6 @@
     <Compile Include="Models\Fat.cs" />
     <Compile Include="Models\FatLog.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />
-    <Compile Include="Models\Enums\DateRangePeriod.cs" />
     <Compile Include="Models\Enums\ResourceOwnerType.cs" />
     <Compile Include="Models\Food.cs" />
     <Compile Include="Models\FoodGoals.cs" />

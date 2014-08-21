@@ -87,7 +87,6 @@
     <Compile Include="Models\HeartRateSummary.cs" />
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
-    <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\Friend.cs" />
     <Compile Include="Models\IntradayData.cs" />
     <Compile Include="Models\Enums\IntradayResourceType.cs" />

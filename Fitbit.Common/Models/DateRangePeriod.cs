@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Fitbit.Models
+﻿namespace Fitbit.Models
 {
     /// <summary>
     /// All date ranges that can be queried from fitbit

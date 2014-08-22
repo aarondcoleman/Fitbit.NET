@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Fitbit.Models;
@@ -34,7 +35,33 @@ namespace Fitbit.Api.Portable
 
         private FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret, HttpClient httpClient = null)
         {
-            HttpClient = httpClient ?? AsyncOAuth.OAuthUtility.CreateOAuthClient(consumerKey, consumerSecret, new AsyncOAuth.AccessToken(accessToken, accessSecret));
+            HttpClient = httpClient;
+            if (HttpClient == null)
+            {
+                #region parameter checking
+                if (string.IsNullOrWhiteSpace(consumerKey))
+                {
+                    throw new ArgumentNullException("consumerKey", "ConsumerKey must not be empty or null");
+                }
+
+                if (string.IsNullOrWhiteSpace(consumerSecret))
+                {
+                    throw new ArgumentNullException("consumerSecret", "ConsumerSecret must not be empty or null");
+                }
+
+                if (string.IsNullOrWhiteSpace(accessToken))
+                {
+                    throw new ArgumentNullException("accessToken", "AccessToken must not be empty or null");
+                }
+
+                if (string.IsNullOrWhiteSpace(accessSecret))
+                {
+                    throw new ArgumentNullException("accessSecret", "AccessSecret must not be empty or null");
+                }
+                #endregion
+
+                HttpClient = AsyncOAuth.OAuthUtility.CreateOAuthClient(consumerKey, consumerSecret, new AsyncOAuth.AccessToken(accessToken, accessSecret));
+            }
         }
 
         /// <summary>
@@ -97,6 +124,104 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeSeriesResourceType"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<TimeSeriesDataList>> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = default(string))
+        {
+            return await GetTimeSeriesAsync(timeSeriesResourceType, startDate, endDate.ToFitbitFormat(), encodedUserId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeSeriesResourceType"></param>
+        /// <param name="endDate"></param>
+        /// <param name="period"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<TimeSeriesDataList>> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = default(string))
+        {
+            return await GetTimeSeriesAsync(timeSeriesResourceType, endDate, period.GetStringValue(), encodedUserId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeSeriesResourceType"></param>
+        /// <param name="baseDate"></param>
+        /// <param name="endDateOrPeriod"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        private async Task<FitbitResponse<TimeSeriesDataList>> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId = default(string))
+        {
+            var apiCall = "/1/user/{0}{1}/date/{2}/{3}.json".ToFullUrl(encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<TimeSeriesDataList>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer {RootProperty = timeSeriesResourceType.ToTimeSeriesProperty()};
+                fitbitResponse.Data = serializer.GetTimeSeriesDataList(responseBody);   
+            }
+            return fitbitResponse;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeSeriesResourceType"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = null)
+        {
+            return GetTimeSeriesIntAsync(timeSeriesResourceType, startDate, endDate.ToFitbitFormat(), encodedUserId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeSeriesResourceType"></param>
+        /// <param name="endDate"></param>
+        /// <param name="period"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = null)
+        {
+            return GetTimeSeriesIntAsync(timeSeriesResourceType, endDate, period.GetStringValue(), encodedUserId);
+        }
+
+        /// <summary>
+        /// Get TimeSeries data for another user accessible with this user's credentials
+        /// </summary>
+        /// <param name="timeSeriesResourceType"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private async Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
+        {
+            var apiCall = "/1/user/{0}{1}/date/{2}/{3}.json".ToFullUrl(encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<TimeSeriesDataListInt>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
+                fitbitResponse.Data = serializer.GetTimeSeriesDataListInt(responseBody);
+            }
+            return fitbitResponse;
+        }
+
+        /// <summary>
         /// General error checking of the response before specific processing is done.
         /// </summary>
         /// <param name="response"></param>
@@ -117,6 +242,8 @@ namespace Fitbit.Api.Portable
                     errors = new List<ApiError>();
                 }  
             }
+
+            // todo: handle "success" responses which return errors?
 
             return new FitbitResponse<T>(response.StatusCode, response.Headers, errors);
         }

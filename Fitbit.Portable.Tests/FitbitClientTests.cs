@@ -1,4 +1,5 @@
-﻿using Fitbit.Api.Portable;
+﻿using System;
+using Fitbit.Api.Portable;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -64,6 +65,13 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(apiCall);
             Assert.IsFalse(string.IsNullOrWhiteSpace(apiCall));
             Assert.AreEqual("https://api.fitbit.com/1/user/2KNXXX/friends.json", apiCall);
+        }
+
+        [Test]
+        public void ToFitbitFormat_DateTime()
+        {
+            DateTime date = new DateTime(2014, 08, 21);
+            Assert.AreEqual("2014-08-21", date.ToFitbitFormat());
         }
 
         //[Test]

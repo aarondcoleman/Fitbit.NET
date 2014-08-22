@@ -311,21 +311,25 @@ namespace Fitbit.Api
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
+        [Obsolete]
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate)
         {
             return GetTimeSeries(timeSeriesResourceType, startDate, endDate, null);
         }
 
+        [Obsolete]
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string userId)
         {
             return GetTimeSeries(timeSeriesResourceType, startDate, endDate.ToString("yyyy-MM-dd"), userId);
         }
 
+        [Obsolete]
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period)
         {
             return GetTimeSeries(timeSeriesResourceType, endDate, period, null);
         }
 
+        [Obsolete]
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string userId)
         {
             return GetTimeSeries(timeSeriesResourceType, endDate, period.GetStringValue(), userId);
@@ -339,6 +343,7 @@ namespace Fitbit.Api
         /// <param name="endDate"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
+        [Obsolete]
         private TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string userId)
         {
 
@@ -387,21 +392,25 @@ namespace Fitbit.Api
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate)
         {
             return GetTimeSeriesInt(timeSeriesResourceType, startDate, endDate, null);
         }
 
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string userId)
         {
             return GetTimeSeriesInt(timeSeriesResourceType, startDate, endDate.ToString("yyyy-MM-dd"), userId);
         }
 
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period)
         {
             return GetTimeSeriesInt(timeSeriesResourceType, endDate, period, null);
         }
 
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string userId)
         {
             return GetTimeSeriesInt(timeSeriesResourceType, endDate, period.GetStringValue(), userId);
@@ -415,6 +424,7 @@ namespace Fitbit.Api
         /// <param name="endDate"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string userId)
         {
 

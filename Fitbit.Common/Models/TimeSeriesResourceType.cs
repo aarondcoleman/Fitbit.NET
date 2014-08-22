@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Fitbit.Models
+﻿namespace Fitbit.Models
 {
     /// <summary>
     /// All time series types that can be queried from fitbit
@@ -90,8 +85,5 @@ namespace Fitbit.Models
         BMI,
         [StringValue("/body/fat")]
         Fat        
-    }
-
-
-    
+    }   
 }

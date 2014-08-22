@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Fitbit.Api.Portable;
@@ -94,6 +95,28 @@ namespace SampleWebMVC.Portable.Controllers
             if (response.Success)
             {
                 return View(response.Data);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<ActionResult> LastWeekDistance()
+        {
+            var client = GetClient();
+            var response = await client.GetTimeSeriesAsync(TimeSeriesResourceType.Distance, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+            if (response.Success)
+            {
+                return View("TimeSeriesDataList", response.Data);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<ActionResult> LastWeekSteps()
+        {
+            var client = GetClient();
+            var response = await client.GetTimeSeriesAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+            if (response.Success)
+            {
+                return View("TimeSeriesDataList", response.Data);
             }
             return RedirectToAction("Index", "Home");
         }

@@ -32,7 +32,6 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="timeSeriesDataJson"></param>
-        /// <param name="arrayProperty"></param>
         /// <returns></returns>
         internal static TimeSeriesDataList GetTimeSeriesDataList(this JsonDotNetSerializer serializer, string timeSeriesDataJson)
         {
@@ -60,7 +59,6 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="timeSeriesDataJson"></param>
-        /// <param name="arrayProperty"></param>
         /// <returns></returns>
         internal static TimeSeriesDataListInt GetTimeSeriesDataListInt(this JsonDotNetSerializer serializer, string timeSeriesDataJson)
         {

@@ -53,7 +53,7 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// 
+        /// Converts the specified datetime value into the required format for calling the Fitbit API (yyyy-MM-dd)
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>

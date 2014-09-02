@@ -7,7 +7,7 @@ namespace Fitbit.Api.Portable
         /// <summary>
         /// Root property value; only required if trying to access nested information or an array is hanging off a property
         /// </summary>
-        public string RootProperty { get; set; }
+        internal string RootProperty { get; set; }
 
         internal T Deserialize<T>(string data)
         {

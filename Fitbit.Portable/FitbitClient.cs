@@ -38,7 +38,7 @@ namespace Fitbit.Api.Portable
             HttpClient = httpClient;
             if (HttpClient == null)
             {
-                #region parameter checking
+                #region Parameter checking
                 if (string.IsNullOrWhiteSpace(consumerKey))
                 {
                     throw new ArgumentNullException("consumerKey", "ConsumerKey must not be empty or null");
@@ -124,7 +124,7 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// 
+        /// Requests the specified <see cref="TimeSeriesResourceType"/> for the date range and user specified
         /// </summary>
         /// <param name="timeSeriesResourceType"></param>
         /// <param name="startDate"></param>
@@ -137,7 +137,7 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// 
+        /// Requests the specified <see cref="TimeSeriesResourceType"/> for the date range and user specified 
         /// </summary>
         /// <param name="timeSeriesResourceType"></param>
         /// <param name="endDate"></param>
@@ -150,7 +150,7 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// 
+        /// Requests the specified <see cref="TimeSeriesResourceType"/> for the date range and user specified
         /// </summary>
         /// <param name="timeSeriesResourceType"></param>
         /// <param name="baseDate"></param>
@@ -173,7 +173,7 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// 
+        /// Requests the specified <see cref="TimeSeriesResourceType"/> for the date range and user specified
         /// </summary>
         /// <param name="timeSeriesResourceType"></param>
         /// <param name="startDate"></param>
@@ -186,7 +186,7 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// 
+        /// Requests the specified <see cref="TimeSeriesResourceType"/> for the date range and user specified
         /// </summary>
         /// <param name="timeSeriesResourceType"></param>
         /// <param name="endDate"></param>
@@ -202,9 +202,9 @@ namespace Fitbit.Api.Portable
         /// Get TimeSeries data for another user accessible with this user's credentials
         /// </summary>
         /// <param name="timeSeriesResourceType"></param>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <param name="userId"></param>
+        /// <param name="baseDate"></param>
+        /// <param name="endDateOrPeriod"></param>
+        /// <param name="encodedUserId"></param>
         /// <returns></returns>
         private async Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
         {

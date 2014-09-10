@@ -2,14 +2,14 @@
 using System.Linq;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class TimeSeriesTests
     {
-        [TestMethod]
+        [Test]
         public void Can_Deserialize_Activities_Distance()
         {
             string content = "TimeSeries-ActivitiesDistance.json".GetContent();

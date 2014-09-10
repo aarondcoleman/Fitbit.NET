@@ -73,22 +73,5 @@ namespace Fitbit.Portable.Tests
             DateTime date = new DateTime(2014, 08, 21);
             Assert.AreEqual("2014-08-21", date.ToFitbitFormat());
         }
-
-        //[Test]
-        //public async void Test()
-        //{
-        //    var fakeResponseHandler = new FakeResponseHandler();
-        //    fakeResponseHandler.AddResponse(new Uri("http://example.org/test"), new HttpResponseMessage(HttpStatusCode.OK));
-
-        //    var httpClient = new HttpClient(fakeResponseHandler);
-
-        //    var response1 = await httpClient.GetAsync("http://example.org/notthere");
-        //    var response2 = await httpClient.GetAsync("http://example.org/test");
-
-        //    Assert.AreEqual(response1.StatusCode, HttpStatusCode.NotFound);
-        //    Assert.AreEqual(response2.StatusCode, HttpStatusCode.OK);
-
-        //    Assert.AreEqual(2, fakeResponseHandler.CallCount);
-        //}
     }
 }

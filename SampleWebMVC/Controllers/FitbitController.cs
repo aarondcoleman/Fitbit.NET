@@ -14,7 +14,7 @@ namespace SampleWebMVC.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         //

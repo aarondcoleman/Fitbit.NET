@@ -21,11 +21,17 @@ namespace Fitbit.Api.Portable
             if (429 == (int) response.StatusCode)
             {
                 var retryAfterHeader = response.HttpHeaders.FirstOrDefault(h => h.Key == "Retry-After");
-
-                int retryAfter;
-                if (int.TryParse(retryAfterHeader.Value.ToString(), out retryAfter))
+                if (retryAfterHeader.Key != null)
                 {
-                    value = retryAfter;
+                    string headerValue = retryAfterHeader.Value.FirstOrDefault();
+                    if (!string.IsNullOrWhiteSpace(headerValue))
+                    {
+                        int retryAfter;
+                        if (int.TryParse(headerValue, out retryAfter))
+                        {
+                            value = retryAfter;
+                        }
+                    }
                 }
             }
             return value;

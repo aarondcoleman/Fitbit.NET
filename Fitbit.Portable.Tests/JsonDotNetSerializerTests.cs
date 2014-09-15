@@ -1,5 +1,6 @@
 ﻿using Fitbit.Api.Portable;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -16,10 +17,18 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
-        public void DefaultValueCreated()
+        public void DefaultValueCreated_String()
         {
             var serializer = new JsonDotNetSerializer();
             var defaultValue = serializer.Deserialize<TestClass>(string.Empty);
+            Assert.AreEqual(default(TestClass), defaultValue);
+        }
+
+        [Test]
+        public void DefaultValueCreated_JToken()
+        {
+            var serializer = new JsonDotNetSerializer();
+            var defaultValue = serializer.Deserialize<TestClass>((JToken)null);
             Assert.AreEqual(default(TestClass), defaultValue);
         }
 

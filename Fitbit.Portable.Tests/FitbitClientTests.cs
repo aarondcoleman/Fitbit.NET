@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.AccessControl;
 using Fitbit.Api.Portable;
 using NUnit.Framework;
 
@@ -72,6 +73,69 @@ namespace Fitbit.Portable.Tests
         {
             DateTime date = new DateTime(2014, 08, 21);
             Assert.AreEqual("2014-08-21", date.ToFitbitFormat());
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_ConsumerKey_Empty()
+        {
+            new FitbitClient(string.Empty, "secret", "access", "accessSecret");
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_ConsumerKey_Null()
+        {
+            new FitbitClient(null, "secret", "access", "accessSecret");
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_ConsumerSecret_Empty()
+        {
+            new FitbitClient("key", string.Empty, "access", "accessSecret");
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_ConsumerSecret_Null()
+        {
+            new FitbitClient("key", null, "access", "accessSecret");
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_AccesToken_Empty()
+        {
+            new FitbitClient("key", "secret", string.Empty, "accessSecret");
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_AccessToken_Null()
+        {
+            new FitbitClient("key", "secret", null, "accessSecret");
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_AccessSecret_Empty()
+        {
+            new FitbitClient("key", "secret", "access", null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_AccessSecret_Null()
+        {
+            new FitbitClient("key", "secret", "access", string.Empty);
+        }
+
+        [Test]
+        public void Constructor_HttpClient_Create()
+        {
+            var client = new FitbitClient("key", "secret", "access", "accessToken");
+            Assert.IsNotNull(client.HttpClient);
         }
     }
 }

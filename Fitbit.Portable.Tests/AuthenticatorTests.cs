@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Fitbit.Api.Portable;
+using Fitbit.Models;
+using NUnit.Framework;
+
+namespace Fitbit.Portable.Tests
+{
+    [TestFixture]
+    public class AuthenticatorTests
+    {
+        [Test]
+        public void Constructor()
+        {
+            var authenticator = new Authenticator("key", "secret");
+            Assert.IsNotNull(authenticator);
+            Assert.AreEqual("key", authenticator.ConsumerKey);
+            Assert.AreEqual("secret", authenticator.ConsumerSecret);
+        }
+
+        [Test]
+        public void Generate_Auth_Url_ForceLogout_True()
+        {
+            var authenticator = new Authenticator("key", "secret");
+            var url = authenticator.GenerateAuthUrlFromRequestToken(new RequestToken {Token = "something"}, true);
+            Assert.AreEqual("https://api.fitbit.com/oauth/logout_and_authorize?oauth_token=something", url);
+        }
+
+        [Test]
+        public void Generate_Auth_Url_ForceLogout_False()
+        {
+            var authenticator = new Authenticator("key", "secret");
+            var url = authenticator.GenerateAuthUrlFromRequestToken(new RequestToken { Token = "something" }, false);
+            Assert.AreEqual("https://api.fitbit.com/oauth/authorize?oauth_token=something", url);
+        }
+    }
+}

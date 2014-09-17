@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Fitbit.Portable.Tests
 {
     [TestFixture]
-    public class TimeSeriesDistanceTests
+    public class TimeSeriesDataListTests
     {
         [Test]
         public async void GetUserProfileAsync_Success()
@@ -29,7 +29,7 @@ namespace Fitbit.Portable.Tests
 
             Assert.AreEqual(1, fakeResponseHandler.CallCount);
 
-            ValidateDistanceDataList(response.Data);
+            ValidateDataList(response.Data);
         }
 
         [Test]
@@ -49,11 +49,11 @@ namespace Fitbit.Portable.Tests
                 RootProperty = TimeSeriesResourceType.Distance.ToTimeSeriesProperty()
             };
 
-            TimeSeriesDataList result = deserializer.GetTimeSeriesDataList(content);
-            ValidateDistanceDataList(result);
+            var result = deserializer.GetTimeSeriesDataList(content);
+            ValidateDataList(result);
         }
 
-        private void ValidateDistanceDataList(TimeSeriesDataList dataList)
+        private void ValidateDataList(TimeSeriesDataList dataList)
         {
             Assert.IsNotNull(dataList);
             Assert.IsNotNull(dataList.DataList);

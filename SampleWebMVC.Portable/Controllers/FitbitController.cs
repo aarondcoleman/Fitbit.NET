@@ -113,10 +113,10 @@ namespace SampleWebMVC.Portable.Controllers
         public async Task<ActionResult> LastWeekSteps()
         {
             var client = GetClient();
-            var response = await client.GetTimeSeriesAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+            var response = await client.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
             if (response.Success)
             {
-                return View("TimeSeriesDataList", response.Data);
+                return View("TimeSeriesDataListInt", response.Data);
             }
             return RedirectToAction("Index", "Home");
         }

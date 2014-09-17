@@ -158,6 +158,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Views\Fitbit\Friends.cshtml" />
     <Content Include="Views\Fitbit\TimeSeriesDataList.cshtml" />
+    <None Include="Views\Fitbit\TimeSeriesDataListInt.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

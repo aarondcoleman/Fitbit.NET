@@ -1,0 +1,17 @@
+﻿@model Fitbit.Models.TimeSeriesDataListInt
+
+@{
+    ViewBag.Title = "";
+}
+
+<h2>Last Week</h2>
+
+<table>
+    @foreach (Fitbit.Models.TimeSeriesDataListInt.Data result in Model.DataList)
+    {
+        <tr>
+            <td>@result.DateTime</td>
+            <td>@result.Value</td>
+        </tr>
+    }
+</table>

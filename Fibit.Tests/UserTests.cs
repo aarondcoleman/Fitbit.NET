@@ -363,7 +363,14 @@ namespace Fibit.Tests
             //TimeSeriesResourceType type = TimeSeriesResourceType.Steps.GetRootElement();
 
             //deserializer.RootElement = "dataset";
-            deserializer.RootElement = "activities-log-calories-intraday";
+            //deserializer.RootElement = "activities-log-calories-intraday";
+            XDocument doc = XDocument.Parse(content);
+                
+            var rootElement = doc.Descendants("result").FirstOrDefault().Descendants().Where(t => t.Name.LocalName.Contains("-intraday")).FirstOrDefault();
+
+            //sometimes the API doesn't return that node, for isnstance a date queried before the start of an account 
+            if (rootElement != null && !string.IsNullOrWhiteSpace(rootElement.Name.LocalName))
+                deserializer.RootElement = rootElement.Name.LocalName;
 
             IntradayData result = deserializer.Deserialize<IntradayData>(new RestResponse() { Content = content });
             //var result = deserializer.Deserialize<dynamic>(new RestResponse() { Content = content });
@@ -371,12 +378,52 @@ namespace Fibit.Tests
             Assert.IsNotNull(result);
 
             Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day), result.DataSet[0].Time);
-            Assert.AreEqual("1.3125", result.DataSet[0].Value);
+            Assert.AreEqual("1.159999966621399", result.DataSet[0].Value);
             Assert.AreEqual("0", result.DataSet[0].Level);
+            Assert.AreEqual("10", result.DataSet[0].METs);
+
 
             Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 1, 0), result.DataSet[1].Time);
-            Assert.AreEqual("1.3125", result.DataSet[1].Value);
-            Assert.AreEqual("1", result.DataSet[1].Level);
+            Assert.AreEqual("1.159999966621399", result.DataSet[1].Value);
+            Assert.AreEqual("2", result.DataSet[1].Level);
+            Assert.AreEqual("32", result.DataSet[1].METs);
+
+            //Assert.AreEqual(1440, result.DataSet.Count);
+
+            //Assert.AreEqual(8, result.Count);
+
+        }
+
+        [Test]
+        public void Can_Deserialize_IntradayActivitiesSteps()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("IntradayActivitiesSteps.txt"));
+
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            //var deserializer = new RestSharp.Deserializers.JsonDeserializer();
+            deserializer.DateFormat = "HH:mm:ss";
+            //TimeSeriesResourceType type = TimeSeriesResourceType.Steps.GetRootElement();
+
+            //deserializer.RootElement = "dataset";
+            //deserializer.RootElement = "activities-log-calories-intraday";
+            XDocument doc = XDocument.Parse(content);
+
+            var rootElement = doc.Descendants("result").FirstOrDefault().Descendants().Where(t => t.Name.LocalName.Contains("-intraday")).FirstOrDefault();
+
+            //sometimes the API doesn't return that node, for isnstance a date queried before the start of an account 
+            if (rootElement != null && !string.IsNullOrWhiteSpace(rootElement.Name.LocalName))
+                deserializer.RootElement = rootElement.Name.LocalName;
+
+            IntradayData result = deserializer.Deserialize<IntradayData>(new RestResponse() { Content = content });
+            //var result = deserializer.Deserialize<dynamic>(new RestResponse() { Content = content });
+
+            Assert.IsNotNull(result);
+
+            Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day), result.DataSet[0].Time);
+            Assert.AreEqual("3", result.DataSet[0].Value);
+            
+            Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 1, 0), result.DataSet[1].Time);
+            Assert.AreEqual("10", result.DataSet[1].Value);
 
             //Assert.AreEqual(1440, result.DataSet.Count);
 

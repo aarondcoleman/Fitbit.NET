@@ -222,6 +222,28 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Get food information for date value and user specified
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<Food>> GetFoodAsync(DateTime date, string encodedUserId = default(string))
+        {
+            string apiCall = "/1/user/{0}/foods/log/date/{1}.json".ToFullUrl(encodedUserId, date.ToFitbitFormat());
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<Food>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer();
+                fitbitResponse.Data = serializer.Deserialize<Food>(responseBody);
+            }
+
+            return fitbitResponse;
+        }
+
+        /// <summary>
         /// General error checking of the response before specific processing is done.
         /// </summary>
         /// <param name="response"></param>

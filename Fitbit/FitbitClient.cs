@@ -202,6 +202,7 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete]
         public Food GetFood(DateTime date, string userId = null)
         {
             string userSignifier = "-"; //used for current user

@@ -96,16 +96,9 @@
     <Compile Include="Models\FatLog.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />
     <Compile Include="Models\Enums\ResourceOwnerType.cs" />
-    <Compile Include="Models\Food.cs" />
-    <Compile Include="Models\FoodGoals.cs" />
-    <Compile Include="Models\FoodLog.cs" />
-    <Compile Include="Models\FoodLogUnit.cs" />
-    <Compile Include="Models\FoodSummary.cs" />
     <Compile Include="Models\HeartRateLog.cs" />
     <Compile Include="Models\HeartRates.cs" />
     <Compile Include="Models\HeartRateSummary.cs" />
-    <Compile Include="Models\LoggedFood.cs" />
-    <Compile Include="Models\NutritionalValues.cs" />
     <Compile Include="Models\Friend.cs" />
     <Compile Include="Models\IntradayData.cs" />
     <Compile Include="Models\Enums\IntradayResourceType.cs" />

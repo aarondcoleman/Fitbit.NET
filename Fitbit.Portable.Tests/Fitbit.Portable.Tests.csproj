@@ -80,6 +80,7 @@
     <Compile Include="FakeResponseHandler.cs" />
     <Compile Include="FitbitClientTests.cs" />
     <Compile Include="FitbitResponseTests.cs" />
+    <Compile Include="FoodTests.cs" />
     <Compile Include="FriendsTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

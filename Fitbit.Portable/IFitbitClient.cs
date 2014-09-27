@@ -16,6 +16,8 @@ namespace Fitbit.Api.Portable
         Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = default(string));
         Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = default(string));
 
-        Task<FitbitResponse<Fitbit.Models.Food>> GetFoodAsync(DateTime date, string encodedUserId = default(string));
+        Task<FitbitResponse<Food>> GetFoodAsync(DateTime date, string encodedUserId = default(string));
+
+        Task<FitbitResponse<BodyMeasurements>> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string));
     }
 }

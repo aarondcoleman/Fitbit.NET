@@ -40,6 +40,9 @@
     <Compile Include="Models\ApiError.cs" />
     <Compile Include="FitbitException.cs" />
     <Compile Include="Models\AuthCredential.cs" />
+    <Compile Include="Models\Body.cs" />
+    <Compile Include="Models\BodyGoals.cs" />
+    <Compile Include="Models\BodyMeasurements.cs" />
     <Compile Include="Models\DateRangePeriod.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\DeviceType.cs" />

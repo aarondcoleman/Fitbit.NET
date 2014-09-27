@@ -89,9 +89,6 @@
     <Compile Include="Models\BloodPressure.cs" />
     <Compile Include="Models\BloodPressureAverage.cs" />
     <Compile Include="Models\BloodPressureData.cs" />
-    <Compile Include="Models\Body.cs" />
-    <Compile Include="Models\BodyGoals.cs" />
-    <Compile Include="Models\BodyMeasurements.cs" />
     <Compile Include="Models\Fat.cs" />
     <Compile Include="Models\FatLog.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />

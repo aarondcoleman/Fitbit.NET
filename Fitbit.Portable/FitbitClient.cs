@@ -244,6 +244,26 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Get the set body measurements for the date value and user specified
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<BodyMeasurements>> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string))
+        {
+            string apiCall = "/1/user/{0}/body/date/{1}.json".ToFullUrl(encodedUserId, date.ToFitbitFormat());
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<BodyMeasurements>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer();
+                fitbitResponse.Data = serializer.Deserialize<BodyMeasurements>(responseBody);
+            }
+            return fitbitResponse;
+        }
+
+        /// <summary>
         /// General error checking of the response before specific processing is done.
         /// </summary>
         /// <param name="response"></param>

@@ -1,0 +1,20 @@
+﻿{
+    "body":
+    {
+        "bicep":40,
+        "bmi":16.14,
+        "calf":11.2,
+        "chest":50,
+        "fat":0,
+        "forearm":22.3,
+        "hips":34,
+        "neck":30,
+        "thigh":45,
+        "waist":60,
+        "weight":80.55
+    },
+    "goals":
+    {
+        "weight":75
+    }
+}

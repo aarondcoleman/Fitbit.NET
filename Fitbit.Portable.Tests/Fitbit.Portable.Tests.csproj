@@ -92,6 +92,11 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="SampleData\GetActivities.json" />
+    <None Include="SampleData\GetBodyMeasurements.json" />
+    <None Include="SampleData\GetBodyWeight.json" />
+    <None Include="SampleData\GetFat.json" />
+    <None Include="SampleData\GetFoodLogs.json" />
     <None Include="SampleData\GetFriends-Multiple.json" />
     <None Include="SampleData\GetDevices-Double.json" />
     <None Include="SampleData\GetDevices-Single.json" />
@@ -110,6 +115,7 @@
     <None Include="SampleData\ApiError.json" />
     <None Include="SampleData\GetFriends-None.json" />
     <None Include="SampleData\GetFriends-Single.json" />
+    <None Include="SampleData\GetSleep.json" />
     <None Include="SampleData\TimeSeries-ActivitiesSteps.json" />
     <None Include="SampleData\TimeSeries-ActivitiesDistance.json" />
     <None Include="SampleData\UserProfile.json" />

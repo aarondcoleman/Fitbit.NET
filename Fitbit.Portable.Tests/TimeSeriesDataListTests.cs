@@ -12,7 +12,28 @@ namespace Fitbit.Portable.Tests
     public class TimeSeriesDataListTests
     {
         [Test]
-        public async void GetUserProfileAsync_Success()
+        public async void GetTimeSeriesDataListAsync_Success()
+        {
+            string content = "TimeSeries-ActivitiesDistance.json".GetContent();
+
+            var fakeResponseHandler = new FakeResponseHandler();
+            string uri = "https://api.fitbit.com/1/user/-/activities/distance/date/2014-09-07/1d.json";
+            fakeResponseHandler.AddResponse(new Uri(uri), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+
+            var httpClient = new HttpClient(fakeResponseHandler);
+            var fitbitClient = new FitbitClient(httpClient);
+
+            var response = await fitbitClient.GetTimeSeriesAsync(TimeSeriesResourceType.Distance, new DateTime(2014, 9, 7), DateRangePeriod.OneDay);
+            Assert.IsTrue(response.Success);
+            fakeResponseHandler.AssertAllCalled();
+
+            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+
+            ValidateDataList(response.Data);
+        }
+
+        [Test]
+        public async void GetTimeSeriesDataListAsync_DoubleDate_Success()
         {
             string content = "TimeSeries-ActivitiesDistance.json".GetContent();
 

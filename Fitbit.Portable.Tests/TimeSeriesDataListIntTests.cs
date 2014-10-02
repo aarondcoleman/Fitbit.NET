@@ -12,7 +12,7 @@ namespace Fitbit.Portable.Tests
     public class TimeSeriesDataListIntTests
     {
         [Test]
-        public async void GetUserProfileAsync_Success()
+        public async void GetTimeSeriesDataListIntAsync_Success()
         {
             string content = "TimeSeries-ActivitiesSteps.json".GetContent();
 
@@ -24,6 +24,27 @@ namespace Fitbit.Portable.Tests
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), DateRangePeriod.SevenDays);
+            Assert.IsTrue(response.Success);
+            fakeResponseHandler.AssertAllCalled();
+
+            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+
+            ValidateDataList(response.Data);
+        }
+
+        [Test]
+        public async void GetTimeSeriesDataListIntAsync_DoubleDate_Success()
+        {
+            string content = "TimeSeries-ActivitiesSteps.json".GetContent();
+
+            var fakeResponseHandler = new FakeResponseHandler();
+            string uri = "https://api.fitbit.com/1/user/-/activities/steps/date/2014-09-04/2014-09-07.json";
+            fakeResponseHandler.AddResponse(new Uri(uri), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+
+            var httpClient = new HttpClient(fakeResponseHandler);
+            var fitbitClient = new FitbitClient(httpClient);
+
+            var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), new DateTime(2014, 9, 7));
             Assert.IsTrue(response.Success);
             fakeResponseHandler.AssertAllCalled();
 

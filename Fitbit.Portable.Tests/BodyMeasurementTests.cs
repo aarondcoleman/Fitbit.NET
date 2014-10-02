@@ -45,6 +45,7 @@ namespace Fitbit.Portable.Tests
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
         }
+
         [Test]
         public void Can_Deserialize_BodyMeasurements()
         {

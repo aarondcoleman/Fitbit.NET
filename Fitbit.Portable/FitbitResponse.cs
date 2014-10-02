@@ -12,9 +12,9 @@ namespace Fitbit.Api.Portable
 
         public List<ApiError> Errors { get; private set; }
 
-        public HttpStatusCode StatusCode { get; private set; }
+        internal HttpStatusCode StatusCode { get; private set; }
 
-        public HttpHeaders HttpHeaders { get; private set; }
+        internal HttpHeaders HttpHeaders { get; private set; }
 
         public bool Success
         {
@@ -31,7 +31,7 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        internal FitbitResponse(HttpStatusCode httpStatusCode, HttpHeaders httpHeaders, List<ApiError> errors)
+        internal FitbitResponse(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, HttpHeaders httpHeaders = null, List<ApiError> errors = null)
         {
             StatusCode = httpStatusCode;
             HttpHeaders = httpHeaders;

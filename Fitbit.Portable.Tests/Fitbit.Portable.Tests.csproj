@@ -79,6 +79,7 @@
     <Compile Include="AuthenticatorTests.cs" />
     <Compile Include="BodyMeasurementTests.cs" />
     <Compile Include="FakeResponseHandler.cs" />
+    <Compile Include="FatTests.cs" />
     <Compile Include="FitbitClientTests.cs" />
     <Compile Include="FitbitResponseTests.cs" />
     <Compile Include="FoodTests.cs" />

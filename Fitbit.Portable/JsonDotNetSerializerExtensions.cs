@@ -9,6 +9,25 @@ namespace Fitbit.Api.Portable
     internal static class JsonDotNetSerializerExtensions
     {
         /// <summary>
+        /// GetFat has to doe some custom manipulation with the returned representation
+        /// </summary>
+        /// <param name="serializer"></param>
+        /// <param name="fatJson"></param>
+        /// <returns></returns>
+        internal static Fat GetFat(this JsonDotNetSerializer serializer, string fatJson)
+        {
+            if (string.IsNullOrWhiteSpace(fatJson))
+            {
+                throw new ArgumentNullException("fatJson", "fatJson can not be empty, null or whitespace");
+            }
+
+            var fatlogs = JToken.Parse(fatJson)["fat"];
+            var fat = new Fat();
+            fat.FatLogs = fatlogs.Children().Select(serializer.Deserialize<FatLog>).ToList();
+            return fat;
+        }
+
+        /// <summary>
         /// GetFriends has to do some custom manipulation with the returned representation
         /// </summary>
         /// <param name="serializer"></param>
@@ -21,7 +40,6 @@ namespace Fitbit.Api.Portable
                 throw new ArgumentNullException("friendsJson", "friendsJson can not be empty, null or whitespace.");
             }
 
-            // todo: additional error checking of json string required
             serializer.RootProperty = "user";
             var friends = JToken.Parse(friendsJson)["friends"];
             return friends.Children().Select(serializer.Deserialize<UserProfile>).ToList();           

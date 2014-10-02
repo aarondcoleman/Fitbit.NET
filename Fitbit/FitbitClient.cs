@@ -153,6 +153,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Fat GetFat(DateTime startDate, DateTime? endDate = null)
         {
             if (startDate.AddDays(31) < endDate)
@@ -184,6 +185,7 @@ namespace Fitbit.Api
         /// <param name="startDate"></param>
         /// <param name="period"></param>
         /// <returns></returns>
+        [Obsolete]
         public Fat GetFat(DateTime startDate, DateRangePeriod period)
         {
             if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)

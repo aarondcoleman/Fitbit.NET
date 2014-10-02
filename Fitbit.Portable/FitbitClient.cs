@@ -33,6 +33,14 @@ namespace Fitbit.Api.Portable
             // note: do not remove the httpclient optional parameter above, even if resharper says you should, as otherwise it will make a cyclic constructor call .... which is bad!
         }
 
+        /// <summary>
+        /// Private base constructor which takes it all and constructs or throws exceptions as appropriately
+        /// </summary>
+        /// <param name="consumerKey"></param>
+        /// <param name="consumerSecret"></param>
+        /// <param name="accessToken"></param>
+        /// <param name="accessSecret"></param>
+        /// <param name="httpClient"></param>
         private FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret, HttpClient httpClient = null)
         {
             HttpClient = httpClient;
@@ -238,6 +246,76 @@ namespace Fitbit.Api.Portable
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var serializer = new JsonDotNetSerializer();
                 fitbitResponse.Data = serializer.Deserialize<Food>(responseBody);
+            }
+
+            return fitbitResponse;
+        }
+
+        /// <summary>
+        /// Get Fat for a period of time starting at date.
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="period"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<Fat>> GetFatAsync(DateTime startDate, DateRangePeriod period)
+        {
+            switch (period)
+            {
+                case DateRangePeriod.OneDay:
+                case DateRangePeriod.SevenDays:
+                case DateRangePeriod.OneWeek:
+                case DateRangePeriod.ThirtyDays:
+                case DateRangePeriod.OneMonth:
+                    break;
+
+                default:
+                    throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
+            }
+
+            string apiCall = "/1/user/{0}/body/log/fat/date/{1}/{2}.json".ToFullUrl(args: new object[]{startDate.ToFitbitFormat(), period.GetStringValue()});
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<Fat>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var seralizer = new JsonDotNetSerializer();
+                fitbitResponse.Data = seralizer.GetFat(responseBody);
+            }
+
+            return fitbitResponse;
+        }
+
+        /// <summary>
+        /// Get Fat for a specific date or a specific period between two dates
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<Fat>> GetFatAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall = string.Empty;
+            if (endDate == null)
+            {
+                apiCall = "/1/user/{0}/body/log/fat/date/{1}.json".ToFullUrl(args: new object[] { startDate.ToFitbitFormat()});
+            }
+            else
+            {
+                if (startDate.AddDays(31) < endDate)
+                {
+                    throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
+                }
+
+                apiCall = "/1/user/{0}/body/log/fat/date/{1}/{2}.json".ToFullUrl(args: new object[]{ startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat()});
+            }
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<Fat>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var seralizer = new JsonDotNetSerializer();
+                fitbitResponse.Data = seralizer.GetFat(responseBody);
             }
 
             return fitbitResponse;

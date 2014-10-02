@@ -18,7 +18,7 @@ namespace Fitbit.Api.Portable
         public static int RetryAfter<T>(this FitbitResponse<T> response) where T : class
         {
             int value = 0;
-            if (429 == (int) response.StatusCode)
+            if ((429 == (int) response.StatusCode) && (response.HttpHeaders != null))
             {
                 var retryAfterHeader = response.HttpHeaders.FirstOrDefault(h => h.Key == "Retry-After");
                 if (retryAfterHeader.Key != null)

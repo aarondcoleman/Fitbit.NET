@@ -46,6 +46,8 @@
     <Compile Include="Models\DateRangePeriod.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\DeviceType.cs" />
+    <Compile Include="Models\Fat.cs" />
+    <Compile Include="Models\FatLog.cs" />
     <Compile Include="Models\Food.cs" />
     <Compile Include="Models\FoodGoals.cs" />
     <Compile Include="Models\FoodLog.cs" />

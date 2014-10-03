@@ -1,47 +1,3 @@
-<<<<<<< HEAD:Fitbit.Tests/SampleData/IntradayActivitiesCalories.txt
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<result>
-    <activities-log-calories>
-        <data>
-            <dateTime>2011-11-13</dateTime>
-            <value>1890</value>
-        </data>
-    </activities-log-calories>
-    <activities-log-calories-intraday>
-        <dataset>
-            <intradayData>
-                <level>0</level>
-                <time>00:00:00</time>
-                <value>1.3125</value>
-            </intradayData>
-            <intradayData>
-                <level>1</level>
-                <time>00:01:00</time>
-                <value>1.3125</value>
-            </intradayData>
-            <intradayData>
-                <level>0</level>
-                <time>00:02:00</time>
-                <value>1.3125</value>
-            </intradayData>
-            <intradayData>
-                <level>0</level>
-                <time>00:03:00</time>
-                <value>1.3125</value>
-            </intradayData>
-            <intradayData>
-                <level>0</level>
-                <time>00:04:00</time>
-                <value>1.3125</value>
-            </intradayData>
-            <intradayData>
-                <level>0</level>
-                <time>00:05:00</time>
-                <value>1.3125</value>
-            </intradayData>
-       </dataset>
-    </activities-log-calories-intraday>
-=======
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <result>
   <activities-calories>
@@ -8696,5 +8652,4 @@
     <datasetInterval>1</datasetInterval>
     <datasetType>minute</datasetType>
   </activities-calories-intraday>
->>>>>>> master:Fibit.Tests/SampleData/IntradayActivitiesCalories.txt
 </result>

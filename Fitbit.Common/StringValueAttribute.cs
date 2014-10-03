@@ -4,16 +4,11 @@ namespace Fitbit
 {
     public class StringValueAttribute : Attribute
     {
-        private string _value;
+        public string Value { get; private set; }
 
         public StringValueAttribute(string value)
         {
-            _value = value;
-        }
-
-        public string Value
-        {
-            get { return _value; }
+            Value = value;
         }
     }
 }

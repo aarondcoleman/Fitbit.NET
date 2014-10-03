@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Fitbit.Models
 {
@@ -14,15 +12,5 @@ namespace Fitbit.Models
             public DateTime DateTime { get; set; }
             public int Value { get; set; }
         }
-
     }
-
-//    public class DataValue
-//    {
-//        public TimeSeriesData Data { get; set; }
-//    }
-
-    
-
-
 }

@@ -1,5 +1,4 @@
-﻿
-namespace Fitbit.Models
+﻿namespace Fitbit.Models
 {
     public class BodyMeasurements
     {

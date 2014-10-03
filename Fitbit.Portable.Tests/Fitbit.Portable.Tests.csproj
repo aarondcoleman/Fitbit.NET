@@ -86,19 +86,21 @@
     <Compile Include="FriendsTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Models\FatLogTests.cs" />
+    <Compile Include="Models\WeightLogTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleDataHelper.cs" />
     <Compile Include="DeviceTests.cs" />
     <Compile Include="TimeSeriesDataListIntTests.cs" />
     <Compile Include="TimeSeriesDataListTests.cs" />
     <Compile Include="UserProfileTests.cs" />
+    <Compile Include="WeightTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="SampleData\GetActivities.json" />
     <None Include="SampleData\GetBodyMeasurements.json" />
-    <None Include="SampleData\GetBodyWeight.json" />
+    <None Include="SampleData\GetWeight.json" />
     <None Include="SampleData\GetFat.json" />
     <None Include="SampleData\GetFoodLogs.json" />
     <None Include="SampleData\GetFriends-Multiple.json" />

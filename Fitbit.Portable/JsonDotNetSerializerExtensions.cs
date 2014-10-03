@@ -28,6 +28,25 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// GetWeight has to doe some custom manipulation with the returned representation
+        /// </summary>
+        /// <param name="serializer"></param>
+        /// <param name="weightJson"></param>
+        /// <returns></returns>
+        internal static Weight GetWeight(this JsonDotNetSerializer serializer, string weightJson)
+        {
+            if (string.IsNullOrWhiteSpace(weightJson))
+            {
+                throw new ArgumentNullException("weightJson", "weightJson can not be empty, null or whitespace");
+            }
+
+            var weightlogs = JToken.Parse(weightJson)["weight"];
+            var weight = new Weight();
+            weight.Weights = weightlogs.Children().Select(serializer.Deserialize<WeightLog>).ToList();
+            return weight;
+        }
+
+        /// <summary>
         /// GetFriends has to do some custom manipulation with the returned representation
         /// </summary>
         /// <param name="serializer"></param>

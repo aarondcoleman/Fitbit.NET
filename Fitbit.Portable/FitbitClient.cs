@@ -252,6 +252,26 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Get the set body measurements for the date value and user specified
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<BodyMeasurements>> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string))
+        {
+            string apiCall = "/1/user/{0}/body/date/{1}.json".ToFullUrl(encodedUserId, date.ToFitbitFormat());
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<BodyMeasurements>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer();
+                fitbitResponse.Data = serializer.Deserialize<BodyMeasurements>(responseBody);
+            }
+            return fitbitResponse;
+        }
+
+        /// <summary>
         /// Get Fat for a period of time starting at date.
         /// </summary>
         /// <param name="startDate"></param>
@@ -322,22 +342,72 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// Get the set body measurements for the date value and user specified
+        /// Get Fat for a period of time starting at date.
         /// </summary>
-        /// <param name="date"></param>
-        /// <param name="encodedUserId"></param>
+        /// <param name="startDate"></param>
+        /// <param name="period"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<BodyMeasurements>> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string))
+        public async Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateRangePeriod period)
         {
-            string apiCall = "/1/user/{0}/body/date/{1}.json".ToFullUrl(encodedUserId, date.ToFitbitFormat());
+            switch (period)
+            {
+                case DateRangePeriod.OneDay:
+                case DateRangePeriod.SevenDays:
+                case DateRangePeriod.OneWeek:
+                case DateRangePeriod.ThirtyDays:
+                case DateRangePeriod.OneMonth:
+                    break;
+
+                default:
+                    throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
+            }
+
+            string apiCall = "/1/user/{0}/body/log/weight/date/{1}/{2}.json".ToFullUrl(args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
+
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<BodyMeasurements>(response);
+            var fitbitResponse = await HandleResponse<Weight>(response);
             if (fitbitResponse.Success)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<BodyMeasurements>(responseBody);
+                var seralizer = new JsonDotNetSerializer();
+                fitbitResponse.Data = seralizer.GetWeight(responseBody);
             }
+
+            return fitbitResponse;
+        }
+
+        /// <summary>
+        /// Get Weight for a specific date or a specific period between two dates
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall = string.Empty;
+            if (endDate == null)
+            {
+                apiCall = "/1/user/{0}/body/log/weight/date/{1}.json".ToFullUrl(args: new object[] { startDate.ToFitbitFormat() });
+            }
+            else
+            {
+                if (startDate.AddDays(31) < endDate)
+                {
+                    throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
+                }
+
+                apiCall = "/1/user/{0}/body/log/weight/date/{1}/{2}.json".ToFullUrl(args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<Weight>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var seralizer = new JsonDotNetSerializer();
+                fitbitResponse.Data = seralizer.GetWeight(responseBody);
+            }
+
             return fitbitResponse;
         }
 

@@ -18,9 +18,10 @@ namespace Fitbit.Api.Portable
 
         Task<FitbitResponse<Food>> GetFoodAsync(DateTime date, string encodedUserId = default(string));
 
+        Task<FitbitResponse<BodyMeasurements>> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string));
         Task<FitbitResponse<Fat>> GetFatAsync(DateTime startDate, DateRangePeriod period);
         Task<FitbitResponse<Fat>> GetFatAsync(DateTime startDate, DateTime? endDate = null);
-
-        Task<FitbitResponse<BodyMeasurements>> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string));
+        Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateRangePeriod period);
+        Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateTime? endDate = null);
     }
 }

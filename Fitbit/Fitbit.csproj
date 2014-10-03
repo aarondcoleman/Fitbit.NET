@@ -102,8 +102,6 @@
     <Compile Include="Models\TrackerAlarm.cs" />
     <Compile Include="Models\UpdatedResource.cs" />
     <Compile Include="Models\Updates.cs" />
-    <Compile Include="Models\Weight.cs" />
-    <Compile Include="Models\WeightLog.cs" />
     <Compile Include="Models\MinuteData.cs" />
     <Compile Include="Models\Sleep.cs" />
     <Compile Include="Models\SleepLog.cs" />

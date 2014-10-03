@@ -99,7 +99,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="SampleData\GetActivities.json" />
+    <None Include="SampleData\GetBloodPressure.json" />
     <None Include="SampleData\GetBodyMeasurements.json" />
+    <None Include="SampleData\GetHeartRate.json" />
     <None Include="SampleData\GetWeight.json" />
     <None Include="SampleData\GetFat.json" />
     <None Include="SampleData\GetFoodLogs.json" />

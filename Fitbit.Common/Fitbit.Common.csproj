@@ -39,6 +39,9 @@
     <Compile Include="ErrorType.cs" />
     <Compile Include="Models\ApiError.cs" />
     <Compile Include="Models\AuthCredential.cs" />
+    <Compile Include="Models\BloodPressure.cs" />
+    <Compile Include="Models\BloodPressureAverage.cs" />
+    <Compile Include="Models\BloodPressureData.cs" />
     <Compile Include="Models\Body.cs" />
     <Compile Include="Models\BodyGoals.cs" />
     <Compile Include="Models\BodyMeasurements.cs" />

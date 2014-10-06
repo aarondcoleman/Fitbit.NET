@@ -659,10 +659,13 @@ namespace Fitbit.Api
             return response.Data;
         }
 		
+        [Obsolete]
         public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date)
         {
             return GetBodyMeasurements(date, string.Empty);
         }
+
+        [Obsolete]
         public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date, string userId)
         {
             string userSignifier = "-"; //used for current user
@@ -680,10 +683,13 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date)
         {
             return GetBloodPressure(date, string.Empty);
         }
+
+        [Obsolete]
         public Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date, string userId)
         {
             string userSignifier = "-"; //used for current user

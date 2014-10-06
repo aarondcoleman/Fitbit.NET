@@ -87,9 +87,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ApiSubscription.cs" />
-    <Compile Include="Models\BloodPressure.cs" />
-    <Compile Include="Models\BloodPressureAverage.cs" />
-    <Compile Include="Models\BloodPressureData.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />
     <Compile Include="Models\Enums\ResourceOwnerType.cs" />
     <Compile Include="Models\HeartRateLog.cs" />

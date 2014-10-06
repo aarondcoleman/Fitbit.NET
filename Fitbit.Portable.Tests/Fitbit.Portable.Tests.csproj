@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="ApiErrorTests.cs" />
     <Compile Include="AuthenticatorTests.cs" />
+    <Compile Include="BloodPressureTests.cs" />
     <Compile Include="BodyMeasurementTests.cs" />
     <Compile Include="FakeResponseHandler.cs" />
     <Compile Include="FatTests.cs" />

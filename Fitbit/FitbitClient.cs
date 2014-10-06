@@ -111,6 +111,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Weight GetWeight(DateTime startDate, DateTime? endDate = null)
         {
             if (startDate.AddDays(31) < endDate)
@@ -136,6 +137,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Weight GetWeight(DateTime startDate, DateRangePeriod period)
         {
             if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
@@ -725,8 +727,6 @@ namespace Fitbit.Api
             return response.Data;
         }
 
-        #region Log Methods
-
         public HeartRateLog LogHeartRate(HeartRateLog log, string userId = null)
         {
             string userSignifier = "-"; // used for current user
@@ -759,10 +759,6 @@ namespace Fitbit.Api
 
             HandleResponse(response);
         }
-
-        #endregion 
-
-        #region Derived Methods from API Calls
 
         /// <summary>
         /// Helps to figure out when the first device usage is. Uses the Fitbit time series for steps to find the first day of steps
@@ -847,10 +843,6 @@ namespace Fitbit.Api
 
         }
 
-        #endregion
-
-        #region Helpers
-
         /// <summary>
         /// Generic handling of status responses
         /// See: https://wiki.fitbit.com/display/API/API+Response+Format+And+Errors
@@ -908,9 +900,5 @@ namespace Fitbit.Api
             p.Value = value;
             request.AddParameter(p);
         }
-
-        #endregion
-
-
     }
 }

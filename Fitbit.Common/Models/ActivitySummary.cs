@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Fitbit.Models
@@ -19,14 +18,7 @@ namespace Fitbit.Models
 
         public Dictionary<string, float> GetDistancesAsDictionary()
         {
-            Dictionary<string, float> activity = new Dictionary<string, float>();
-            foreach (ActivityDistance ad in this.Distances)
-            {
-                activity.Add(ad.Activity, ad.Distance);
-            }
-            return activity;
+            return (Distances ?? new List<ActivityDistance>()).ToDictionary(ad => ad.Activity, ad => ad.Distance);
         }
-
     }
-
 }

@@ -7,6 +7,9 @@ namespace Fitbit.Api.Portable
 {
     public interface IFitbitClient
     {
+        Task<FitbitResponse<Activity>> GetDayActivityAsync(DateTime activityDate, string encodedUserId = default(string));
+        Task<FitbitResponse<ActivitySummary>> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = default(string));
+
         Task<FitbitResponse<List<Device>>> GetDevicesAsync();
         Task<FitbitResponse<List<UserProfile>>> GetFriendsAsync(string encodedUserId = default(string));
         Task<FitbitResponse<UserProfile>> GetUserProfileAsync(string encodedUserId = default(string));

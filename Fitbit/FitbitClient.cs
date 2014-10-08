@@ -74,6 +74,7 @@ namespace Fitbit.Api
             restClient.Authenticator = OAuth1Authenticator.ForProtectedResource(this.consumerKey, this.consumerSecret, this.accessToken, this.accessSecret);
         }
 
+        [Obsolete]
         public ActivitySummary GetDayActivitySummary(DateTime activityDate)
         {
             //RestClient client = new RestClient(baseApiUrl);
@@ -94,6 +95,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Activity GetDayActivity(DateTime activityDate)
         {
             string apiCall = GetActivityApiExtentionURL(activityDate);
@@ -894,6 +896,7 @@ namespace Fitbit.Api
             }
         }
 
+        [Obsolete]
         private string GetActivityApiExtentionURL(DateTime activityDate)
         {
             const string ApiExtention = "/1/user/-/activities/date/{0}-{1}-{2}.xml";

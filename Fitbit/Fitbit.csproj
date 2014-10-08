@@ -79,13 +79,6 @@
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitException.cs" />
     <Compile Include="IFitbitClient.cs" />
-    <Compile Include="Models\Activity.cs" />
-    <Compile Include="Models\ActivityDistance.cs" />
-    <Compile Include="Models\ActivityGoals.cs" />
-    <Compile Include="Models\ActivityLog.cs" />
-    <Compile Include="Models\ActivitySummary.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Models\ApiSubscription.cs" />
     <Compile Include="Models\Enums\APICollectionType.cs" />
     <Compile Include="Models\Enums\ResourceOwnerType.cs" />

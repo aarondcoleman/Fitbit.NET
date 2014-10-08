@@ -73,6 +73,48 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Requests the activity details of the encoded user id or if none supplied the current logged in user for the specified date
+        /// </summary>
+        /// <param name="activityDate"></param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>FitbitResponse of <see cref="ActivitySummary"/></returns>
+        public async Task<FitbitResponse<Activity>> GetDayActivityAsync(DateTime activityDate, string encodedUserId = null)
+        {
+            string apiCall = "/1/user/{0}/activities/date/{1}.json".ToFullUrl(encodedUserId, activityDate.ToFitbitFormat());
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<Activity>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer();
+                fitbitResponse.Data = serializer.Deserialize<Activity>(responseBody);
+            }
+            return fitbitResponse;
+        }
+
+        /// <summary>
+        /// Requests the activity summary of the encoded user id or if none supplied the current logged in user for the specified date
+        /// </summary>
+        /// <param name="activityDate"></param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>FitbitResponse of <see cref="ActivitySummary"/></returns>
+        public async Task<FitbitResponse<ActivitySummary>> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = null)
+        {
+            string apiCall = "/1/user/{0}/activities/date/{1}.json".ToFullUrl(encodedUserId, activityDate.ToFitbitFormat());
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<ActivitySummary>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer {RootProperty = "summary"};
+                fitbitResponse.Data = serializer.Deserialize<ActivitySummary>(responseBody);
+            }
+            return fitbitResponse;
+        }
+
+        /// <summary>
         /// Requests the devices for the current logged in user
         /// </summary>
         /// <returns>List of <see cref="Device"/></returns>

@@ -791,6 +791,7 @@ namespace Fitbit.Api
             return null; //this is an account where the device 
         }
 
+        [Obsolete]
         public SleepData GetSleep(DateTime sleepDate)
         {
             string apiCall = string.Format("/1/user/-/sleep/date/{0}.xml", sleepDate.ToString("yyyy-MM-dd"));

@@ -9,6 +9,7 @@ namespace Fitbit.Api.Portable
     {
         Task<FitbitResponse<Activity>> GetDayActivityAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<FitbitResponse<ActivitySummary>> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = default(string));
+        Task<FitbitResponse<SleepData>> GetSleepAsync(DateTime sleepDate);
 
         Task<FitbitResponse<List<Device>>> GetDevicesAsync();
         Task<FitbitResponse<List<UserProfile>>> GetFriendsAsync(string encodedUserId = default(string));

@@ -62,8 +62,13 @@
     <Compile Include="Models\FoodSummary.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\LoggedFood.cs" />
+    <Compile Include="Models\MinuteData.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
     <Compile Include="Models\RequestToken.cs" />
+    <Compile Include="Models\Sleep.cs" />
+    <Compile Include="Models\SleepData.cs" />
+    <Compile Include="Models\SleepLog.cs" />
+    <Compile Include="Models\SleepSummary.cs" />
     <Compile Include="Models\TimeSeriesDataList.cs" />
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\TimeSeriesResourceType.cs" />

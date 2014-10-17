@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Fitbit.Models;
 
@@ -112,6 +113,65 @@ namespace Fitbit.Api.Portable
                 fitbitResponse.Data = serializer.Deserialize<ActivitySummary>(responseBody);
             }
             return fitbitResponse;
+        }
+
+        /// <summary>
+        /// Requests the sleep data for the specified date for the logged in user
+        /// </summary>
+        /// <param name="sleepDate"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<SleepData>> GetSleepAsync(DateTime sleepDate)
+        {
+            string apiCall = "/1/user/{0}/sleep/date/{1}.json".ToFullUrl(args: sleepDate.ToFitbitFormat());
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<SleepData>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer();
+                fitbitResponse.Data = serializer.Deserialize<SleepData>(responseBody);
+
+                ProcessSleepData(fitbitResponse.Data);
+            }
+
+            return fitbitResponse;
+        }
+
+        internal void ProcessSleepData(SleepData sleepData)
+        {
+            if ((sleepData != null) && (sleepData.Sleep != null))
+            {
+                foreach (var sleepLog in sleepData.Sleep)
+                {
+                    if (sleepLog.MinuteData == null)
+                        continue;
+
+                    int startSleepSeconds = sleepLog.StartTime.ToElapsedSeconds();
+
+                    for (int i = 0; i < sleepLog.MinuteData.Count; i++)
+                    {
+                        //work with a local minute data info instance
+                        var minuteData = sleepLog.MinuteData[i];
+
+                        // determine how many seconds have elapsed since mightnight in the date
+                        int currentSeconds = minuteData.DateTime.ToElapsedSeconds();
+
+                        // if the current time is post midnight then we've clicked over to the next day
+                        int daysToAdd = (currentSeconds < startSleepSeconds) ? 1 : 0;
+                        DateTime derivedDate = sleepLog.StartTime.AddDays(daysToAdd);
+
+                        // update the time value with the updated asociated date of the sleep log
+                        sleepLog.MinuteData[i].DateTime = new DateTime(
+                                                        derivedDate.Year,
+                                                        derivedDate.Month,
+                                                        derivedDate.Day,
+                                                        minuteData.DateTime.Hour,
+                                                        minuteData.DateTime.Minute,
+                                                        minuteData.DateTime.Second);
+                    }
+                }
+            }
         }
 
         /// <summary>

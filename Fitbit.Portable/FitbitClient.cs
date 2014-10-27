@@ -724,6 +724,28 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Pass a freeform url. Good for debuging pursposes
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public async Task<string> GetAPIFreeResponse(string apiPath)
+        {
+            string apiCall = apiPath;
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<Food>(response);
+            string responseBody = null;
+
+            if (fitbitResponse.Success)
+            {
+                responseBody = await response.Content.ReadAsStringAsync();
+            }
+
+            return responseBody;
+        }
+
+        /// <summary>
         /// General error checking of the response before specific processing is done.
         /// </summary>
         /// <param name="response"></param>

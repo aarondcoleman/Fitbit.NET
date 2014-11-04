@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Fitbit.Models;
 
@@ -530,6 +530,70 @@ namespace Fitbit.Api.Portable
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var seralizer = new JsonDotNetSerializer();
                 fitbitResponse.Data = seralizer.GetWeight(responseBody);
+            }
+
+            return fitbitResponse;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="caloriesOut"></param>
+        /// <param name="distance"></param>
+        /// <param name="floors"></param>
+        /// <param name="steps"></param>
+        /// <param name="activeMinutes"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<ActivityGoals>> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int))
+        {
+            // parameter checking; at least one needs to be specified
+            if ((caloriesOut == default(int))
+                && (distance == default(decimal))
+                && (floors == default(int))
+                && (steps == default(int))
+                && (activeMinutes == default(int)))
+            {
+                throw new Exception("Unable to call SetGoalsAsync without specifying at least one goal parameter to set.");
+            }
+
+            var messageContentParameters = new Dictionary<string, string>();
+
+            if (caloriesOut != default(int))
+            {
+                messageContentParameters.Add("caloriesOut", caloriesOut.ToString());
+            }
+
+            if (distance != default(decimal))
+            {
+                messageContentParameters.Add("distance", distance.ToString());
+            }
+
+            if (floors != default(int))
+            {
+                messageContentParameters.Add("floors", floors.ToString());
+            }
+
+            if (steps != default(int))
+            {
+                messageContentParameters.Add("steps", steps.ToString());
+            }
+
+            if (activeMinutes != default(int))
+            {
+                messageContentParameters.Add("activeMinutes", activeMinutes.ToString());
+            }
+            
+            var apiCall = "/1/user/-/activities/goals/daily.json".ToFullUrl();
+
+            //caloriesOut=100&distance=1.0&floors=1&steps=8000&activeMinutes=10
+            HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new FormUrlEncodedContent(messageContentParameters));
+            
+            var fitbitResponse = await HandleResponse<ActivityGoals>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var seralizer = new JsonDotNetSerializer {RootProperty = "goals"};
+                fitbitResponse.Data = seralizer.Deserialize<ActivityGoals>(responseBody);
             }
 
             return fitbitResponse;

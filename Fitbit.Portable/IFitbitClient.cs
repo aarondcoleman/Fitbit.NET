@@ -28,5 +28,7 @@ namespace Fitbit.Api.Portable
         Task<FitbitResponse<Fat>> GetFatAsync(DateTime startDate, DateTime? endDate = null);
         Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateRangePeriod period);
         Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateTime? endDate = null);
+
+        Task<FitbitResponse<ActivityGoals>> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int));
     }
 }

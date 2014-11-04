@@ -31,6 +31,8 @@ namespace Fitbit.Portable.Tests
             CallCount++;
             
             HttpResponseMessage response;
+
+            // todo: register the expected response messaghe content
             
             if (_responses.ContainsKey(request.RequestUri))
             {

@@ -534,6 +534,7 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public HeartRates GetHeartRates(DateTime date)
         {
             string apiCall = string.Format("/1/user/-/heart/date/{0}.xml", date.ToString("yyyy-MM-dd"));
@@ -711,6 +712,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete("Use SetGoalAsync")]
         public ActivityGoals SetStepGoal(int newStepGoal)
         {
             string apiCall = "/1/user/-/activities/goals/daily.json";
@@ -729,6 +731,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public HeartRateLog LogHeartRate(HeartRateLog log, string userId = null)
         {
             string userSignifier = "-"; // used for current user
@@ -753,6 +756,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public void DeleteHeartRateLog(int logId)
         {
             string subscriptionAPIEndpoint = string.Format("/1/user/-/heart/{0}.xml", logId);

@@ -87,6 +87,7 @@
     <Compile Include="FitbitResponseTests.cs" />
     <Compile Include="FoodTests.cs" />
     <Compile Include="FriendsTests.cs" />
+    <Compile Include="GoalsTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Models\ActivitySummaryTests.cs" />
     <Compile Include="Models\FatLogTests.cs" />

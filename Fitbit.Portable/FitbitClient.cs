@@ -81,7 +81,7 @@ namespace Fitbit.Api.Portable
         /// <returns>FitbitResponse of <see cref="ActivitySummary"/></returns>
         public async Task<FitbitResponse<Activity>> GetDayActivityAsync(DateTime activityDate, string encodedUserId = null)
         {
-            string apiCall = "/1/user/{0}/activities/date/{1}.json".ToFullUrl(encodedUserId, activityDate.ToFitbitFormat());
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/date/{1}.json", encodedUserId, activityDate.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<Activity>(response);
@@ -102,7 +102,7 @@ namespace Fitbit.Api.Portable
         /// <returns>FitbitResponse of <see cref="ActivitySummary"/></returns>
         public async Task<FitbitResponse<ActivitySummary>> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = null)
         {
-            string apiCall = "/1/user/{0}/activities/date/{1}.json".ToFullUrl(encodedUserId, activityDate.ToFitbitFormat());
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/date/{1}.json", encodedUserId, activityDate.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<ActivitySummary>(response);
@@ -122,7 +122,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<FitbitResponse<SleepData>> GetSleepAsync(DateTime sleepDate)
         {
-            string apiCall = "/1/user/{0}/sleep/date/{1}.json".ToFullUrl(args: sleepDate.ToFitbitFormat());
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/sleep/date/{1}.json", args: sleepDate.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<SleepData>(response);
@@ -180,7 +180,7 @@ namespace Fitbit.Api.Portable
         /// <returns>List of <see cref="Device"/></returns>
         public async Task<FitbitResponse<List<Device>>> GetDevicesAsync()
         {
-            var apiCall = "/1/user/-/devices.json".ToFullUrl();
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/devices.json");
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<List<Device>>(response);
@@ -200,7 +200,7 @@ namespace Fitbit.Api.Portable
         /// <returns>List of <see cref="UserProfile"/></returns>
         public async Task<FitbitResponse<List<UserProfile>>> GetFriendsAsync(string encodedUserId = default(string))
         {
-            string apiCall = "/1/user/{0}/friends.json".ToFullUrl(encodedUserId);
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/friends.json", encodedUserId);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<List<UserProfile>>(response);
@@ -220,7 +220,7 @@ namespace Fitbit.Api.Portable
         /// <returns><see cref="UserProfile"/></returns>
         public async Task<FitbitResponse<UserProfile>> GetUserProfileAsync(string encodedUserId = default(string))
         {
-            string apiCall = "/1/user/{0}/profile.json".ToFullUrl(encodedUserId);
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/profile.json", encodedUserId);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<UserProfile>(response);
@@ -269,7 +269,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         private async Task<FitbitResponse<TimeSeriesDataList>> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId = default(string))
         {
-            var apiCall = "/1/user/{0}{1}/date/{2}/{3}.json".ToFullUrl(encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}{1}/date/{2}/{3}.json", encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<TimeSeriesDataList>(response);
@@ -318,7 +318,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         private async Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
         {
-            var apiCall = "/1/user/{0}{1}/date/{2}/{3}.json".ToFullUrl(encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}{1}/date/{2}/{3}.json", encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<TimeSeriesDataListInt>(response);
@@ -339,7 +339,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<FitbitResponse<Food>> GetFoodAsync(DateTime date, string encodedUserId = default(string))
         {
-            string apiCall = "/1/user/{0}/foods/log/date/{1}.json".ToFullUrl(encodedUserId, date.ToFitbitFormat());
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/foods/log/date/{1}.json", encodedUserId, date.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<Food>(response);
@@ -361,7 +361,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<FitbitResponse<BloodPressureData>> GetBloodPressureAsync(DateTime date, string encodedUserId = default(string))
         {
-            string apiCall = "/1/user/{0}/bp/date/{1}.json".ToFullUrl(encodedUserId, date.ToFitbitFormat());
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/bp/date/{1}.json", encodedUserId, date.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<BloodPressureData>(response);
@@ -383,7 +383,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<FitbitResponse<BodyMeasurements>> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string))
         {
-            string apiCall = "/1/user/{0}/body/date/{1}.json".ToFullUrl(encodedUserId, date.ToFitbitFormat());
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/date/{1}.json", encodedUserId, date.ToFitbitFormat());
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<BodyMeasurements>(response);
             if (fitbitResponse.Success)
@@ -416,7 +416,7 @@ namespace Fitbit.Api.Portable
                     throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
             }
 
-            string apiCall = "/1/user/{0}/body/log/fat/date/{1}/{2}.json".ToFullUrl(args: new object[]{startDate.ToFitbitFormat(), period.GetStringValue()});
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/fat/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<Fat>(response);
@@ -441,7 +441,7 @@ namespace Fitbit.Api.Portable
             string apiCall = string.Empty;
             if (endDate == null)
             {
-                apiCall = "/1/user/{0}/body/log/fat/date/{1}.json".ToFullUrl(args: new object[] { startDate.ToFitbitFormat()});
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/fat/date/{1}.json", args: new object[] { startDate.ToFitbitFormat() });
             }
             else
             {
@@ -450,7 +450,7 @@ namespace Fitbit.Api.Portable
                     throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
                 }
 
-                apiCall = "/1/user/{0}/body/log/fat/date/{1}/{2}.json".ToFullUrl(args: new object[]{ startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat()});
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/fat/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
             }
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
@@ -486,7 +486,7 @@ namespace Fitbit.Api.Portable
                     throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
             }
 
-            string apiCall = "/1/user/{0}/body/log/weight/date/{1}/{2}.json".ToFullUrl(args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<Weight>(response);
@@ -511,7 +511,7 @@ namespace Fitbit.Api.Portable
             string apiCall = string.Empty;
             if (endDate == null)
             {
-                apiCall = "/1/user/{0}/body/log/weight/date/{1}.json".ToFullUrl(args: new object[] { startDate.ToFitbitFormat() });
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}.json", args: new object[] { startDate.ToFitbitFormat() });
             }
             else
             {
@@ -520,7 +520,7 @@ namespace Fitbit.Api.Portable
                     throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
                 }
 
-                apiCall = "/1/user/{0}/body/log/weight/date/{1}/{2}.json".ToFullUrl(args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
             }
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
@@ -583,7 +583,7 @@ namespace Fitbit.Api.Portable
                 messageContentParameters.Add("activeMinutes", activeMinutes.ToString());
             }
             
-            var apiCall = "/1/user/-/activities/goals/daily.json".ToFullUrl();
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities/goals/daily.json");
 
             //caloriesOut=100&distance=1.0&floors=1&steps=8000&activeMinutes=10
             HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new FormUrlEncodedContent(messageContentParameters));

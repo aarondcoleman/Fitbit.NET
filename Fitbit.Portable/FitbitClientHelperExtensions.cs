@@ -13,7 +13,7 @@ namespace Fitbit.Api.Portable
         /// <param name="encodedUserId"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        internal static string ToFullUrl(this string apiCall, string encodedUserId = default(string), params object[] args)
+        internal static string ToFullUrl(string apiCall, string encodedUserId = default(string), params object[] args)
         {
             string userSignifier = "-"; //used for current user
             if (!string.IsNullOrWhiteSpace(encodedUserId))

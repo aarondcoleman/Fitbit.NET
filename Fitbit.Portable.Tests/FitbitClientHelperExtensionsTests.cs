@@ -10,7 +10,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void ToFullUrl_No_Preceeding_Slash()
         {
-            var apiCall = "1/user/-/devices.json".ToFullUrl();
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("1/user/-/devices.json");
 
             Assert.IsNotNull(apiCall);
             Assert.IsFalse(string.IsNullOrWhiteSpace(apiCall));
@@ -20,7 +20,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void ToFullUrl_Preceeding_Slash()
         {
-            var apiCall = "/1/user/-/devices.json".ToFullUrl();
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/devices.json");
 
             Assert.IsNotNull(apiCall);
             Assert.IsFalse(string.IsNullOrWhiteSpace(apiCall));
@@ -30,7 +30,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void ToFullUrl_No_Preceeding_Slash_UserId_NotSpecified()
         {
-            var apiCall = "1/user/{0}/friends.json".ToFullUrl();
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("1/user/{0}/friends.json");
 
             Assert.IsNotNull(apiCall);
             Assert.IsFalse(string.IsNullOrWhiteSpace(apiCall));
@@ -40,7 +40,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void ToFullUrl_Preceeding_Slash_UserId_NotSpecified()
         {
-            var apiCall = "/1/user/{0}/friends.json".ToFullUrl();
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/friends.json");
 
             Assert.IsNotNull(apiCall);
             Assert.IsFalse(string.IsNullOrWhiteSpace(apiCall));
@@ -50,7 +50,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void ToFullUrl_No_Preceeding_Slash_UserId_Specified()
         {
-            var apiCall = "1/user/{0}/friends.json".ToFullUrl("2KNXXX");
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("1/user/{0}/friends.json", "2KNXXX");
 
             Assert.IsNotNull(apiCall);
             Assert.IsFalse(string.IsNullOrWhiteSpace(apiCall));
@@ -60,7 +60,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void ToFullUrl_Preceeding_Slash_UserId_Specified()
         {
-            var apiCall = "/1/user/{0}/friends.json".ToFullUrl("2KNXXX");
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/friends.json", "2KNXXX");
 
             Assert.IsNotNull(apiCall);
             Assert.IsFalse(string.IsNullOrWhiteSpace(apiCall));

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fitbit.Models;
+using Fitbit.Models.Enums;
 using RestSharp;
 using RestSharp.Authenticators;
 using System.Xml.Linq;
@@ -24,18 +25,20 @@ namespace Fitbit.Api
         private string accessToken;
         private string accessSecret;
         private IRestClient restClient;
+        private ResponseType responseType;
 
         private string baseApiUrl = "https://api.fitbit.com";
 
-        public FitbitClient(IRestClient restClient)
+        public FitbitClient(IRestClient restClient, ResponseType responseType = ResponseType.Xml)
         {
+            this.responseType = responseType;
             this.restClient = restClient;
             restClient.Authenticator = OAuth1Authenticator.ForProtectedResource(this.consumerKey, this.consumerSecret, this.accessToken, this.accessSecret);
-
         }
 
-        public FitbitClient(string consumerKey, string consumerSecret)
+        public FitbitClient(string consumerKey, string consumerSecret, ResponseType responseType = ResponseType.Xml)
         {
+            this.responseType = responseType;
             this.consumerKey = consumerKey;
             this.consumerSecret = consumerSecret;
         }
@@ -47,8 +50,9 @@ namespace Fitbit.Api
         /// <param name="consumerSecret"></param>
         /// <param name="accessToken"></param>
         /// <param name="accessSecret"></param>
-        public FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret)
+        public FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret, ResponseType responseType = ResponseType.Xml)
         {
+            this.responseType = responseType;
             this.consumerKey = consumerKey;
             this.consumerSecret = consumerSecret;
             this.accessToken = accessToken;
@@ -67,8 +71,9 @@ namespace Fitbit.Api
         /// <param name="accessToken"></param>
         /// <param name="accessSecret"></param>
         /// <param name="restClient"></param>
-        public FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret, IRestClient restClient)
+        public FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret, IRestClient restClient, ResponseType responseType = ResponseType.Xml)
         {
+            this.responseType = responseType;
             this.consumerKey = consumerKey;
             this.consumerSecret = consumerSecret;
             this.accessToken = accessToken;
@@ -123,11 +128,11 @@ namespace Fitbit.Api
             string apiCall;
             if (endDate == null)
             {
-                apiCall = String.Format("/1/user/-/body/log/weight/date/{0}.xml", startDate.ToString("yyyy-MM-dd"));
+                apiCall = String.Format("/1/user/-/body/log/weight/date/{0}.{1}", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
             }
             else
             {
-                apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), endDate.Value.ToString("yyyy-MM-dd"));
+                apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.{2}", startDate.ToString("yyyy-MM-dd"), endDate.Value.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
             }
 
             RestRequest request = new RestRequest(apiCall);
@@ -145,7 +150,7 @@ namespace Fitbit.Api
             if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
                 throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
 
-            string apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period));
+            string apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.{2}", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period), StringEnum.GetStringValue(responseType));
 
             RestRequest request = new RestRequest(apiCall);
             request.RootElement = "weight";
@@ -165,11 +170,11 @@ namespace Fitbit.Api
             string apiCall;
             if (endDate == null)
             {
-                apiCall = String.Format("/1/user/-/body/log/fat/date/{0}.xml", startDate.ToString("yyyy-MM-dd"));
+                apiCall = String.Format("/1/user/-/body/log/fat/date/{0}.{1}", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
             }
             else
             {
-                apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), endDate.Value.ToString("yyyy-MM-dd"));
+                apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.{2}", startDate.ToString("yyyy-MM-dd"), endDate.Value.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
             }
 
             RestRequest request = new RestRequest(apiCall);
@@ -193,7 +198,7 @@ namespace Fitbit.Api
             if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
                 throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
 
-            string apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period));
+            string apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.{2}", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period), StringEnum.GetStringValue(responseType));
 
             RestRequest request = new RestRequest(apiCall);
             request.RootElement = "fat";
@@ -212,7 +217,7 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string apiCall = String.Format("/1/user/{0}/foods/log/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+            string apiCall = String.Format("/1/user/{0}/foods/log/date/{1}.{2}", userSignifier, date.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
 
             RestRequest request = new RestRequest(apiCall);
 
@@ -242,9 +247,9 @@ namespace Fitbit.Api
             string apiCall;
 
             if (string.IsNullOrWhiteSpace(encodedUserId))
-                apiCall = "/1/user/-/profile.xml";
+                apiCall = string.Format("/1/user/-/profile.{0}", StringEnum.GetStringValue(responseType));
             else
-                apiCall = string.Format("/1/user/{0}/profile.xml", encodedUserId);
+                apiCall = string.Format("/1/user/{0}/profile.{1}", encodedUserId, StringEnum.GetStringValue(responseType));
 
             RestRequest request = new RestRequest(apiCall);
             request.RootElement = "user";
@@ -261,7 +266,7 @@ namespace Fitbit.Api
 
         public List<UserProfile> GetFriends()
         {
-            RestRequest request = new RestRequest("/1/user/-/friends.xml");
+            RestRequest request = new RestRequest(string.Format("/1/user/-/friends.{0}", StringEnum.GetStringValue(responseType)));
             request.RootElement = "friends";
             
 
@@ -285,7 +290,7 @@ namespace Fitbit.Api
 
         public List<Device> GetDevices()
         {
-            RestRequest request = new RestRequest("/1/user/-/devices.xml");
+            RestRequest request = new RestRequest(string.Format("/1/user/-/devices.{0}", StringEnum.GetStringValue(responseType)));
            
             var response = restClient.Execute<List<Device>>(request);
 
@@ -298,7 +303,7 @@ namespace Fitbit.Api
         public List<TrackerAlarm> GetAlarms(string deviceId)
         {
             RestRequest request =
-                new RestRequest(string.Format("/1/user/-/devices/tracker/{0}/alarms.xml", deviceId));
+                new RestRequest(string.Format("/1/user/-/devices/tracker/{0}/alarms.{1}", deviceId, StringEnum.GetStringValue(responseType)));
             request.RootElement = "trackerAlarms";
 
             var response = restClient.Execute<List<TrackerAlarm>>(request);
@@ -350,7 +355,11 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
+            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.{4}", 
+                userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), 
+                baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod, 
+                StringEnum.GetStringValue(responseType));
+
             RestRequest request = new RestRequest(requestUrl);
 
             request.OnBeforeDeserialization = resp => {
@@ -426,7 +435,11 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
+            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.{4}", 
+                userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), 
+                baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod,
+                StringEnum.GetStringValue(responseType));
+
             RestRequest request = new RestRequest(requestUrl);
 
             request.OnBeforeDeserialization = resp =>
@@ -471,17 +484,19 @@ namespace Fitbit.Api
                 dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day //adding the timespan doesn't go in to the next day
             )
             { 
-                requestUrl = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.xml", 
+                requestUrl = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.{4}", 
                                         StringEnum.GetStringValue(timeSeriesResourceType), 
                                         dayAndStartTime.ToString("yyyy-MM-dd"), 
                                         dayAndStartTime.ToString("HH:mm"), 
-                                        dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"));
+                                        dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"),
+                                        StringEnum.GetStringValue(responseType));
             }
             else //just get the today data, there was a date specified but the timerange was likely too large or negative
             {
-                requestUrl = string.Format("/1/user/-{0}/date/{1}/1d.xml", 
+                requestUrl = string.Format("/1/user/-{0}/date/{1}/1d.{2}", 
                                         StringEnum.GetStringValue(timeSeriesResourceType), 
-                                        dayAndStartTime.ToString("yyyy-MM-dd"));
+                                        dayAndStartTime.ToString("yyyy-MM-dd"),
+                                        StringEnum.GetStringValue(responseType));
             }
             //                /1/user/-/activities/calories/date/2011-07-05/1d/time/12:20/12:45.xml
             RestRequest request = new RestRequest(requestUrl);
@@ -523,7 +538,7 @@ namespace Fitbit.Api
 
         public HeartRates GetHeartRates(DateTime date)
         {
-            string apiCall = string.Format("/1/user/-/heart/date/{0}.xml", date.ToString("yyyy-MM-dd"));
+            string apiCall = string.Format("/1/user/-/heart/date/{0}.{1}", date.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
             RestRequest request = new RestRequest(apiCall);
             var response = restClient.Execute<HeartRates>(request);
 
@@ -534,7 +549,7 @@ namespace Fitbit.Api
 
         public List<ApiSubscription> GetSubscriptions()
         {
-            RestRequest request = new RestRequest("/1/user/-/apiSubscriptions.xml");
+            RestRequest request = new RestRequest(string.Format("/1/user/-/apiSubscriptions.{0}", StringEnum.GetStringValue(responseType)));
 
             var response = restClient.Execute<List<ApiSubscription>>(request);
 
@@ -560,31 +575,31 @@ namespace Fitbit.Api
             //POST /1/user/-/body/apiSubscriptions/320-body.json
             if (apiCollectionType == APICollectionType.activities)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/activities/apiSubscriptions/{0}-activities.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/activities/apiSubscriptions/{0}-activities.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.body)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/body/apiSubscriptions/{0}-body.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/body/apiSubscriptions/{0}-body.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.foods)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/foods/apiSubscriptions/{0}-foods.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/foods/apiSubscriptions/{0}-foods.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }                
             else if (apiCollectionType == APICollectionType.meals)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/meals/apiSubscriptions/{0}-meals.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/meals/apiSubscriptions/{0}-meals.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.sleep)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/sleep/apiSubscriptions/{0}-sleep.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/sleep/apiSubscriptions/{0}-sleep.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.user)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/apiSubscriptions/{0}-user.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/apiSubscriptions/{0}-user.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.weight) //untested and the docs don't show it, but the Fitbit4J enum does have this
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/weight/apiSubscriptions/{0}-weight.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/weight/apiSubscriptions/{0}-weight.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
 
             RestRequest request = new RestRequest(subscriptionAPIEndpoint);
@@ -614,31 +629,31 @@ namespace Fitbit.Api
             //POST /1/user/-/body/apiSubscriptions/320-body.json
             if (apiCollectionType == APICollectionType.activities)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/activities/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/activities/apiSubscriptions/{0}.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.body)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/body/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/body/apiSubscriptions/{0}.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.foods)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/foods/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/foods/apiSubscriptions/{0}.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.meals)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/meals/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/meals/apiSubscriptions/{0}.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.sleep)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/sleep/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/sleep/apiSubscriptions/{0}.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.user)
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/apiSubscriptions/{0}.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
             else if (apiCollectionType == APICollectionType.weight) //untested and the docs don't show it, but the Fitbit4J enum does have this
             {
-                subscriptionAPIEndpoint = string.Format("/1/user/-/weight/apiSubscriptions/{0}.xml", uniqueSubscriptionId);
+                subscriptionAPIEndpoint = string.Format("/1/user/-/weight/apiSubscriptions/{0}.{1}", uniqueSubscriptionId, StringEnum.GetStringValue(responseType));
             }
 
             RestRequest request = new RestRequest(subscriptionAPIEndpoint);
@@ -660,7 +675,7 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string apiCall = String.Format("/1/user/{0}/body/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+            string apiCall = String.Format("/1/user/{0}/body/date/{1}.{2}", userSignifier, date.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
 
             RestRequest request = new RestRequest(apiCall);
 
@@ -681,7 +696,7 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string apiCall = String.Format("/1/user/{0}/bp/date/{1}.xml", userSignifier, date.ToString("yyyy-MM-dd"));
+            string apiCall = String.Format("/1/user/{0}/bp/date/{1}.{2}", userSignifier, date.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
 
             RestRequest request = new RestRequest(apiCall);
 
@@ -720,7 +735,7 @@ namespace Fitbit.Api
                 userSignifier = userId;
             }
 
-            string endPoint = string.Format("/1/user/{0}/heart.xml", userSignifier);
+            string endPoint = string.Format("/1/user/{0}/heart.{1}", userSignifier, StringEnum.GetStringValue(responseType));
             RestRequest request = new RestRequest(endPoint, Method.POST);
             request.RootElement = "heartLog";
 
@@ -738,7 +753,7 @@ namespace Fitbit.Api
 
         public void DeleteHeartRateLog(int logId)
         {
-            string subscriptionAPIEndpoint = string.Format("/1/user/-/heart/{0}.xml", logId);
+            string subscriptionAPIEndpoint = string.Format("/1/user/-/heart/{0}.{1}", logId, StringEnum.GetStringValue(responseType));
             RestRequest request = new RestRequest(subscriptionAPIEndpoint, Method.DELETE);
             var response = restClient.Execute(request);
 
@@ -780,7 +795,7 @@ namespace Fitbit.Api
 
         public SleepData GetSleep(DateTime sleepDate)
         {
-            string apiCall = string.Format("/1/user/-/sleep/date/{0}.xml", sleepDate.ToString("yyyy-MM-dd"));
+            string apiCall = string.Format("/1/user/-/sleep/date/{0}.{1}", sleepDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(responseType));
             RestRequest request = new RestRequest(apiCall);
             var response = restClient.Execute<SleepData>(request);
 
@@ -881,8 +896,8 @@ namespace Fitbit.Api
 
         private string GetActivityApiExtentionURL(DateTime activityDate)
         {
-            const string ApiExtention = "/1/user/-/activities/date/{0}-{1}-{2}.xml";
-            return string.Format(ApiExtention, activityDate.Year.ToString(), activityDate.Month.ToString(), activityDate.Day.ToString());
+            const string ApiExtention = "/1/user/-/activities/date/{0}-{1}-{2}.{3}";
+            return string.Format(ApiExtention, activityDate.Year.ToString(), activityDate.Month.ToString(), activityDate.Day.ToString(), StringEnum.GetStringValue(responseType));
         }
 
         private void AddPostParameter(IRestRequest request, string name, object value)

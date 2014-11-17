@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Fitbit.Models.Enums;
 using NUnit.Framework;
 using RestSharp;
 using System.IO;
@@ -66,6 +67,37 @@ namespace Fibit.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(12345, result.Steps);
         }
+
+        /// <summary>
+        /// Reference Mocking IRestClient:
+        /// http://www.gbogea.com/archive/2012/02
+        /// </summary>
+        [Test]
+        public void Returns_content_if_response_is_OK_Json()
+        {
+            string content = File.ReadAllText(SampleData.PathFor("DateActivity.txt"));
+
+            var mock = new Mock<IRestClient>();
+            var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            deserializer.RootElement = "summary";
+
+            mock.Setup(x => x.Execute<ActivitySummary>(It.IsAny<IRestRequest>()))
+                .Returns(new RestResponse<ActivitySummary>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = content,
+                    Data = deserializer.Deserialize<ActivitySummary>(new RestResponse() { Content = content })
+                });
+
+            //var client = new GuidClient(mock.Object);
+            FitbitClient fitbitClient = new FitbitClient(mock.Object, ResponseType.Json);
+
+            var result = fitbitClient.GetDayActivitySummary(DateTime.Now);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(12345, result.Steps);
+        }
+
 
         [Test]
         public void Can_Deserialize_Activity()

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<result>
+  <waterLog>
+    <amount>300</amount>
+    <logId>508726777</logId>
+  </waterLog>
+</result>

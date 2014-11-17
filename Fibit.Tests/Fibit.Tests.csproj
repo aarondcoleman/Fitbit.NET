@@ -68,6 +68,8 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="SampleData\GetWater-WaterData.json" />
+    <None Include="SampleData\LogWater-WaterLog.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fitbit\Fitbit.csproj">
@@ -79,8 +81,14 @@
     <Content Include="SampleData\DateActivity.txt" />
     <Content Include="SampleData\Food.txt" />
     <Content Include="SampleData\Fat.txt" />
+    <Content Include="SampleData\GetWater-WaterData.txt">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="SampleData\IntradayActivitiesCalories.txt" />
     <Content Include="SampleData\ListApiSubscriptions.txt" />
+    <Content Include="SampleData\LogWater-WaterLog.txt">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="SampleData\RateLimitError.txt" />
     <Content Include="SampleData\SleepData-SingleSleepLog.txt" />
     <Content Include="SampleData\SubscriptionUpdateSignedMultiple.txt" />

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<result>
+  <summary>
+    <water>1300</water>
+  </summary>
+  <water>
+    <apiWaterLogImplV1>
+      <amount>200</amount>
+      <logId>508693835</logId>
+    </apiWaterLogImplV1>
+    <apiWaterLogImplV1>
+      <amount>200</amount>
+      <logId>508685836</logId>
+    </apiWaterLogImplV1>
+    <apiWaterLogImplV1>
+      <amount>300</amount>
+      <logId>508701049</logId>
+    </apiWaterLogImplV1>
+    <apiWaterLogImplV1>
+      <amount>300</amount>
+      <logId>508707420</logId>
+    </apiWaterLogImplV1>
+    <apiWaterLogImplV1>
+      <amount>300</amount>
+      <logId>508711015</logId>
+    </apiWaterLogImplV1>
+  </water>
+</result>

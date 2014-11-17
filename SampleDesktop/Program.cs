@@ -39,9 +39,9 @@ namespace SampleDesktop
 
         static AuthCredential Authenticate()
         {
-            var requestTokenUrl = "http://api.fitbit.com/oauth/request_token";
-            var accessTokenUrl = "http://api.fitbit.com/oauth/access_token";
-            var authorizeUrl = "http://www.fitbit.com/oauth/authorize";
+            var requestTokenUrl = "https://api.fitbit.com/oauth/request_token";
+            var accessTokenUrl = "https://api.fitbit.com/oauth/access_token";
+            var authorizeUrl = "https://www.fitbit.com/oauth/authorize";
 
             var a = new Authenticator(consumerKey, consumerSecret, requestTokenUrl, accessTokenUrl, authorizeUrl);
 

@@ -371,5 +371,39 @@ namespace Fitbit.IntegrationTests
             //we expect to have 1 water log entry less than before the testrun
             Assert.AreEqual(initialWaterLogCount - 1, finalWaterData.Water.Count);
         }
+
+        [Test]
+        public void Retrieve_Day_ActivitySummary()
+        {
+            var logDate = new DateTime(2014, 11, 17);  //find a date you know your user has water logs
+
+            ActivitySummary activitySummary = client.GetDayActivitySummary(logDate);
+
+            Assert.IsNotNull(activitySummary);
+            Assert.IsTrue(activitySummary.CaloriesOut > 0);
+            Assert.IsTrue(activitySummary.FairlyActiveMinutes > 0);
+
+        }
+
+        [Test]
+        public void Retrieve_Day_Activity()
+        {
+            var logDate = new DateTime(2014, 11, 17);  //find a date you know your user has water logs
+
+            Activity activitySummary = client.GetDayActivity(logDate);
+
+            Assert.IsNotNull(activitySummary);
+            Assert.IsNotNull(activitySummary.Activities);
+            Assert.IsNotNull(activitySummary.Summary);
+            Assert.IsNotNull(activitySummary.Goals);
+
+            Assert.IsTrue(activitySummary.Activities.Count > 0);
+            Assert.IsTrue(activitySummary.Activities[0].ActivityId > 0);
+
+            Assert.IsTrue(activitySummary.Summary.CaloriesOut > 0);
+            Assert.IsTrue(activitySummary.Summary.FairlyActiveMinutes > 0);
+
+            Assert.IsTrue(activitySummary.Goals.Steps > 0);
+        }
     }
 }

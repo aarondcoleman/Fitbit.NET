@@ -577,6 +577,7 @@ namespace Fibit.Tests
             Assert.AreEqual("Running", result.Tracker);
         }
 
+        [Test]
         public void Can_Deserialize_Rate_Limit()
         {
             string content = File.ReadAllText(SampleData.PathFor("RateLimitError.txt"));

@@ -1,0 +1,30 @@
+﻿{
+    "activities": [
+        { "activityId": 5070, "activityParentId": 5070, "activityParentName": "Ironing", "calories": 79, "description": "", "duration": 1800000, "hasStartTime": true, "isFavorite": false, "lastModified": "2014-11-17T15:47:41.000+01:00", "logId": 118141721, "name": "Ironing", "startDate": "2014-11-17", "startTime": "13:17" }
+    ],
+    "goals": { "activeMinutes": 30, "caloriesOut": 2735, "distance": 8.05, "floors": 10, "steps": 10000 },
+    "summary": {
+        "activeScore": -1,
+        "activityCalories": 318,
+        "caloriesBMR": 1077,
+        "caloriesOut": 1286,
+        "distances": [
+            { "activity": "total", "distance": 0.84 },
+            { "activity": "tracker", "distance": 0.84 },
+            { "activity": "loggedActivities", "distance": 0 },
+            { "activity": "veryActive", "distance": 0.06 },
+            { "activity": "moderatelyActive", "distance": 0.67 },
+            { "activity": "lightlyActive", "distance": 0.11 },
+            { "activity": "sedentaryActive", "distance": 0.01 },
+            { "activity": "Ironing", "distance": 0 }
+        ],
+        
+        "elevation": 3.05,
+        "fairlyActiveMinutes": 27,
+        "floors": 1,
+        "lightlyActiveMinutes": 68,
+        "marginalCalories": 149,
+        "sedentaryMinutes": 851,
+        "steps": 1164,
+        "veryActiveMinutes": 1
+    } }

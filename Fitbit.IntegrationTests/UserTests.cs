@@ -254,5 +254,115 @@ namespace Fitbit.IntegrationTests
             Assert.AreEqual(ErrorType.Validation, error.ErrorType);
             Assert.AreEqual("resource owner", error.FieldName);
         }
+
+        [Test]
+        public void Retrieve_Water_On_Date()
+        {
+            DateTime waterRecordDate = new DateTime(2014, 11, 17); //find a date you know your user has water logs
+            WaterData waterData = client.GetWater(waterRecordDate);
+            float totalAmount = waterData.Water.Sum(s => s.Amount);
+
+            Assert.IsNotNull(waterData);
+
+            Assert.IsNotNull(waterData.Summary);
+            Assert.IsTrue(waterData.Summary.Water > 0);
+
+            Assert.IsTrue(waterData.Water.First().Amount > 0);
+            Assert.IsTrue(waterData.Water.Count > 0); //make sure there is at least one water log
+
+            Assert.AreEqual(totalAmount, waterData.Summary.Water); //total amount of water received is the sum of all logs
+        }
+
+        [Test]
+        public void Log_Single_Water_On_Date()
+        {
+            var logDate = new DateTime(2014, 11, 17);  //the date for which the sample waterlog will be added
+            WaterLog log = new WaterLog
+            {
+                LogId = -1,
+                Amount = 300
+            };
+
+
+            WaterLog response = client.LogWater(logDate, log);
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(log.Amount, response.Amount);
+            Assert.AreNotEqual(-1, response.LogId);
+            Assert.IsTrue(response.LogId > 0);
+        }
+
+        [Test]
+        public void Delete_Last_Water_On_Date()
+        {
+            var logDate = new DateTime(2014, 11, 17);  //find a date you know your user has water logs
+            WaterData initialWaterData = client.GetWater(logDate);
+
+            int initialWaterLogCount = initialWaterData.Water.Count;
+
+            //we expect atleast one water log entry for this date
+            long logId = initialWaterData.Water.OrderBy(s => s.LogId).Last().LogId;
+            client.DeleteWaterLog(logId);
+
+            WaterData finalWaterData = client.GetWater(logDate);
+
+            //we expect to have 1 water log entry less than before the testrun
+            Assert.AreEqual(initialWaterLogCount - 1, finalWaterData.Water.Count);
+        }
+
+        [Test]
+        public void Retrieve_Water_For_User_On_Date()
+        {
+            DateTime waterRecordDate = new DateTime(2014, 11, 17); //find a date you know your user has water logs
+            WaterData waterData = client.GetWater(waterRecordDate, Configuration.FitbitUserId);
+            float totalAmount = waterData.Water.Sum(s => s.Amount);
+
+            Assert.IsNotNull(waterData);
+
+            Assert.IsNotNull(waterData.Summary);
+            Assert.IsTrue(waterData.Summary.Water > 0);
+
+            Assert.IsTrue(waterData.Water.First().Amount > 0);
+            Assert.IsTrue(waterData.Water.Count > 0); //make sure there is at least one water log
+
+            Assert.AreEqual(totalAmount, waterData.Summary.Water); //total amount of water received is the sum of all logs
+        }
+
+        [Test]
+        public void Log_Single_Water_For_User_On_Date()
+        {
+            var logDate = new DateTime(2014, 11, 17);  //the date for which the sample waterlog will be added
+            WaterLog log = new WaterLog
+            {
+                LogId = -1,
+                Amount = 300
+            };
+
+
+            WaterLog response = client.LogWater(logDate, log, Configuration.FitbitUserId);
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(log.Amount, response.Amount);
+            Assert.AreNotEqual(-1, response.LogId);
+            Assert.IsTrue(response.LogId > 0);
+        }
+
+        [Test]
+        public void Delete_Last_Water_For_User_On_Date()
+        {
+            var logDate = new DateTime(2014, 11, 17);  //find a date you know your user has water logs
+            WaterData initialWaterData = client.GetWater(logDate, Configuration.FitbitUserId);
+
+            int initialWaterLogCount = initialWaterData.Water.Count;
+
+            //we expect atleast one water log entry for this date
+            long logId = initialWaterData.Water.OrderBy(s => s.LogId).Last().LogId;
+            client.DeleteWaterLog(logId, Configuration.FitbitUserId);
+
+            WaterData finalWaterData = client.GetWater(logDate, Configuration.FitbitUserId);
+
+            //we expect to have 1 water log entry less than before the testrun
+            Assert.AreEqual(initialWaterLogCount - 1, finalWaterData.Water.Count);
+        }
     }
 }

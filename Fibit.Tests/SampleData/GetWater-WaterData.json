@@ -1,0 +1,7 @@
+﻿{ "summary": { "water": 1300 },
+    "water": [
+        { "amount": 200, "logId": 508693835 },
+        { "amount": 200, "logId": 508685836 },
+        { "amount": 300, "logId": 508701049 },
+        { "amount": 300, "logId": 508707420 }, 
+        { "amount": 300, "logId": 508711015 } ]}

@@ -41,5 +41,11 @@ namespace Fitbit.Api
         Fitbit.Models.HeartRateLog LogHeartRate(Fitbit.Models.HeartRateLog log, string userId);
         Fitbit.Models.HeartRates GetHeartRates(DateTime date);
         void DeleteHeartRateLog(int logId);
+        Fitbit.Models.WaterData GetWater(DateTime date);
+        Fitbit.Models.WaterData GetWater(DateTime date, string userId);
+        Fitbit.Models.WaterLog LogWater(DateTime date, Fitbit.Models.WaterLog log);
+        Fitbit.Models.WaterLog LogWater(DateTime date, Fitbit.Models.WaterLog log, string userId);
+        void DeleteWaterLog(long logId);
+        void DeleteWaterLog(long logId, string userId);
     }
 }

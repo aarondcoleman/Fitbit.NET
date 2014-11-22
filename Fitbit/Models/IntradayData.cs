@@ -10,6 +10,7 @@ namespace Fitbit.Models
         public DateTime Time { get; set; }
         public string Value { get; set; }
         public string Level { get; set; }
+        public string METs { get; set; }
     }
 
     public class IntradayData

@@ -73,6 +73,9 @@
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\TimeSeriesResourceType.cs" />
     <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\WaterData.cs" />
+    <Compile Include="Models\WaterLog.cs" />
+    <Compile Include="Models\WaterSummary.cs" />
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Models\WeightLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

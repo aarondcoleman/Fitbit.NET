@@ -536,8 +536,7 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// 
-        /// </summary>
+        /// Set the Goals for the current logged in user; individual goals, multiple or all can be specified in one call.</summary>
         /// <param name="caloriesOut"></param>
         /// <param name="distance"></param>
         /// <param name="floors"></param>

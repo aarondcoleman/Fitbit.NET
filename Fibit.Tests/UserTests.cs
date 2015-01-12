@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,7 +87,7 @@ namespace Fibit.Tests
             Assert.IsTrue(result.Foods.Count == 1);
             FoodLog food = result.Foods[0];
             Assert.IsTrue(food.IsFavorite);
-            Assert.AreEqual(food.LogDate, new DateTime(2011, 06, 29));
+            Assert.AreEqual(food.LogDate, new DateTime(2011,06,29));
             Assert.AreEqual(food.LogId, 1924);
 
             Assert.IsNotNull(food.LoggedFood);
@@ -191,12 +191,12 @@ namespace Fibit.Tests
         {
             string content = File.ReadAllText(SampleData.PathFor("GetDevices-Single.txt"));
             var deserializer = new RestSharp.Deserializers.XmlDeserializer();
-
+            
             List<Device> result = deserializer.Deserialize<List<Device>>(new RestResponse() { Content = content });
 
             Assert.IsNotNull(result);
 
-
+            
             Assert.IsTrue(result.Count == 1);
 
             /*
@@ -223,7 +223,7 @@ namespace Fibit.Tests
         {
             string content = File.ReadAllText(SampleData.PathFor("GetDevices-Double.txt"));
             var deserializer = new RestSharp.Deserializers.XmlDeserializer();
-
+            
             List<Device> result = deserializer.Deserialize<List<Device>>(new RestResponse() { Content = content });
 
             Assert.IsNotNull(result);
@@ -273,10 +273,10 @@ namespace Fibit.Tests
         public void Can_Deserialize_TimeSeriesActivitiesSteps()
         {
             string content = File.ReadAllText(SampleData.PathFor("TimeSeriesActivitiesSteps.txt"));
-
+            
             var deserializer = new RestSharp.Deserializers.XmlDeserializer();
             //var deserializer = new RestSharp.Deserializers.JsonDeserializer();
-
+            
             //TimeSeriesResourceType type = TimeSeriesResourceType.Steps.GetRootElement();
 
             deserializer.RootElement = "activities-steps";
@@ -285,12 +285,12 @@ namespace Fibit.Tests
             List<TimeSeriesDataList.Data> result = deserializer.Deserialize<List<TimeSeriesDataList.Data>>(new RestResponse() { Content = content });
 
             Assert.IsNotNull(result);
-
-            Assert.AreEqual(new DateTime(2012, 5, 19), result[0].DateTime);
+            
+            Assert.AreEqual(new DateTime(2012,5,19), result[0].DateTime);
             Assert.AreEqual("11546", result[0].Value);
 
             Assert.AreEqual(8, result.Count);
-
+            
         }
 
         [Test]
@@ -365,7 +365,7 @@ namespace Fibit.Tests
             //deserializer.RootElement = "dataset";
             //deserializer.RootElement = "activities-log-calories-intraday";
             XDocument doc = XDocument.Parse(content);
-
+                
             var rootElement = doc.Descendants("result").FirstOrDefault().Descendants().Where(t => t.Name.LocalName.Contains("-intraday")).FirstOrDefault();
 
             //sometimes the API doesn't return that node, for isnstance a date queried before the start of an account 
@@ -421,7 +421,7 @@ namespace Fibit.Tests
 
             Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day), result.DataSet[0].Time);
             Assert.AreEqual("3", result.DataSet[0].Value);
-
+            
             Assert.AreEqual(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 1, 0), result.DataSet[1].Time);
             Assert.AreEqual("10", result.DataSet[1].Value);
 
@@ -538,7 +538,7 @@ namespace Fibit.Tests
             //Assert.IsTrue(result.Sleep.SleepLog.Count > 0);
 
             Assert.IsNotNull(result.Summary);
-
+            
             Assert.AreEqual(497, result.Summary.TotalMinutesAsleep);
             Assert.AreEqual(1, result.Summary.TotalSleepRecords);
             Assert.AreEqual(578, result.Summary.TotalTimeInBed);
@@ -628,6 +628,5 @@ namespace Fibit.Tests
             Assert.AreEqual(300, result.Amount);
 
         }
-
     }
 }

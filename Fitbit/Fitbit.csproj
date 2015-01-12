@@ -93,6 +93,9 @@
     <Compile Include="Models\UpdatedResource.cs" />
     <Compile Include="Models\Updates.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\WaterData.cs" />
+    <Compile Include="Models\WaterLog.cs" />
+    <Compile Include="Models\WaterSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscriptionManager.cs" />
   </ItemGroup>

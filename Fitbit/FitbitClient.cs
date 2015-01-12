@@ -766,6 +766,90 @@ namespace Fitbit.Api
             HandleResponse(response);
         }
 
+
+        #region Water Methods
+
+        public WaterData GetWater(DateTime date)
+        {
+            return GetWater(date, string.Empty);
+        }
+
+        // GET https://api.fitbit.com/1/user/-/foods/log/water/date/yyyy-mm-dd.json
+        public WaterData GetWater(DateTime date, string userId)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/foods/log/water/date/{1}.json",
+                userSignifier,
+                date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.WaterData>(request);
+
+            HandleResponse(response);
+
+            return response.Data;
+        }
+
+        public WaterLog LogWater(DateTime date, WaterLog log)
+        {
+            return LogWater(date, log, string.Empty);
+        }
+
+        // POST https://api.fitbit.com/1/user/-/foods/log/water.json?amount=200&date=yyyy-mm-dd
+        public WaterLog LogWater(DateTime date, WaterLog log, string userId)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/foods/log/water.json", userSignifier);
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+            request.RootElement = "waterLog";
+            AddPostParameter(request, "amount", log.Amount);
+            AddPostParameter(request, "date", date.ToString("yyyy-MM-dd"));
+
+            var response = restClient.Execute<WaterLog>(request);
+
+            HandleResponse(response);
+
+            return response.Data;
+        }
+
+        public void DeleteWaterLog(long logId)
+        {
+            DeleteWaterLog(logId, string.Empty);
+        }
+
+        // DELETE https://api.fitbit.com/1/user/-/foods/log/water/XXXXX.json
+        public void DeleteWaterLog(long logId, string userId)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/foods/log/water/{1}.json",
+                userSignifier,
+                logId);
+
+            RestRequest request = new RestRequest(endPoint, Method.DELETE);
+
+            var response = restClient.Execute<WaterLog>(request);
+
+            HandleResponse(response);
+        }
+
+        #endregion
+
+        #region Derived Methods from API Calls
+
         /// <summary>
         /// Helps to figure out when the first device usage is. Uses the Fitbit time series for steps to find the first day of steps
         /// </summary>
@@ -908,5 +992,7 @@ namespace Fitbit.Api
             p.Value = value;
             request.AddParameter(p);
         }
+
+        #endregion
     }
 }

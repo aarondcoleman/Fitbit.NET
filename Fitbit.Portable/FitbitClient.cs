@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Fitbit.Models;
@@ -616,6 +617,33 @@ namespace Fitbit.Api.Portable
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var serializer = new JsonDotNetSerializer();
                 fitbitResponse.Data = serializer.Deserialize<WaterData>(responseBody);
+            }
+
+            return fitbitResponse;
+        }
+
+        /// <summary>
+        /// Logs the specified WaterLog item for the current logged in user - https://wiki.fitbit.com/display/API/API-Log-Water
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<WaterLog>> LogWaterAsync(DateTime date, WaterLog log)
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/foods/log/water.json");
+
+            var items = new Dictionary<string, string>();
+            items.Add("amount", log.Amount.ToString());
+            items.Add("date", date.ToFitbitFormat());
+            apiCall = string.Format("{0}?{1}", apiCall, string.Join("&", items.Select(x => string.Format("{0}={1}", x.Key, x.Value))));
+
+            HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new StringContent(string.Empty));
+            var fitbitResponse = await HandleResponse<WaterLog>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer {RootProperty = "waterLog"};
+                fitbitResponse.Data = serializer.Deserialize<WaterLog>(responseBody);
             }
 
             return fitbitResponse;

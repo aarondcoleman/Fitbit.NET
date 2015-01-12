@@ -591,24 +591,5 @@ namespace Fibit.Tests
             Assert.AreEqual(ErrorType.Request, error.ErrorType);
             Assert.AreEqual("n/a", error.FieldName);
         }
-
-
-
-        [Test]
-        public void Can_Deserialize_Water_Log_Json()
-        {
-            string content = File.ReadAllText(SampleData.PathFor("LogWater-WaterLog.json"));
-
-            var deserializer = new RestSharp.Deserializers.JsonDeserializer();
-            deserializer.RootElement = "waterLog";
-
-            WaterLog result = deserializer.Deserialize<WaterLog>(new RestResponse() { Content = content });
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(508728882, result.LogId);
-            Assert.AreEqual(300, result.Amount);
-
-        }
-
     }
 }

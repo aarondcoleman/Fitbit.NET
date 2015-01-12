@@ -35,7 +35,7 @@ namespace Fitbit.Portable.Tests
             string content = "GetWater-WaterData.json".GetContent();
 
             var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ghjhg/foods/log/water/date/2014-09-27.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ghjhg/foods/log/water/date/2015-001-12.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
 
             var httpClient = new HttpClient(fakeResponseHandler);
             var fitbitClient = new FitbitClient(httpClient);
@@ -43,6 +43,27 @@ namespace Fitbit.Portable.Tests
             var response = await fitbitClient.GetFoodAsync(new DateTime(2015, 1, 12));
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
+        }
+
+        [Test]
+        public async void PostWaterLogAsync_Success()
+        {
+            string content = "LogWater-WaterLog.json".GetContent();
+
+            var fakeResponseHandler = new FakeResponseHandler();
+            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/foods/log/water.json?amount=300&date=2015-01-12"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+
+            var httpClient = new HttpClient(fakeResponseHandler);
+            var fitbitClient = new FitbitClient(httpClient);
+
+            var response = await fitbitClient.LogWaterAsync(new DateTime(2015, 1, 12), new WaterLog { Amount = 300 });
+            Assert.IsTrue(response.Success);
+            fakeResponseHandler.AssertAllCalled();
+
+            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+
+            Assert.IsNotNull(response.Data);
+            Assert.AreEqual(300, response.Data.Amount);
         }
 
         [Test]
@@ -80,6 +101,20 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(200, firstWaterLog.Amount);
             Assert.AreEqual(508693835, firstWaterLog.LogId);
 
+        }
+
+        [Test]
+        public void Can_Deserialize_Water_Log_Json()
+        {
+            string content = "LogWater-WaterLog.json".GetContent();
+
+            var deserializer = new JsonDotNetSerializer { RootProperty = "waterLog"};
+
+            WaterLog result = deserializer.Deserialize<WaterLog>(content);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(508728882, result.LogId);
+            Assert.AreEqual(300, result.Amount);
         }
     }
 }

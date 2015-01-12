@@ -30,5 +30,9 @@ namespace Fitbit.Api.Portable
         Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateTime? endDate = null);
 
         Task<FitbitResponse<ActivityGoals>> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int));
+
+        Task<FitbitResponse<WaterData>> GetWaterAsync(DateTime date);
+        //Task<FitbitResponse<WaterLog>> LogWaterAsync(DateTime date, WaterLog log, string encodedUserId = default(string));
+        //Task<FitbitResponse<NoData>> DeleteWaterLogAsync(long logId, string encodedUserId = default(string));
     }
 }

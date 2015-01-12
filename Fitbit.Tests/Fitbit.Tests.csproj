@@ -75,8 +75,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="SampleData\GetWater-WaterData.json" />
-    <None Include="SampleData\LogWater-WaterLog.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fitbit.Common\Fitbit.Common.csproj">

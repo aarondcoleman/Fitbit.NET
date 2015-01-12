@@ -599,6 +599,30 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Gets the water date for the specified date - https://wiki.fitbit.com/display/API/API-Get-Water
+        /// </summary>
+        /// <remarks>
+        /// GET https://api.fitbit.com/1/user/-/foods/log/water/date/yyyy-mm-dd.json
+        /// </remarks>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<WaterData>> GetWaterAsync(DateTime date)
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/foods/log/water/date/{1}.json", args: date.ToFitbitFormat());
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<WaterData>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer();
+                fitbitResponse.Data = serializer.Deserialize<WaterData>(responseBody);
+            }
+
+            return fitbitResponse;
+        }
+
+        /// <summary>
         /// General error checking of the response before specific processing is done.
         /// </summary>
         /// <param name="response"></param>

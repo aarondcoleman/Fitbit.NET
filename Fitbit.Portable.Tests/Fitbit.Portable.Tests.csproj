@@ -99,6 +99,7 @@
     <Compile Include="TimeSeriesDataListIntTests.cs" />
     <Compile Include="TimeSeriesDataListTests.cs" />
     <Compile Include="UserProfileTests.cs" />
+    <Compile Include="WaterTests.cs" />
     <Compile Include="WeightTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +109,7 @@
     <None Include="SampleData\GetBloodPressure.json" />
     <None Include="SampleData\GetBodyMeasurements.json" />
     <None Include="SampleData\GetHeartRate.json" />
+    <None Include="SampleData\GetWater-WaterData.json" />
     <None Include="SampleData\GetWeight.json" />
     <None Include="SampleData\GetFat.json" />
     <None Include="SampleData\GetFoodLogs.json" />
@@ -130,6 +132,7 @@
     <None Include="SampleData\GetFriends-None.json" />
     <None Include="SampleData\GetFriends-Single.json" />
     <None Include="SampleData\GetSleep.json" />
+    <None Include="SampleData\LogWater-WaterLog.json" />
     <None Include="SampleData\TimeSeries-ActivitiesSteps.json" />
     <None Include="SampleData\TimeSeries-ActivitiesDistance.json" />
     <None Include="SampleData\UserProfile.json" />

@@ -33,6 +33,7 @@ namespace Fitbit.Portable.Tests
             HttpResponseMessage response;
 
             // todo: register the expected response messaghe content
+            // todo: check for expected httpverb
             
             if (_responses.ContainsKey(request.RequestUri))
             {

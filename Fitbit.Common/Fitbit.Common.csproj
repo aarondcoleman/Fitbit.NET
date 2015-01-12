@@ -78,6 +78,7 @@
     <Compile Include="Models\WaterSummary.cs" />
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Models\WeightLog.cs" />
+    <Compile Include="NoData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringAttributeExtensions.cs" />
     <Compile Include="StringValueAttribute.cs" />

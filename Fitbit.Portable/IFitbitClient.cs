@@ -33,6 +33,6 @@ namespace Fitbit.Api.Portable
 
         Task<FitbitResponse<WaterData>> GetWaterAsync(DateTime date);
         //Task<FitbitResponse<WaterLog>> LogWaterAsync(DateTime date, WaterLog log, string encodedUserId = default(string));
-        //Task<FitbitResponse<NoData>> DeleteWaterLogAsync(long logId, string encodedUserId = default(string));
+        Task<FitbitResponse<NoData>> DeleteWaterLogAsync(long logId);
     }
 }

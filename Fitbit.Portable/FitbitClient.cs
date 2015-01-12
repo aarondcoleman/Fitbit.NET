@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Fitbit.Models;
@@ -619,6 +618,26 @@ namespace Fitbit.Api.Portable
                 fitbitResponse.Data = serializer.Deserialize<WaterData>(responseBody);
             }
 
+            return fitbitResponse;
+        }
+
+        /// <summary>
+        /// Deletes the specific water log entry for the logId provided for the current logged in user
+        /// </summary>
+        /// <remarks>
+        /// DELETE https://api.fitbit.com/1/user/-/foods/log/water/XXXXX.json
+        /// </remarks>
+        /// <param name="logId"></param>
+        /// <returns></returns>
+        public async Task<FitbitResponse<NoData>> DeleteWaterLogAsync(long logId)
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/foods/log/water/{1}.json", args: logId);
+            HttpResponseMessage response = await HttpClient.DeleteAsync(apiCall);
+            var fitbitResponse = await HandleResponse<NoData>(response);
+            if (fitbitResponse.Success)
+            {
+                fitbitResponse.Data = new NoData();
+            }
             return fitbitResponse;
         }
 

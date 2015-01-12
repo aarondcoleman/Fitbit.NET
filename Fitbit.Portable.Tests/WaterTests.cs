@@ -30,6 +30,38 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
+        public async void GetWaterAsync_Errors()
+        {
+            string content = "GetWater-WaterData.json".GetContent();
+
+            var fakeResponseHandler = new FakeResponseHandler();
+            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ghjhg/foods/log/water/date/2014-09-27.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+
+            var httpClient = new HttpClient(fakeResponseHandler);
+            var fitbitClient = new FitbitClient(httpClient);
+
+            var response = await fitbitClient.GetFoodAsync(new DateTime(2015, 1, 12));
+            Assert.IsFalse(response.Success);
+            Assert.IsNull(response.Data);
+        }
+
+        [Test]
+        public async void DeleteWaterLogAsync_Success()
+        {
+            var fakeResponseHandler = new FakeResponseHandler();
+            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/foods/log/water/1234.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) });
+
+            var httpClient = new HttpClient(fakeResponseHandler);
+            var fitbitClient = new FitbitClient(httpClient);
+
+            var response = await fitbitClient.DeleteWaterLogAsync(1234);
+            Assert.IsTrue(response.Success);
+            fakeResponseHandler.AssertAllCalled();
+
+            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+        }
+
+        [Test]
         public void Can_Deserialize_Water_Data_Json()
         {
             string content = "GetWater-WaterData.json".GetContent();

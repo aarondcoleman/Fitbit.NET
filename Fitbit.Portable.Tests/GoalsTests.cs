@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using NUnit.Framework;
 
@@ -10,102 +11,100 @@ namespace Fitbit.Portable.Tests
     public class GoalsTests
     {
         [Test]
-        [Ignore]
-        [ExpectedException(typeof(Exception))]
-        public void SetGoalsAsync_NoGoalsSet()
+        [ExpectedException(typeof(ArgumentException))]
+        public async void SetGoalsAsync_NoGoalsSet()
         {
             var client = new FitbitClient("key", "secret", "token", "asecret");
-            client.SetGoalsAsync();
+            await client.SetGoalsAsync();
         }
 
         [Test]
-        [Ignore]
         public async void SetGoalsAsync_CaloriesOutSet()
         {
-            var fakeResponseHandler = new FakeResponseHandler();
-            // no need for a response as not testing that here
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/activities/goals/daily.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) });
+            var fitbitClient = SetupFitbitClient("caloriesOut=2000");
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
-
-            var caloriesOut = 2000;
-
-            var response = await fitbitClient.SetGoalsAsync(caloriesOut: caloriesOut);
-            fakeResponseHandler.AssertAllCalled();
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+            var response = await fitbitClient.SetGoalsAsync(caloriesOut: 2000);
+           
+            Assert.IsTrue(response.Success);
+            Assert.IsNotNull(response.Data);
         }
 
         [Test]
-        [Ignore]
         public async void SetGoalsAsync_DistanceSet()
         {
-            var fakeResponseHandler = new FakeResponseHandler();
-            // no need for a response as not testing that here
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/activities/goals/daily.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) });
+            var fitbitClient = SetupFitbitClient("distance=8.5");
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var response = await fitbitClient.SetGoalsAsync(distance: 8.5M);
 
-            decimal distance = 8.5M;
-
-            var response = await fitbitClient.SetGoalsAsync(distance: distance);
-            fakeResponseHandler.AssertAllCalled();
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+            Assert.IsTrue(response.Success);
+            Assert.IsNotNull(response.Data);
         }
 
         [Test]
-        [Ignore]
         public async void SetGoalsAsync_FloorsSet()
         {
-            var fakeResponseHandler = new FakeResponseHandler();
-            // no need for a response as not testing that here
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/activities/goals/daily.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) });
+            var fitbitClient = SetupFitbitClient("floors=20");
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
-
-            int floors = 20;
-
-            var response = await fitbitClient.SetGoalsAsync(floors: floors);
-            fakeResponseHandler.AssertAllCalled();
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+            var response = await fitbitClient.SetGoalsAsync(floors: 20);
+            
+            Assert.IsTrue(response.Success);
+            Assert.IsNotNull(response.Data);
         }
 
         [Test]
-        [Ignore]
         public async void SetGoalsAsync_StepsSet()
         {
-            var fakeResponseHandler = new FakeResponseHandler();
-            // no need for a response as not testing that here
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/activities/goals/daily.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) });
+            var fitbitClient = SetupFitbitClient("steps=10000");
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var response = await fitbitClient.SetGoalsAsync(steps: 10000);
 
-            int steps = 10000;
-
-            var response = await fitbitClient.SetGoalsAsync(steps: steps);
-            fakeResponseHandler.AssertAllCalled();
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+            Assert.IsTrue(response.Success);
+            Assert.IsNotNull(response.Data);
         }
 
         [Test]
-        [Ignore]
         public async void SetGoalsAsync_ActiveMinuitesSet()
         {
-            var fakeResponseHandler = new FakeResponseHandler();
-            // no need for a response as not testing that here
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/activities/goals/daily.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) });
+            var fitbitClient = SetupFitbitClient("activeMinutes=50");
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var response = await fitbitClient.SetGoalsAsync(activeMinutes: 50);
 
-            int steps = 10000;
+            Assert.IsTrue(response.Success);
+            Assert.IsNotNull(response.Data);
+        }
 
-            var response = await fitbitClient.SetGoalsAsync(steps: steps);
-            fakeResponseHandler.AssertAllCalled();
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+        [Test]
+        public async void SetGoalsAsync_AllSet()
+        {
+            var fitbitClient = SetupFitbitClient("caloriesOut=2000&distance=8.5&floors=20&steps=10000&activeMinutes=50");
+
+            var response = await fitbitClient.SetGoalsAsync(2000, 8.5M, 20, 10000, 50);
+
+            Assert.IsTrue(response.Success);
+            Assert.IsNotNull(response.Data);
+        }
+
+        public FitbitClient SetupFitbitClient(string expectedBody)
+        {
+            string content = "ActivityGoals.json".GetContent();
+
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.Created) { Content = new StringContent(content) };
+            });
+
+            var verification = new Action<HttpRequestMessage, CancellationToken>(async (message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Post, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/goals/daily.json", message.RequestUri.AbsoluteUri);
+
+                var body = await message.Content.ReadAsStringAsync();
+                Assert.AreEqual(true, body.Equals(expectedBody));
+            });
+
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
+            return new FitbitClient(httpClient);
         }
     }
 }

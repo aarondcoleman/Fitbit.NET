@@ -109,7 +109,7 @@ namespace Fitbit.Portable.Tests
             {
                 Sleep = new List<SleepLog>
                 {
-                    new SleepLog()
+                    new SleepLog
                     {
                         StartTime = new DateTime(2014, 10,10, 22, 0, 0),
                         MinuteData = new List<MinuteData>

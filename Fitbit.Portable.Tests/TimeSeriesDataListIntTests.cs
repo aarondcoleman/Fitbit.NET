@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -16,19 +17,24 @@ namespace Fitbit.Portable.Tests
         {
             string content = "TimeSeries-ActivitiesSteps.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            string uri = "https://api.fitbit.com/1/user/-/activities/steps/date/2014-09-04/7d.json";
-            fakeResponseHandler.AddResponse(new Uri(uri), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/steps/date/2014-09-04/7d.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), DateRangePeriod.SevenDays);
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateDataList(response.Data);
         }
 
@@ -37,19 +43,24 @@ namespace Fitbit.Portable.Tests
         {
             string content = "TimeSeries-ActivitiesSteps.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            string uri = "https://api.fitbit.com/1/user/-/activities/steps/date/2014-09-04/2014-09-07.json";
-            fakeResponseHandler.AddResponse(new Uri(uri), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/steps/date/2014-09-04/2014-09-07.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), new DateTime(2014, 9, 7));
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateDataList(response.Data);
         }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Fitbit.Api.Portable;
+﻿using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
 

@@ -413,7 +413,7 @@ namespace Fitbit.Api.Portable
                     break;
 
                 default:
-                    throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
+                    throw new ArgumentException("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
             }
 
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/fat/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
@@ -447,7 +447,7 @@ namespace Fitbit.Api.Portable
             {
                 if (startDate.AddDays(31) < endDate)
                 {
-                    throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
+                    throw new ArgumentOutOfRangeException("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
                 }
 
                 apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/fat/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
@@ -552,7 +552,7 @@ namespace Fitbit.Api.Portable
                 && (steps == default(int))
                 && (activeMinutes == default(int)))
             {
-                throw new Exception("Unable to call SetGoalsAsync without specifying at least one goal parameter to set.");
+                throw new ArgumentException("Unable to call SetGoalsAsync without specifying at least one goal parameter to set.");
             }
 
             var messageContentParameters = new Dictionary<string, string>();

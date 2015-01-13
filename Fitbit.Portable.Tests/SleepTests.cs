@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -16,37 +17,46 @@ namespace Fitbit.Portable.Tests
         {
             string content = "GetSleep.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/sleep/date/2014-10-17.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/sleep/date/2014-10-17.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.GetSleepAsync(new DateTime(2014, 10, 17));
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
             var sleep = response.Data;
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidatSleep(sleep);
         }
 
         [Test]
         public async void GetUserProfileAsync_Failure_Errors()
         {
-            string content = "GetSleep.json".GetContent();
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ZXAS11/sleep/date/2014-11-11.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.GetSleepAsync(new DateTime(2014, 11, 11));
+
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
+            Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test]

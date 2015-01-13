@@ -22,7 +22,7 @@ namespace Fitbit.Api.Portable
             {
                 bool success = !Errors.Any();
 
-                if (success && !new[] {HttpStatusCode.OK, HttpStatusCode.Created}.Contains(StatusCode))
+                if (success && !new[] {HttpStatusCode.OK, HttpStatusCode.Created, HttpStatusCode.NoContent}.Contains(StatusCode))
                 {
                     success = false;
                 }

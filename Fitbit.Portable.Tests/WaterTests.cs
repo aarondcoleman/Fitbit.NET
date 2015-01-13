@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -16,33 +17,45 @@ namespace Fitbit.Portable.Tests
         {
             string content = "GetWater-WaterData.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/foods/log/water/date/2015-01-12.json"),new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) } );
-            
-            var httpClient = new HttpClient(fakeResponseHandler);
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
+
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/foods/log/water/date/2015-01-12.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.GetWaterAsync(new DateTime(2015, 1, 12));
-            Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
 
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+            Assert.IsTrue(response.Success);
+            ValidateWaterData(response.Data);
         }
 
         [Test]
         public async void GetWaterAsync_Errors()
         {
-            string content = "GetWater-WaterData.json".GetContent();
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ghjhg/foods/log/water/date/2015-001-12.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.GetFoodAsync(new DateTime(2015, 1, 12));
+
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
+            Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test]
@@ -50,18 +63,24 @@ namespace Fitbit.Portable.Tests
         {
             string content = "LogWater-WaterLog.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/foods/log/water.json?amount=300&date=2015-01-12"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Post, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/foods/log/water.json?amount=300&date=2015-01-12", message.RequestUri.AbsoluteUri);
+            });
+
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.LogWaterAsync(new DateTime(2015, 1, 12), new WaterLog { Amount = 300 });
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             Assert.IsNotNull(response.Data);
             Assert.AreEqual(300, response.Data.Amount);
         }
@@ -69,17 +88,24 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void DeleteWaterLogAsync_Success()
         {
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/foods/log/water/1234.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Delete, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/foods/log/water/1234.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var handler = Helper.SetupHandler(responseMessage, verification);
+            var httpClient = new HttpClient(handler);
             var fitbitClient = new FitbitClient(httpClient);
 
             var response = await fitbitClient.DeleteWaterLogAsync(1234);
-            Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
 
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
+            Assert.IsTrue(response.Success);
         }
 
         [Test]
@@ -91,16 +117,7 @@ namespace Fitbit.Portable.Tests
 
             WaterData result = deserializer.Deserialize<WaterData>(content);
 
-            var firstWaterLog = result.Water.FirstOrDefault();
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1300, result.Summary.Water);
-            Assert.AreEqual(5, result.Water.Count);
-
-            Assert.IsNotNull(firstWaterLog);
-            Assert.AreEqual(200, firstWaterLog.Amount);
-            Assert.AreEqual(508693835, firstWaterLog.LogId);
-
+            ValidateWaterData(result);
         }
 
         [Test]
@@ -115,6 +132,19 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(508728882, result.LogId);
             Assert.AreEqual(300, result.Amount);
+        }
+
+        private void ValidateWaterData(WaterData result)
+        {
+            var firstWaterLog = result.Water.FirstOrDefault();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1300, result.Summary.Water);
+            Assert.AreEqual(5, result.Water.Count);
+
+            Assert.IsNotNull(firstWaterLog);
+            Assert.AreEqual(200, firstWaterLog.Amount);
+            Assert.AreEqual(508693835, firstWaterLog.LogId);
         }
     }
 }

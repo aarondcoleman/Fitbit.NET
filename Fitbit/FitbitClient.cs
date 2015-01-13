@@ -612,9 +612,6 @@ namespace Fitbit.Api
             HandleResponse(response);
 
             return response.Data;
-
-
-
         }
 
         public ApiSubscription RemoveSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
@@ -766,15 +763,14 @@ namespace Fitbit.Api
             HandleResponse(response);
         }
 
-
-        #region Water Methods
-
+        [Obsolete]
         public WaterData GetWater(DateTime date)
         {
             return GetWater(date, string.Empty);
         }
 
         // GET https://api.fitbit.com/1/user/-/foods/log/water/date/yyyy-mm-dd.json
+        [Obsolete]
         public WaterData GetWater(DateTime date, string userId)
         {
             string userSignifier = "-"; //used for current user
@@ -794,12 +790,14 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public WaterLog LogWater(DateTime date, WaterLog log)
         {
             return LogWater(date, log, string.Empty);
         }
 
         // POST https://api.fitbit.com/1/user/-/foods/log/water.json?amount=200&date=yyyy-mm-dd
+        [Obsolete]
         public WaterLog LogWater(DateTime date, WaterLog log, string userId)
         {
             string userSignifier = "-"; // used for current user
@@ -821,12 +819,14 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public void DeleteWaterLog(long logId)
         {
             DeleteWaterLog(logId, string.Empty);
         }
 
         // DELETE https://api.fitbit.com/1/user/-/foods/log/water/XXXXX.json
+        [Obsolete]
         public void DeleteWaterLog(long logId, string userId)
         {
             string userSignifier = "-"; // used for current user
@@ -845,8 +845,6 @@ namespace Fitbit.Api
 
             HandleResponse(response);
         }
-
-        #endregion
 
         #region Derived Methods from API Calls
 

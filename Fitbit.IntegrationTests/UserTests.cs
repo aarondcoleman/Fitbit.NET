@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Fitbit.Api;
-using RestSharp;
 using Fitbit.Models;
 using System.Net;
-
 
 namespace Fitbit.IntegrationTests
 {
@@ -15,6 +12,7 @@ namespace Fitbit.IntegrationTests
     public class UserTests : TestsBase
     {
         [Test]
+        [Ignore]
         public void Retrieve_User_Profile_Data()
         {
             UserProfile userProfile = client.GetUserProfile(Configuration.FitbitUserId);
@@ -32,6 +30,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_User_Friends()
         {
             List<UserProfile> userFriends = client.GetFriends();
@@ -46,6 +45,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_User_Devices()
         {
             List<Device> userDevices = client.GetDevices();
@@ -61,6 +61,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Intraday_Calories()
         {
             IntradayData intradayData = client.GetIntraDayTimeSeries(IntradayResourceType.CaloriesOut, new DateTime(2014, 3, 30, 0, 0, 0), new TimeSpan(24,0,0));
@@ -76,6 +77,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Tracker_First_Sync_Day()
         {
             DateTime? firstReportDate = client.GetActivityTrackerFirstDay();
@@ -88,6 +90,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Weight_Last_Week()
         {
             DateTime startDate = DateTime.Now.AddDays(-7);
@@ -107,6 +110,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Fat_Last_Week()
         {
             DateTime startDate = DateTime.Now.AddDays(-7);
@@ -125,6 +129,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Food_Yesterday()
         {
             Food food = client.GetFood(DateTime.Today);
@@ -142,6 +147,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Sleep_On_Date()
         {
             DateTime sleepRecordDate = new DateTime(2013, 12, 10); //find a date you know your user has sleep logs
@@ -158,6 +164,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Sleep_TimeSeries()
         {
             TimeSeriesDataListInt dataList = client.GetTimeSeriesInt(TimeSeriesResourceType.TimeInBed, DateTime.UtcNow, DateRangePeriod.Max, null);
@@ -177,6 +184,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_BodyMeasurements_Yesterday()
         {
             BodyMeasurements measurements = client.GetBodyMeasurements(DateTime.Today.AddDays(-1));
@@ -187,6 +195,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_BloodPressure_Yesterday()
         {
             BloodPressureData bpData = client.GetBloodPressure(DateTime.Today.AddDays(-1));
@@ -197,6 +206,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Log_Single_Heart_Rate_Today()
         {
             HeartRateLog log = new HeartRateLog
@@ -217,6 +227,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Delete_Heart_Rates_Today()
         {
             DateTime heartRecordDate = DateTime.Now;
@@ -233,6 +244,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_HeartRates_Today()
         {
             DateTime heartRecordDate = DateTime.Now;
@@ -244,6 +256,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Error_Retrieving_Fake_User_Profile_Data()
         {
             FitbitException exception = Assert.Throws<FitbitException>(() => client.GetUserProfile("123") );
@@ -256,6 +269,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Water_On_Date()
         {
             DateTime waterRecordDate = new DateTime(2014, 11, 17); //find a date you know your user has water logs
@@ -274,6 +288,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Log_Single_Water_On_Date()
         {
             var logDate = new DateTime(2014, 11, 17);  //the date for which the sample waterlog will be added
@@ -293,6 +308,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Delete_Last_Water_On_Date()
         {
             var logDate = new DateTime(2014, 11, 17);  //find a date you know your user has water logs
@@ -311,6 +327,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Retrieve_Water_For_User_On_Date()
         {
             DateTime waterRecordDate = new DateTime(2014, 11, 17); //find a date you know your user has water logs
@@ -329,6 +346,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Log_Single_Water_For_User_On_Date()
         {
             var logDate = new DateTime(2014, 11, 17);  //the date for which the sample waterlog will be added
@@ -348,6 +366,7 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        [Ignore]
         public void Delete_Last_Water_For_User_On_Date()
         {
             var logDate = new DateTime(2014, 11, 17);  //find a date you know your user has water logs

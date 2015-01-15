@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Fitbit.IntegrationTests
+﻿namespace Fitbit.IntegrationTests
 {
        public class Configuration_Sample /* STEP 0 - change this class name to just "Configuration" */
        {

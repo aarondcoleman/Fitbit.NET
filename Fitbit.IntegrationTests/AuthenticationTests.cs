@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
-using Fitbit;
 using Fitbit.Api;
 using Fitbit.Models;
 
@@ -32,6 +28,7 @@ namespace Fitbit.IntegrationTests
         /// NOTE: Do this quickly. Your temp token expire within minutes
         /// </summary>
         [Test]
+        [Ignore]
         public void Can_Retrieve_Access_Token_Authorization_Url()
         {
             RequestToken token = new RequestToken();
@@ -52,6 +49,7 @@ namespace Fitbit.IntegrationTests
         /// Asks Fitbit for the permanent AuthToken and AuthTokenSecret
         /// </summary>
         [Test]
+        [Ignore]
         public void Can_Retrieve_Access_Token_And_Access_Token_Secret()
         {
             RequestToken token = new RequestToken();
@@ -70,12 +68,6 @@ namespace Fitbit.IntegrationTests
 
             Assert.IsNotNull(authCredential.UserId); //encoded Fitbit UserId
             Console.WriteLine("Fitbit UserId: " + authCredential.UserId);
-
-
         }
-
-
-
-
     }
 }

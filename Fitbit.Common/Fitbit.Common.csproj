@@ -42,7 +42,9 @@
     <Compile Include="Models\ActivityGoals.cs" />
     <Compile Include="Models\ActivityLog.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
+    <Compile Include="Models\APICollectionType.cs" />
     <Compile Include="Models\ApiError.cs" />
+    <Compile Include="Models\ApiSubscription.cs" />
     <Compile Include="Models\AuthCredential.cs" />
     <Compile Include="Models\BloodPressure.cs" />
     <Compile Include="Models\BloodPressureAverage.cs" />
@@ -65,13 +67,16 @@
     <Compile Include="Models\MinuteData.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
     <Compile Include="Models\RequestToken.cs" />
+    <Compile Include="Models\ResourceOwnerType.cs" />
     <Compile Include="Models\Sleep.cs" />
     <Compile Include="Models\SleepData.cs" />
     <Compile Include="Models\SleepLog.cs" />
     <Compile Include="Models\SleepSummary.cs" />
+    <Compile Include="Models\SubscriptionResponse.cs" />
     <Compile Include="Models\TimeSeriesDataList.cs" />
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\TimeSeriesResourceType.cs" />
+    <Compile Include="Models\UpdatedResource.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\WaterData.cs" />
     <Compile Include="Models\WaterLog.cs" />

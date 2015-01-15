@@ -99,6 +99,7 @@
     <Compile Include="SampleDataHelper.cs" />
     <Compile Include="DeviceTests.cs" />
     <Compile Include="SleepTests.cs" />
+    <Compile Include="SubscriptionTests.cs" />
     <Compile Include="TimeSeriesDataListIntTests.cs" />
     <Compile Include="TimeSeriesDataListTests.cs" />
     <Compile Include="UserProfileTests.cs" />
@@ -109,6 +110,8 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="SampleData\ActivityGoals.json" />
+    <None Include="SampleData\AddSubscriptionResponse.json" />
+    <None Include="SampleData\ApiSubscriptionNotification.json" />
     <None Include="SampleData\GetActivities.json" />
     <None Include="SampleData\GetBloodPressure.json" />
     <None Include="SampleData\GetBodyMeasurements.json" />
@@ -140,6 +143,7 @@
     <None Include="SampleData\GetFriends-None.json" />
     <None Include="SampleData\GetFriends-Single.json" />
     <None Include="SampleData\GetSleep.json" />
+    <None Include="SampleData\ListApiSubscriptions.json" />
     <None Include="SampleData\LogWater-WaterLog.json" />
     <None Include="SampleData\TimeSeries-ActivitiesSteps.json" />
     <None Include="SampleData\TimeSeries-ActivitiesDistance.json" />

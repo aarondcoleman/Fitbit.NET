@@ -694,6 +694,9 @@ namespace Fitbit.Api.Portable
                     url = "/1/user/-/meals/apiSubscriptions/{1}-meals.json";
                     break;
 
+                case APICollectionType.sleep:
+                    url = "/1/user/-/sleep/apiSubscriptions/{1}-sleep.json";
+                    break;
                     // todo: the rest!
             }
 

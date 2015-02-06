@@ -697,7 +697,10 @@ namespace Fitbit.Api.Portable
                 case APICollectionType.sleep:
                     url = "/1/user/-/sleep/apiSubscriptions/{1}-sleep.json";
                     break;
-                    // todo: the rest!
+
+                case APICollectionType.weight:
+                    url = "/1/user/-/weight/apiSubscriptions/{1}-weight.json";
+                    break;
             }
 
             string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {uniqueSubscriptionId});

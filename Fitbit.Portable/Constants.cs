@@ -7,5 +7,10 @@
         public const string TemporaryCredentialsAccessTokenUri = "oauth/access_token";
         public const string AuthorizeUri = "oauth/authorize";
         public const string LogoutAndAuthorizeUri = "oauth/logout_and_authorize";
+
+        public class Headers
+        {
+            public const string XFitbitSubscriberId = "X-Fitbit-Subscriber-Id";   
+        }
     }
 }

@@ -558,11 +558,13 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete]
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
         {
             return AddSubscription(apiCollectionType, uniqueSubscriptionId, string.Empty);
         }
 
+        [Obsolete]
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId)
         {
             

@@ -642,7 +642,7 @@ namespace Fitbit.Api.Portable
             if (fitbitResponse.Success)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer {RootProperty = "waterLog"};
+                var serializer = new JsonDotNetSerializer { RootProperty = "waterLog" };
                 fitbitResponse.Data = serializer.Deserialize<WaterLog>(responseBody);
             }
 
@@ -665,6 +665,39 @@ namespace Fitbit.Api.Portable
             if (fitbitResponse.Success)
             {
                 fitbitResponse.Data = new NoData();
+            }
+            return fitbitResponse;
+        }
+
+        public async Task<FitbitResponse<ApiSubscription>> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string))
+        {
+            string url = string.Empty;
+            switch (apiCollectionType)
+            {
+                case APICollectionType.user:
+                    url = "/1/user/-/apiSubscriptions/{1}.json";
+                    break;
+
+                case APICollectionType.activities:
+                    url = "/1/user/-/activities/apiSubscriptions/{1}-activities.json";
+                    break;
+
+                    // todo: the rest!
+            }
+
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {uniqueSubscriptionId});
+            if (!string.IsNullOrWhiteSpace(subscriberId))
+            {
+                HttpClient.DefaultRequestHeaders.Add(Constants.Headers.XFitbitSubscriberId, subscriberId);    
+            }
+
+            HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new StringContent(string.Empty));
+            var fitbitResponse = await HandleResponse<ApiSubscription>(response);
+            if (fitbitResponse.Success)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer();
+                fitbitResponse.Data = serializer.Deserialize<ApiSubscription>(responseBody);
             }
             return fitbitResponse;
         }

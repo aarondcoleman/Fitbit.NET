@@ -86,8 +86,6 @@
     <Compile Include="Models\IntradayData.cs" />
     <Compile Include="Models\Enums\IntradayResourceType.cs" />
     <Compile Include="Models\TrackerAlarm.cs" />
-    <Compile Include="Models\Updates.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscriptionManager.cs" />
   </ItemGroup>

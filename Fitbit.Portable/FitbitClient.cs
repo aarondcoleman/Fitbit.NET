@@ -671,39 +671,11 @@ namespace Fitbit.Api.Portable
 
         public async Task<FitbitResponse<ApiSubscription>> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string))
         {
-            string url = string.Empty;
-            switch (apiCollectionType)
-            {
-                case APICollectionType.user:
-                    url = "/1/user/-/apiSubscriptions/{1}.json";
-                    break;
+            string path = FormatKey(apiCollectionType, Constants.Formatting.TrailingSlash);
+            string resource = FormatKey(apiCollectionType, Constants.Formatting.LeadingDash);
 
-                case APICollectionType.activities:
-                    url = "/1/user/-/activities/apiSubscriptions/{1}-activities.json";
-                    break;
-
-                case APICollectionType.body:
-                    url = "/1/user/-/body/apiSubscriptions/{1}-body.json";
-                    break;
-
-                case APICollectionType.foods:
-                    url = "/1/user/-/foods/apiSubscriptions/{1}-foods.json";
-                    break;
-
-                case APICollectionType.meals:
-                    url = "/1/user/-/meals/apiSubscriptions/{1}-meals.json";
-                    break;
-
-                case APICollectionType.sleep:
-                    url = "/1/user/-/sleep/apiSubscriptions/{1}-sleep.json";
-                    break;
-
-                case APICollectionType.weight:
-                    url = "/1/user/-/weight/apiSubscriptions/{1}-weight.json";
-                    break;
-            }
-
-            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {uniqueSubscriptionId});
+            string url = "/1/user/-/{1}apiSubscriptions/{3}{2}.json";
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {path, resource, uniqueSubscriptionId});
             if (!string.IsNullOrWhiteSpace(subscriberId))
             {
                 HttpClient.DefaultRequestHeaders.Add(Constants.Headers.XFitbitSubscriberId, subscriberId);    
@@ -718,6 +690,12 @@ namespace Fitbit.Api.Portable
                 fitbitResponse.Data = serializer.Deserialize<ApiSubscription>(responseBody);
             }
             return fitbitResponse;
+        }
+
+        private string FormatKey(APICollectionType apiCollectionType, string format)
+        {
+            string strValue = apiCollectionType.GetStringValue();
+            return string.IsNullOrWhiteSpace(strValue) ? strValue : string.Format(format, strValue);
         }
 
         /// <summary>

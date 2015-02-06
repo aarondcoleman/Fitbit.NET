@@ -12,5 +12,11 @@
         {
             public const string XFitbitSubscriberId = "X-Fitbit-Subscriber-Id";   
         }
+
+        public class Formatting
+        {
+            public const string TrailingSlash = "{0}/";
+            public const string LeadingDash = "-{0}";
+        }
     }
 }

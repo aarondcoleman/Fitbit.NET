@@ -102,9 +102,7 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual(true, body.Equals(expectedBody));
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            return new FitbitClient(httpClient);
+            return Helper.CreateFitbitClient(responseMessage, verification);
         }
     }
 }

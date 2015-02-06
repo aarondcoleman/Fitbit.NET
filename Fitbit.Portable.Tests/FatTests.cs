@@ -125,9 +125,7 @@ namespace Fitbit.Portable.Tests
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public async void GetFatAsync_DateRange_Span_Too_Large()
         {
-            var handler = Helper.SetupHandler(() => new HttpResponseMessage(), (r, c) => {});
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = Helper.CreateFitbitClient(() => new HttpResponseMessage(), (r, c) => { });
             var basedate = DateTime.Now;
             
             await fitbitClient.GetFatAsync(basedate.AddDays(-35), basedate);
@@ -183,9 +181,7 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual(url, message.RequestUri.AbsoluteUri);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            return new FitbitClient(httpClient);
+            return Helper.CreateFitbitClient(responseMessage, verification);
         }
 
         private void ValidateFat(Fat fat)

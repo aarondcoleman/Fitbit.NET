@@ -28,9 +28,7 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/date/2014-09-27.json", message.RequestUri.AbsoluteUri);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
 
@@ -47,9 +45,7 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual(HttpMethod.Get, message.Method);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
 
@@ -74,9 +70,7 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/date/2014-09-27.json", message.RequestUri.AbsoluteUri);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDayActivitySummaryAsync(new DateTime(2014, 9, 27));
 
@@ -93,9 +87,7 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual(HttpMethod.Get, message.Method);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDayActivitySummaryAsync(new DateTime(2014, 9, 27));
 

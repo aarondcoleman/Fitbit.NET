@@ -28,10 +28,8 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/distance/date/2014-09-07/1d.json", message.RequestUri.AbsoluteUri);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
-
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetTimeSeriesAsync(TimeSeriesResourceType.Distance, new DateTime(2014, 9, 7), DateRangePeriod.OneDay);
 
             Assert.IsTrue(response.Success);
@@ -54,12 +52,10 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/distance/date/2014-09-07/2014-09-14.json", message.RequestUri.AbsoluteUri);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
-
-
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetTimeSeriesAsync(TimeSeriesResourceType.Distance, new DateTime(2014, 9, 7), new DateTime(2014, 9, 14));
+            
             Assert.IsTrue(response.Success);
             ValidateDataList(response.Data);
         }

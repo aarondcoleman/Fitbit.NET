@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Fitbit.Api.Portable;
 using Moq;
 using Moq.Protected;
 
@@ -16,14 +17,15 @@ namespace Fitbit.Portable.Tests
         /// <param name="response"></param>
         /// <param name="verificationCallback"></param>
         /// <returns></returns>
-        public static HttpMessageHandler SetupHandler(Func<HttpResponseMessage> response, Action<HttpRequestMessage, CancellationToken> verificationCallback)
+        public static FitbitClient CreateFitbitClient(Func<HttpResponseMessage> response, Action<HttpRequestMessage, CancellationToken> verificationCallback)
         {
             var handler = new Mock<HttpMessageHandler>();
             handler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .Returns(Task<HttpResponseMessage>.Factory.StartNew(response))
                 .Callback(verificationCallback);
-            return handler.Object;
+            var httpClient = new HttpClient(handler.Object);
+            return new FitbitClient(httpClient);
         }
 
         /// <summary>

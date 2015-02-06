@@ -28,10 +28,8 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual("https://api.fitbit.com/1/user/-/foods/log/water/date/2015-01-12.json", message.RequestUri.AbsoluteUri);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
-
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetWaterAsync(new DateTime(2015, 1, 12));
 
             Assert.IsTrue(response.Success);
@@ -47,10 +45,8 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual(HttpMethod.Get, message.Method);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
-
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetFoodAsync(new DateTime(2015, 1, 12));
 
             Assert.IsFalse(response.Success);
@@ -74,10 +70,8 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual("https://api.fitbit.com/1/user/-/foods/log/water.json?amount=300&date=2015-01-12", message.RequestUri.AbsoluteUri);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
-
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.LogWaterAsync(new DateTime(2015, 1, 12), new WaterLog { Amount = 300 });
 
             Assert.IsTrue(response.Success);
@@ -99,10 +93,8 @@ namespace Fitbit.Portable.Tests
                 Assert.AreEqual("https://api.fitbit.com/1/user/-/foods/log/water/1234.json", message.RequestUri.AbsoluteUri);
             });
 
-            var handler = Helper.SetupHandler(responseMessage, verification);
-            var httpClient = new HttpClient(handler);
-            var fitbitClient = new FitbitClient(httpClient);
-
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.DeleteWaterLogAsync(1234);
 
             Assert.IsTrue(response.Success);

@@ -669,6 +669,13 @@ namespace Fitbit.Api.Portable
             return fitbitResponse;
         }
 
+        /// <summary>
+        /// Add subscription
+        /// </summary>
+        /// <param name="apiCollectionType"></param>
+        /// <param name="uniqueSubscriptionId"></param>
+        /// <param name="subscriberId"></param>
+        /// <returns></returns>
         public async Task<FitbitResponse<ApiSubscription>> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string))
         {
             string path = FormatKey(apiCollectionType, Constants.Formatting.TrailingSlash);
@@ -694,7 +701,7 @@ namespace Fitbit.Api.Portable
 
         private string FormatKey(APICollectionType apiCollectionType, string format)
         {
-            string strValue = apiCollectionType.GetStringValue();
+            string strValue = apiCollectionType == APICollectionType.user ? string.Empty : apiCollectionType.ToString();
             return string.IsNullOrWhiteSpace(strValue) ? strValue : string.Format(format, strValue);
         }
 

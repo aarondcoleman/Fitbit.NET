@@ -11,7 +11,7 @@ namespace Fitbit.Models
         public int Duration { get; set; }
         public int Efficiency { get; set; }
         public bool IsMainSleep { get; set; }
-        public int LogId { get; set; }
+        public long LogId { get; set; }
         public List<MinuteData> MinuteData { get; set; }
         public int MinutesAfterWakeup { get; set; }
         public int MinutesAsleep { get; set; }

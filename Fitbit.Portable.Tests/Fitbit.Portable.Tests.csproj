@@ -89,6 +89,7 @@
     <Compile Include="FitbitResponseTests.cs" />
     <Compile Include="FoodTests.cs" />
     <Compile Include="FriendsTests.cs" />
+    <Compile Include="GetSubscriptionTests.cs" />
     <Compile Include="GoalsTests.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
@@ -99,7 +100,7 @@
     <Compile Include="SampleDataHelper.cs" />
     <Compile Include="DeviceTests.cs" />
     <Compile Include="SleepTests.cs" />
-    <Compile Include="SubscriptionTests.cs" />
+    <Compile Include="AddSubscriptionTests.cs" />
     <Compile Include="TimeSeriesDataListIntTests.cs" />
     <Compile Include="TimeSeriesDataListTests.cs" />
     <Compile Include="UserProfileTests.cs" />
@@ -144,10 +145,14 @@
     <None Include="SampleData\GetFriends-Single.json" />
     <None Include="SampleData\GetSleep.json" />
     <None Include="SampleData\ListApiSubscriptions.json" />
+    <None Include="SampleData\ListApiSubscriptionsResponseMultiple.json" />
     <None Include="SampleData\LogWater-WaterLog.json" />
     <None Include="SampleData\TimeSeries-ActivitiesSteps.json" />
     <None Include="SampleData\TimeSeries-ActivitiesDistance.json" />
     <None Include="SampleData\UserProfile.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SampleData\ListApiSubscriptionsResponseSingle.json" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

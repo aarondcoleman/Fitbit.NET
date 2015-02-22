@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace Fitbit.Portable.Tests
 {
     [TestFixture]
-    public class SubscriptionTests
+    public class AddSubscriptionTests
     {
         private const string SubScriberId = "my_subscriber_id";
 

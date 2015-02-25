@@ -534,6 +534,7 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public HeartRates GetHeartRates(DateTime date)
         {
             string apiCall = string.Format("/1/user/-/heart/date/{0}.xml", date.ToString("yyyy-MM-dd"));
@@ -557,11 +558,13 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete]
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
         {
             return AddSubscription(apiCollectionType, uniqueSubscriptionId, string.Empty);
         }
 
+        [Obsolete]
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId)
         {
             
@@ -611,9 +614,6 @@ namespace Fitbit.Api
             HandleResponse(response);
 
             return response.Data;
-
-
-
         }
 
         public ApiSubscription RemoveSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
@@ -711,6 +711,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete("Use SetGoalAsync")]
         public ActivityGoals SetStepGoal(int newStepGoal)
         {
             string apiCall = "/1/user/-/activities/goals/daily.json";
@@ -729,6 +730,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public HeartRateLog LogHeartRate(HeartRateLog log, string userId = null)
         {
             string userSignifier = "-"; // used for current user
@@ -753,6 +755,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public void DeleteHeartRateLog(int logId)
         {
             string subscriptionAPIEndpoint = string.Format("/1/user/-/heart/{0}.xml", logId);
@@ -761,6 +764,91 @@ namespace Fitbit.Api
 
             HandleResponse(response);
         }
+
+        [Obsolete]
+        public WaterData GetWater(DateTime date)
+        {
+            return GetWater(date, string.Empty);
+        }
+
+        // GET https://api.fitbit.com/1/user/-/foods/log/water/date/yyyy-mm-dd.json
+        [Obsolete]
+        public WaterData GetWater(DateTime date, string userId)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/foods/log/water/date/{1}.json",
+                userSignifier,
+                date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.WaterData>(request);
+
+            HandleResponse(response);
+
+            return response.Data;
+        }
+
+        [Obsolete]
+        public WaterLog LogWater(DateTime date, WaterLog log)
+        {
+            return LogWater(date, log, string.Empty);
+        }
+
+        // POST https://api.fitbit.com/1/user/-/foods/log/water.json?amount=200&date=yyyy-mm-dd
+        [Obsolete]
+        public WaterLog LogWater(DateTime date, WaterLog log, string userId)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/foods/log/water.json", userSignifier);
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+            request.RootElement = "waterLog";
+            AddPostParameter(request, "amount", log.Amount);
+            AddPostParameter(request, "date", date.ToString("yyyy-MM-dd"));
+
+            var response = restClient.Execute<WaterLog>(request);
+
+            HandleResponse(response);
+
+            return response.Data;
+        }
+
+        [Obsolete]
+        public void DeleteWaterLog(long logId)
+        {
+            DeleteWaterLog(logId, string.Empty);
+        }
+
+        // DELETE https://api.fitbit.com/1/user/-/foods/log/water/XXXXX.json
+        [Obsolete]
+        public void DeleteWaterLog(long logId, string userId)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/foods/log/water/{1}.json",
+                userSignifier,
+                logId);
+
+            RestRequest request = new RestRequest(endPoint, Method.DELETE);
+
+            var response = restClient.Execute<WaterLog>(request);
+
+            HandleResponse(response);
+        }
+
+        #region Derived Methods from API Calls
 
         /// <summary>
         /// Helps to figure out when the first device usage is. Uses the Fitbit time series for steps to find the first day of steps
@@ -791,6 +879,7 @@ namespace Fitbit.Api
             return null; //this is an account where the device 
         }
 
+        [Obsolete]
         public SleepData GetSleep(DateTime sleepDate)
         {
             string apiCall = string.Format("/1/user/-/sleep/date/{0}.xml", sleepDate.ToString("yyyy-MM-dd"));
@@ -903,5 +992,7 @@ namespace Fitbit.Api
             p.Value = value;
             request.AddParameter(p);
         }
+
+        #endregion
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -12,7 +13,7 @@ namespace Fitbit.Portable.Tests
     public class FatTests
     {
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_ThreeMonths()
         {
             var client = new FitbitClient("key", "secret", "access", "accessSecret");
@@ -20,7 +21,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_SixMonths()
         {
             var client = new FitbitClient("key", "secret", "access", "accessSecret");
@@ -28,7 +29,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_OneYear()
         {
             var client = new FitbitClient("key", "secret", "access", "accessSecret");
@@ -36,7 +37,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_Max()
         {
             var client = new FitbitClient("key", "secret", "access", "accessSecret");
@@ -46,153 +47,87 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetFatAsync_OneDay_Success()
         {
-            string content = "GetFat.json".GetContent();
-
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1d.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1d.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneDay);
+            
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateFat(response.Data);
         }
 
         [Test]
         public async void GetFatAsync_SevenDay_Success()
         {
-            string content = "GetFat.json".GetContent();
-
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/7d.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/7d.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.SevenDays);
+            
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateFat(response.Data);
         }
 
         [Test]
         public async void GetFatAsync_OneWeek_Success()
         {
-            string content = "GetFat.json".GetContent();
-
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1w.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1w.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneWeek);
+            
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateFat(response.Data);
         }
 
         [Test]
         public async void GetFatAsync_ThirtyDays_Success()
         {
-            string content = "GetFat.json".GetContent();
-
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/30d.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/30d.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.ThirtyDays);
+            
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateFat(response.Data);
         }
 
         [Test]
         public async void GetFatAsync_OneMonth_Success()
         {
-            string content = "GetFat.json".GetContent();
-
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1m.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1m.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneMonth);
+            
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateFat(response.Data);
         }
 
         [Test]
         public async void GetFatAsync_Success()
         {
-            string content = "GetFat.json".GetContent();
-
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5));
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateFat(response.Data);
         }
 
         [Test]
         public async void GetFatAsync_TimeSpan_Success()
         {
-            string content = "GetFat.json".GetContent();
-
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/2012-03-06.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/2012-03-06.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), new DateTime(2012, 3, 6));
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateFat(response.Data);
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public async void GetFatAsync_DateRange_Span_Too_Large()
         {
-            var fakeResponseHandler = new FakeResponseHandler();
-            
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
-
+            var fitbitClient = Helper.CreateFitbitClient(() => new HttpResponseMessage(), (r, c) => { });
             var basedate = DateTime.Now;
+            
             await fitbitClient.GetFatAsync(basedate.AddDays(-35), basedate);
         }
 
@@ -229,6 +164,24 @@ namespace Fitbit.Portable.Tests
             Fat fat = deserializer.GetFat(content);
 
             ValidateFat(fat);
+        }
+
+        private FitbitClient SetupFitbitClient(string url)
+        {
+            string content = "GetFat.json".GetContent();
+
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
+
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual(url, message.RequestUri.AbsoluteUri);
+            });
+
+            return Helper.CreateFitbitClient(responseMessage, verification);
         }
 
         private void ValidateFat(Fat fat)

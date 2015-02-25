@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -14,38 +15,43 @@ namespace Fitbit.Portable.Tests
         public async void GetUserProfileAsync_Success()
         {
             string content = "UserProfile.json".GetContent();
-         
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/profile.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/profile.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetUserProfileAsync();
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
             var user = response.Data;
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateSingleUserProfile(user);
         }
 
         [Test]
         public async void GetUserProfileAsync_Failure_Errors()
         {
-            string content = "UserProfile.json".GetContent();
-         
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ZXAS11/profile.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
-
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetFriendsAsync();
+
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
+            Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test]

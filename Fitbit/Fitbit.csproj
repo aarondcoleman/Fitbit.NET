@@ -79,25 +79,13 @@
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitException.cs" />
     <Compile Include="IFitbitClient.cs" />
-    <Compile Include="Models\ApiSubscription.cs" />
-    <Compile Include="Models\Enums\APICollectionType.cs" />
-    <Compile Include="Models\Enums\ResourceOwnerType.cs" />
     <Compile Include="Models\HeartRateLog.cs" />
     <Compile Include="Models\HeartRates.cs" />
     <Compile Include="Models\HeartRateSummary.cs" />
     <Compile Include="Models\Friend.cs" />
     <Compile Include="Models\IntradayData.cs" />
     <Compile Include="Models\Enums\IntradayResourceType.cs" />
-    <Compile Include="Models\SubscriptionResponse.cs" />
     <Compile Include="Models\TrackerAlarm.cs" />
-    <Compile Include="Models\UpdatedResource.cs" />
-    <Compile Include="Models\Updates.cs" />
-    <Compile Include="Models\MinuteData.cs" />
-    <Compile Include="Models\Sleep.cs" />
-    <Compile Include="Models\SleepLog.cs" />
-    <Compile Include="Models\SleepData.cs" />
-    <Compile Include="Models\SleepSummary.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscriptionManager.cs" />
   </ItemGroup>

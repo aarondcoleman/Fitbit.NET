@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -17,21 +18,24 @@ namespace Fitbit.Portable.Tests
         {
             string content = "GetFriends-Multiple.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/friends.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/friends.json", message.RequestUri.AbsoluteUri);
+            });
 
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetFriendsAsync();
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
             var friends = response.Data;
-
             Assert.AreEqual(3, friends.Count);
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateMultipleFriends(friends);
         }
 
@@ -40,37 +44,42 @@ namespace Fitbit.Portable.Tests
         {
             string content = "GetFriends-Single.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/friends.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/friends.json", message.RequestUri.AbsoluteUri);
+            });
 
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetFriendsAsync();
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
             var friends = response.Data;
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateSingleFriend(friends);
         }
 
         [Test]
         public async void GetFriendsAsync_Failure_Errors()
         {
-            string content = "GetFriends-Single.json".GetContent();
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/qwert/friends.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
-
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
             var response = await fitbitClient.GetFriendsAsync();
+            
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
+            Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test]

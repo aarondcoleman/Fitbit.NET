@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -16,35 +17,41 @@ namespace Fitbit.Portable.Tests
         {
             string content = "GetActivities.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/activities/date/2014-09-27.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/date/2014-09-27.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateActivity(response.Data);
         }
 
         [Test]
         public async void GetDayActivityAsync_Errors()
         {
-            string content = "GetActivities.json".GetContent();
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ghjhg/activities/date/2014-09-27.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
+
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
+            Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test]
@@ -52,35 +59,41 @@ namespace Fitbit.Portable.Tests
         {
             string content = "GetActivities.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/activities/date/2014-09-27.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/date/2014-09-27.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDayActivitySummaryAsync(new DateTime(2014, 9, 27));
+
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateActivitySummary(response.Data);
         }
 
         [Test]
         public async void GetDayActivitySummaryAsync_Errors()
         {
-            string content = "GetActivities.json".GetContent();
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ghjhg/activities/date/2014-09-27.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDayActivitySummaryAsync(new DateTime(2014, 9, 27));
+
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
+            Assert.AreEqual(1, response.Errors.Count);
         } 
 
         [Test]
@@ -103,6 +116,28 @@ namespace Fitbit.Portable.Tests
             ActivitySummary summary = deserializer.Deserialize<ActivitySummary>(content);
 
             ValidateActivitySummary(summary);
+        }
+
+        [Test]
+        public void Can_Deserialize_ActivityGoal_Invidual()
+        {
+            string content = "ActivityGoals.json".GetContent();
+            var deserializer = new JsonDotNetSerializer { RootProperty = "goals" };
+
+            ActivityGoals goal = deserializer.Deserialize<ActivityGoals>(content);
+
+            ValidateActivityGoals(goal);
+        }
+
+        [Test]
+        public void Can_Deserialize_ActivityGoal_FromActivities()
+        {
+            string content = "GetActivities.json".GetContent();
+            var deserializer = new JsonDotNetSerializer { RootProperty = "goals" };
+
+            ActivityGoals goal = deserializer.Deserialize<ActivityGoals>(content);
+
+            ValidateActivityGoals(goal);
         }
 
         private void ValidateActivity(Activity activity)
@@ -137,6 +172,11 @@ namespace Fitbit.Portable.Tests
 
             // goals
             var g = activity.Goals;
+            ValidateActivityGoals(g);
+        }
+
+        private static void ValidateActivityGoals(ActivityGoals g)
+        {
             Assert.AreEqual(10000, g.Steps);
             Assert.AreEqual(8.05, g.Distance);
             Assert.AreEqual(2820, g.CaloriesOut);

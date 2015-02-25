@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using Fitbit.Api.Portable;
 using NUnit.Framework;
@@ -39,6 +40,48 @@ namespace Fitbit.Portable.Tests
             headers.Add("Retry-After", "100");
             var response = new FitbitResponse<string>((HttpStatusCode)429, headers, null);
             Assert.AreEqual(100, response.RetryAfter());
+        }
+
+        //status tests - https://wiki.fitbit.com/display/API/API+Response+Format+And+Errors
+        [Test]
+        public void NoContent()
+        {
+            var response = new FitbitResponse<NoData>(HttpStatusCode.NoContent);
+            Assert.IsTrue(response.Success);
+        }
+
+        [Test]
+        public void Created()
+        {
+            var response = new FitbitResponse<NoData>(HttpStatusCode.Created);
+            Assert.IsTrue(response.Success);
+        }
+
+        [Test]
+        public void Ok()
+        {
+            var response = new FitbitResponse<NoData>(HttpStatusCode.OK);
+            Assert.IsTrue(response.Success);
+        }
+
+        [Test]
+        public void AnyOther()
+        {
+            foreach (HttpStatusCode value in Enum.GetValues(typeof (HttpStatusCode)))
+            {
+                switch (value)
+                {
+                    case HttpStatusCode.NoContent:
+                    case HttpStatusCode.Created:
+                    case HttpStatusCode.OK:
+                        break;
+
+                    default:
+                        var response = new FitbitResponse<NoData>(value);
+                        Assert.IsFalse(response.Success);
+                        break;
+                }
+            }
         }
     }
 }

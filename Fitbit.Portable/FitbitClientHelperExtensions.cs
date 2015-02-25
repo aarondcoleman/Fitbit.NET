@@ -4,7 +4,7 @@ using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
 {
-    internal static class FitbitClientExtensions
+    internal static class FitbitClientHelperExtensions
     {
         /// <summary>
         /// Converts the REST api resource into the fully qualified url
@@ -13,7 +13,7 @@ namespace Fitbit.Api.Portable
         /// <param name="encodedUserId"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        internal static string ToFullUrl(this string apiCall, string encodedUserId = default(string), params object[] args)
+        internal static string ToFullUrl(string apiCall, string encodedUserId = default(string), params object[] args)
         {
             string userSignifier = "-"; //used for current user
             if (!string.IsNullOrWhiteSpace(encodedUserId))
@@ -61,6 +61,19 @@ namespace Fitbit.Api.Portable
         {
             const string DateFormat = "yyyy-MM-dd";
             return dateTime.ToString(DateFormat);
+        }
+
+        /// <summary>
+        /// Returns the elapsed seconds throughout a day; 00:00:00 to 23:59:59
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        internal static int ToElapsedSeconds(this DateTime dateTime)
+        {
+            int seconds = dateTime.Second;
+            seconds += (dateTime.Minute*60); // seconds in minutes
+            seconds += (dateTime.Hour*60*60); // seconds in hours
+            return seconds;
         }
     }
 }

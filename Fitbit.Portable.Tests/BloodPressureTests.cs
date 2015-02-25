@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -10,41 +11,45 @@ namespace Fitbit.Portable.Tests
 {
     [TestFixture]
     public class BloodPressureTests
-    {
+    {       
         [Test]
         public async void GetBloodPressureAsync_Success()
         {
             string content = "GetBloodPressure.json".GetContent();
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/-/bp/date/2014-09-27.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(content)};
+            });
 
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/bp/date/2014-09-27.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetBloodPressureAsync(new DateTime(2014, 9, 27));
             Assert.IsTrue(response.Success);
-            fakeResponseHandler.AssertAllCalled();
-
-            Assert.AreEqual(1, fakeResponseHandler.CallCount);
-
             ValidateBloodPressureData(response.Data);
         }
 
         [Test]
         public async void GetBloodPressureAsync_Errors()
         {
-            string content = "GetBloodPressure.json".GetContent();
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
 
-            var fakeResponseHandler = new FakeResponseHandler();
-            fakeResponseHandler.AddResponse(new Uri("https://api.fitbit.com/1/user/ghjhg/bp/date/2014-09-27.json"), new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
-
-            var httpClient = new HttpClient(fakeResponseHandler);
-            var fitbitClient = new FitbitClient(httpClient);
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetBloodPressureAsync(new DateTime(2014, 9, 27));
             Assert.IsFalse(response.Success);
             Assert.IsNull(response.Data);
+            Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test]

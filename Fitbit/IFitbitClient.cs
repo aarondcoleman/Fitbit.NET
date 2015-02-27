@@ -18,6 +18,7 @@ namespace Fitbit.Api
         System.Collections.Generic.List<Fitbit.Models.Device> GetDevices();
         Fitbit.Models.Fat GetFat(DateTime startDate, Fitbit.Models.DateRangePeriod period);
         Fitbit.Models.Fat GetFat(DateTime startDate, DateTime? endDate = null);
+        Fitbit.Models.FatLog LogFat(DateTime date, float fat, string userId);
         Fitbit.Models.Food GetFood(DateTime date, string userId = null);
         System.Collections.Generic.List<Fitbit.Models.UserProfile> GetFriends();
         Fitbit.Models.IntradayData GetIntraDayTimeSeries(Fitbit.Models.IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan);
@@ -37,6 +38,7 @@ namespace Fitbit.Api
         Fitbit.Models.UserProfile GetUserProfile(string encodedUserId);
         Fitbit.Models.Weight GetWeight(DateTime startDate, Fitbit.Models.DateRangePeriod period);
         Fitbit.Models.Weight GetWeight(DateTime startDate, DateTime? endDate = null);
+        Fitbit.Models.WeightLog LogWeight(DateTime date, float weight, string userId);
         Fitbit.Models.ApiSubscription RemoveSubscription(Fitbit.Models.APICollectionType apiCollectionType, string uniqueSubscriptionId);
         Fitbit.Models.HeartRateLog LogHeartRate(Fitbit.Models.HeartRateLog log, string userId);
         Fitbit.Models.HeartRates GetHeartRates(DateTime date);

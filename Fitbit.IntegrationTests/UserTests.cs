@@ -217,6 +217,32 @@ namespace Fitbit.IntegrationTests
         }
 
         [Test]
+        public void Log_Single_Weight_Today()
+        {
+            Random r = new Random();
+            DateTime today = DateTime.Today;
+            float weight = r.Next(40, 100);
+
+            WeightLog response = client.LogWeight(today, weight, "-");
+            Assert.AreEqual(weight, response.Weight);
+            Assert.AreNotEqual(-1, response.LogId);
+            Assert.AreEqual(today, response.Date);
+        }
+
+        [Test]
+        public void Log_Single_Fat_Today()
+        {
+            Random r = new Random(); 
+            DateTime today = DateTime.Today;
+            float fat = r.Next(10, 30);
+
+            WeightLog response = client.LogWeight(today, fat, "-");
+            Assert.AreEqual(fat, response.Weight);
+            Assert.AreNotEqual(-1, response.LogId);
+            Assert.AreEqual(today, response.Date);
+        }
+
+        [Test]
         public void Delete_Heart_Rates_Today()
         {
             DateTime heartRecordDate = DateTime.Now;

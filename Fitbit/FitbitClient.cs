@@ -712,6 +712,50 @@ namespace Fitbit.Api
 
         #region Log Methods
 
+        public WeightLog LogWeight(DateTime date, float weight, string userId)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/body/log/weight.xml", userSignifier);
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+            request.RootElement = "weightLog";
+
+            AddPostParameter(request, "weight", weight);
+            AddPostParameter(request, "date", date.ToString("yyyy-MM-dd"));
+
+            var response = restClient.Execute<WeightLog>(request);
+
+            HandleResponse(response);
+
+            return response.Data;
+        }
+
+        public FatLog LogFat(DateTime date, float fat, string userId)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/body/log/fat.xml", userSignifier);
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+            request.RootElement = "fatLog";
+
+            AddPostParameter(request, "fat", fat);
+            AddPostParameter(request, "date", date.ToString("yyyy-MM-dd"));
+
+            var response = restClient.Execute<FatLog>(request);
+
+            HandleResponse(response);
+
+            return response.Data;
+        }
+
         public HeartRateLog LogHeartRate(HeartRateLog log, string userId = null)
         {
             string userSignifier = "-"; // used for current user

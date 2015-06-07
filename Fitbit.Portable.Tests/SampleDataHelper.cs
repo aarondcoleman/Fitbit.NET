@@ -11,7 +11,7 @@ namespace Fitbit.Portable.Tests
             return Path.Combine(SampleDataPath, sampleFile);
         }
 
-        public static string GetContent(this string fileName)
+        public static string GetContent(string fileName)
         {
             return File.ReadAllText(PathFor(fileName));
         }

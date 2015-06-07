@@ -14,7 +14,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetBodyMeasurementsAsync_Success()
         {
-            string content = "GetBodyMeasurements.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetBodyMeasurements.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -56,7 +56,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_BodyMeasurements()
         {
-            string content = "GetBodyMeasurements.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetBodyMeasurements.json");
             var deserializer = new JsonDotNetSerializer();
 
             BodyMeasurements bodyMeasurements = deserializer.Deserialize<BodyMeasurements>(content);

@@ -92,6 +92,7 @@
     <Compile Include="GetSubscriptionTests.cs" />
     <Compile Include="GoalsTests.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="IntradayTimeSeriesTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Models\ActivitySummaryTests.cs" />
     <Compile Include="Models\FatLogTests.cs" />
@@ -144,6 +145,7 @@
     <None Include="SampleData\GetFriends-None.json" />
     <None Include="SampleData\GetFriends-Single.json" />
     <None Include="SampleData\GetSleep.json" />
+    <None Include="SampleData\IntradayActivitiesCalories.json" />
     <None Include="SampleData\ListApiSubscriptions.json" />
     <None Include="SampleData\ListApiSubscriptionsResponseMultiple.json" />
     <None Include="SampleData\LogWater-WaterLog.json" />

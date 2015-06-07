@@ -63,6 +63,8 @@
     <Compile Include="Models\FoodLogUnit.cs" />
     <Compile Include="Models\FoodSummary.cs" />
     <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\IntradayData.cs" />
+    <Compile Include="Models\IntradayResourceType.cs" />
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\MinuteData.cs" />
     <Compile Include="Models\NutritionalValues.cs" />

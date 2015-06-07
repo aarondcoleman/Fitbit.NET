@@ -12,7 +12,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ApiSubscription()
         {
-            var content = "ListApiSubscriptionsResponseSingle.json".GetContent();
+            var content = SampleDataHelper.GetContent("ListApiSubscriptionsResponseSingle.json");
             var deserializer = new JsonDotNetSerializer { RootProperty = "apiSubscriptions" };
 
             var subscriptions = deserializer.Deserialize<List<ApiSubscription>>(content);
@@ -29,7 +29,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ApiSubscription_Multi()
         {
-            var content = "ListApiSubscriptionsResponseMultiple.json".GetContent();
+            var content = SampleDataHelper.GetContent("ListApiSubscriptionsResponseMultiple.json");
             var deserializer = new JsonDotNetSerializer { RootProperty = "apiSubscriptions" };
 
             var subscriptions = deserializer.Deserialize<List<ApiSubscription>>(content);

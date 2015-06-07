@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetFoodAsync_Success()
         {
-            string content = "GetFoodLogs.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFoodLogs.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -57,7 +57,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Food()
         {
-            string content = "GetFoodLogs.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFoodLogs.json");
             var deserializer = new JsonDotNetSerializer();
 
             Food food = deserializer.Deserialize<Food>(content);

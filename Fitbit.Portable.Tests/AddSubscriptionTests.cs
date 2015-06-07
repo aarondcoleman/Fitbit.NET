@@ -306,7 +306,7 @@ namespace Fitbit.Portable.Tests
         public void Can_Deserialize_UpdatedResource()
         {
             // aka Add Subscription response
-            var content = "AddSubscriptionResponse.json".GetContent();
+            var content = SampleDataHelper.GetContent("AddSubscriptionResponse.json");
             var deserializer = new JsonDotNetSerializer();
 
             var subscription = deserializer.Deserialize<ApiSubscription>(content);
@@ -319,7 +319,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ApiSubscription()
         {
-            var content = "ListApiSubscriptions.json".GetContent();
+            var content = SampleDataHelper.GetContent("ListApiSubscriptions.json");
             var deserializer = new JsonDotNetSerializer {RootProperty = "apiSubscriptions"};
 
             var subscriptions = deserializer.Deserialize<List<ApiSubscription>>(content);
@@ -336,7 +336,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ApiNotifications()
         {
-            var content = "ApiSubscriptionNotification.json".GetContent();
+            var content = SampleDataHelper.GetContent("ApiSubscriptionNotification.json");
             var deserializer = new JsonDotNetSerializer();
 
             var resources = deserializer.Deserialize<List<UpdatedResource>>(content);
@@ -370,7 +370,7 @@ namespace Fitbit.Portable.Tests
 
         private FitbitClient SetupFitbitClient(string contentPath, string url, HttpMethod expectedMethod, Action<HttpRequestMessage> additionalChecks = null)
         {
-            string content = contentPath.GetContent();
+            string content = SampleDataHelper.GetContent(contentPath);
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {

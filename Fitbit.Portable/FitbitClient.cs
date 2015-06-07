@@ -331,6 +331,44 @@ namespace Fitbit.Api.Portable
             return fitbitResponse;
         }
 
+        public async Task<FitbitResponse<IntradayData>> GetIntraDayTimeSeriesAsync(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan)
+        {
+
+            string apiCall = null;
+
+            if (intraDayTimeSpan > new TimeSpan(0, 1, 0) && //the timespan is greater than a minute
+                dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day //adding the timespan doesn't go in to the next day
+            )
+            {
+                apiCall = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.json",
+                                        timeSeriesResourceType.GetStringValue(),
+                                        dayAndStartTime.ToFitbitFormat(),
+                                        dayAndStartTime.ToString("HH:mm"),
+                                        dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"));
+            }
+            else //just get the today data, there was a date specified but the timerange was likely too large or negative
+            {
+                apiCall = string.Format("/1/user/-{0}/date/{1}/1d.json",
+                                        timeSeriesResourceType.GetStringValue(),
+                                        dayAndStartTime.ToFitbitFormat());
+            }
+
+            apiCall = FitbitClientHelperExtensions.ToFullUrl(apiCall);
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            var fitbitResponse = await HandleResponse<IntradayData>(response);
+            if (fitbitResponse.Success)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
+                fitbitResponse.Data = serializer.GetIntradayTimeSeriesData(responseBody);
+            }
+            return fitbitResponse;
+
+
+
+        }
+
         /// <summary>
         /// Get food information for date value and user specified
         /// </summary>

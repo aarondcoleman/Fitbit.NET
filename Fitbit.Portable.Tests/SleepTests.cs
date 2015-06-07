@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetSleepAsync_Success()
         {
-            string content = "GetSleep.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetSleep.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -58,7 +58,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Sleep()
         {
-            string content = "GetSleep.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetSleep.json");
             var deserializer = new JsonDotNetSerializer();
 
             SleepData sleep = deserializer.Deserialize<SleepData>(content);

@@ -117,5 +117,29 @@ namespace Fitbit.Api.Portable
 
             return result;
         }
+
+        internal static IntradayData GetIntradayTimeSeriesData(this JsonDotNetSerializer serializer, string intradayDataJson)
+        {
+            if (string.IsNullOrWhiteSpace(intradayDataJson))
+            {
+                throw new ArgumentNullException("intradayDataJson", "intradayDataJson can not be empty, null or whitespace.");
+            }
+
+            var dataPoints = JToken.Parse(intradayDataJson)[serializer.RootProperty + "-intraday"];
+            
+            var result = new IntradayData
+            {
+                DataSet = (from item in dataPoints["dataset"]
+                            select new IntradayDataValues
+                            {
+                                Time = DateTime.Parse(item["time"].ToString()),
+                                Value = item["value"].ToString(),
+                                METs = item["value"].ToString(),
+                                Level = item["level"].ToString()
+                            }).ToList()
+            };
+
+            return result;
+        }
     }
 }

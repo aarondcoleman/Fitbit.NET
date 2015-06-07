@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetDevicesAsync_Success()
         {
-            string content = "GetDevices-Single.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetDevices-Single.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -43,7 +43,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetDevicesAsync_Success_Mulitiple()
         {
-            string content = "GetDevices-Double.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetDevices-Double.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -86,7 +86,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialise_Single_Device_Details()
         {
-            string content = "GetDevices-Single.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetDevices-Single.json");
             var deserializer = new JsonDotNetSerializer();
             
             List<Device> result = deserializer.Deserialize<List<Device>>(content);
@@ -101,7 +101,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialise_Multiple_Device_Details()
         {
-            string content = "GetDevices-Double.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetDevices-Double.json");
             var deserializer = new JsonDotNetSerializer();
             
             List<Device> result = deserializer.Deserialize<List<Device>>(content);

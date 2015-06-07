@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetWaterAsync_Success()
         {
-            string content = "GetWater-WaterData.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetWater-WaterData.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -57,7 +57,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void PostWaterLogAsync_Success()
         {
-            string content = "LogWater-WaterLog.json".GetContent();
+            string content = SampleDataHelper.GetContent("LogWater-WaterLog.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -103,7 +103,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Water_Data_Json()
         {
-            string content = "GetWater-WaterData.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetWater-WaterData.json");
 
             var deserializer = new JsonDotNetSerializer();
 
@@ -115,7 +115,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Water_Log_Json()
         {
-            string content = "LogWater-WaterLog.json".GetContent();
+            string content = SampleDataHelper.GetContent("LogWater-WaterLog.json");
 
             var deserializer = new JsonDotNetSerializer { RootProperty = "waterLog"};
 

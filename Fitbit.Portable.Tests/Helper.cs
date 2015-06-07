@@ -34,7 +34,7 @@ namespace Fitbit.Portable.Tests
         /// <returns></returns>
         public static Func<HttpResponseMessage> CreateErrorResponse()
         {
-            string content = "ApiError.json".GetContent();
+            string content = SampleDataHelper.GetContent("ApiError.json");
             var responseMessage =
                 new Func<HttpResponseMessage>(() => new HttpResponseMessage(HttpStatusCode.NotFound) {Content = new StringContent(content)});
             return responseMessage;

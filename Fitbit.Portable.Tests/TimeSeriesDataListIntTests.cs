@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetTimeSeriesDataListIntAsync_Success()
         {
-            string content = "TimeSeries-ActivitiesSteps.json".GetContent();
+            string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesSteps.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -39,7 +39,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetTimeSeriesDataListIntAsync_DoubleDate_Success()
         {
-            string content = "TimeSeries-ActivitiesSteps.json".GetContent();
+            string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesSteps.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -71,7 +71,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Activities_Distance()
         {
-            string content = "TimeSeries-ActivitiesSteps.json".GetContent();
+            string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesSteps.json");
             var deserializer = new JsonDotNetSerializer
             {
                 RootProperty = TimeSeriesResourceType.Steps.ToTimeSeriesProperty()

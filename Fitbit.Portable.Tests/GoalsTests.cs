@@ -86,7 +86,7 @@ namespace Fitbit.Portable.Tests
 
         public FitbitClient SetupFitbitClient(string expectedBody)
         {
-            string content = "ActivityGoals.json".GetContent();
+            string content = SampleDataHelper.GetContent("ActivityGoals.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {

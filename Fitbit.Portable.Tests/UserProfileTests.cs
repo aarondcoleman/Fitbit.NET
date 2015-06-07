@@ -14,7 +14,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetUserProfileAsync_Success()
         {
-            string content = "UserProfile.json".GetContent();
+            string content = SampleDataHelper.GetContent("UserProfile.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -57,7 +57,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Profile()
         {
-            string content = "UserProfile.json".GetContent();
+            string content = SampleDataHelper.GetContent("UserProfile.json");
             var deserializer = new JsonDotNetSerializer {RootProperty = "user"};
 
             var result = deserializer.Deserialize<UserProfile>(content);

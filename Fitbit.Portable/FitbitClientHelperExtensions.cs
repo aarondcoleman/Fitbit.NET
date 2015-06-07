@@ -41,6 +41,22 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="timeseriesResource"></param>
         /// <returns></returns>
+        internal static string ToTimeSeriesProperty(this IntradayResourceType timeseriesResource)
+        {
+            var timeSeriesResourceDisplay = timeseriesResource.GetStringValue();
+            if (timeSeriesResourceDisplay.StartsWith("/"))
+            {
+                timeSeriesResourceDisplay = timeSeriesResourceDisplay.TrimStart(new[] { '/' });
+            }
+
+            return timeSeriesResourceDisplay.Replace("/", "-");
+        }
+
+        /// <summary>
+        /// Converts the timeseries resource into the property to acces the data
+        /// </summary>
+        /// <param name="timeseriesResource"></param>
+        /// <returns></returns>
         internal static string ToTimeSeriesProperty(this TimeSeriesResourceType timeseriesResource)
         {
             var timeSeriesResourceDisplay = timeseriesResource.GetStringValue();

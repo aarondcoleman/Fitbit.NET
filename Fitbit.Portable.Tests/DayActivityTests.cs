@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetDayActivityAsync_Success()
         {
-            string content = "GetActivities.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetActivities.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -57,7 +57,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetDayActivitySummaryAsync_Success()
         {
-            string content = "GetActivities.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetActivities.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -99,7 +99,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Activity()
         {
-            string content = "GetActivities.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetActivities.json");
             var deserializer = new JsonDotNetSerializer();
 
             Activity activity = deserializer.Deserialize<Activity>(content);
@@ -110,7 +110,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ActivitySummary()
         {
-            string content = "GetActivities.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetActivities.json");
             var deserializer = new JsonDotNetSerializer { RootProperty = "summary"};
 
             ActivitySummary summary = deserializer.Deserialize<ActivitySummary>(content);
@@ -121,7 +121,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ActivityGoal_Invidual()
         {
-            string content = "ActivityGoals.json".GetContent();
+            string content = SampleDataHelper.GetContent("ActivityGoals.json");
             var deserializer = new JsonDotNetSerializer { RootProperty = "goals" };
 
             ActivityGoals goal = deserializer.Deserialize<ActivityGoals>(content);
@@ -132,7 +132,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_ActivityGoal_FromActivities()
         {
-            string content = "GetActivities.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetActivities.json");
             var deserializer = new JsonDotNetSerializer { RootProperty = "goals" };
 
             ActivityGoals goal = deserializer.Deserialize<ActivityGoals>(content);

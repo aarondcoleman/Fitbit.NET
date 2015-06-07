@@ -158,7 +158,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Fat()
         {
-            string content = "GetFat.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFat.json");
             var deserializer = new JsonDotNetSerializer();
 
             Fat fat = deserializer.GetFat(content);
@@ -168,7 +168,7 @@ namespace Fitbit.Portable.Tests
 
         private FitbitClient SetupFitbitClient(string url)
         {
-            string content = "GetFat.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFat.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {

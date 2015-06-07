@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetBloodPressureAsync_Success()
         {
-            string content = "GetBloodPressure.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetBloodPressure.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -55,7 +55,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Food()
         {
-            string content = "GetBloodPressure.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetBloodPressure.json");
             var deserializer = new JsonDotNetSerializer();
 
             BloodPressureData bp = deserializer.Deserialize<BloodPressureData>(content);

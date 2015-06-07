@@ -83,8 +83,6 @@
     <Compile Include="Models\HeartRates.cs" />
     <Compile Include="Models\HeartRateSummary.cs" />
     <Compile Include="Models\Friend.cs" />
-    <Compile Include="Models\IntradayData.cs" />
-    <Compile Include="Models\Enums\IntradayResourceType.cs" />
     <Compile Include="Models\TrackerAlarm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscriptionManager.cs" />

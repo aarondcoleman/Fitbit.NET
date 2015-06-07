@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetFriendsMultipleAsync_Success()
         {
-            string content = "GetFriends-Multiple.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFriends-Multiple.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -42,7 +42,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public async void GetFriendsSingleAsync_Success()
         {
-            string content = "GetFriends-Single.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFriends-Single.json");
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
@@ -109,7 +109,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Friends_Multiple()
         {
-            string content = "GetFriends-Multiple.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFriends-Multiple.json");
             var deserializer = new JsonDotNetSerializer();
             
             List<UserProfile> friends = deserializer.GetFriends(content);
@@ -123,7 +123,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Friends_Single()
         {
-            string content = "GetFriends-Single.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFriends-Single.json");
             var deserializer = new JsonDotNetSerializer();
 
             List<UserProfile> friends = deserializer.GetFriends(content);
@@ -135,7 +135,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void Can_Deserialize_Friends_None()
         {
-            string content = "GetFriends-None.json".GetContent();
+            string content = SampleDataHelper.GetContent("GetFriends-None.json");
             var deserializer = new JsonDotNetSerializer();
 
             List<UserProfile> friends = deserializer.GetFriends(content);

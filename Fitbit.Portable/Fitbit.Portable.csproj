@@ -44,14 +44,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
+    <Compile Include="Authenticator2.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitClientHelperExtensions.cs" />
     <Compile Include="FitbitResponse.cs" />
     <Compile Include="FitbitResponseExtensions.cs" />
+    <Compile Include="IAuthorization.cs" />
     <Compile Include="IFitbitClient.cs" />
+    <Compile Include="ITokenStore.cs" />
     <Compile Include="JsonDotNetSerializer.cs" />
     <Compile Include="JsonDotNetSerializerExtensions.cs" />
+    <Compile Include="OAuth2AccessToken.cs" />
+    <Compile Include="OAuth2Authorization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

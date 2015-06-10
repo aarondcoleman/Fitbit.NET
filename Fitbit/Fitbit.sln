@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C284DD15-3355-4C6A-9EE0-D0A3BEA4D8A5}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebMVC.Portable", "..\SampleWebMVC.Portable\SampleWebMVC.Portable.csproj", "{59BAB4ED-CF16-4F5F-BA00-620AB7448970}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Tests", "..\Fitbit.Tests\Fitbit.Tests.csproj", "{D7C6CB76-5296-4F10-927B-CBA106706AF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebMVCOAuth2", "..\SampleWebMVCOAuth2\SampleWebMVCOAuth2.csproj", "{61C8AD29-A128-442E-BF0B-539A990B15C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +94,12 @@ Global
 		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

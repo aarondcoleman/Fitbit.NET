@@ -5,5 +5,5 @@ Getting recent changes from Fitbit.NET
 * git pull origin async-portable
 * git push
 
-To be extra sure that changes go up to the private repo (but it should be the default) from the FitabasePrivate:
+To be extra sure that changes go up to the private repo and branch of FitabasePrivate use this to push changes:
 * git push -u private FitabasePrivate

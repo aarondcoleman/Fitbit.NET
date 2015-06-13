@@ -36,13 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\Fitbit.Common\Fitbit.Common.csproj">
-      <Project>{37636456-5640-4258-adf5-11292e6b422e}</Project>
-      <Name>Fitbit.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Authenticator.cs" />
     <Compile Include="Authenticator2.cs" />
     <Compile Include="Constants.cs" />
@@ -95,6 +88,15 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fitbit.Common\Fitbit.Common.csproj">
+      <Project>{4c9bb874-531f-492e-98eb-a6ad2bd5ae90}</Project>
+      <Name>Fitbit.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Private\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

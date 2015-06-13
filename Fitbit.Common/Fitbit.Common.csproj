@@ -68,6 +68,11 @@
     <Compile Include="Models\LoggedFood.cs" />
     <Compile Include="Models\MinuteData.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
+    <Compile Include="Models\Private\HeartActivities.cs" />
+    <Compile Include="Models\Private\HeartActivitiesIntraday.cs" />
+    <Compile Include="Models\Private\HeartActivitiesTimeSeries.cs" />
+    <Compile Include="Models\Private\HeartRateResolution.cs" />
+    <Compile Include="Models\Private\HeartRateZone.cs" />
     <Compile Include="Models\RequestToken.cs" />
     <Compile Include="Models\ResourceOwnerType.cs" />
     <Compile Include="Models\Sleep.cs" />

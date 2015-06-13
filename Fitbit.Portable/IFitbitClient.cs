@@ -5,7 +5,7 @@ using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
 {
-    public interface IFitbitClient
+    public partial interface IFitbitClient
     {
         Task<FitbitResponse<Activity>> GetDayActivityAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<FitbitResponse<ActivitySummary>> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = default(string));

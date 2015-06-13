@@ -7,7 +7,7 @@ using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
 {
-    public class FitbitClient : IFitbitClient
+    public partial class FitbitClient : IFitbitClient
     {
         /// <summary>
         /// The httpclient which will be used for the api calls through the FitbitClient instance
@@ -792,20 +792,21 @@ namespace Fitbit.Api.Portable
         /// <param name="date"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public async Task<string> GetAPIFreeResponse(string apiPath)
+        public async Task<FitbitResponse<string>> GetAPIFreeResponse(string apiPath)
         {
             string apiCall = apiPath;
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<Food>(response);
+            var fitbitResponse = await HandleResponse<string>(response);
             string responseBody = null;
 
             if (fitbitResponse.Success)
             {
                 responseBody = await response.Content.ReadAsStringAsync();
+                fitbitResponse.Data = responseBody;
             }
 
-            return responseBody;
+            return fitbitResponse;
         }
 
         /// <summary>

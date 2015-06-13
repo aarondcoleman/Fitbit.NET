@@ -2,7 +2,7 @@
 
 namespace Fitbit.Api.Portable
 {
-    internal class JsonDotNetSerializer
+    public class JsonDotNetSerializer
     {
         /// <summary>
         /// Root property value; only required if trying to access nested information or an array is hanging off a property

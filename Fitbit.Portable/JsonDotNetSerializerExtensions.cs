@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Fitbit.Api.Portable
 {
-    internal static class JsonDotNetSerializerExtensions
+    internal static partial class JsonDotNetSerializerExtensions
     {
         /// <summary>
         /// GetFat has to doe some custom manipulation with the returned representation

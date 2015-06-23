@@ -31,6 +31,8 @@ namespace Fitbit.Api.Portable
             else
                 this.HttpClient = httpClient;
 
+            this.HttpClient = authorization.CreateAuthorizedHttpClient(); //use whatever authorization method to provide the HttpClient
+
         }
 
 
@@ -105,8 +107,6 @@ namespace Fitbit.Api.Portable
         public async Task<FitbitResponse<Activity>> GetDayActivityAsync(DateTime activityDate, string encodedUserId = null)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/date/{1}.json", encodedUserId, activityDate.ToFitbitFormat());
-            Authorization.SetAuthorizationHeader(this.HttpClient);
-
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<Activity>(response);
@@ -296,8 +296,6 @@ namespace Fitbit.Api.Portable
         {
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}{1}/date/{2}/{3}.json", encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
 
-            Authorization.SetAuthorizationHeader(this.HttpClient);
-
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<TimeSeriesDataList>(response);
             if (fitbitResponse.Success)
@@ -346,8 +344,6 @@ namespace Fitbit.Api.Portable
         private async Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
         {
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}{1}/date/{2}/{3}.json", encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
-
-            Authorization.SetAuthorizationHeader(this.HttpClient);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             var fitbitResponse = await HandleResponse<TimeSeriesDataListInt>(response);

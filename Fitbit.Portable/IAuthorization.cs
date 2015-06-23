@@ -8,6 +8,6 @@ namespace Fitbit.Api.Portable
 {
     public interface IAuthorization
     {
-        void SetAuthorizationHeader(HttpClient httpClient);
+        HttpClient CreateAuthorizedHttpClient();
     }
 }

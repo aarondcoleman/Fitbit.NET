@@ -31,11 +31,16 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        internal FitbitResponse(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, HttpHeaders httpHeaders = null, List<ApiError> errors = null)
+        public FitbitResponse(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, HttpHeaders httpHeaders = null, List<ApiError> errors = null)
         {
             StatusCode = httpStatusCode;
             HttpHeaders = httpHeaders;
             Errors = errors ?? new List<ApiError>();
+        }
+
+        public FitbitResponse()
+        {
+            //not to be used, but good for mocking in client code
         }
     }
 }

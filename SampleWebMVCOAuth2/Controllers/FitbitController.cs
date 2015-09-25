@@ -6,6 +6,7 @@ using System.Configuration;
 using Fitbit.Models;
 using Fitbit.Api.Portable;
 using System.Threading.Tasks;
+using SampleWebMVCOAuth2.Helpers;
 
 namespace SampleWebMVC.Controllers
 {
@@ -35,7 +36,7 @@ namespace SampleWebMVC.Controllers
                                                                                     ConsumerSecret,
                                                                                     Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
                                                                                     );
-            string[] scopes = new string[] {"profile"};
+            string[] scopes = new string[] {"profile", "heartrate"};
             
             string authUrl = authenticator.GenerateAuthUrl(scopes, null);
 
@@ -105,15 +106,38 @@ namespace SampleWebMVC.Controllers
 
         public async Task<ActionResult> LastWeekSteps()
         {
-            OAuth2AccessToken accessToken = (OAuth2AccessToken)Session["AccessToken"];
+            //OAuth2AccessToken accessToken = (OAuth2AccessToken)Session["AccessToken"];
 
-            FitbitClient client = GetFitbitClient(accessToken.Token, accessToken.RefreshToken);
+            //FitbitClient client = GetFitbitClient(accessToken.Token, accessToken.RefreshToken);
+            SessionOAuth2AccessTokenRepository sessionTokenRepo = new SessionOAuth2AccessTokenRepository("AccessToken", this.HttpContext);
+            OAuth2Authorization authorization = new OAuth2Authorization(sessionTokenRepo);
+            FitbitClient client = new FitbitClient(authorization);
 
             FitbitResponse<TimeSeriesDataListInt> response = await client.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
 
             return View(response.Data);
 
         }
+
+        public async Task<ActionResult> LastWeekHeartRate()
+        {
+            //OAuth2AccessToken accessToken = (OAuth2AccessToken)Session["AccessToken"];
+
+            //OAuth2Authorization authorization = new OAuth2Authorization(bearerToken, refreshToken);
+
+
+            //FitbitClient client = GetFitbitClient(accessToken.Token, accessToken.RefreshToken);
+
+            SessionOAuth2AccessTokenRepository sessionTokenRepo = new SessionOAuth2AccessTokenRepository("AccessToken", this.HttpContext);
+            OAuth2Authorization authorization = new OAuth2Authorization(sessionTokenRepo);
+            FitbitClient client = new FitbitClient(authorization, sessionTokenRepo);
+
+            FitbitResponse<HeartActivitiesTimeSeries> response = await client.GetHeartRateTimeSeries(DateTime.UtcNow, DateRangePeriod.OneWeek);
+
+            return View(response.Data);
+
+        }
+
         /*
         //example using the direct API call getting all the individual logs
         public ActionResult MonthFat(string id)
@@ -197,7 +221,8 @@ namespace SampleWebMVC.Controllers
 
         }
 
-         */
+         
+         
         private FitbitClient GetFitbitClient(string bearerToken, string refreshToken)
         {
             OAuth2Authorization authorization = new OAuth2Authorization(bearerToken, refreshToken);
@@ -206,6 +231,6 @@ namespace SampleWebMVC.Controllers
 
             return client;
         }
-         
+         */
     }
 }

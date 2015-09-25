@@ -52,6 +52,7 @@
     <Compile Include="FitbitResponseExtensions.cs" />
     <Compile Include="IAuthorization.cs" />
     <Compile Include="IFitbitClient.cs" />
+    <Compile Include="IOAuth2AccessTokenRepository.cs" />
     <Compile Include="ITokenStore.cs" />
     <Compile Include="JsonDotNetSerializer.cs" />
     <Compile Include="JsonDotNetSerializerExtensions.cs" />

@@ -1,0 +1,53 @@
+﻿@model Fitbit.Models.HeartActivitiesTimeSeries
+
+@{
+    ViewBag.Title = "LastWeekHeartRate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Last Week Active Score</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Date</td>
+            <td>Resting HR</td>
+            <td>Average HR</td>
+            <td></td>
+        </tr>
+
+    </thead>
+@foreach (Fitbit.Models.HeartActivities result in Model.HeartActivities)
+{ 
+    <tr>
+        <td>@result.DateTime.ToShortDateString()</td>
+        <td>@result.RestingHeartRate</td>
+        <td>@result.AverageHeartRate</td>
+        <td>
+            <table>
+                <thead>
+                    <tr style="font-weight:bold">
+                        <td>Zone Name</td>
+                        <td>Calories Out</td>
+                        <td>Minutes</td>
+                        <td>Min</td>
+                        <td>Max</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var heartRateZone in result.HeartRateZones)
+                    {
+                        <tr>
+                            <td>@heartRateZone.Name</td>
+                            <td>@heartRateZone.CaloriesOut</td>
+                            <td>@heartRateZone.Minutes</td>
+                            <td>@heartRateZone.Min</td>
+                            <td>@heartRateZone.Max</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </td>
+    </tr>
+}
+</table>

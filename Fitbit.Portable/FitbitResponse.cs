@@ -12,7 +12,7 @@ namespace Fitbit.Api.Portable
 
         public List<ApiError> Errors { get; private set; }
 
-        internal HttpStatusCode StatusCode { get; private set; }
+        public HttpStatusCode StatusCode { get; private set; }
 
         internal HttpHeaders HttpHeaders { get; private set; }
 

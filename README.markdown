@@ -1,5 +1,11 @@
 # Fitbit.NET API Client Library
 
+## IMPORTANT: We're moving in the direction of a breaking change v2 of Fitbit.NET
+See more information about this. If you're starting a new projet, you should take a closer look at using the new, almost complete library: 
+https://github.com/aarondcoleman/Fitbit.NET/wiki/PREPARING-FOR-BREAKING-CHANGES---v2-Fitbit.NET-API-Library-In-Development
+
+## V1 Info
+
 ### License: Apache License 2.0
 
 ### Features

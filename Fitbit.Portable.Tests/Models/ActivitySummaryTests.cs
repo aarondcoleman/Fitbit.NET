@@ -7,7 +7,7 @@ namespace Fitbit.Portable.Tests.Models
     [TestFixture]
     public class ActivitySummaryTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public void GetDistances_EmptyList()
         {
             var model = new ActivitySummary();
@@ -18,7 +18,7 @@ namespace Fitbit.Portable.Tests.Models
             Assert.AreEqual(0, d.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void GetDistances_NullList()
         {
             var model = new ActivitySummary();
@@ -28,7 +28,7 @@ namespace Fitbit.Portable.Tests.Models
             Assert.AreEqual(0, d.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void GetDistances_InstantiatedList()
         {
             var model = new ActivitySummary();

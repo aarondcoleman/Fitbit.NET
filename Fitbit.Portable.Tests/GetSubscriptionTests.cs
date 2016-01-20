@@ -9,7 +9,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class GetSubscriptionTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_ApiSubscription()
         {
             var content = SampleDataHelper.GetContent("ListApiSubscriptionsResponseSingle.json");
@@ -26,7 +26,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_ApiSubscription_Multi()
         {
             var content = SampleDataHelper.GetContent("ListApiSubscriptionsResponseMultiple.json");

@@ -9,14 +9,14 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class FitbitResponseTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public void RetryAfter_No_Status_Applicable()
         {
             var response = new FitbitResponse<string>(HttpStatusCode.OK, null, null);
             Assert.AreEqual(0, response.RetryAfter());
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void RetryAfter_NoRetryHeader()
         {
             var headers = new HttpResponseMessage().Headers;
@@ -24,7 +24,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(0, response.RetryAfter());
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void RetryAfter_RetryHeader_NoValue()
         {
             var headers = new HttpResponseMessage().Headers;
@@ -33,7 +33,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(0, response.RetryAfter());
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void RetryAfter_RetryHeader_100()
         {
             var headers = new HttpResponseMessage().Headers;
@@ -43,28 +43,28 @@ namespace Fitbit.Portable.Tests
         }
 
         //status tests - https://wiki.fitbit.com/display/API/API+Response+Format+And+Errors
-        [Test]
+        [Test] [Category("Portable")]
         public void NoContent()
         {
             var response = new FitbitResponse<NoData>(HttpStatusCode.NoContent);
             Assert.IsTrue(response.Success);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Created()
         {
             var response = new FitbitResponse<NoData>(HttpStatusCode.Created);
             Assert.IsTrue(response.Success);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Ok()
         {
             var response = new FitbitResponse<NoData>(HttpStatusCode.OK);
             Assert.IsTrue(response.Success);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void AnyOther()
         {
             foreach (HttpStatusCode value in Enum.GetValues(typeof (HttpStatusCode)))

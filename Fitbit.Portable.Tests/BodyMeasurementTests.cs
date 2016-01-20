@@ -11,7 +11,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class BodyMeasurementTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetBodyMeasurementsAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetBodyMeasurements.json");
@@ -35,7 +35,7 @@ namespace Fitbit.Portable.Tests
             ValidateBodyMeasurements(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetBodyMeasurementsAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -53,7 +53,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_BodyMeasurements()
         {
             string content = SampleDataHelper.GetContent("GetBodyMeasurements.json");

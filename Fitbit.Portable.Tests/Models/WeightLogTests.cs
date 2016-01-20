@@ -7,7 +7,7 @@ namespace Fitbit.Portable.Tests.Models
     [TestFixture]
     public class WeightLogTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public void WeightLog_DateTime_Mash()
         {
             var date = new DateTime(2014, 10, 2);

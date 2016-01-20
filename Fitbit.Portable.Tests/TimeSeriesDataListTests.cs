@@ -12,7 +12,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class TimeSeriesDataListTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetTimeSeriesDataListAsync_Success()
         {
             string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesDistance.json");
@@ -36,7 +36,7 @@ namespace Fitbit.Portable.Tests
             ValidateDataList(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetTimeSeriesDataListAsync_DoubleDate_Success()
         {
             string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesDistance.json");
@@ -60,7 +60,7 @@ namespace Fitbit.Portable.Tests
             ValidateDataList(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Serializer_Passed_Invalid_Data_To_Serialize()
         {
@@ -68,7 +68,7 @@ namespace Fitbit.Portable.Tests
             serialiser.GetTimeSeriesDataList(string.Empty);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Activities_Distance()
         {
             string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesDistance.json");

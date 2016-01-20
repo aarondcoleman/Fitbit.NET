@@ -12,7 +12,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class SleepTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetSleepAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetSleep.json");
@@ -37,7 +37,7 @@ namespace Fitbit.Portable.Tests
             ValidatSleep(sleep);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetUserProfileAsync_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -55,7 +55,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Sleep()
         {
             string content = SampleDataHelper.GetContent("GetSleep.json");

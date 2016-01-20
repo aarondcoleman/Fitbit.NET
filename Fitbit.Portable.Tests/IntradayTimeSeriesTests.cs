@@ -13,7 +13,7 @@ namespace Fitbit.Portable.Tests
     public class IntradayTimeSeriesTests
     {
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetIntraDayTimeSeriesAsync_Success()
         {
             string content = SampleDataHelper.GetContent("IntradayActivitiesCalories.json");

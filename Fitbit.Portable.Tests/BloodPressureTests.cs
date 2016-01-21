@@ -12,7 +12,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class BloodPressureTests
     {       
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetBloodPressureAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetBloodPressure.json");
@@ -35,7 +35,7 @@ namespace Fitbit.Portable.Tests
             ValidateBloodPressureData(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetBloodPressureAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -52,7 +52,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Food()
         {
             string content = SampleDataHelper.GetContent("GetBloodPressure.json");

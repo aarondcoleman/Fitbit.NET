@@ -10,7 +10,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class GoalsTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentException))]
         public async void SetGoalsAsync_NoGoalsSet()
         {
@@ -18,7 +18,7 @@ namespace Fitbit.Portable.Tests
             await client.SetGoalsAsync();
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void SetGoalsAsync_CaloriesOutSet()
         {
             var fitbitClient = SetupFitbitClient("caloriesOut=2000");
@@ -29,7 +29,7 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void SetGoalsAsync_DistanceSet()
         {
             var fitbitClient = SetupFitbitClient("distance=8.5");
@@ -40,7 +40,7 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void SetGoalsAsync_FloorsSet()
         {
             var fitbitClient = SetupFitbitClient("floors=20");
@@ -51,7 +51,7 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void SetGoalsAsync_StepsSet()
         {
             var fitbitClient = SetupFitbitClient("steps=10000");
@@ -62,7 +62,7 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void SetGoalsAsync_ActiveMinuitesSet()
         {
             var fitbitClient = SetupFitbitClient("activeMinutes=50");
@@ -73,7 +73,7 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void SetGoalsAsync_AllSet()
         {
             var fitbitClient = SetupFitbitClient("caloriesOut=2000&distance=8.5&floors=20&steps=10000&activeMinutes=50");

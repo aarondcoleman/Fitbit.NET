@@ -13,7 +13,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class DeviceTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetDevicesAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetDevices-Single.json");
@@ -40,7 +40,7 @@ namespace Fitbit.Portable.Tests
             ValidateSingleDevice(device);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetDevicesAsync_Success_Mulitiple()
         {
             string content = SampleDataHelper.GetContent("GetDevices-Double.json");
@@ -65,7 +65,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(2, devices.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetDevicesAsync_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -83,7 +83,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialise_Single_Device_Details()
         {
             string content = SampleDataHelper.GetContent("GetDevices-Single.json");
@@ -98,7 +98,7 @@ namespace Fitbit.Portable.Tests
             ValidateSingleDevice(device);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialise_Multiple_Device_Details()
         {
             string content = SampleDataHelper.GetContent("GetDevices-Double.json");

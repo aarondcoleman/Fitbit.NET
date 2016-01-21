@@ -23,6 +23,7 @@ namespace Fitbit.Portable.Tests
 
         //https://wiki.fitbit.com/display/API/Fitbit+Subscriptions+API#FitbitSubscriptionsAPI-Addasubscription
         [Test]
+        [Category("Portable")]
         public async void AddSubscription_UserEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -39,7 +40,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_UserEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -62,7 +63,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_ActivitiesEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -79,7 +80,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_ActivitiesEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -102,7 +103,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_BodyEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -119,7 +120,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_BodyEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -142,7 +143,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_FoodEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -159,7 +160,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_FoodEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -182,7 +183,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_MealsEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -199,7 +200,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_MealsEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -222,7 +223,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_SleepEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -239,7 +240,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_SleepEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -262,7 +263,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_WeightEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -279,7 +280,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void AddSubscription_WeightEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
@@ -302,7 +303,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_UpdatedResource()
         {
             // aka Add Subscription response
@@ -316,7 +317,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_ApiSubscription()
         {
             var content = SampleDataHelper.GetContent("ListApiSubscriptions.json");
@@ -333,7 +334,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_ApiNotifications()
         {
             var content = SampleDataHelper.GetContent("ApiSubscriptionNotification.json");

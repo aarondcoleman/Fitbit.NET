@@ -9,7 +9,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class ApiErrorTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_ApiError()
         {
             string content = SampleDataHelper.GetContent("ApiError.json");

@@ -9,63 +9,63 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class FitbitClientTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_ConsumerKey_Empty()
         {
             new FitbitClient(string.Empty, "secret", "access", "accessSecret");
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_ConsumerKey_Null()
         {
             new FitbitClient(null, "secret", "access", "accessSecret");
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_ConsumerSecret_Empty()
         {
             new FitbitClient("key", string.Empty, "access", "accessSecret");
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_ConsumerSecret_Null()
         {
             new FitbitClient("key", null, "access", "accessSecret");
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_AccesToken_Empty()
         {
             new FitbitClient("key", "secret", string.Empty, "accessSecret");
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_AccessToken_Null()
         {
             new FitbitClient("key", "secret", null, "accessSecret");
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_AccessSecret_Empty()
         {
             new FitbitClient("key", "secret", "access", null);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_AccessSecret_Null()
         {
             new FitbitClient("key", "secret", "access", string.Empty);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Constructor_HttpClient_Create()
         {
             var client = new FitbitClient("key", "secret", "access", "accessToken");
@@ -73,21 +73,21 @@ namespace Fitbit.Portable.Tests
         }
 
         // todo: doesn't seem to be the right place for this; it'll do at the moment
-        [Test]
+        [Test] [Category("Portable")]
         public void ProcessSleepData_NullHandled()
         {
             var client = new FitbitClient("key", "secret", "token", "secret");
             client.ProcessSleepData(null);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void ProcessSleepData_NullSleepHandled()
         {
             var client = new FitbitClient("key", "secret", "token", "secret");
             client.ProcessSleepData(new SleepData());
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void ProcessSleepData_NullMinuteDataHandled()
         {
             var client = new FitbitClient("key", "secret", "token", "secret");
@@ -101,7 +101,7 @@ namespace Fitbit.Portable.Tests
             client.ProcessSleepData(sleep);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void ProcessSleepData_MinuteDataToday()
         {
             var client = new FitbitClient("key", "secret", "token", "secret");
@@ -127,7 +127,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(new DateTime(2014, 10 ,10, 23, 0, 0), sleep.Sleep[0].MinuteData[0].DateTime);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void ProcessSleepData_MinuteDataTomorrow()
         {
             var client = new FitbitClient("key", "secret", "token", "secret");

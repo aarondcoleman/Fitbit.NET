@@ -7,7 +7,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class AuthenticatorTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public void Constructor()
         {
             var authenticator = new Authenticator("key", "secret");
@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("secret", authenticator.ConsumerSecret);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Generate_Auth_Url_ForceLogout_True()
         {
             var authenticator = new Authenticator("key", "secret");
@@ -24,7 +24,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("https://api.fitbit.com/oauth/logout_and_authorize?oauth_token=something", url);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Generate_Auth_Url_ForceLogout_False()
         {
             var authenticator = new Authenticator("key", "secret");

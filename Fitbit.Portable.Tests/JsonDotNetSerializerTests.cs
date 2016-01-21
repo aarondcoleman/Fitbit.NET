@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
             // todo: array etc.
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void DefaultValueCreated_String()
         {
             var serializer = new JsonDotNetSerializer();
@@ -24,7 +24,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(default(TestClass), defaultValue);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void DefaultValueCreated_JToken()
         {
             var serializer = new JsonDotNetSerializer();
@@ -32,7 +32,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(default(TestClass), defaultValue);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void NoRootValueCreated()
         {
             string data = "{\"testproperty\" : \"bob\" }";
@@ -42,7 +42,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("bob", value.TestProperty);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void RootPropertyValueCreated()
         {
             string data = "{\"testclass\" : {\"testproperty\" : \"bob\" } }";

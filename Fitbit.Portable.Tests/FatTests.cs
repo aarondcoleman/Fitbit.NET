@@ -12,7 +12,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class FatTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_ThreeMonths()
         {
@@ -20,7 +20,7 @@ namespace Fitbit.Portable.Tests
             await client.GetFatAsync(DateTime.Now, DateRangePeriod.ThreeMonths);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_SixMonths()
         {
@@ -28,7 +28,7 @@ namespace Fitbit.Portable.Tests
             await client.GetFatAsync(DateTime.Now, DateRangePeriod.SixMonths);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_OneYear()
         {
@@ -36,7 +36,7 @@ namespace Fitbit.Portable.Tests
             await client.GetFatAsync(DateTime.Now, DateRangePeriod.OneYear);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_Max()
         {
@@ -44,7 +44,7 @@ namespace Fitbit.Portable.Tests
             await client.GetFatAsync(DateTime.Now, DateRangePeriod.Max);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFatAsync_OneDay_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1d.json");
@@ -55,7 +55,7 @@ namespace Fitbit.Portable.Tests
             ValidateFat(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFatAsync_SevenDay_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/7d.json");
@@ -66,7 +66,7 @@ namespace Fitbit.Portable.Tests
             ValidateFat(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFatAsync_OneWeek_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1w.json");
@@ -77,7 +77,7 @@ namespace Fitbit.Portable.Tests
             ValidateFat(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFatAsync_ThirtyDays_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/30d.json");
@@ -88,7 +88,7 @@ namespace Fitbit.Portable.Tests
             ValidateFat(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFatAsync_OneMonth_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/1m.json");
@@ -99,7 +99,7 @@ namespace Fitbit.Portable.Tests
             ValidateFat(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFatAsync_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05.json");
@@ -110,7 +110,7 @@ namespace Fitbit.Portable.Tests
             ValidateFat(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFatAsync_TimeSpan_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/2012-03-06.json");
@@ -121,7 +121,7 @@ namespace Fitbit.Portable.Tests
             ValidateFat(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public async void GetFatAsync_DateRange_Span_Too_Large()
         {
@@ -131,7 +131,7 @@ namespace Fitbit.Portable.Tests
             await fitbitClient.GetFatAsync(basedate.AddDays(-35), basedate);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throws_Exception_With_Empty_String()
         {
@@ -139,7 +139,7 @@ namespace Fitbit.Portable.Tests
             deserializer.GetFat(string.Empty);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throws_Exception_With_Null_String()
         {
@@ -147,7 +147,7 @@ namespace Fitbit.Portable.Tests
             deserializer.GetFat(null);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throws_Exception_With_WhiteSpace()
         {
@@ -155,7 +155,7 @@ namespace Fitbit.Portable.Tests
             deserializer.GetFat("         ");
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Fat()
         {
             string content = SampleDataHelper.GetContent("GetFat.json");

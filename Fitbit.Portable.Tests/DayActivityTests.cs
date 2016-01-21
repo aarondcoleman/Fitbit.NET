@@ -12,7 +12,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class DayActivityTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetDayActivityAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetActivities.json");
@@ -36,7 +36,7 @@ namespace Fitbit.Portable.Tests
             ValidateActivity(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetDayActivityAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -54,7 +54,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetDayActivitySummaryAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetActivities.json");
@@ -78,7 +78,7 @@ namespace Fitbit.Portable.Tests
             ValidateActivitySummary(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetDayActivitySummaryAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -96,7 +96,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         } 
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Activity()
         {
             string content = SampleDataHelper.GetContent("GetActivities.json");
@@ -107,7 +107,7 @@ namespace Fitbit.Portable.Tests
             ValidateActivity(activity);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_ActivitySummary()
         {
             string content = SampleDataHelper.GetContent("GetActivities.json");
@@ -118,7 +118,7 @@ namespace Fitbit.Portable.Tests
             ValidateActivitySummary(summary);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_ActivityGoal_Invidual()
         {
             string content = SampleDataHelper.GetContent("ActivityGoals.json");
@@ -129,7 +129,7 @@ namespace Fitbit.Portable.Tests
             ValidateActivityGoals(goal);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_ActivityGoal_FromActivities()
         {
             string content = SampleDataHelper.GetContent("GetActivities.json");

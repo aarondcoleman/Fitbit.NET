@@ -7,7 +7,7 @@ namespace Fitbit.Portable.Tests.Models
     [TestFixture]
     public class FatLogTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public void FatLog_DateTime_Mash()
         {
             var date = new DateTime(2014, 10, 2);

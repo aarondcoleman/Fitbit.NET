@@ -11,7 +11,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class UserProfileTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetUserProfileAsync_Success()
         {
             string content = SampleDataHelper.GetContent("UserProfile.json");
@@ -36,7 +36,7 @@ namespace Fitbit.Portable.Tests
             ValidateSingleUserProfile(user);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetUserProfileAsync_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -54,7 +54,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Profile()
         {
             string content = SampleDataHelper.GetContent("UserProfile.json");

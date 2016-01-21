@@ -12,7 +12,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class WaterTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetWaterAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetWater-WaterData.json");
@@ -36,7 +36,7 @@ namespace Fitbit.Portable.Tests
             ValidateWaterData(response.Data);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetWaterAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -54,7 +54,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void PostWaterLogAsync_Success()
         {
             string content = SampleDataHelper.GetContent("LogWater-WaterLog.json");
@@ -79,7 +79,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(300, response.Data.Amount);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void DeleteWaterLogAsync_Success()
         {
             var responseMessage = new Func<HttpResponseMessage>(() =>
@@ -100,7 +100,7 @@ namespace Fitbit.Portable.Tests
             Assert.IsTrue(response.Success);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Water_Data_Json()
         {
             string content = SampleDataHelper.GetContent("GetWater-WaterData.json");
@@ -112,7 +112,7 @@ namespace Fitbit.Portable.Tests
             ValidateWaterData(result);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Water_Log_Json()
         {
             string content = SampleDataHelper.GetContent("LogWater-WaterLog.json");

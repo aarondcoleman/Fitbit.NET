@@ -13,7 +13,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class FriendsTests
     {
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFriendsMultipleAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Multiple.json");
@@ -39,7 +39,7 @@ namespace Fitbit.Portable.Tests
             ValidateMultipleFriends(friends);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFriendsSingleAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Single.json");
@@ -64,7 +64,7 @@ namespace Fitbit.Portable.Tests
             ValidateSingleFriend(friends);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public async void GetFriendsAsync_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -82,7 +82,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1, response.Errors.Count);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throws_Exception_With_Empty_String()
         {
@@ -90,7 +90,7 @@ namespace Fitbit.Portable.Tests
             deserializer.GetFriends(string.Empty);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throws_Exception_With_Null_String()
         {
@@ -98,7 +98,7 @@ namespace Fitbit.Portable.Tests
             deserializer.GetFriends(null);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throws_Exception_With_WhiteSpace()
         {
@@ -106,7 +106,7 @@ namespace Fitbit.Portable.Tests
             deserializer.GetFriends("         ");
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Friends_Multiple()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Multiple.json");
@@ -120,7 +120,7 @@ namespace Fitbit.Portable.Tests
             ValidateMultipleFriends(friends);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Friends_Single()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Single.json");
@@ -132,7 +132,7 @@ namespace Fitbit.Portable.Tests
             ValidateSingleFriend(friends);
         }
 
-        [Test]
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Friends_None()
         {
             string content = SampleDataHelper.GetContent("GetFriends-None.json");

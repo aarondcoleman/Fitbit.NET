@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Fitbit.NET</id>
-    <version>2.0.0-BETA.$buildNumber$</version>
+    <version>2.0.0-BETA-$buildNumber$</version>
     <title>Fitbit.NET</title>
     <authors>aarondcoleman, ducas</authors>
     <owners>aarondcoleman, ducas</owners>

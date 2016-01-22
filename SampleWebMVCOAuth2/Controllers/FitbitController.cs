@@ -63,6 +63,7 @@ namespace SampleWebMVC.Controllers
             // For demo, put this in the session managed by ASP.NET
 
             Session["AccessToken"] = accessToken;
+            ViewBag.AccessToken = accessToken;
 
             /*
 

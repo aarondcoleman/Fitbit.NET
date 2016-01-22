@@ -25,8 +25,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.SetGoalsAsync(caloriesOut: 2000);
            
-            Assert.IsTrue(response.Success);
-            Assert.IsNotNull(response.Data);
+            Assert.IsNotNull(response);
         }
 
         [Test] [Category("Portable")]
@@ -36,8 +35,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.SetGoalsAsync(distance: 8.5M);
 
-            Assert.IsTrue(response.Success);
-            Assert.IsNotNull(response.Data);
+            Assert.IsNotNull(response);
         }
 
         [Test] [Category("Portable")]
@@ -47,8 +45,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.SetGoalsAsync(floors: 20);
             
-            Assert.IsTrue(response.Success);
-            Assert.IsNotNull(response.Data);
+            Assert.IsNotNull(response);
         }
 
         [Test] [Category("Portable")]
@@ -58,8 +55,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.SetGoalsAsync(steps: 10000);
 
-            Assert.IsTrue(response.Success);
-            Assert.IsNotNull(response.Data);
+            Assert.IsNotNull(response);
         }
 
         [Test] [Category("Portable")]
@@ -69,8 +65,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.SetGoalsAsync(activeMinutes: 50);
 
-            Assert.IsTrue(response.Success);
-            Assert.IsNotNull(response.Data);
+            Assert.IsNotNull(response);
         }
 
         [Test] [Category("Portable")]
@@ -80,8 +75,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.SetGoalsAsync(2000, 8.5M, 20, 10000, 50);
 
-            Assert.IsTrue(response.Success);
-            Assert.IsNotNull(response.Data);
+            Assert.IsNotNull(response);
         }
 
         public FitbitClient SetupFitbitClient(string expectedBody)

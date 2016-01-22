@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
 
@@ -12,7 +10,6 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class IntradayTimeSeriesTests
     {
-
         [Test] [Category("Portable")]
         public async void GetIntraDayTimeSeriesAsync_Success()
         {
@@ -33,11 +30,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetIntraDayTimeSeriesAsync(IntradayResourceType.CaloriesOut, new DateTime(2015, 3, 20), new TimeSpan(24, 0, 0));
 
-            Assert.IsTrue(response.Success);
-
-            Assert.AreEqual(response.Data.DataSet[1].Time, new DateTime(2015, 3, 20, 0, 1, 0));
-
-            //ValidateDataList(response.Data);
+            Assert.AreEqual(response.DataSet[1].Time, new DateTime(2015, 3, 20, 0, 1, 0));
         }
     }
 }

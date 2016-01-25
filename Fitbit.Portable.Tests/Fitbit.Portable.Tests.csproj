@@ -95,9 +95,9 @@
     <Compile Include="Helper.cs" />
     <Compile Include="IntradayTimeSeriesTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
-    <Compile Include="ActivitySummaryTests.cs" />
-    <Compile Include="FatLogTests.cs" />
-    <Compile Include="WeightLogTests.cs" />
+    <Compile Include="Models\ActivitySummaryTests.cs" />
+    <Compile Include="Models\FatLogTests.cs" />
+    <Compile Include="Models\WeightLogTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleDataHelper.cs" />
     <Compile Include="DeviceTests.cs" />

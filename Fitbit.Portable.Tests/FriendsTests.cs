@@ -32,11 +32,9 @@ namespace Fitbit.Portable.Tests
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
             
             var response = await fitbitClient.GetFriendsAsync();
-
-            Assert.IsTrue(response.Success);
-            var friends = response.Data;
-            Assert.AreEqual(3, friends.Count);
-            ValidateMultipleFriends(friends);
+            
+            Assert.AreEqual(3, response.Count);
+            ValidateMultipleFriends(response);
         }
 
         [Test] [Category("Portable")]
@@ -58,13 +56,12 @@ namespace Fitbit.Portable.Tests
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
             
             var response = await fitbitClient.GetFriendsAsync();
-
-            Assert.IsTrue(response.Success);
-            var friends = response.Data;
-            ValidateSingleFriend(friends);
+            
+            ValidateSingleFriend(response);
         }
 
         [Test] [Category("Portable")]
+        [Ignore("Re-enable when exceptions have been introduced")]
         public async void GetFriendsAsync_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -77,9 +74,9 @@ namespace Fitbit.Portable.Tests
             
             var response = await fitbitClient.GetFriendsAsync();
             
-            Assert.IsFalse(response.Success);
-            Assert.IsNull(response.Data);
-            Assert.AreEqual(1, response.Errors.Count);
+            //Assert.IsFalse(response.Success);
+            //Assert.IsNull(response.Data);
+            //Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test] [Category("Portable")]

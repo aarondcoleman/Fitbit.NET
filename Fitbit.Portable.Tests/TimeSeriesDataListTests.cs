@@ -32,8 +32,7 @@ namespace Fitbit.Portable.Tests
             
             var response = await fitbitClient.GetTimeSeriesAsync(TimeSeriesResourceType.Distance, new DateTime(2014, 9, 7), DateRangePeriod.OneDay);
 
-            Assert.IsTrue(response.Success);
-            ValidateDataList(response.Data);
+            ValidateDataList(response);
         }
 
         [Test] [Category("Portable")]
@@ -56,8 +55,7 @@ namespace Fitbit.Portable.Tests
             
             var response = await fitbitClient.GetTimeSeriesAsync(TimeSeriesResourceType.Distance, new DateTime(2014, 9, 7), new DateTime(2014, 9, 14));
             
-            Assert.IsTrue(response.Success);
-            ValidateDataList(response.Data);
+            ValidateDataList(response);
         }
 
         [Test] [Category("Portable")]

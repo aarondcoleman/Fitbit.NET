@@ -51,8 +51,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneDay);
 
-            Assert.IsTrue(response.Success);
-            ValidateWeight(response.Data);
+            ValidateWeight(response);
         }
 
         [Test] [Category("Portable")]
@@ -62,8 +61,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), DateRangePeriod.SevenDays);
 
-            Assert.IsTrue(response.Success);
-            ValidateWeight(response.Data);
+            ValidateWeight(response);
         }
 
         [Test] [Category("Portable")]
@@ -73,8 +71,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneWeek);
             
-            Assert.IsTrue(response.Success);
-            ValidateWeight(response.Data);
+            ValidateWeight(response);
         }
 
         [Test] [Category("Portable")]
@@ -84,8 +81,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), DateRangePeriod.ThirtyDays);
             
-            Assert.IsTrue(response.Success);
-            ValidateWeight(response.Data);
+            ValidateWeight(response);
         }
 
         [Test] [Category("Portable")]
@@ -95,8 +91,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneMonth);
             
-            Assert.IsTrue(response.Success);
-            ValidateWeight(response.Data);
+            ValidateWeight(response);
         }
 
         [Test] [Category("Portable")]
@@ -106,8 +101,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5));
             
-            Assert.IsTrue(response.Success);
-            ValidateWeight(response.Data);
+            ValidateWeight(response);
         }
 
         [Test] [Category("Portable")]
@@ -117,8 +111,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), new DateTime(2012, 3, 6));
 
-            Assert.IsTrue(response.Success);
-            ValidateWeight(response.Data);
+            ValidateWeight(response);
         }
 
         [Test] [Category("Portable")]

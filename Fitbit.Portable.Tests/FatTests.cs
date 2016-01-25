@@ -51,8 +51,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneDay);
             
-            Assert.IsTrue(response.Success);
-            ValidateFat(response.Data);
+            ValidateFat(response);
         }
 
         [Test] [Category("Portable")]
@@ -62,8 +61,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.SevenDays);
             
-            Assert.IsTrue(response.Success);
-            ValidateFat(response.Data);
+            ValidateFat(response);
         }
 
         [Test] [Category("Portable")]
@@ -73,8 +71,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneWeek);
             
-            Assert.IsTrue(response.Success);
-            ValidateFat(response.Data);
+            ValidateFat(response);
         }
 
         [Test] [Category("Portable")]
@@ -84,8 +81,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.ThirtyDays);
             
-            Assert.IsTrue(response.Success);
-            ValidateFat(response.Data);
+            ValidateFat(response);
         }
 
         [Test] [Category("Portable")]
@@ -95,8 +91,7 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneMonth);
             
-            Assert.IsTrue(response.Success);
-            ValidateFat(response.Data);
+            ValidateFat(response);
         }
 
         [Test] [Category("Portable")]
@@ -105,9 +100,8 @@ namespace Fitbit.Portable.Tests
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5));
-
-            Assert.IsTrue(response.Success);
-            ValidateFat(response.Data);
+            
+            ValidateFat(response);
         }
 
         [Test] [Category("Portable")]
@@ -116,9 +110,8 @@ namespace Fitbit.Portable.Tests
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/fat/date/2012-03-05/2012-03-06.json");
 
             var response = await fitbitClient.GetFatAsync(new DateTime(2012, 3, 5), new DateTime(2012, 3, 6));
-
-            Assert.IsTrue(response.Success);
-            ValidateFat(response.Data);
+            
+            ValidateFat(response);
         }
 
         [Test] [Category("Portable")]

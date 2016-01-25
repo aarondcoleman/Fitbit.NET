@@ -87,7 +87,6 @@
     <Compile Include="FatTests.cs" />
     <Compile Include="FitbitClientHelperExtensionsTests.cs" />
     <Compile Include="FitbitClientTests.cs" />
-    <Compile Include="FitbitResponseTests.cs" />
     <Compile Include="FoodTests.cs" />
     <Compile Include="FriendsTests.cs" />
     <Compile Include="GetSubscriptionTests.cs" />

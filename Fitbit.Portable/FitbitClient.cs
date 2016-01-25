@@ -22,7 +22,7 @@ namespace Fitbit.Api.Portable
         public FitbitClient(IAuthorization authorization, HttpClient httpClient = null)
         {
             if (authorization == null)
-                throw new ArgumentNullException("authorization", "Authorization can not be null; please provide an Authorization instance.");
+                throw new ArgumentNullException(nameof(authorization), "Authorization can not be null; please provide an Authorization instance.");
 
             Authorization = authorization;
 
@@ -75,22 +75,22 @@ namespace Fitbit.Api.Portable
                 #region Parameter checking
                 if (string.IsNullOrWhiteSpace(consumerKey))
                 {
-                    throw new ArgumentNullException("consumerKey", "ConsumerKey must not be empty or null");
+                    throw new ArgumentNullException(nameof(consumerKey), "ConsumerKey must not be empty or null");
                 }
 
                 if (string.IsNullOrWhiteSpace(consumerSecret))
                 {
-                    throw new ArgumentNullException("consumerSecret", "ConsumerSecret must not be empty or null");
+                    throw new ArgumentNullException(nameof(consumerSecret), "ConsumerSecret must not be empty or null");
                 }
 
                 if (string.IsNullOrWhiteSpace(accessToken))
                 {
-                    throw new ArgumentNullException("accessToken", "AccessToken must not be empty or null");
+                    throw new ArgumentNullException(nameof(accessToken), "AccessToken must not be empty or null");
                 }
 
                 if (string.IsNullOrWhiteSpace(accessSecret))
                 {
-                    throw new ArgumentNullException("accessSecret", "AccessSecret must not be empty or null");
+                    throw new ArgumentNullException(nameof(accessSecret), "AccessSecret must not be empty or null");
                 }
                 #endregion
 
@@ -104,19 +104,15 @@ namespace Fitbit.Api.Portable
         /// <param name="activityDate"></param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>FitbitResponse of <see cref="ActivitySummary"/></returns>
-        public async Task<FitbitResponse<Activity>> GetDayActivityAsync(DateTime activityDate, string encodedUserId = null)
+        public async Task<Activity> GetDayActivityAsync(DateTime activityDate, string encodedUserId = null)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/date/{1}.json", encodedUserId, activityDate.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<Activity>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<Activity>(responseBody);
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<Activity>(responseBody);
         }
 
         /// <summary>
@@ -125,19 +121,14 @@ namespace Fitbit.Api.Portable
         /// <param name="activityDate"></param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>FitbitResponse of <see cref="ActivitySummary"/></returns>
-        public async Task<FitbitResponse<ActivitySummary>> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = null)
+        public async Task<ActivitySummary> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = null)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/date/{1}.json", encodedUserId, activityDate.ToFitbitFormat());
-
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<ActivitySummary>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer {RootProperty = "summary"};
-                fitbitResponse.Data = serializer.Deserialize<ActivitySummary>(responseBody);
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer {RootProperty = "summary"};
+            return serializer.Deserialize<ActivitySummary>(responseBody);
         }
 
         /// <summary>
@@ -145,22 +136,17 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="sleepDate"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<SleepData>> GetSleepAsync(DateTime sleepDate)
+        public async Task<SleepData> GetSleepAsync(DateTime sleepDate)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/sleep/date/{1}.json", args: sleepDate.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<SleepData>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<SleepData>(responseBody);
-
-                ProcessSleepData(fitbitResponse.Data);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            var data = serializer.Deserialize<SleepData>(responseBody);
+            ProcessSleepData(data);
+            return data;
         }
 
         internal void ProcessSleepData(SleepData sleepData)
@@ -203,19 +189,15 @@ namespace Fitbit.Api.Portable
         /// Requests the devices for the current logged in user
         /// </summary>
         /// <returns>List of <see cref="Device"/></returns>
-        public async Task<FitbitResponse<List<Device>>> GetDevicesAsync()
+        public async Task<List<Device>> GetDevicesAsync()
         {
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/devices.json");
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<List<Device>>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<List<Device>>(responseBody);    
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<List<Device>>(responseBody);
         }
 
         /// <summary>
@@ -223,19 +205,15 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>List of <see cref="UserProfile"/></returns>
-        public async Task<FitbitResponse<List<UserProfile>>> GetFriendsAsync(string encodedUserId = default(string))
+        public async Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/friends.json", encodedUserId);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<List<UserProfile>>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.GetFriends(responseBody);
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.GetFriends(responseBody);
         }
 
         /// <summary>
@@ -243,19 +221,15 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="encodedUserId"></param>
         /// <returns><see cref="UserProfile"/></returns>
-        public async Task<FitbitResponse<UserProfile>> GetUserProfileAsync(string encodedUserId = default(string))
+        public async Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/profile.json", encodedUserId);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<UserProfile>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer { RootProperty = "user" };
-                fitbitResponse.Data = serializer.Deserialize<UserProfile>(responseBody);    
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer { RootProperty = "user" };
+            return serializer.Deserialize<UserProfile>(responseBody);    
         }
 
         /// <summary>
@@ -266,7 +240,7 @@ namespace Fitbit.Api.Portable
         /// <param name="endDate"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<TimeSeriesDataList>> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = default(string))
+        public async Task<TimeSeriesDataList> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = default(string))
         {
             return await GetTimeSeriesAsync(timeSeriesResourceType, startDate, endDate.ToFitbitFormat(), encodedUserId);
         }
@@ -279,7 +253,7 @@ namespace Fitbit.Api.Portable
         /// <param name="period"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<TimeSeriesDataList>> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = default(string))
+        public async Task<TimeSeriesDataList> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = default(string))
         {
             return await GetTimeSeriesAsync(timeSeriesResourceType, endDate, period.GetStringValue(), encodedUserId);
         }
@@ -292,19 +266,17 @@ namespace Fitbit.Api.Portable
         /// <param name="endDateOrPeriod"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        private async Task<FitbitResponse<TimeSeriesDataList>> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId = default(string))
+        private async Task<TimeSeriesDataList> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId = default(string))
         {
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}{1}/date/{2}/{3}.json", encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<TimeSeriesDataList>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer {RootProperty = timeSeriesResourceType.ToTimeSeriesProperty()};
-                fitbitResponse.Data = serializer.GetTimeSeriesDataList(responseBody);   
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer {RootProperty = timeSeriesResourceType.ToTimeSeriesProperty()};
+            return serializer.GetTimeSeriesDataList(responseBody);   
+
         }
 
         /// <summary>
@@ -315,7 +287,7 @@ namespace Fitbit.Api.Portable
         /// <param name="endDate"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = null)
+        public Task<TimeSeriesDataListInt> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = null)
         {
             return GetTimeSeriesIntAsync(timeSeriesResourceType, startDate, endDate.ToFitbitFormat(), encodedUserId);
         }
@@ -328,7 +300,7 @@ namespace Fitbit.Api.Portable
         /// <param name="period"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = null)
+        public Task<TimeSeriesDataListInt> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = null)
         {
             return GetTimeSeriesIntAsync(timeSeriesResourceType, endDate, period.GetStringValue(), encodedUserId);
         }
@@ -341,25 +313,20 @@ namespace Fitbit.Api.Portable
         /// <param name="endDateOrPeriod"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        private async Task<FitbitResponse<TimeSeriesDataListInt>> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
+        private async Task<TimeSeriesDataListInt> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
         {
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}{1}/date/{2}/{3}.json", encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<TimeSeriesDataListInt>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
-                fitbitResponse.Data = serializer.GetTimeSeriesDataListInt(responseBody);
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
+            return serializer.GetTimeSeriesDataListInt(responseBody);
         }
 
-        public async Task<FitbitResponse<IntradayData>> GetIntraDayTimeSeriesAsync(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan)
+        public async Task<IntradayData> GetIntraDayTimeSeriesAsync(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan)
         {
-
-            string apiCall = null;
+            string apiCall;
 
             if (intraDayTimeSpan > new TimeSpan(0, 1, 0) && //the timespan is greater than a minute
                 dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day //adding the timespan doesn't go in to the next day
@@ -381,17 +348,10 @@ namespace Fitbit.Api.Portable
             apiCall = FitbitClientHelperExtensions.ToFullUrl(apiCall);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<IntradayData>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
-                fitbitResponse.Data = serializer.GetIntradayTimeSeriesData(responseBody);
-            }
-            return fitbitResponse;
-
-
-
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
+            return serializer.GetIntradayTimeSeriesData(responseBody);
         }
 
         /// <summary>
@@ -400,20 +360,15 @@ namespace Fitbit.Api.Portable
         /// <param name="date"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<Food>> GetFoodAsync(DateTime date, string encodedUserId = default(string))
+        public async Task<Food> GetFoodAsync(DateTime date, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/foods/log/date/{1}.json", encodedUserId, date.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<Food>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<Food>(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<Food>(responseBody);
         }
 
         /// <summary>
@@ -422,20 +377,15 @@ namespace Fitbit.Api.Portable
         /// <param name="date"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<BloodPressureData>> GetBloodPressureAsync(DateTime date, string encodedUserId = default(string))
+        public async Task<BloodPressureData> GetBloodPressureAsync(DateTime date, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/bp/date/{1}.json", encodedUserId, date.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<BloodPressureData>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<BloodPressureData>(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<BloodPressureData>(responseBody);
         }
 
         /// <summary>
@@ -444,18 +394,14 @@ namespace Fitbit.Api.Portable
         /// <param name="date"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<BodyMeasurements>> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string))
+        public async Task<BodyMeasurements> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/date/{1}.json", encodedUserId, date.ToFitbitFormat());
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<BodyMeasurements>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<BodyMeasurements>(responseBody);
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<BodyMeasurements>(responseBody);
         }
 
         /// <summary>
@@ -464,7 +410,7 @@ namespace Fitbit.Api.Portable
         /// <param name="startDate"></param>
         /// <param name="period"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<Fat>> GetFatAsync(DateTime startDate, DateRangePeriod period)
+        public async Task<Fat> GetFatAsync(DateTime startDate, DateRangePeriod period)
         {
             switch (period)
             {
@@ -482,15 +428,10 @@ namespace Fitbit.Api.Portable
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/fat/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<Fat>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var seralizer = new JsonDotNetSerializer();
-                fitbitResponse.Data = seralizer.GetFat(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer();
+            return seralizer.GetFat(responseBody);
         }
 
         /// <summary>
@@ -499,7 +440,7 @@ namespace Fitbit.Api.Portable
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<Fat>> GetFatAsync(DateTime startDate, DateTime? endDate = null)
+        public async Task<Fat> GetFatAsync(DateTime startDate, DateTime? endDate = null)
         {
             string apiCall = string.Empty;
             if (endDate == null)
@@ -517,15 +458,10 @@ namespace Fitbit.Api.Portable
             }
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<Fat>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var seralizer = new JsonDotNetSerializer();
-                fitbitResponse.Data = seralizer.GetFat(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer();
+            return seralizer.GetFat(responseBody);
         }
 
         /// <summary>
@@ -534,7 +470,7 @@ namespace Fitbit.Api.Portable
         /// <param name="startDate"></param>
         /// <param name="period"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateRangePeriod period)
+        public async Task<Weight> GetWeightAsync(DateTime startDate, DateRangePeriod period)
         {
             switch (period)
             {
@@ -552,15 +488,10 @@ namespace Fitbit.Api.Portable
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<Weight>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var seralizer = new JsonDotNetSerializer();
-                fitbitResponse.Data = seralizer.GetWeight(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer();
+            return seralizer.GetWeight(responseBody);
         }
 
         /// <summary>
@@ -569,9 +500,9 @@ namespace Fitbit.Api.Portable
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<Weight>> GetWeightAsync(DateTime startDate, DateTime? endDate = null)
+        public async Task<Weight> GetWeightAsync(DateTime startDate, DateTime? endDate = null)
         {
-            string apiCall = string.Empty;
+            string apiCall;
             if (endDate == null)
             {
                 apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}.json", args: new object[] { startDate.ToFitbitFormat() });
@@ -587,15 +518,10 @@ namespace Fitbit.Api.Portable
             }
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<Weight>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var seralizer = new JsonDotNetSerializer();
-                fitbitResponse.Data = seralizer.GetWeight(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer();
+            return seralizer.GetWeight(responseBody);
         }
 
         /// <summary>
@@ -606,7 +532,7 @@ namespace Fitbit.Api.Portable
         /// <param name="steps"></param>
         /// <param name="activeMinutes"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<ActivityGoals>> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int))
+        public async Task<ActivityGoals> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int))
         {
             // parameter checking; at least one needs to be specified
             if ((caloriesOut == default(int))
@@ -649,16 +575,10 @@ namespace Fitbit.Api.Portable
 
             //caloriesOut=100&distance=1.0&floors=1&steps=8000&activeMinutes=10
             HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new FormUrlEncodedContent(messageContentParameters));
-            
-            var fitbitResponse = await HandleResponse<ActivityGoals>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var seralizer = new JsonDotNetSerializer {RootProperty = "goals"};
-                fitbitResponse.Data = seralizer.Deserialize<ActivityGoals>(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer {RootProperty = "goals"};
+            return seralizer.Deserialize<ActivityGoals>(responseBody);
         }
 
         /// <summary>
@@ -669,20 +589,15 @@ namespace Fitbit.Api.Portable
         /// </remarks>
         /// <param name="date"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<WaterData>> GetWaterAsync(DateTime date)
+        public async Task<WaterData> GetWaterAsync(DateTime date)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/foods/log/water/date/{1}.json", args: date.ToFitbitFormat());
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<WaterData>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<WaterData>(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<WaterData>(responseBody);
         }
 
         /// <summary>
@@ -691,7 +606,7 @@ namespace Fitbit.Api.Portable
         /// <param name="date"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<WaterLog>> LogWaterAsync(DateTime date, WaterLog log)
+        public async Task<WaterLog> LogWaterAsync(DateTime date, WaterLog log)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/foods/log/water.json");
 
@@ -701,15 +616,10 @@ namespace Fitbit.Api.Portable
             apiCall = string.Format("{0}?{1}", apiCall, string.Join("&", items.Select(x => string.Format("{0}={1}", x.Key, x.Value))));
 
             HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new StringContent(string.Empty));
-            var fitbitResponse = await HandleResponse<WaterLog>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer { RootProperty = "waterLog" };
-                fitbitResponse.Data = serializer.Deserialize<WaterLog>(responseBody);
-            }
-
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer { RootProperty = "waterLog" };
+            return serializer.Deserialize<WaterLog>(responseBody);
         }
 
         /// <summary>
@@ -720,34 +630,25 @@ namespace Fitbit.Api.Portable
         /// </remarks>
         /// <param name="logId"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<NoData>> DeleteWaterLogAsync(long logId)
+        public async Task DeleteWaterLogAsync(long logId)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/foods/log/water/{1}.json", args: logId);
             HttpResponseMessage response = await HttpClient.DeleteAsync(apiCall);
-            var fitbitResponse = await HandleResponse<NoData>(response);
-            if (fitbitResponse.Success)
-            {
-                fitbitResponse.Data = new NoData();
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
         }
 
         /// <summary>
         /// Gets a list of the current subscriptions for the current logged in user
         /// </summary>
         /// <returns></returns>
-        public async Task<FitbitResponse<List<ApiSubscription>>> GetSubscriptionsAsync()
+        public async Task<List<ApiSubscription>> GetSubscriptionsAsync()
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/apiSubscriptions.json");
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<List<ApiSubscription>>(response);
-            if (fitbitResponse.Success)
-            {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer { RootProperty = "apiSubscriptions" };
-                fitbitResponse.Data = serializer.Deserialize<List<ApiSubscription>>(responseBody);
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer { RootProperty = "apiSubscriptions" };
+            return serializer.Deserialize<List<ApiSubscription>>(responseBody);
         }
 
         /// <summary>
@@ -757,7 +658,7 @@ namespace Fitbit.Api.Portable
         /// <param name="uniqueSubscriptionId"></param>
         /// <param name="subscriberId"></param>
         /// <returns></returns>
-        public async Task<FitbitResponse<ApiSubscription>> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string))
+        public async Task<ApiSubscription> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string))
         {
             string path = FormatKey(apiCollectionType, Constants.Formatting.TrailingSlash);
             string resource = FormatKey(apiCollectionType, Constants.Formatting.LeadingDash);
@@ -770,14 +671,10 @@ namespace Fitbit.Api.Portable
             }
 
             HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new StringContent(string.Empty));
-            var fitbitResponse = await HandleResponse<ApiSubscription>(response);
-            if (fitbitResponse.Success)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                var serializer = new JsonDotNetSerializer();
-                fitbitResponse.Data = serializer.Deserialize<ApiSubscription>(responseBody);
-            }
-            return fitbitResponse;
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<ApiSubscription>(responseBody);
         }
 
         private string FormatKey(APICollectionType apiCollectionType, string format)
@@ -792,27 +689,20 @@ namespace Fitbit.Api.Portable
         /// <param name="date"></param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public async Task<string> GetAPIFreeResponse(string apiPath)
+        public async Task<string> GetApiFreeResponse(string apiPath)
         {
             string apiCall = apiPath;
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            var fitbitResponse = await HandleResponse<Food>(response);
-            string responseBody = null;
-
-            if (fitbitResponse.Success)
-            {
-                responseBody = await response.Content.ReadAsStringAsync();
-            }
-
-            return responseBody;
+            await HandleResponse(response);
+            return await response.Content.ReadAsStringAsync();
         }
 
         /// <summary>
         /// General error checking of the response before specific processing is done.
         /// </summary>
         /// <param name="response"></param>
-        private async Task<FitbitResponse<T>> HandleResponse<T>(HttpResponseMessage response) where T : class
+        private async Task HandleResponse(HttpResponseMessage response)
         {
             var errors = new List<ApiError>();
             
@@ -828,11 +718,9 @@ namespace Fitbit.Api.Portable
                     // if there is an error with the serialization then we need to default the errors back to an instantiated list
                     errors = new List<ApiError>();
                 }  
+
+                throw new Exception("todo: this should be a fitbit exception of some variety");
             }
-
-            // todo: handle "success" responses which return errors?
-
-            return new FitbitResponse<T>(response.StatusCode, response.Headers, errors);
         }
     }
 }

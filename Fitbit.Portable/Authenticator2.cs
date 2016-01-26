@@ -16,7 +16,8 @@ namespace Fitbit.Api.Portable
         const string OAuthBase = "/oauth2";
 
         private string ClientId;
-        private string AppSecret;
+        private string AppSecret;      
+
         private string RedirectUri;
 
         public Authenticator2(string clientId, string appSecret, string redirectUri)
@@ -29,28 +30,28 @@ namespace Fitbit.Api.Portable
 
         public string GenerateAuthUrl(string[] scopeTypes, string state = null)
         {
-            string url = FitbitWebAuthBaseUrl;
+            var sb = new StringBuilder();
 
-            url += OAuthBase;
-            url += "/authorize?";
-            url += "response_type=code";
-            url += string.Format("&client_id={0}", this.ClientId);
-            url += string.Format("&redirect_uri={0}", Uri.EscapeDataString(this.RedirectUri));
-            url += string.Format("&scope={0}", String.Join(" ", scopeTypes));
+            //TO DO: replace with string builder
+            sb.Append(FitbitWebAuthBaseUrl);
+            sb.Append(OAuthBase);
+            sb.Append("/authorize?");
+            sb.Append("response_type=code");
+            sb.Append(string.Format("&client_id={0}", this.ClientId));
+            sb.Append(string.Format("&redirect_uri={0}", Uri.EscapeDataString(this.RedirectUri)));
+            sb.Append(string.Format("&scope={0}", String.Join(" ", scopeTypes)));
 
             if(!string.IsNullOrWhiteSpace(state))
-                url += string.Format("&state={0}", state);
+                sb.Append(string.Format("&state={0}", state));
 
-            return url;
+            return sb.ToString();
         }
 
         public async Task<OAuth2AccessToken> ExchangeAuthCodeForAccessTokenAsync(string code)
         {
             HttpClient httpClient = new HttpClient();
 
-            string postUrl = FitbitApiBaseUrl;
-            postUrl += OAuthBase;
-            postUrl += "/token";
+            string postUrl = generateFitbitOAuthPostUrl();
 
             var content = new FormUrlEncodedContent(new[] 
             {
@@ -69,6 +70,48 @@ namespace Fitbit.Api.Portable
             HttpResponseMessage response = await httpClient.PostAsync(postUrl, content);
             string responseString = await response.Content.ReadAsStringAsync();
 
+            OAuth2AccessToken accessToken = parseAccessTokenResponse(responseString);
+
+            return accessToken;
+        }
+
+
+
+        public async Task<OAuth2AccessToken> RefreshAccessToken(OAuth2AccessToken accessToken)
+        {
+            string postUrl = generateFitbitOAuthPostUrl();
+
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("grant_type", "refresh_token"),
+                new KeyValuePair<string, string>("refresh_token", accessToken.RefreshToken),
+            });
+
+
+            var httpClient = new HttpClient();
+
+            var clientIdConcatSecret = Base64Encode(ClientId + ":" + AppSecret);
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", clientIdConcatSecret);
+
+            HttpResponseMessage response = await httpClient.PostAsync(postUrl, content);
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            return parseAccessTokenResponse(responseString);
+        }
+
+        private string generateFitbitOAuthPostUrl()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append(FitbitApiBaseUrl);
+            sb.Append(OAuthBase);
+            sb.Append(@"/token");
+
+            return sb.ToString();
+        }
+
+        private OAuth2AccessToken parseAccessTokenResponse(string responseString)
+        {
             JObject responseObject = JObject.Parse(responseString);
 
             // Note: if user cancels the auth process Jawbone returns a 200 response, but the JSON payload is way different.
@@ -76,10 +119,11 @@ namespace Fitbit.Api.Portable
             if (error != null)
             {
                 // TODO: Actually should probably raise an exception here maybe?
+                //mxa0079: agree. This is not transparent and makes it hard to debug for consumers of the library
                 return null;
             }
 
-            OAuth2AccessToken accessToken = new OAuth2AccessToken();
+            var accessToken = new OAuth2AccessToken();
 
             var temp_access_token = responseObject["access_token"];
             if (temp_access_token != null) accessToken.Token = temp_access_token.ToString();

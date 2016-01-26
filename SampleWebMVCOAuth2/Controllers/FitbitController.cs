@@ -65,16 +65,24 @@ namespace SampleWebMVC.Controllers
             Session["AccessToken"] = accessToken;
             ViewBag.AccessToken = accessToken;
 
-            /*
+            return View();
 
-            Session["FitbitAuthToken"] = credential.AuthToken;
-            Session["FitbitAuthTokenSecret"] = credential.AuthTokenSecret;
-            Session["FitbitUserId"] = credential.UserId;
+        }
 
-             */
+        public async Task<ActionResult> RefreshToken()
+        {
+            string ConsumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
+            string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
+            string ClientId = ConfigurationManager.AppSettings["FitbitClientId"];
 
-            return RedirectToAction("Index", "Home");
+            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(ClientId,
+                                                                                    ConsumerSecret,
+                                                                                    Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
+                                                                                    );
 
+            ViewBag.AccessToken = await authenticator.RefreshAccessToken((OAuth2AccessToken)Session["AccessToken"]);
+
+            return View("Callback");
         }
 
         /*

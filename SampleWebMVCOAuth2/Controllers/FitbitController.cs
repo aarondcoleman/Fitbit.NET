@@ -63,17 +63,26 @@ namespace SampleWebMVC.Controllers
             // For demo, put this in the session managed by ASP.NET
 
             Session["AccessToken"] = accessToken;
+            ViewBag.AccessToken = accessToken;
 
-            /*
+            return View();
 
-            Session["FitbitAuthToken"] = credential.AuthToken;
-            Session["FitbitAuthTokenSecret"] = credential.AuthTokenSecret;
-            Session["FitbitUserId"] = credential.UserId;
+        }
 
-             */
+        public async Task<ActionResult> RefreshToken()
+        {
+            string ConsumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
+            string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
+            string ClientId = ConfigurationManager.AppSettings["FitbitClientId"];
 
-            return RedirectToAction("Index", "Home");
+            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(ClientId,
+                                                                                    ConsumerSecret,
+                                                                                    Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
+                                                                                    );
 
+            ViewBag.AccessToken = await authenticator.RefreshAccessToken((OAuth2AccessToken)Session["AccessToken"]);
+
+            return View("Callback");
         }
 
         /*
@@ -109,9 +118,9 @@ namespace SampleWebMVC.Controllers
 
             FitbitClient client = GetFitbitClient(accessToken.Token, accessToken.RefreshToken);
 
-            FitbitResponse<TimeSeriesDataListInt> response = await client.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+            var response = await client.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
 
-            return View(response.Data);
+            return View(response);
 
         }
         /*
@@ -206,6 +215,5 @@ namespace SampleWebMVC.Controllers
 
             return client;
         }
-         
     }
 }

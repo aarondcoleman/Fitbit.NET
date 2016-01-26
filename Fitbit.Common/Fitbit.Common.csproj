@@ -63,6 +63,11 @@
     <Compile Include="Models\FoodLogUnit.cs" />
     <Compile Include="Models\FoodSummary.cs" />
     <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\HeartActivities.cs" />
+    <Compile Include="Models\HeartActivitiesIntraday.cs" />
+    <Compile Include="Models\HeartActivitiesTimeSeries.cs" />
+    <Compile Include="Models\HeartRateResolution.cs" />
+    <Compile Include="Models\HeartRateZone.cs" />
     <Compile Include="Models\IntradayData.cs" />
     <Compile Include="Models\IntradayResourceType.cs" />
     <Compile Include="Models\LoggedFood.cs" />
@@ -85,7 +90,6 @@
     <Compile Include="Models\WaterSummary.cs" />
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Models\WeightLog.cs" />
-    <Compile Include="NoData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringAttributeExtensions.cs" />
     <Compile Include="StringValueAttribute.cs" />

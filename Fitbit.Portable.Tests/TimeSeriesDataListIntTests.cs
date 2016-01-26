@@ -32,8 +32,7 @@ namespace Fitbit.Portable.Tests
             
             var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), DateRangePeriod.SevenDays);
 
-            Assert.IsTrue(response.Success);
-            ValidateDataList(response.Data);
+            ValidateDataList(response);
         }
 
         [Test] [Category("Portable")]
@@ -56,8 +55,7 @@ namespace Fitbit.Portable.Tests
             
             var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), new DateTime(2014, 9, 7));
 
-            Assert.IsTrue(response.Success);
-            ValidateDataList(response.Data);
+            ValidateDataList(response);
         }
 
         [Test] [Category("Portable")]

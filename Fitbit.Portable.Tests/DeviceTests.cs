@@ -33,10 +33,8 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetDevicesAsync();
             
-            Assert.IsTrue(response.Success);
-            var devices = response.Data;
-            Assert.AreEqual(1, devices.Count);
-            Device device = devices.First();
+            Assert.AreEqual(1, response.Count);
+            Device device = response.First();
             ValidateSingleDevice(device);
         }
 
@@ -59,13 +57,11 @@ namespace Fitbit.Portable.Tests
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
             var response = await fitbitClient.GetDevicesAsync();
-
-            Assert.IsTrue(response.Success);
-            var devices = response.Data;
-            Assert.AreEqual(2, devices.Count);
+            Assert.AreEqual(2, response.Count);
         }
 
         [Test] [Category("Portable")]
+        [Ignore("Re-enable when exceptions have been introduced")]
         public async void GetDevicesAsync_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -78,9 +74,9 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetDevicesAsync();
 
-            Assert.IsFalse(response.Success);
-            Assert.IsNull(response.Data);
-            Assert.AreEqual(1, response.Errors.Count);
+            //Assert.IsFalse(response.Success);
+            //Assert.IsNull(response.Data);
+            //Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test] [Category("Portable")]

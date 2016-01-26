@@ -32,11 +32,11 @@ namespace Fitbit.Portable.Tests
             
             var response = await fitbitClient.GetWaterAsync(new DateTime(2015, 1, 12));
 
-            Assert.IsTrue(response.Success);
-            ValidateWaterData(response.Data);
+            ValidateWaterData(response);
         }
 
         [Test] [Category("Portable")]
+        [Ignore("Re-enable when exceptions have been introduced")]
         public async void GetWaterAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -49,9 +49,9 @@ namespace Fitbit.Portable.Tests
             
             var response = await fitbitClient.GetFoodAsync(new DateTime(2015, 1, 12));
 
-            Assert.IsFalse(response.Success);
-            Assert.IsNull(response.Data);
-            Assert.AreEqual(1, response.Errors.Count);
+            //Assert.IsFalse(response.Success);
+            //Assert.IsNull(response.Data);
+            //Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test] [Category("Portable")]
@@ -73,10 +73,8 @@ namespace Fitbit.Portable.Tests
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
             
             var response = await fitbitClient.LogWaterAsync(new DateTime(2015, 1, 12), new WaterLog { Amount = 300 });
-
-            Assert.IsTrue(response.Success);
-            Assert.IsNotNull(response.Data);
-            Assert.AreEqual(300, response.Data.Amount);
+            
+            Assert.AreEqual(300, response.Amount);
         }
 
         [Test] [Category("Portable")]
@@ -95,9 +93,9 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
             
-            var response = await fitbitClient.DeleteWaterLogAsync(1234);
+            await fitbitClient.DeleteWaterLogAsync(1234);
 
-            Assert.IsTrue(response.Success);
+            //Assert.IsTrue(response.Success);
         }
 
         [Test] [Category("Portable")]

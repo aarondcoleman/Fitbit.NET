@@ -118,9 +118,9 @@ namespace SampleWebMVC.Controllers
 
             FitbitClient client = GetFitbitClient(accessToken.Token, accessToken.RefreshToken);
 
-            FitbitResponse<TimeSeriesDataListInt> response = await client.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+            var response = await client.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
 
-            return View(response.Data);
+            return View(response);
 
         }
         /*
@@ -215,6 +215,5 @@ namespace SampleWebMVC.Controllers
 
             return client;
         }
-         
     }
 }

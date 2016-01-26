@@ -32,11 +32,11 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
 
-            Assert.IsTrue(response.Success);
-            ValidateActivity(response.Data);
+            ValidateActivity(response);
         }
 
         [Test] [Category("Portable")]
+        [Ignore("Re-enable when exceptions have been introduced")]
         public async void GetDayActivityAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -49,9 +49,9 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
 
-            Assert.IsFalse(response.Success);
-            Assert.IsNull(response.Data);
-            Assert.AreEqual(1, response.Errors.Count);
+            //Assert.IsFalse(response.Success);
+            //Assert.IsNull(response.Data);
+            //Assert.AreEqual(1, response.Errors.Count);
         }
 
         [Test] [Category("Portable")]
@@ -74,11 +74,11 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetDayActivitySummaryAsync(new DateTime(2014, 9, 27));
 
-            Assert.IsTrue(response.Success);
-            ValidateActivitySummary(response.Data);
+            ValidateActivitySummary(response);
         }
 
         [Test] [Category("Portable")]
+        [Ignore("Re-enable when exceptions have been introduced")]
         public async void GetDayActivitySummaryAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -91,9 +91,9 @@ namespace Fitbit.Portable.Tests
 
             var response = await fitbitClient.GetDayActivitySummaryAsync(new DateTime(2014, 9, 27));
 
-            Assert.IsFalse(response.Success);
-            Assert.IsNull(response.Data);
-            Assert.AreEqual(1, response.Errors.Count);
+            //Assert.IsFalse(response.Success);
+            //Assert.IsNull(response.Data);
+            //Assert.AreEqual(1, response.Errors.Count);
         } 
 
         [Test] [Category("Portable")]

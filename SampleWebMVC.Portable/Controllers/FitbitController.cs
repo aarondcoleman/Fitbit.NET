@@ -70,55 +70,35 @@ namespace SampleWebMVC.Portable.Controllers
         {
             var client = GetClient();
             var response = await client.GetDevicesAsync();
-            if (response.Success)
-            {
-                return View(response.Data);
-            }
-            return RedirectToAction("Index", "Home");
+            return View(response);
         }
 
         public async Task<ActionResult> Friends()
         {
             var client = GetClient();
             var response = await client.GetFriendsAsync();
-            if (response.Success)
-            {
-                return View(response.Data);
-            }
-            return RedirectToAction("Index", "Home");
+            return View(response);
         }
 
         public async Task<ActionResult> UserProfile()
         {
             var client = GetClient();
             var response = await client.GetUserProfileAsync();
-            if (response.Success)
-            {
-                return View(response.Data);
-            }
-            return RedirectToAction("Index", "Home");
+            return View(response);
         }
 
         public async Task<ActionResult> LastWeekDistance()
         {
             var client = GetClient();
             var response = await client.GetTimeSeriesAsync(TimeSeriesResourceType.Distance, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
-            if (response.Success)
-            {
-                return View("TimeSeriesDataList", response.Data);
-            }
-            return RedirectToAction("Index", "Home");
+            return View("TimeSeriesDataList", response);
         }
 
         public async Task<ActionResult> LastWeekSteps()
         {
             var client = GetClient();
             var response = await client.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
-            if (response.Success)
-            {
-                return View("TimeSeriesDataListInt", response.Data);
-            }
-            return RedirectToAction("Index", "Home");
+            return View("TimeSeriesDataList", response);
         }
 
         private IFitbitClient GetClient()

@@ -32,7 +32,6 @@ namespace Fitbit.Api.Portable
         {
             var sb = new StringBuilder();
 
-            //TO DO: replace with string builder
             sb.Append(FitbitWebAuthBaseUrl);
             sb.Append(OAuthBase);
             sb.Append("/authorize?");
@@ -51,7 +50,7 @@ namespace Fitbit.Api.Portable
         {
             HttpClient httpClient = new HttpClient();
 
-            string postUrl = generateFitbitOAuthPostUrl();
+            string postUrl = GenerateFitbitOAuthPostUrl();
 
             var content = new FormUrlEncodedContent(new[] 
             {
@@ -70,7 +69,7 @@ namespace Fitbit.Api.Portable
             HttpResponseMessage response = await httpClient.PostAsync(postUrl, content);
             string responseString = await response.Content.ReadAsStringAsync();
 
-            OAuth2AccessToken accessToken = parseAccessTokenResponse(responseString);
+            OAuth2AccessToken accessToken = ParseAccessTokenResponse(responseString);
 
             return accessToken;
         }
@@ -79,7 +78,7 @@ namespace Fitbit.Api.Portable
 
         public async Task<OAuth2AccessToken> RefreshAccessToken(OAuth2AccessToken accessToken)
         {
-            string postUrl = generateFitbitOAuthPostUrl();
+            string postUrl = GenerateFitbitOAuthPostUrl();
 
             var content = new FormUrlEncodedContent(new[]
             {
@@ -96,10 +95,10 @@ namespace Fitbit.Api.Portable
             HttpResponseMessage response = await httpClient.PostAsync(postUrl, content);
             string responseString = await response.Content.ReadAsStringAsync();
 
-            return parseAccessTokenResponse(responseString);
+            return ParseAccessTokenResponse(responseString);
         }
 
-        private string generateFitbitOAuthPostUrl()
+        private string GenerateFitbitOAuthPostUrl()
         {
             var sb = new StringBuilder();
 
@@ -110,7 +109,7 @@ namespace Fitbit.Api.Portable
             return sb.ToString();
         }
 
-        private OAuth2AccessToken parseAccessTokenResponse(string responseString)
+        private OAuth2AccessToken ParseAccessTokenResponse(string responseString)
         {
             JObject responseObject = JObject.Parse(responseString);
 

@@ -46,6 +46,7 @@
     <Compile Include="Authenticator.cs" />
     <Compile Include="Authenticator2.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="EmptyDateToMinDateConverter.cs" />
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitClientHelperExtensions.cs" />
     <Compile Include="IAuthorization.cs" />

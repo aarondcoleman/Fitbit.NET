@@ -1,4 +1,5 @@
-﻿using Fitbit.Api.Portable;
+﻿using System;
+using Fitbit.Api.Portable;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -12,6 +13,10 @@ namespace Fitbit.Portable.Tests
         {
             [JsonProperty("testproperty")]
             public string TestProperty { get; set; }
+
+            [JsonProperty("mydate")]  
+            public DateTime MyDate { get; set; }
+
 
             // todo: array etc.
         }
@@ -52,5 +57,25 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(value);
             Assert.AreEqual("bob", value.TestProperty);
         }
+
+        [Test]  [Category("Portable")]  
+        public void DateParsingSuccess()
+        {  
+            string data = "{\"mydate\" : \"1970-01-01\" }";  
+            var serializer = new JsonDotNetSerializer();  
+            var value = serializer.Deserialize<TestClass>(data);  
+            Assert.IsNotNull(value);  
+            Assert.AreEqual(new DateTime(1970, 1, 1), value.MyDate);  
+        }  
+        
+        [Test]  [Category("Portable")]  
+        public void DateParsingEmptySuccess()
+        {  
+            string data = "{\"mydate\" : \"\" }";  
+            var serializer = new JsonDotNetSerializer();  
+            var value = serializer.Deserialize<TestClass>(data);  
+            Assert.IsNotNull(value);  
+            Assert.AreEqual(DateTime.MinValue, value.MyDate);  
+        } 
     }
 }

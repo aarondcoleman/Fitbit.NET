@@ -130,6 +130,18 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
+        public void Can_Deserialize_Friends_Single_NullDateOfBirth()
+        {
+            string content = SampleDataHelper.GetContent("GetFriends-Single-2.json");
+            var deserializer = new JsonDotNetSerializer();
+
+            List<UserProfile> friends = deserializer.GetFriends(content);
+
+            Assert.IsNotNull(friends);
+            ValidateSingleFriendNullDateOfBirth(friends);
+        }
+
+        [Test] [Category("Portable")]
         public void Can_Deserialize_Friends_None()
         {
             string content = SampleDataHelper.GetContent("GetFriends-None.json");
@@ -230,6 +242,31 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(0, friend.StrideLengthWalking);
             Assert.AreEqual("Europe/London", friend.Timezone);
             Assert.AreEqual(0, friend.Weight);
+        }
+
+        private void ValidateSingleFriendNullDateOfBirth(List<UserProfile> friends)
+        {  
+            Assert.IsTrue(friends.Count == 1);  
+        
+            var friend = friends.First();  
+            Assert.AreEqual("http://www.fitbit.com/images/profile/defaultProfile_100_female.gif", friend.Avatar);  
+            Assert.AreEqual("http://www.fitbit.com/images/profile/defaultProfile_150_female.gif", friend.Avatar150);  
+            Assert.AreEqual("GB", friend.Country);  
+            Assert.AreEqual(DateTime.MinValue, friend.DateOfBirth);  
+            Assert.AreEqual("Laura", friend.DisplayName);  
+            Assert.AreEqual("24WXXX", friend.EncodedId);  
+            Assert.AreEqual("", friend.FullName);  
+            Assert.AreEqual(Gender.FEMALE, friend.Gender);  
+            Assert.AreEqual(165, friend.Height);  
+            Assert.AreEqual("en_GB", friend.Locale);  
+            Assert.AreEqual(DateTime.Parse("2013-02-01"), friend.MemberSince);  
+            Assert.AreEqual("", friend.Nickname);  
+            Assert.AreEqual(3600000, friend.OffsetFromUTCMillis);  
+            Assert.AreEqual("SUNDAY", friend.StartDayOfWeek);  
+            Assert.AreEqual(0, friend.StrideLengthRunning);  
+            Assert.AreEqual(0, friend.StrideLengthWalking);  
+            Assert.AreEqual("Europe/London", friend.Timezone);  
+            Assert.AreEqual(0, friend.Weight);  
         }
     }
 }

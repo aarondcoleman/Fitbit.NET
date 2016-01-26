@@ -24,8 +24,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="$buildOutputPath$\Fitbit.dll" target="lib\net452\AppDi.dll" exclude="" />
-    <file src="$buildOutputPath$\Fitbit.pdb" target="lib\net452\AppDi.pdb" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.Portable.dll" target="lib\net452\Fitbit.Portable.dll" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.Portable.pdb" target="lib\net452\Fitbit.Portable.pdb" exclude="" />
     <file src="$buildOutputPath$\Fitbit.Common.dll" target="lib\net452\Fitbit.Common.dll" exclude="" />
     <file src="$buildOutputPath$\Fitbit.Common.dll" target="lib\net452\Fitbit.Common.pdb" exclude="" />
   </files>

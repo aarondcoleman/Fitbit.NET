@@ -23,7 +23,9 @@ namespace Fitbit.Api.Portable
         public FitbitClient(IAuthorization authorization, HttpClient httpClient = null)
         {
             if (authorization == null)
+            {
                 throw new ArgumentNullException(nameof(authorization), "Authorization can not be null; please provide an Authorization instance.");
+            }
 
             Authorization = authorization;
 
@@ -33,9 +35,7 @@ namespace Fitbit.Api.Portable
                 this.HttpClient = httpClient;
 
             this.HttpClient = authorization.CreateAuthorizedHttpClient(); //use whatever authorization method to provide the HttpClient
-
         }
-
 
         /// <summary>
         /// Use this constructor if an authorized httpclient has already been setup and accessing the resources is what is required.
@@ -483,7 +483,7 @@ namespace Fitbit.Api.Portable
                     break;
 
                 default:
-                    throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
+                    throw new ArgumentOutOfRangeException("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
             }
 
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
@@ -512,7 +512,7 @@ namespace Fitbit.Api.Portable
             {
                 if (startDate.AddDays(31) < endDate)
                 {
-                    throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
+                    throw new ArgumentOutOfRangeException("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
                 }
 
                 apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });

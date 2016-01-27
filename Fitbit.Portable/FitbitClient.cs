@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Fitbit.Models;
@@ -717,9 +718,35 @@ namespace Fitbit.Api.Portable
                 {
                     // if there is an error with the serialization then we need to default the errors back to an instantiated list
                     errors = new List<ApiError>();
-                }  
+                }
 
-                throw new Exception("todo: this should be a fitbit exception of some variety");
+                // rate limit hit
+                if (429 == (int)response.StatusCode)
+                {
+                    // not sure if we can use 'RetryConditionHeaderValue' directly as documentation is minimal for the header
+                    var retryAfterHeader = response.Headers.GetValues("Retry-After").FirstOrDefault();
+                    if (retryAfterHeader != null)
+                    {
+                        int retryAfter;
+                        if (int.TryParse(retryAfterHeader, out retryAfter))
+                        {
+                            throw new FitbitRateLimitException(retryAfter) { ApiErrors =  errors };
+                        }
+                    }
+                }
+
+                // request exception parsing
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.BadRequest:
+                    case HttpStatusCode.Unauthorized:
+                    case HttpStatusCode.Forbidden:
+                    case HttpStatusCode.NotFound:
+                        throw new FitbitRequestException(response.StatusCode) { ApiErrors = errors};
+                }
+
+                // if we've got here then something unexpected has occured
+                throw new FitbitException("An error has occured. Please see error list for details.", response.StatusCode);
             }
         }
     }

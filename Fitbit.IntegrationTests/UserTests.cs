@@ -264,7 +264,7 @@ namespace Fitbit.IntegrationTests
             Assert.IsTrue(exception.ApiErrors.Count == 1);
             Assert.AreEqual(HttpStatusCode.BadRequest, exception.HttpStatusCode);
             ApiError error = exception.ApiErrors.First();
-            Assert.AreEqual(ErrorType.Validation, error.ErrorType);
+            Assert.AreEqual("validation", error.ErrorType);
             Assert.AreEqual("resource owner", error.FieldName);
         }
 

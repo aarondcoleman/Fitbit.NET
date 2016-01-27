@@ -48,6 +48,9 @@
     <Compile Include="Constants.cs" />
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitClientHelperExtensions.cs" />
+    <Compile Include="FitbitException.cs" />
+    <Compile Include="FitbitRateLimitException.cs" />
+    <Compile Include="FitbitRequestException.cs" />
     <Compile Include="IAuthorization.cs" />
     <Compile Include="IFitbitClient.cs" />
     <Compile Include="ITokenStore.cs" />

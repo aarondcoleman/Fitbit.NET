@@ -47,6 +47,7 @@
     <Compile Include="Authenticator2.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="FitbitClient.cs" />
+    <Compile Include="FitbitClientExtensions.cs" />
     <Compile Include="FitbitClientHelperExtensions.cs" />
     <Compile Include="IAuthorization.cs" />
     <Compile Include="IFitbitClient.cs" />

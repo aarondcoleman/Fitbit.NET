@@ -101,6 +101,7 @@
     <Compile Include="BodyMeasurementTests.cs" />
     <Compile Include="DayActivityTests.cs" />
     <Compile Include="FatTests.cs" />
+    <Compile Include="FitbitClientExtensionsTests.cs" />
     <Compile Include="FitbitClientHelperExtensionsTests.cs" />
     <Compile Include="FitbitClientTests.cs" />
     <Compile Include="FoodTests.cs" />

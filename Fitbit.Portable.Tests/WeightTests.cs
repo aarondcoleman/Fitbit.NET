@@ -13,7 +13,7 @@ namespace Fitbit.Portable.Tests
     public class WeightTests
     {
         [Test] [Category("Portable")]
-        [ExpectedException(typeof (Exception))]
+        [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRangePeriod_ThreeMonths()
         {
             var client = new FitbitClient("key", "secret", "access", "accessSecret");
@@ -21,7 +21,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [ExpectedException(typeof (Exception))]
+        [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRangePeriod_SixMonths()
         {
             var client = new FitbitClient("key", "secret", "access", "accessSecret");
@@ -29,7 +29,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [ExpectedException(typeof (Exception))]
+        [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRangePeriod_OneYear()
         {
             var client = new FitbitClient("key", "secret", "access", "accessSecret");
@@ -37,7 +37,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [ExpectedException(typeof (Exception))]
+        [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRangePeriod_Max()
         {
             var client = new FitbitClient("key", "secret", "access", "accessSecret");
@@ -115,7 +115,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [ExpectedException(typeof (Exception))]
+        [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRange_Span_Too_Large()
         {
             var fitbitClient = Helper.CreateFitbitClient(() => new HttpResponseMessage(), (r, c) => { });

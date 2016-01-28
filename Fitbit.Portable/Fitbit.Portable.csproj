@@ -60,6 +60,7 @@
     <Compile Include="OAuth2AccessToken.cs" />
     <Compile Include="OAuth2Authorization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubscriptionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AsyncOAuth">

@@ -51,7 +51,7 @@
     <Compile Include="FitBitHttpClientMessageHandler.cs" />
     <Compile Include="IAuthorization.cs" />
     <Compile Include="IFitbitClient.cs" />
-    <Compile Include="IFItbitRequestInterceptor.cs" />
+    <Compile Include="IFitbitRequestInterceptor.cs" />
     <Compile Include="ITokenStore.cs" />
     <Compile Include="JsonDotNetSerializer.cs" />
     <Compile Include="JsonDotNetSerializerExtensions.cs" />

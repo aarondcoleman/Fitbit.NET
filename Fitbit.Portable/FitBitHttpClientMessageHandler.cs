@@ -7,9 +7,9 @@
 
     public class FitBitHttpClientMessageHandler : DelegatingHandler
     {
-        private IFItbitRequestInterceptor logger;
+        private IFitbitRequestInterceptor logger;
 
-        public FitBitHttpClientMessageHandler(IFItbitRequestInterceptor logger)
+        public FitBitHttpClientMessageHandler(IFitbitRequestInterceptor logger)
         {
             this.logger = logger;
             //Define the inner must handler. Otherwise exception is thrown.

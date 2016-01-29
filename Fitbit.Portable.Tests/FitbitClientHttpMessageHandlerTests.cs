@@ -14,25 +14,25 @@ namespace Fitbit.Portable.Tests
         [Test]
         public void CanInterceptHttpRequests()
         {
+            //arrenge
             var logger = new MyCustomLogger();
-
+            var authorizer = new OAuth2Authorization("bearertoken", "refreshtoken");
             var handler = new FitBitHttpClientMessageHandler(logger);
+            var sut = new FitbitClient(authorizer, null, logger);
 
-            //var fc = new FitbitClient(logger);
-
-            var c = new HttpClient(handler);
-
-            var r = c.GetAsync("http://localhost:1531/");
+            //Act
+            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
 
             r.Wait();
 
+            //Assert
             Assert.AreEqual(1, logger.RequestCount);
             Assert.AreEqual(1, logger.ResponseCount);
         }
 
         
 
-        public class MyCustomLogger : IFItbitRequestInterceptor
+        public class MyCustomLogger : IFitbitRequestInterceptor
         {
             public int RequestCount = 0;
             public int ResponseCount = 0;

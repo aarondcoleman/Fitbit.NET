@@ -21,7 +21,7 @@ namespace Fitbit.Api.Portable
             _accessSecret = accessSecret;
         }
 
-        public HttpClient CreateAuthorizedHttpClient()
+        public HttpClient ConfigureHttpClientAUthorization(HttpClient client)
         {
             #region Parameter checking
             if (string.IsNullOrWhiteSpace(_consumerKey))

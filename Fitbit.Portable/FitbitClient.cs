@@ -19,7 +19,7 @@ namespace Fitbit.Api.Portable
         /// </summary>
         public IAuthorization Authorization { get; private set; }
 
-        public FitbitClient(IAuthorization authorization, HttpClient httpClient = null)
+        public FitbitClient(IAuthorization authorization, HttpClient httpClient = null, IFitbitRequestInterceptor interceptor = null)
         {
             if (authorization == null)
                 throw new ArgumentNullException(nameof(authorization), "Authorization can not be null; please provide an Authorization instance.");
@@ -27,11 +27,16 @@ namespace Fitbit.Api.Portable
             Authorization = authorization;
 
             if (httpClient == null)
-                this.HttpClient = new HttpClient();
+            {
+                if (interceptor == null)
+                    this.HttpClient = new HttpClient();
+                else
+                    this.HttpClient = new HttpClient(new FitBitHttpClientMessageHandler(interceptor));
+            }
             else
                 this.HttpClient = httpClient;
 
-            this.HttpClient = authorization.CreateAuthorizedHttpClient(); //use whatever authorization method to provide the HttpClient
+            this.HttpClient = authorization.ConfigureHttpClientAUthorization(this.HttpClient); //use whatever authorization method to provide the HttpClient
 
         }
 

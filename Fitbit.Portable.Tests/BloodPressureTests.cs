@@ -3,8 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -35,21 +37,19 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [Ignore("Re-enable when exceptions have been introduced")]
-        public async void GetBloodPressureAsync_Errors()
+        public void GetBloodPressureAsync_Errors()
         {
-            var responseMessage = Helper.CreateErrorResponse();
+            var responseMessage = Helper.CreateErrorResponse(HttpStatusCode.BadRequest);
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 Assert.AreEqual(HttpMethod.Get, message.Method);
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
+            Func<Task<BloodPressureData>> result = () => fitbitClient.GetBloodPressureAsync(new DateTime(2014, 9, 27));
 
-            var response = await fitbitClient.GetBloodPressureAsync(new DateTime(2014, 9, 27));
-            //Assert.IsFalse(response.Success);
-            //Assert.IsNull(response.Data);
-            //Assert.AreEqual(1, response.Errors.Count);
+            result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
 
         [Test] [Category("Portable")]

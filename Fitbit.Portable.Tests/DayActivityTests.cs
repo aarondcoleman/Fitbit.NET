@@ -3,8 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -36,10 +38,9 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [Ignore("Re-enable when exceptions have been introduced")]
-        public async void GetDayActivityAsync_Errors()
+        public void GetDayActivityAsync_Errors()
         {
-            var responseMessage = Helper.CreateErrorResponse();
+            var responseMessage = Helper.CreateErrorResponse(HttpStatusCode.Unauthorized);
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 Assert.AreEqual(HttpMethod.Get, message.Method);
@@ -47,11 +48,9 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
+            Func<Task<Activity>> result = () => fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
 
-            //Assert.IsFalse(response.Success);
-            //Assert.IsNull(response.Data);
-            //Assert.AreEqual(1, response.Errors.Count);
+            result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
 
         [Test] [Category("Portable")]
@@ -78,23 +77,20 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [Ignore("Re-enable when exceptions have been introduced")]
-        public async void GetDayActivitySummaryAsync_Errors()
+        public void GetDayActivitySummaryAsync_Errors()
         {
-            var responseMessage = Helper.CreateErrorResponse();
+            var responseMessage = Helper.CreateErrorResponse(HttpStatusCode.Forbidden);
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 Assert.AreEqual(HttpMethod.Get, message.Method);
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            
+            Func<Task<Activity>> result = () => fitbitClient.GetDayActivityAsync(new DateTime(2014, 9, 27));
 
-            var response = await fitbitClient.GetDayActivitySummaryAsync(new DateTime(2014, 9, 27));
-
-            //Assert.IsFalse(response.Success);
-            //Assert.IsNull(response.Data);
-            //Assert.AreEqual(1, response.Errors.Count);
-        } 
+            result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
+        }
 
         [Test] [Category("Portable")]
         public void Can_Deserialize_Activity()

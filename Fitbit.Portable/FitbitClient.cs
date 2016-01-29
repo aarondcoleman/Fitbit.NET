@@ -742,7 +742,7 @@ namespace Fitbit.Api.Portable
                     case HttpStatusCode.Unauthorized:
                     case HttpStatusCode.Forbidden:
                     case HttpStatusCode.NotFound:
-                        throw new FitbitRequestException(response.StatusCode) { ApiErrors = errors};
+                        throw new FitbitRequestException(response.StatusCode) { ApiErrors = errors };
                 }
 
                 // if we've got here then something unexpected has occured

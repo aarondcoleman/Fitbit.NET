@@ -32,11 +32,26 @@ namespace Fitbit.Portable.Tests
         /// Unit test helper to create a mock HttpResponseMessage action which is errored
         /// </summary>
         /// <returns></returns>
-        public static Func<HttpResponseMessage> CreateErrorResponse()
+        public static Func<HttpResponseMessage> CreateErrorResponse(HttpStatusCode statusCode = HttpStatusCode.LengthRequired) // general error
         {
-            string content = SampleDataHelper.GetContent("ApiError.json");
+            string errorFilePath = "ApiError.json";
+            switch (statusCode)
+            {
+                case HttpStatusCode.Forbidden:
+                    errorFilePath = "ApiError-Request-Forbidden.json";
+                    break;
+
+                case HttpStatusCode.Unauthorized:
+                    errorFilePath = "ApiError-Request-Unauthorized.json";
+                    break;
+                case HttpStatusCode.BadRequest:
+                    errorFilePath = "ApiError-Request-BadRequest.json";
+                    break;
+            }
+
+            string content = SampleDataHelper.GetContent(errorFilePath);
             var responseMessage =
-                new Func<HttpResponseMessage>(() => new HttpResponseMessage(HttpStatusCode.NotFound) {Content = new StringContent(content)});
+                new Func<HttpResponseMessage>(() => new HttpResponseMessage(statusCode) {Content = new StringContent(content)});
             return responseMessage;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Fitbit.Models;
@@ -22,15 +23,17 @@ namespace Fitbit.Api.Portable
         public FitbitClient(IAuthorization authorization, HttpClient httpClient = null, IFitbitRequestInterceptor interceptor = null)
         {
             if (authorization == null)
+            {
                 throw new ArgumentNullException(nameof(authorization), "Authorization can not be null; please provide an Authorization instance.");
+            }
 
             Authorization = authorization;
 
             if (httpClient == null)
             {
                 if (interceptor == null)
-                    this.HttpClient = new HttpClient();
-                else
+                this.HttpClient = new HttpClient();
+            else
                     this.HttpClient = new HttpClient(new FitBitHttpClientMessageHandler(interceptor));
             }
             else
@@ -39,7 +42,6 @@ namespace Fitbit.Api.Portable
             this.HttpClient = authorization.ConfigureHttpClientAUthorization(this.HttpClient); //use whatever authorization method to provide the HttpClient
 
         }
-
 
         /// <summary>
         /// Use this constructor if an authorized httpclient has already been setup and accessing the resources is what is required.
@@ -487,7 +489,7 @@ namespace Fitbit.Api.Portable
                     break;
 
                 default:
-                    throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
+                    throw new ArgumentOutOfRangeException("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
             }
 
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
@@ -516,7 +518,7 @@ namespace Fitbit.Api.Portable
             {
                 if (startDate.AddDays(31) < endDate)
                 {
-                    throw new Exception("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
+                    throw new ArgumentOutOfRangeException("31 days is the max span. Try using period format instead for longer: https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
                 }
 
                 apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
@@ -724,7 +726,33 @@ namespace Fitbit.Api.Portable
                     errors = new List<ApiError>();
                 }  
 
-                throw new Exception("todo: this should be a fitbit exception of some variety");
+                // rate limit hit
+                if (429 == (int)response.StatusCode)
+                {
+                    // not sure if we can use 'RetryConditionHeaderValue' directly as documentation is minimal for the header
+                    var retryAfterHeader = response.Headers.GetValues("Retry-After").FirstOrDefault();
+                    if (retryAfterHeader != null)
+                    {
+                        int retryAfter;
+                        if (int.TryParse(retryAfterHeader, out retryAfter))
+                        {
+                            throw new FitbitRateLimitException(retryAfter) { ApiErrors =  errors };
+                        }
+                    }
+                }
+
+                // request exception parsing
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.BadRequest:
+                    case HttpStatusCode.Unauthorized:
+                    case HttpStatusCode.Forbidden:
+                    case HttpStatusCode.NotFound:
+                        throw new FitbitRequestException(response.StatusCode) { ApiErrors = errors};
+                }
+
+                // if we've got here then something unexpected has occured
+                throw new FitbitException("An error has occured. Please see error list for details.", response.StatusCode);
             }
         }
     }

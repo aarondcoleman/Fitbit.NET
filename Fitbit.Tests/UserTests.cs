@@ -588,7 +588,7 @@ namespace Fibit.Tests
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);
             ApiError error = result.First();
-            Assert.AreEqual(ErrorType.Request, error.ErrorType);
+            Assert.AreEqual("request", error.ErrorType);
             Assert.AreEqual("n/a", error.FieldName);
         }
     }

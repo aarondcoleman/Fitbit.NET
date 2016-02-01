@@ -5,11 +5,11 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class FitBitHttpClientMessageHandler : DelegatingHandler
+    public class FitbitHttpClientMessageHandler : DelegatingHandler
     {
         private IFitbitRequestInterceptor logger;
 
-        public FitBitHttpClientMessageHandler(IFitbitRequestInterceptor logger)
+        public FitbitHttpClientMessageHandler(IFitbitRequestInterceptor logger)
         {
             this.logger = logger;
             //Define the inner must handler. Otherwise exception is thrown.
@@ -28,7 +28,7 @@
                      {
                          Debug.WriteLine("Entering Http client's response message handler. Response details: {0}", requestTask.Result);
                          if (logger != null)
-                             logger.Response(request, cancellationToken);
+                             logger.Response(requestTask.Result, cancellationToken);
 
                          return requestTask.Result;
                      }, TaskContinuationOptions.OnlyOnRanToCompletion

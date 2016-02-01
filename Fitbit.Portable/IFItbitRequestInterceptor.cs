@@ -6,6 +6,6 @@
     public interface IFitbitRequestInterceptor
     {
         void Request(HttpRequestMessage request, CancellationToken cancellationToken);
-        void Response(HttpRequestMessage request, CancellationToken cancellationToken);
+        void Response(HttpResponseMessage response, CancellationToken cancellationToken);
     }
 }

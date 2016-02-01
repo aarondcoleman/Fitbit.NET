@@ -34,7 +34,7 @@ namespace Fitbit.Api.Portable
                 if (interceptor == null)
                 this.HttpClient = new HttpClient();
             else
-                    this.HttpClient = new HttpClient(new FitBitHttpClientMessageHandler(interceptor));
+                    this.HttpClient = new HttpClient(new FitbitHttpClientMessageHandler(interceptor));
             }
             else
                 this.HttpClient = httpClient;

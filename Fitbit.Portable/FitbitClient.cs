@@ -20,7 +20,7 @@ namespace Fitbit.Api.Portable
         /// </summary>
         public IAuthorization Authorization { get; private set; }
 
-        public FitbitClient(IAuthorization authorization, HttpClient httpClient = null, IFitbitRequestInterceptor interceptor = null)
+        public FitbitClient(IAuthorization authorization, HttpClient httpClient = null, IFitbitClientInterceptor interceptor = null)
         {
             if (authorization == null)
             {

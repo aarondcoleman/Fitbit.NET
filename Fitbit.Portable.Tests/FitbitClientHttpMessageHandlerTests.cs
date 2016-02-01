@@ -12,6 +12,9 @@ namespace Fitbit.Portable.Tests
     public class FitbitClientHttpMessageHandlerTests
     {
         [Test]
+        [Category("Portable")]
+        [Category("Interceptor")]
+
         public void CanInterceptHttpRequests()
         {
             //arrenge
@@ -31,6 +34,8 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
+        [Category("Portable")]
+        [Category("Interceptor")]
         public void CanReadResponseMultipleTimes()
         {
             //arrenge
@@ -52,19 +57,19 @@ namespace Fitbit.Portable.Tests
 
 
 
-        public class MyCustomLogger : IFitbitRequestInterceptor
+        public class MyCustomLogger : IFitbitClientInterceptor
         {
             public int RequestCount = 0;
             public int ResponseCount = 0;
 
             public string responseContent;
 
-            public void Request(HttpRequestMessage request, CancellationToken cancellationToken)
+            public void InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 RequestCount++;
             }
 
-            public void Response(HttpResponseMessage response, CancellationToken cancellationToken)
+            public void InterceptResponse(HttpResponseMessage response, CancellationToken cancellationToken)
             {
                 ResponseCount++;
                 this.responseContent = response.Content.ReadAsStringAsync().Result;

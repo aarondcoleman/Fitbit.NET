@@ -7,9 +7,9 @@
 
     public class FitbitHttpClientMessageHandler : DelegatingHandler
     {
-        private IFitbitRequestInterceptor logger;
+        private IFitbitClientInterceptor logger;
 
-        public FitbitHttpClientMessageHandler(IFitbitRequestInterceptor logger)
+        public FitbitHttpClientMessageHandler(IFitbitClientInterceptor logger)
         {
             this.logger = logger;
             //Define the inner must handler. Otherwise exception is thrown.
@@ -21,14 +21,14 @@
         {
             Debug.WriteLine("Entering Http client's request message handler. Request details: {0}", request.ToString());
             if (logger != null)
-                logger.Request(request, cancellationToken);
+                logger.InterceptRequest(request, cancellationToken);
 
             return base.SendAsync(request, cancellationToken).ContinueWith(
                      requestTask =>
                      {
                          Debug.WriteLine("Entering Http client's response message handler. Response details: {0}", requestTask.Result);
                          if (logger != null)
-                             logger.Response(requestTask.Result, cancellationToken);
+                             logger.InterceptResponse(requestTask.Result, cancellationToken);
 
                          return requestTask.Result;
                      }, TaskContinuationOptions.OnlyOnRanToCompletion

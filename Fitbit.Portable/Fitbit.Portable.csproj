@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
-    <Compile Include="Authenticator2.cs" />
+    <Compile Include="OAuth2\Authenticator2.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitClientHelperExtensions.cs" />
@@ -59,8 +59,8 @@
     <Compile Include="JsonDotNetSerializer.cs" />
     <Compile Include="JsonDotNetSerializerExtensions.cs" />
     <Compile Include="OAuth1Autorization.cs" />
-    <Compile Include="OAuth2AccessToken.cs" />
-    <Compile Include="OAuth2Authorization.cs" />
+    <Compile Include="OAuth2\OAuth2AccessToken.cs" />
+    <Compile Include="OAuth2\OAuth2Authorization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscriptionManager.cs" />
   </ItemGroup>

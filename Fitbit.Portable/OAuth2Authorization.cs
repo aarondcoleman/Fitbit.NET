@@ -18,9 +18,8 @@ namespace Fitbit.Api.Portable
             this.BearerToken = bearerToken;
         }
 
-        public HttpClient CreateAuthorizedHttpClient()
+        public HttpClient ConfigureHttpClientAUthorization(HttpClient httpClient)
         {
-            HttpClient httpClient = new HttpClient();
             AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", BearerToken);
             httpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
 

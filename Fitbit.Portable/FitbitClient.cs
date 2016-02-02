@@ -20,7 +20,7 @@ namespace Fitbit.Api.Portable
         /// </summary>
         public IAuthorization Authorization { get; private set; }
 
-        public FitbitClient(IAuthorization authorization, HttpClient httpClient = null)
+        public FitbitClient(IAuthorization authorization, HttpClient httpClient = null, IFitbitClientInterceptor interceptor = null)
         {
             if (authorization == null)
             {
@@ -30,11 +30,17 @@ namespace Fitbit.Api.Portable
             Authorization = authorization;
 
             if (httpClient == null)
+            {
+                if (interceptor == null)
                 this.HttpClient = new HttpClient();
+            else
+                    this.HttpClient = new HttpClient(new FitbitHttpClientMessageHandler(interceptor));
+            }
             else
                 this.HttpClient = httpClient;
 
-            this.HttpClient = authorization.CreateAuthorizedHttpClient(); //use whatever authorization method to provide the HttpClient
+            this.HttpClient = authorization.ConfigureHttpClientAUthorization(this.HttpClient); //use whatever authorization method to provide the HttpClient
+
         }
 
         /// <summary>
@@ -718,7 +724,7 @@ namespace Fitbit.Api.Portable
                 {
                     // if there is an error with the serialization then we need to default the errors back to an instantiated list
                     errors = new List<ApiError>();
-                }
+                }  
 
                 // rate limit hit
                 if (429 == (int)response.StatusCode)

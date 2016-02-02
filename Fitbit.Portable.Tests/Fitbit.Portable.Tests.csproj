@@ -120,6 +120,7 @@
     <Compile Include="AddSubscriptionTests.cs" />
     <Compile Include="TimeSeriesDataListIntTests.cs" />
     <Compile Include="TimeSeriesDataListTests.cs" />
+    <Compile Include="FitbitClientHttpMessageHandlerTests.cs" />
     <Compile Include="UserProfileTests.cs" />
     <Compile Include="WaterTests.cs" />
     <Compile Include="WeightTests.cs" />
@@ -153,10 +154,6 @@
     <ProjectReference Include="..\Fitbit.Portable\Fitbit.Portable.csproj">
       <Project>{1358d3b4-0698-4003-97eb-b6d489e04138}</Project>
       <Name>Fitbit.Portable</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fitbit\Fitbit.csproj">
-      <Project>{D2C08C58-269F-45DE-8A25-C5492BC625F8}</Project>
-      <Name>Fitbit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ using System.Threading;
 using Fitbit.Api.Portable;
 using System.Diagnostics;
 using NUnit.Framework;
+using Fitbit.Api.Portable.OAuth2;
 
 namespace Fitbit.Portable.Tests
 {
@@ -18,19 +19,20 @@ namespace Fitbit.Portable.Tests
         public void CanInterceptHttpRequests()
         {
             //arrenge
-            var logger = new MyCustomLogger();
-            var authorizer = new OAuth2Authorization("bearertoken", "refreshtoken");
-            var handler = new FitbitHttpClientMessageHandler(logger);
-            var sut = new FitbitClient(authorizer, null, logger);
+            var messageHandler = new MyCustomLogger();
+
+            var dummyCredentials = new FitbitAppCredentials();
+            var dummyToken = new OAuth2AccessToken();
+
+            var sut = new FitbitClient(dummyCredentials, dummyToken, messageHandler);
 
             //Act
             var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
-
             r.Wait();
 
             //Assert
-            Assert.AreEqual(1, logger.RequestCount);
-            Assert.AreEqual(1, logger.ResponseCount);
+            Assert.AreEqual(1, messageHandler.RequestCount);
+            Assert.AreEqual(1, messageHandler.ResponseCount);
         }
 
         [Test]
@@ -39,10 +41,12 @@ namespace Fitbit.Portable.Tests
         public void CanReadResponseMultipleTimes()
         {
             //arrenge
-            var logger = new MyCustomLogger();
-            var authorizer = new OAuth2Authorization("bearertoken", "refreshtoken");
-            var handler = new FitbitHttpClientMessageHandler(logger);
-            var sut = new FitbitClient(authorizer, null, logger);
+            var messageHandler = new MyCustomLogger();
+
+            var dummyCredentials = new FitbitAppCredentials();
+            var dummyToken = new OAuth2AccessToken();
+
+            var sut = new FitbitClient(dummyCredentials, dummyToken, messageHandler);
 
             //Act
             var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
@@ -52,7 +56,7 @@ namespace Fitbit.Portable.Tests
             var responseContent = r.Result.Content.ReadAsStringAsync().Result;
 
             //Assert
-            Assert.AreEqual(logger.responseContent, responseContent);
+            Assert.AreEqual(messageHandler.responseContent, responseContent);
         }
 
 

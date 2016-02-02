@@ -4,43 +4,48 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Fitbit.Api.Portable.OAuth2;
 using Fitbit.Models;
+using System.Net.Http.Headers;
 
 namespace Fitbit.Api.Portable
 {
     public class FitbitClient : IFitbitClient
     {
+        private FitbitAppCredentials credentials;
+        private OAuth2AccessToken accessToken;
+
         /// <summary>
         /// The httpclient which will be used for the api calls through the FitbitClient instance
         /// </summary>
         public HttpClient HttpClient { get; private set; }
 
         /// <summary>
-        /// The specific implementation that'll authorize the request. Usually encapsulates adding header tokens. See OAuth2Authorization and OAuth1Authorization
+        /// Simplest constructor - requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
         /// </summary>
-        public IAuthorization Authorization { get; private set; }
-
-        public FitbitClient(IAuthorization authorization, HttpClient httpClient = null, IFitbitClientInterceptor interceptor = null)
+        /// <param name="credentials">Obtain this information from your developer dashboard</param>
+        /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
+        /// <param name="FitbitRawMessageHandler"></param>
+        public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitClientInterceptor FitbitRawMessageHandler = null)
         {
-            if (authorization == null)
-            {
-                throw new ArgumentNullException(nameof(authorization), "Authorization can not be null; please provide an Authorization instance.");
-            }
+            this.credentials = credentials;
+            this.accessToken = accessToken;
 
-            Authorization = authorization;
+            createHttpClient(FitbitRawMessageHandler);
+        }
 
-            if (httpClient == null)
-            {
-                if (interceptor == null)
+        private void createHttpClient(IFitbitClientInterceptor fitbitRawMessageHandler)
+        {
+            if (fitbitRawMessageHandler == null)
                 this.HttpClient = new HttpClient();
             else
-                    this.HttpClient = new HttpClient(new FitbitHttpClientMessageHandler(interceptor));
+            {
+                var httpClientMessageHandler = new FitbitHttpClientMessageHandler(fitbitRawMessageHandler);
+                this.HttpClient = new HttpClient(httpClientMessageHandler);
             }
-            else
-                this.HttpClient = httpClient;
 
-            this.HttpClient = authorization.ConfigureHttpClientAUthorization(this.HttpClient); //use whatever authorization method to provide the HttpClient
-
+            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.accessToken.Token);
+            this.HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Fitbit.Api.Portable
 {
+    [Obsolete("Marking as obsolete in preparation for delition in future checkin as new constructor paradigm will not require this class.")]
     public class OAuth2Authorization : IAuthorization
     {
         internal string BearerToken { get; private set; }

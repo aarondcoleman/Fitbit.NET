@@ -95,12 +95,5 @@
             }
         }
 
-        public class DummyRefresher : ITokenManager
-        {
-            public Task<OAuth2AccessToken> RefreshToken(OAuth2AccessToken expiredToken)
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

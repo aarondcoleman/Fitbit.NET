@@ -12,15 +12,17 @@ namespace Fitbit.Api.Portable
 {
     public class FitbitClient : IFitbitClient
     {
-        private FitbitAppCredentials? credentials = null;
-        private OAuth2AccessToken accessToken = null;
+        public FitbitAppCredentials? AppCredentials { get; private set; }
+        public OAuth2AccessToken AccessToken { get; set; }
 
         /// <summary>
         /// The httpclient which will be used for the api calls through the FitbitClient instance
         /// </summary>
         public HttpClient HttpClient { get; private set; }
 
-        private IFitbitInterceptor messageInterceptor { get; set; }
+        private IFitbitInterceptor MessageInterceptor { get; set; }
+
+        public ITokenManager TokenManager { get; private set; }
 
         /// <summary>
         /// Simplest constructor for OAuth2- requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
@@ -28,13 +30,16 @@ namespace Fitbit.Api.Portable
         /// <param name="credentials">Obtain this information from your developer dashboard. App credentials are required to perform token refresh</param>
         /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
-        public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitInterceptor interceptor = null)
+        public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitInterceptor interceptor = null, ITokenManager tokenManager = null)
         {
-            this.credentials = credentials;
-            this.accessToken = accessToken;
-            this.messageInterceptor = interceptor;
+            this.AppCredentials = credentials;
+            this.AccessToken = accessToken;
+            this.MessageInterceptor = interceptor;
+
+            ConfigureTokenManager(tokenManager);
 
             this.HttpClient = OAuth2HttpClientFactory();
+
         }
 
         /// <summary>
@@ -42,15 +47,28 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="customFactory">A function or lambda expression who is in charge of creating th HttpClient. It takes as an argument a HttpMessageHandler which does wiring for IFitbitInterceptor. To use IFitbitInterceptor you must pass this HttpMessageHandler as anargument to the constuctor of HttpClient</param>
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
-        public FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null)
+        public FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null, ITokenManager tokenManager = null)
         {
-            this.HttpClient = customFactory(new FitbitHttpClientMessageHandler(interceptor));
+            ConfigureTokenManager(tokenManager);
+            this.HttpClient = customFactory(new FitbitHttpClientMessageHandler(this, interceptor, this.TokenManager));
+        }
+
+        private void ConfigureTokenManager(ITokenManager tokenManager)
+        {
+            if(tokenManager != null)
+            {
+                this.TokenManager = tokenManager;
+            }
+            else
+            {
+                this.TokenManager = new DefaultTokenManager();
+            }
         }
 
         private HttpClient OAuth2HttpClientFactory()
         {
-            var httpClient = new HttpClient(new FitbitHttpClientMessageHandler(messageInterceptor));
-            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.accessToken.Token);
+            var httpClient = new HttpClient(new FitbitHttpClientMessageHandler(this, MessageInterceptor, this.TokenManager));
+            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.AccessToken.Token);
             httpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
 
             return httpClient;

@@ -8,7 +8,7 @@
     using NUnit.Framework;
     using Fitbit.Api.Portable.OAuth2;
     using Fitbit.Portable.Tests.Helpers;
-
+    using Moq;
     [TestFixture]
     public class FitbitClientHttpMessageHandlerTests
     {
@@ -74,6 +74,64 @@
             Assert.AreEqual(EXPECT_ONE_REQUEST, responseFaker.ResponseCount);
         }
 
+
+        [Test]
+        [Category("Portable")]
+        [Category("Interceptor")]
+        [Category("OAuth2")]
+        public void Correctly_Detects_Stale_Token()
+        {
+            var originalToken = new OAuth2AccessToken() { Token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzAzNDM3MzUsInNjb3BlcyI6Indwcm8gd2xvYyB3bnV0IHdzbGUgd3NldCB3aHIgd3dlaSB3YWN0IHdzb2MiLCJzdWIiOiJBQkNERUYiLCJhdWQiOiJJSktMTU4iLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJpYXQiOjE0MzAzNDAxMzV9.z0VHrIEzjsBnjiNMBey6wtu26yHTnSWz_qlqoEpUlpc" };
+            var refreshedToken = new OAuth2AccessToken() { Token = "Refreshed" };
+
+            //mocking our implementation of token manager. This test is concerned with ensuring the wiring is done correctly. Not the actual refresh process.
+            var fakeManager = new Mock<ITokenManager>();
+            fakeManager.Setup(m => m.RefreshToken(It.IsAny<FitbitClient>())).Returns(() => Task.Run(() => refreshedToken));
+
+            //we shortcircuit the request to fake an expired token on the first request, and assuming the token is different the second time we let the request through
+            var fakeServer = new StaleTokenFaker();
+
+            var sut = new FitbitClient(dummyCredentials, dummyToken, fakeServer, fakeManager.Object);
+
+            //Act
+            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
+            r.Wait();
+            var actualResponse = r.Result;
+
+            //Assert
+            fakeManager.Verify(m => m.RefreshToken(It.IsAny<FitbitClient>()), Times.Once);
+            Assert.AreEqual(refreshedToken, sut.AccessToken);
+        }
+
+        public class StaleTokenFaker : IFitbitInterceptor
+        {
+            HttpResponseMessage staleTokenresponse;
+            int requestCount = 0;
+
+            public StaleTokenFaker()
+            {
+                //HttpContent staleTokenError = new HttpContent();
+
+                staleTokenresponse = new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Content = new StringContent(SampleDataHelper.GetContent("ApiError-Request-StaleToken.json"))
+                };
+            }
+
+            public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                requestCount++;
+                if (requestCount == 1)
+                    return Task.Run( () =>staleTokenresponse);
+                else
+                    return null;
+            }
+
+            public void InterceptResponse(HttpResponseMessage response, CancellationToken cancellationToken)
+            {
+                return;
+            }
+        }
 
         public class InterceptorCounter : IFitbitInterceptor
         {

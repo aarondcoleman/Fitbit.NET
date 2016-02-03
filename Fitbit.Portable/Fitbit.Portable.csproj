@@ -57,6 +57,8 @@
     <Compile Include="ITokenStore.cs" />
     <Compile Include="JsonDotNetSerializer.cs" />
     <Compile Include="JsonDotNetSerializerExtensions.cs" />
+    <Compile Include="OAuth2\DefaultTokenManager.cs" />
+    <Compile Include="OAuth2\ITokenManager.cs" />
     <Compile Include="OAuth2\OAuth2AccessToken.cs" />
     <Compile Include="OAuth2\OAuth2Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

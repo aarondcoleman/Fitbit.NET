@@ -27,7 +27,7 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="credentials">Obtain this information from your developer dashboard. App credentials are required to perform token refresh</param>
         /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
-        /// <param name="interceptor"></param>
+        /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
         public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitInterceptor interceptor = null)
         {
             this.credentials = credentials;
@@ -40,7 +40,8 @@ namespace Fitbit.Api.Portable
         /// <summary>
         /// Advanced mode for library usage. Allows custom creation of HttpClient to account for future authentication methods
         /// </summary>
-        /// <param name="customFactory"></param>
+        /// <param name="customFactory">A function or lambda expression who is in charge of creating th HttpClient. It takes as an argument a HttpMessageHandler which does wiring for IFitbitInterceptor. To use IFitbitInterceptor you must pass this HttpMessageHandler as anargument to the constuctor of HttpClient</param>
+        /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
         public FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null)
         {
             this.HttpClient = customFactory(new FitbitHttpClientMessageHandler(interceptor));

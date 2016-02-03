@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace Fitbit.Portable.Tests
 {
@@ -22,6 +23,23 @@ namespace Fitbit.Portable.Tests
             var sut = new FitbitClient(credentials, accessToken);
 
             Assert.IsNotNull(sut.HttpClient);
+        }
+
+        [Test]
+        [Category("constructor")]
+        public void Use_Custom_HttpClient_Factory()
+        {
+            var customFactory = new CustomHttpFactory();
+
+            Assert.Throws<NotImplementedException>(() => new FitbitClient(customFactory));
+        }
+
+        public class CustomHttpFactory : IFitbitHttpClientFactory
+        {
+            public HttpClient Create(HttpMessageHandler handler = null)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

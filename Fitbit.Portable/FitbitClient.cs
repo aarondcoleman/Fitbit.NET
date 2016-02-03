@@ -12,8 +12,9 @@ namespace Fitbit.Api.Portable
 {
     public class FitbitClient : IFitbitClient
     {
-        private FitbitAppCredentials credentials;
-        private OAuth2AccessToken accessToken;
+        private FitbitAppCredentials? credentials = null;
+        private OAuth2AccessToken accessToken = null;
+        private IFitbitHttpClientFactory HttpClientFactory;
 
         /// <summary>
         /// The httpclient which will be used for the api calls through the FitbitClient instance
@@ -23,7 +24,7 @@ namespace Fitbit.Api.Portable
         /// <summary>
         /// Simplest constructor - requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
         /// </summary>
-        /// <param name="credentials">Obtain this information from your developer dashboard</param>
+        /// <param name="credentials">Obtain this information from your developer dashboard. App credentials are required to perform token refresh</param>
         /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
         /// <param name="interceptor"></param>
         public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitInterceptor interceptor = null)
@@ -31,21 +32,18 @@ namespace Fitbit.Api.Portable
             this.credentials = credentials;
             this.accessToken = accessToken;
 
-            createHttpClient(interceptor);
+            HttpClientFactory = new OAuth2HttpClientFactory(this.accessToken);
+            this.HttpClient = HttpClientFactory.Create(new FitbitHttpClientMessageHandler(interceptor));
         }
 
-        private void createHttpClient(IFitbitInterceptor interceptor)
+        /// <summary>
+        /// Advanced mode for library usage. Allows custom creation of HttpClient to account for future authentication methods
+        /// </summary>
+        /// <param name="customFactory"></param>
+        public FitbitClient(IFitbitHttpClientFactory customFactory)
         {
-            if (interceptor == null)
-                this.HttpClient = new HttpClient();
-            else
-            {
-                var httpClientMessageHandler = new FitbitHttpClientMessageHandler(interceptor);
-                this.HttpClient = new HttpClient(httpClientMessageHandler);
-            }
-
-            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.accessToken.Token);
-            this.HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
+            HttpClientFactory = customFactory;
+            this.HttpClient = HttpClientFactory.Create();
         }
 
         /// <summary>

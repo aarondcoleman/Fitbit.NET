@@ -53,15 +53,12 @@
     <Compile Include="FitbitException.cs" />
     <Compile Include="FitbitRateLimitException.cs" />
     <Compile Include="FitbitRequestException.cs" />
-    <Compile Include="IAuthorization.cs" />
     <Compile Include="IFitbitClient.cs" />
     <Compile Include="IFitbitInterceptor.cs" />
     <Compile Include="ITokenStore.cs" />
     <Compile Include="JsonDotNetSerializer.cs" />
     <Compile Include="JsonDotNetSerializerExtensions.cs" />
-    <Compile Include="OAuth1Autorization.cs" />
     <Compile Include="OAuth2\OAuth2AccessToken.cs" />
-    <Compile Include="OAuth2\OAuth2Authorization.cs" />
     <Compile Include="OAuth2\OAuth2Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscriptionManager.cs" />

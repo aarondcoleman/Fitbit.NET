@@ -29,17 +29,11 @@ namespace Fitbit.Portable.Tests
         [Category("constructor")]
         public void Use_Custom_HttpClient_Factory()
         {
-            var customFactory = new CustomHttpFactory();
+            var sut = new FitbitClient(() => { return new HttpClient(); });
 
-            Assert.Throws<NotImplementedException>(() => new FitbitClient(customFactory));
+            Assert.IsNotNull(sut.HttpClient);
         }
 
-        public class CustomHttpFactory : IFitbitHttpClientFactory
-        {
-            public HttpClient Create(HttpMessageHandler handler = null)
-            {
-                throw new NotImplementedException();
-            }
-        }
+
     }
 }

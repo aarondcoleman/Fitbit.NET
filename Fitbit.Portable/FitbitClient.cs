@@ -15,8 +15,6 @@ namespace Fitbit.Api.Portable
         private FitbitAppCredentials? credentials = null;
         private OAuth2AccessToken accessToken = null;
 
-        private Func<HttpClient> CreateHttpClient;
-
         /// <summary>
         /// The httpclient which will be used for the api calls through the FitbitClient instance
         /// </summary>
@@ -25,7 +23,7 @@ namespace Fitbit.Api.Portable
         private IFitbitInterceptor messageInterceptor { get; set; }
 
         /// <summary>
-        /// Simplest constructor - requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
+        /// Simplest constructor for OAuth2- requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
         /// </summary>
         /// <param name="credentials">Obtain this information from your developer dashboard. App credentials are required to perform token refresh</param>
         /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
@@ -36,7 +34,6 @@ namespace Fitbit.Api.Portable
             this.accessToken = accessToken;
             this.messageInterceptor = interceptor;
 
-            CreateHttpClient = OAuth2HttpClientFactory;
             this.HttpClient = OAuth2HttpClientFactory();
         }
 
@@ -46,8 +43,7 @@ namespace Fitbit.Api.Portable
         /// <param name="customFactory"></param>
         public FitbitClient(Func<HttpClient> customFactory)
         {
-            CreateHttpClient = customFactory;
-            this.HttpClient = CreateHttpClient();
+            this.HttpClient = customFactory();
         }
 
         private HttpClient OAuth2HttpClientFactory()

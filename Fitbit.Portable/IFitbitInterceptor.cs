@@ -2,10 +2,10 @@
 {
     using System.Net.Http;
     using System.Threading;
-
-    public interface IFitbitClientInterceptor
+    using System.Threading.Tasks;
+    public interface IFitbitInterceptor
     {
-        void InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken);
+        Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken);
         void InterceptResponse(HttpResponseMessage response, CancellationToken cancellationToken);
     }
 }

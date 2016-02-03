@@ -109,6 +109,7 @@
     <Compile Include="GetSubscriptionTests.cs" />
     <Compile Include="GoalsTests.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Helpers\ResponseFaker.cs" />
     <Compile Include="IntradayTimeSeriesTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Models\ActivitySummaryTests.cs" />

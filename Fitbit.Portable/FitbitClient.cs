@@ -25,22 +25,22 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="credentials">Obtain this information from your developer dashboard</param>
         /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
-        /// <param name="FitbitRawMessageHandler"></param>
-        public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitClientInterceptor FitbitRawMessageHandler = null)
+        /// <param name="interceptor"></param>
+        public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitInterceptor interceptor = null)
         {
             this.credentials = credentials;
             this.accessToken = accessToken;
 
-            createHttpClient(FitbitRawMessageHandler);
+            createHttpClient(interceptor);
         }
 
-        private void createHttpClient(IFitbitClientInterceptor fitbitRawMessageHandler)
+        private void createHttpClient(IFitbitInterceptor interceptor)
         {
-            if (fitbitRawMessageHandler == null)
+            if (interceptor == null)
                 this.HttpClient = new HttpClient();
             else
             {
-                var httpClientMessageHandler = new FitbitHttpClientMessageHandler(fitbitRawMessageHandler);
+                var httpClientMessageHandler = new FitbitHttpClientMessageHandler(interceptor);
                 this.HttpClient = new HttpClient(httpClientMessageHandler);
             }
 

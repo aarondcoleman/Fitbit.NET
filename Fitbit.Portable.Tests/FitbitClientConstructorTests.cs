@@ -29,7 +29,7 @@ namespace Fitbit.Portable.Tests
         [Category("constructor")]
         public void Use_Custom_HttpClient_Factory()
         {
-            var sut = new FitbitClient(() => { return new HttpClient(); });
+            var sut = new FitbitClient(mh => { return new HttpClient(); });
 
             Assert.IsNotNull(sut.HttpClient);
         }

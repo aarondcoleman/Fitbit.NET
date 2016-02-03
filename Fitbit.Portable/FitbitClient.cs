@@ -41,9 +41,9 @@ namespace Fitbit.Api.Portable
         /// Advanced mode for library usage. Allows custom creation of HttpClient to account for future authentication methods
         /// </summary>
         /// <param name="customFactory"></param>
-        public FitbitClient(Func<HttpClient> customFactory)
+        public FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null)
         {
-            this.HttpClient = customFactory();
+            this.HttpClient = customFactory(new FitbitHttpClientMessageHandler(interceptor));
         }
 
         private HttpClient OAuth2HttpClientFactory()

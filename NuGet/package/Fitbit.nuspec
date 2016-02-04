@@ -24,9 +24,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="$buildOutputPath$\Fitbit.Portable.dll" target="lib\net451\Fitbit.Portable.dll" exclude="" />
-    <file src="$buildOutputPath$\Fitbit.Portable.pdb" target="lib\net451\Fitbit.Portable.pdb" exclude="" />
-    <file src="$buildOutputPath$\Fitbit.Common.dll" target="lib\net451\Fitbit.Common.dll" exclude="" />
-    <file src="$buildOutputPath$\Fitbit.Common.dll" target="lib\net451\Fitbit.Common.pdb" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.Portable.dll" target="lib\net451" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.Portable.pdb" target="lib\net451" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.Common.dll" target="lib\net451" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.Common.dll" target="lib\net451" exclude="" />
   </files>
 </package>

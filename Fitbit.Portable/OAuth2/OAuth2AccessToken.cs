@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Fitbit.Api.Portable
+namespace Fitbit.Api.Portable.OAuth2
 {
     public class OAuth2AccessToken
     {

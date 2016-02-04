@@ -4,43 +4,56 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Fitbit.Api.Portable.OAuth2;
 using Fitbit.Models;
+using System.Net.Http.Headers;
 
 namespace Fitbit.Api.Portable
 {
     public class FitbitClient : IFitbitClient
     {
+        private FitbitAppCredentials? credentials = null;
+        private OAuth2AccessToken accessToken = null;
+
         /// <summary>
         /// The httpclient which will be used for the api calls through the FitbitClient instance
         /// </summary>
         public HttpClient HttpClient { get; private set; }
 
+        private IFitbitInterceptor messageInterceptor { get; set; }
+
         /// <summary>
-        /// The specific implementation that'll authorize the request. Usually encapsulates adding header tokens. See OAuth2Authorization and OAuth1Authorization
+        /// Simplest constructor for OAuth2- requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
         /// </summary>
-        public IAuthorization Authorization { get; private set; }
-
-        public FitbitClient(IAuthorization authorization, HttpClient httpClient = null, IFitbitClientInterceptor interceptor = null)
+        /// <param name="credentials">Obtain this information from your developer dashboard. App credentials are required to perform token refresh</param>
+        /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
+        /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
+        public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitInterceptor interceptor = null)
         {
-            if (authorization == null)
-            {
-                throw new ArgumentNullException(nameof(authorization), "Authorization can not be null; please provide an Authorization instance.");
-            }
+            this.credentials = credentials;
+            this.accessToken = accessToken;
+            this.messageInterceptor = interceptor;
 
-            Authorization = authorization;
+            this.HttpClient = OAuth2HttpClientFactory();
+        }
 
-            if (httpClient == null)
-            {
-                if (interceptor == null)
-                this.HttpClient = new HttpClient();
-            else
-                    this.HttpClient = new HttpClient(new FitbitHttpClientMessageHandler(interceptor));
-            }
-            else
-                this.HttpClient = httpClient;
+        /// <summary>
+        /// Advanced mode for library usage. Allows custom creation of HttpClient to account for future authentication methods
+        /// </summary>
+        /// <param name="customFactory">A function or lambda expression who is in charge of creating th HttpClient. It takes as an argument a HttpMessageHandler which does wiring for IFitbitInterceptor. To use IFitbitInterceptor you must pass this HttpMessageHandler as anargument to the constuctor of HttpClient</param>
+        /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
+        public FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null)
+        {
+            this.HttpClient = customFactory(new FitbitHttpClientMessageHandler(interceptor));
+        }
 
-            this.HttpClient = authorization.ConfigureHttpClientAUthorization(this.HttpClient); //use whatever authorization method to provide the HttpClient
+        private HttpClient OAuth2HttpClientFactory()
+        {
+            var httpClient = new HttpClient(new FitbitHttpClientMessageHandler(messageInterceptor));
+            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.accessToken.Token);
+            httpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
 
+            return httpClient;
         }
 
         /// <summary>

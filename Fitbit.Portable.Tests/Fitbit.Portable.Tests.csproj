@@ -100,6 +100,7 @@
     <Compile Include="BodyMeasurementTests.cs" />
     <Compile Include="DayActivityTests.cs" />
     <Compile Include="FatTests.cs" />
+    <Compile Include="FitbitClientConstructorTests.cs" />
     <Compile Include="FitbitClientHelperExtensionsTests.cs" />
     <Compile Include="FitbitClientTests.cs" />
     <Compile Include="FoodTests.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="GetSubscriptionTests.cs" />
     <Compile Include="GoalsTests.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Helpers\ResponseFaker.cs" />
     <Compile Include="IntradayTimeSeriesTests.cs" />
     <Compile Include="JsonDotNetSerializerTests.cs" />
     <Compile Include="Models\ActivitySummaryTests.cs" />

@@ -88,10 +88,10 @@
                 return null;
             }
 
-            public void InterceptResponse(HttpResponseMessage response, CancellationToken cancellationToken)
+            public async Task InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken)
             {
                 ResponseCount++;
-                this.responseContent = response.Content.ReadAsStringAsync().Result;
+                this.responseContent = await response.Result.Content.ReadAsStringAsync();
             }
         }
 

@@ -6,6 +6,6 @@
     public interface IFitbitInterceptor
     {
         Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken);
-        void InterceptResponse(HttpResponseMessage response, CancellationToken cancellationToken);
+        Task InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken);
     }
 }

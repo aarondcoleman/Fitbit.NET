@@ -9,7 +9,7 @@
     internal class FitbitHttpClientMessageHandler : DelegatingHandler
     {
         private IFitbitInterceptor interceptor;
-        Func<Task<HttpResponseMessage>, CancellationToken, HttpResponseMessage> responseHandler;
+        Func<Task<HttpResponseMessage>, CancellationToken, Task<HttpResponseMessage>> responseHandler;
 
         //private ITokenManager tokenManager;
 
@@ -35,25 +35,25 @@
             if(interceptorResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
             {
                 return interceptorResponse.ContinueWith(
-                        requestTask => ResponseHandler(requestTask, cancellationToken)
+                        responseTask => ResponseHandler(responseTask, cancellationToken).Result
                     );
             }
             else //Let the base object continue with the request pipeline. Invoke Response handler at return.
             {
                 return base.SendAsync(request, cancellationToken).ContinueWith(
-                     requestTask => ResponseHandler(requestTask, cancellationToken)
+                     responseTask => ResponseHandler(responseTask, cancellationToken).Result
                  );
             }
         }
 
         //Handle the following method with EXTREME care as it will be invoked on ALL responses made by FitbitClient
-        private HttpResponseMessage ResponseHandler(Task<HttpResponseMessage> requestTask, CancellationToken cancellationToken)
+        private async Task<HttpResponseMessage> ResponseHandler(Task<HttpResponseMessage> responseTask, CancellationToken cancellationToken)
         {
-            Debug.WriteLine("Entering Http client's response message handler. Response details: {0}", requestTask.Result);
+            Debug.WriteLine("Entering Http client's response message handler. Response details: {0}", responseTask.Result);
             if (interceptor != null)
-                interceptor.InterceptResponse(requestTask.Result, cancellationToken);
+                await interceptor.InterceptResponse(responseTask, cancellationToken);
 
-            return requestTask.Result;
+            return responseTask.Result;
         }
     }
 }

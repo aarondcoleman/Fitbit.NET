@@ -103,12 +103,15 @@
             //Ensure the client is updated with the refreshed token
             Assert.AreEqual(refreshedToken.Token, sut.HttpClient.DefaultRequestHeaders.Authorization.Parameter);
             fakeManager.Verify(m => m.RefreshToken(It.IsAny<FitbitClient>()), Times.Once);
+            //Expecte two interceptions. First when we get the 401 refresh, and second when we retry after refreshing the stale token
+            Assert.AreEqual(2, fakeServer.requestCount, "It looks like either the client did not retry after the token was refreshed, or the stale token was not detected");
+
         }
 
         public class StaleTokenFaker : IFitbitInterceptor
         {
             HttpResponseMessage staleTokenresponse;
-            int requestCount = 0;
+            public int requestCount = 0;
 
             public StaleTokenFaker()
             {

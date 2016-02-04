@@ -34,15 +34,17 @@
         // We override the SendAsync method to intercept both the request and response path
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Task<HttpResponseMessage> interceptorResponse = null;
+            Task<HttpResponseMessage> interceptorFakeResponse = null;
             Debug.WriteLine("Entering Http client's request message handler. Request details: {0}", request.ToString());
 
             if (interceptor != null)
-                interceptorResponse = interceptor.InterceptRequest(request, cancellationToken);
+                interceptorFakeResponse = interceptor.InterceptRequest(request, cancellationToken);
 
-            if(interceptorResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
+            if(interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
             {
-                return interceptorResponse.ContinueWith(
+                //If we are faking the response, have the courtesy of setting the original HttpRequestMessage
+                interceptorFakeResponse.Result.RequestMessage = request;
+                return interceptorFakeResponse.ContinueWith(
                         responseTask => ResponseHandler(responseTask, cancellationToken).Result
                     );
             }
@@ -66,9 +68,10 @@
                 if (IsTokenStale(responseBody))
                 {
                     Debug.WriteLine("Stale token detected. Invoking registered tokenManager.RefreskToken to refresh it");
-                    var RefreshedToken = TokenManager.RefreshToken(this.Client).Result;
+                    var RefreshedToken = TokenManager.RefreshToken(Client).Result;
                     this.Client.AccessToken = RefreshedToken;
                     //TO Do: either retry or notify client consumer that the called failed but it has been automatically retried
+                    return await Client.HttpClient.SendAsync(await responseTask.Result.RequestMessage.CloneAsync(), cancellationToken);
                 }
             }
 

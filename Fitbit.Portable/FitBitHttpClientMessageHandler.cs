@@ -57,11 +57,11 @@
         //Handle the following method with EXTREME care as it will be invoked on ALL responses made by FitbitClient
         private async Task<HttpResponseMessage> ResponseHandler(Task<HttpResponseMessage> responseTask, CancellationToken cancellationToken)
         {
-            DebugLogResponse(requestTask);
+            DebugLogResponse(responseTask);
 
-            if (requestTask.Result.StatusCode == System.Net.HttpStatusCode.Unauthorized)//Unauthorized, then there is a chance token is stale
+            if (responseTask.Result.StatusCode == System.Net.HttpStatusCode.Unauthorized)//Unauthorized, then there is a chance token is stale
             {
-                var responseBody = requestTask.Result.Content.ReadAsStringAsync().Result;
+                var responseBody = responseTask.Result.Content.ReadAsStringAsync().Result;
 
                 if (IsTokenStale(responseBody))
                 {

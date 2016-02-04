@@ -13,7 +13,22 @@ namespace Fitbit.Api.Portable
     public class FitbitClient : IFitbitClient
     {
         public FitbitAppCredentials? AppCredentials { get; private set; }
-        public OAuth2AccessToken AccessToken { get; set; }
+
+        private OAuth2AccessToken _accesToken;
+        public OAuth2AccessToken AccessToken {
+            get
+            {
+                return _accesToken;
+            }
+
+            set
+            {
+                _accesToken = value;
+                //If we update the AccessToken after HttpClient has been created, then reconfigure authorization header
+                if(this.HttpClient != null)
+                    ConfigureAuthorizationHeader();
+            }
+        }
 
         /// <summary>
         /// The httpclient which will be used for the api calls through the FitbitClient instance
@@ -38,7 +53,7 @@ namespace Fitbit.Api.Portable
 
             ConfigureTokenManager(tokenManager);
 
-            this.HttpClient = OAuth2HttpClientFactory();
+            CreateHttpClientForOAuth2();
 
         }
 
@@ -65,13 +80,16 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        private HttpClient OAuth2HttpClientFactory()
+        private void CreateHttpClientForOAuth2()
         {
-            var httpClient = new HttpClient(new FitbitHttpClientMessageHandler(this, MessageInterceptor, this.TokenManager));
-            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.AccessToken.Token);
-            httpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
+            this.HttpClient = new HttpClient(new FitbitHttpClientMessageHandler(this, MessageInterceptor, this.TokenManager));
+            ConfigureAuthorizationHeader();
+        }
 
-            return httpClient;
+        private void ConfigureAuthorizationHeader()
+        {
+            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.AccessToken.Token);
+            this.HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
         }
 
         /// <summary>

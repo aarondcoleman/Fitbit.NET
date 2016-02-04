@@ -91,7 +91,7 @@
             //we shortcircuit the request to fake an expired token on the first request, and assuming the token is different the second time we let the request through
             var fakeServer = new StaleTokenFaker();
 
-            var sut = new FitbitClient(dummyCredentials, dummyToken, fakeServer, fakeManager.Object);
+            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, fakeManager.Object);
 
             //Act
             var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
@@ -99,8 +99,10 @@
             var actualResponse = r.Result;
 
             //Assert
-            fakeManager.Verify(m => m.RefreshToken(It.IsAny<FitbitClient>()), Times.Once);
             Assert.AreEqual(refreshedToken, sut.AccessToken);
+            //Ensure the client is updated with the refreshed token
+            Assert.AreEqual(refreshedToken.Token, sut.HttpClient.DefaultRequestHeaders.Authorization.Parameter);
+            fakeManager.Verify(m => m.RefreshToken(It.IsAny<FitbitClient>()), Times.Once);
         }
 
         public class StaleTokenFaker : IFitbitInterceptor

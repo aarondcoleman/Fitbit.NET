@@ -60,8 +60,6 @@
     <Compile Include="JsonDotNetSerializerExtensions.cs" />
     <Compile Include="OAuth2\OAuth2AccessToken.cs" />
     <Compile Include="OAuth2\OAuth2Helper.cs" />
-    <Compile Include="OAuth2\OAuth2AccessToken.cs" />
-    <Compile Include="OAuth2\OAuth2Authorization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscriptionManager.cs" />
   </ItemGroup>

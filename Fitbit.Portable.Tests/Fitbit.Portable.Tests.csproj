@@ -132,6 +132,7 @@
     <None Include="SampleData\ActivityGoals.json" />
     <None Include="SampleData\AddSubscriptionResponse.json" />
     <None Include="SampleData\ApiError-Request-Forbidden.json" />
+    <None Include="SampleData\ApiError-Request-StaleToken.json" />
     <None Include="SampleData\ApiError-Request-Unauthorized.json" />
     <None Include="SampleData\ApiError-Request-BadRequest.json" />
     <None Include="SampleData\ApiSubscriptionNotification.json" />

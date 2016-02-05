@@ -1,7 +1,12 @@
 ﻿namespace Fitbit.Api.Portable
 {
+    using Models;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -11,12 +16,15 @@
         private IFitbitInterceptor interceptor;
         Func<Task<HttpResponseMessage>, CancellationToken, Task<HttpResponseMessage>> responseHandler;
 
-        //private ITokenManager tokenManager;
+        public ITokenManager TokenManager { get; private set; }
 
-        public FitbitHttpClientMessageHandler(IFitbitInterceptor interceptor)
+        public FitbitClient Client { get; private set; }
+
+        public FitbitHttpClientMessageHandler(FitbitClient client, IFitbitInterceptor interceptor, ITokenManager tokenManager)
         {
+            this.Client = client;
             this.interceptor = interceptor;
-            //this.tokenManager = tokenManager;
+            this.TokenManager = tokenManager;
             responseHandler = ResponseHandler; 
             //Define the inner must handler. Otherwise exception is thrown.
             InnerHandler = new HttpClientHandler();
@@ -26,15 +34,17 @@
         // We override the SendAsync method to intercept both the request and response path
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Task<HttpResponseMessage> interceptorResponse = null;
+            Task<HttpResponseMessage> interceptorFakeResponse = null;
             Debug.WriteLine("Entering Http client's request message handler. Request details: {0}", request.ToString());
 
             if (interceptor != null)
-                interceptorResponse = interceptor.InterceptRequest(request, cancellationToken);
+                interceptorFakeResponse = interceptor.InterceptRequest(request, cancellationToken);
 
-            if(interceptorResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
+            if(interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
             {
-                return interceptorResponse.ContinueWith(
+                //If we are faking the response, have the courtesy of setting the original HttpRequestMessage
+                interceptorFakeResponse.Result.RequestMessage = request;
+                return interceptorFakeResponse.ContinueWith(
                         responseTask => ResponseHandler(responseTask, cancellationToken).Result
                     );
             }
@@ -49,11 +59,63 @@
         //Handle the following method with EXTREME care as it will be invoked on ALL responses made by FitbitClient
         private async Task<HttpResponseMessage> ResponseHandler(Task<HttpResponseMessage> responseTask, CancellationToken cancellationToken)
         {
-            Debug.WriteLine("Entering Http client's response message handler. Response details: {0}", responseTask.Result);
+            DebugLogResponse(responseTask);
+
+            if (responseTask.Result.StatusCode == System.Net.HttpStatusCode.Unauthorized)//Unauthorized, then there is a chance token is stale
+            {
+                var responseBody = responseTask.Result.Content.ReadAsStringAsync().Result;
+
+                if (IsTokenStale(responseBody) && Client.EnableOAuth2TokenRefresh)
+                {
+                    Debug.WriteLine("Stale token detected. Invoking registered tokenManager.RefreskToken to refresh it");
+                    var RefreshedToken = TokenManager.RefreshToken(Client).Result;
+                    this.Client.AccessToken = RefreshedToken;
+
+                    //Only retry the first time.
+                    if(!responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
+                    {
+                        var clonedRequest = await responseTask.Result.RequestMessage.CloneAsync();
+                        clonedRequest.Headers.Add("Fitbit.Net-StaleTokenRetry", "Fitbit.Net-StaleTokenRetry");
+                        return await Client.HttpClient.SendAsync(clonedRequest, cancellationToken);
+                    }
+                    else if (responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
+                    {
+                        throw new FitbitException("We received an unexpected stale token response -- during the retry for a call whose token we just refreshed", responseTask.Result.StatusCode);
+                    }
+                }
+            }
+
             if (interceptor != null)
                 await interceptor.InterceptResponse(responseTask, cancellationToken);
 
             return responseTask.Result;
+        }
+
+        private bool IsTokenStale(string responseBody)
+        {
+            JObject response = JObject.Parse(responseBody);
+            IList<JToken> errors = response["errors"].Children().ToList();
+
+            foreach (JToken error in errors)
+            {
+                var apiError = JsonConvert.DeserializeObject<ApiError>(error.ToString());
+                if (apiError.ErrorType == "expired_token")
+                    return true;
+            }
+
+            return false;
+        }
+
+        [Conditional("DEBUG")]
+        private static void DebugLogResponse(Task<HttpResponseMessage> requestTask)
+        {
+            string responseContent = null;
+
+            if (requestTask.Result.Content != null)
+                responseContent = requestTask.Result.Content.ReadAsStringAsync().Result;
+
+            Debug.WriteLine("Entering Http client's response message handler. Response details: \n {0}", requestTask.Result);
+            Debug.WriteLine("Response Content: \n {0}", responseContent ?? "Response body was empty");
         }
     }
 }

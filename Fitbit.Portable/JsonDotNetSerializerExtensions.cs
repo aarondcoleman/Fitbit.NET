@@ -18,7 +18,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(fatJson))
             {
-                throw new ArgumentNullException("fatJson", "fatJson can not be empty, null or whitespace");
+                throw new ArgumentNullException(nameof(fatJson), "fatJson can not be empty, null or whitespace");
             }
 
             var fatlogs = JToken.Parse(fatJson)["fat"];
@@ -37,7 +37,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(weightJson))
             {
-                throw new ArgumentNullException("weightJson", "weightJson can not be empty, null or whitespace");
+                throw new ArgumentNullException(nameof(weightJson), "weightJson can not be empty, null or whitespace");
             }
 
             var weightlogs = JToken.Parse(weightJson)["weight"];
@@ -56,7 +56,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(friendsJson))
             {
-                throw new ArgumentNullException("friendsJson", "friendsJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(friendsJson), "friendsJson can not be empty, null or whitespace.");
             }
 
             serializer.RootProperty = "user";
@@ -74,7 +74,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(timeSeriesDataJson))
             {
-                throw new ArgumentNullException("timeSeriesDataJson", "timeSeriesDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(timeSeriesDataJson), "timeSeriesDataJson can not be empty, null or whitespace.");
             }
 
             var dataPoints = JToken.Parse(timeSeriesDataJson)[serializer.RootProperty];
@@ -101,7 +101,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(timeSeriesDataJson))
             {
-                throw new ArgumentNullException("timeSeriesDataJson", "timeSeriesDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(timeSeriesDataJson), "timeSeriesDataJson can not be empty, null or whitespace.");
             }
 
             var dataPoints = JToken.Parse(timeSeriesDataJson)[serializer.RootProperty];
@@ -122,21 +122,25 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(intradayDataJson))
             {
-                throw new ArgumentNullException("intradayDataJson", "intradayDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(intradayDataJson), "intradayDataJson can not be empty, null or whitespace.");
             }
 
-            var dataPoints = JToken.Parse(intradayDataJson)[serializer.RootProperty + "-intraday"];
-            
+            var parsedJToken = JToken.Parse(intradayDataJson);
+
+            // need to parse the date first  
+            var date = parsedJToken.SelectToken(serializer.RootProperty).First["dateTime"];
+            var dataPoints = parsedJToken.SelectTokens(serializer.RootProperty + "-intraday.dataset");
+
             var result = new IntradayData
             {
-                DataSet = (from item in dataPoints["dataset"]
-                            select new IntradayDataValues
-                            {
-                                Time = DateTime.Parse(item["time"].ToString()),
-                                Value = item["value"].ToString(),
-                                METs = item["value"].ToString(),
-                                Level = item["level"].ToString()
-                            }).ToList()
+                DataSet = (from item in dataPoints.Children()
+                    select new IntradayDataValues
+                    {
+                        Time = DateTime.Parse(date + " " + item["time"]),
+                        Value = item["value"].ToString(),
+                        METs = item["value"].ToString(),
+                        Level = item["level"].ToString()
+                    }).ToList()
             };
 
             return result;

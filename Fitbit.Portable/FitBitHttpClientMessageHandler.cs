@@ -70,8 +70,18 @@
                     Debug.WriteLine("Stale token detected. Invoking registered tokenManager.RefreskToken to refresh it");
                     var RefreshedToken = TokenManager.RefreshToken(Client).Result;
                     this.Client.AccessToken = RefreshedToken;
-                    //TO Do: either retry or notify client consumer that the called failed but it has been automatically retried
-                    return await Client.HttpClient.SendAsync(await responseTask.Result.RequestMessage.CloneAsync(), cancellationToken);
+
+                    //Only retry the first time.
+                    if(!responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
+                    {
+                        var clonedRequest = await responseTask.Result.RequestMessage.CloneAsync();
+                        clonedRequest.Headers.Add("Fitbit.Net-StaleTokenRetry", "Fitbit.Net-StaleTokenRetry");
+                        return await Client.HttpClient.SendAsync(clonedRequest, cancellationToken);
+                    }
+                    else if (responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
+                    {
+                        throw new FitbitException("We received an unexpected stale token response -- during the retry for a call whose token we just refreshed", responseTask.Result.StatusCode);
+                    }
                 }
             }
 

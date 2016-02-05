@@ -79,7 +79,7 @@
         [Category("Portable")]
         [Category("Interceptor")]
         [Category("OAuth2")]
-        public void Correctly_Detects_Stale_Token()
+        public void Correctly_Detects_Stale_Token_Refreshes_And_Retries_Original_Request()
         {
             var originalToken = new OAuth2AccessToken() { Token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzAzNDM3MzUsInNjb3BlcyI6Indwcm8gd2xvYyB3bnV0IHdzbGUgd3NldCB3aHIgd3dlaSB3YWN0IHdzb2MiLCJzdWIiOiJBQkNERUYiLCJhdWQiOiJJSktMTU4iLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJpYXQiOjE0MzAzNDAxMzV9.z0VHrIEzjsBnjiNMBey6wtu26yHTnSWz_qlqoEpUlpc" };
             var refreshedToken = new OAuth2AccessToken() { Token = "Refreshed" };
@@ -108,13 +108,41 @@
 
         }
 
+
+        [Test]
+        [Category("Portable")]
+        [Category("Interceptor")]
+        [Category("OAuth2")]
+        public void Can_Handle_Failed_Refresh_Operation()
+        {
+            const int EXPECT_TWO_COUNT_STALE_AND_RETRY = 2;
+            var originalToken = new OAuth2AccessToken() { Token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzAzNDM3MzUsInNjb3BlcyI6Indwcm8gd2xvYyB3bnV0IHdzbGUgd3NldCB3aHIgd3dlaSB3YWN0IHdzb2MiLCJzdWIiOiJBQkNERUYiLCJhdWQiOiJJSktMTU4iLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJpYXQiOjE0MzAzNDAxMzV9.z0VHrIEzjsBnjiNMBey6wtu26yHTnSWz_qlqoEpUlpc" };
+            var refreshedToken = new OAuth2AccessToken() { Token = "Refreshed" };
+
+            //mocking our implementation of token manager. This test is concerned with ensuring the wiring is done correctly. Not the actual refresh process.
+            var fakeManager = new Mock<ITokenManager>();
+            fakeManager.Setup(m => m.RefreshToken(It.IsAny<FitbitClient>())).Returns(() => Task.Run(() => refreshedToken));
+
+            //simulate failed refresh token. 
+            var fakeServer = new StaleTokenFaker(10);
+
+            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, fakeManager.Object);
+
+            //Act
+            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
+
+            Assert.Throws<System.AggregateException>(() => r.Wait());
+        }
+
         public class StaleTokenFaker : IFitbitInterceptor
         {
             HttpResponseMessage staleTokenresponse;
             public int requestCount = 0;
+            private int desiredStaleTokenReplies;
 
-            public StaleTokenFaker()
+            public StaleTokenFaker(int desiredStaleTokenReplyLimitCount = 1)
             {
+                desiredStaleTokenReplies = desiredStaleTokenReplyLimitCount;
                 //HttpContent staleTokenError = new HttpContent();
 
                 staleTokenresponse = new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized)
@@ -126,7 +154,7 @@
             public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 requestCount++;
-                if (requestCount == 1)
+                if (requestCount <= desiredStaleTokenReplies)
                     return Task.Run( () =>staleTokenresponse);
                 else
                     return null;

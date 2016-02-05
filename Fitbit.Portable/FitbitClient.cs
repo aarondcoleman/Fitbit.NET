@@ -38,6 +38,7 @@ namespace Fitbit.Api.Portable
         private IFitbitInterceptor MessageInterceptor { get; set; }
 
         public ITokenManager TokenManager { get; private set; }
+        public bool EnableOAuth2TokenRefresh { get; set; }
 
         /// <summary>
         /// Simplest constructor for OAuth2- requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
@@ -50,6 +51,7 @@ namespace Fitbit.Api.Portable
             this.AppCredentials = credentials;
             this.AccessToken = accessToken;
             this.MessageInterceptor = interceptor;
+            this.EnableOAuth2TokenRefresh = true;
 
             ConfigureTokenManager(tokenManager);
 
@@ -64,6 +66,8 @@ namespace Fitbit.Api.Portable
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
         public FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null, ITokenManager tokenManager = null)
         {
+            this.EnableOAuth2TokenRefresh = false;
+
             ConfigureTokenManager(tokenManager);
             this.HttpClient = customFactory(new FitbitHttpClientMessageHandler(this, interceptor, this.TokenManager));
         }

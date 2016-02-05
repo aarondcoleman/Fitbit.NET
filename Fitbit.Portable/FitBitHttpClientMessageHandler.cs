@@ -65,7 +65,7 @@
             {
                 var responseBody = responseTask.Result.Content.ReadAsStringAsync().Result;
 
-                if (IsTokenStale(responseBody))
+                if (IsTokenStale(responseBody) && Client.EnableOAuth2TokenRefresh)
                 {
                     Debug.WriteLine("Stale token detected. Invoking registered tokenManager.RefreskToken to refresh it");
                     var RefreshedToken = TokenManager.RefreshToken(Client).Result;

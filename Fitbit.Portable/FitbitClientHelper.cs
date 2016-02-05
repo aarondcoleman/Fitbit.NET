@@ -3,7 +3,7 @@ using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
 {
-    internal static class FitbitClientExtensions
+    internal static class FitbitClientHelper
     {
         internal static void ProcessSleepData(SleepData sleepData)
         {

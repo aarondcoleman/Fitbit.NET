@@ -209,7 +209,7 @@ namespace Fitbit.Api.Portable
             string responseBody = await response.Content.ReadAsStringAsync();
             var serializer = new JsonDotNetSerializer();
             var data = serializer.Deserialize<SleepData>(responseBody);
-            FitbitClientExtensions.ProcessSleepData(data);
+            FitbitClientHelper.ProcessSleepData(data);
             return data;
         }
 

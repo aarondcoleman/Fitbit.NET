@@ -63,9 +63,9 @@
 
             if (responseTask.Result.StatusCode == System.Net.HttpStatusCode.Unauthorized)//Unauthorized, then there is a chance token is stale
             {
-                var responseBody = responseTask.Result.Content.ReadAsStringAsync().Result;
+                var responseBody = await responseTask.Result.Content.ReadAsStringAsync();
 
-                if (IsTokenStale(responseBody) && Client.EnableOAuth2TokenRefresh)
+                if (Client.EnableOAuth2TokenRefresh && IsTokenStale(responseBody))
                 {
                     Debug.WriteLine("Stale token detected. Invoking registered tokenManager.RefreskToken to refresh it");
                     var RefreshedToken = TokenManager.RefreshToken(Client).Result;

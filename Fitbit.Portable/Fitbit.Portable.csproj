@@ -47,6 +47,7 @@
     <Compile Include="HttpRequestMessageExtensionMethods.cs" />
     <Compile Include="OAuth2\Authenticator2.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="EmptyDateToMinDateConverter.cs" />
     <Compile Include="FitbitClient.cs" />
     <Compile Include="FitbitClientExtensions.cs" />
     <Compile Include="FitbitClientHelperExtensions.cs" />

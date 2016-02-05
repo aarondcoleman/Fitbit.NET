@@ -49,7 +49,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="EmptyDateToMinDateConverter.cs" />
     <Compile Include="FitbitClient.cs" />
-    <Compile Include="FitbitClientExtensions.cs" />
+    <Compile Include="FitbitClientHelper.cs" />
     <Compile Include="FitbitClientHelperExtensions.cs" />
     <Compile Include="FitbitHttpClientMessageHandler.cs" />
     <Compile Include="FitbitException.cs" />

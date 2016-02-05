@@ -3,8 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -36,8 +38,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [Ignore("Re-enable when exceptions have been introduced")]
-        public async void GetUserProfileAsync_Failure_Errors()
+        public void GetUserProfileAsync_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
@@ -47,11 +48,9 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
             
-            var response = await fitbitClient.GetSleepAsync(new DateTime(2014, 11, 11));
+            Func<Task<SleepData>> result = () => fitbitClient.GetSleepAsync(new DateTime(2014, 11, 11));
 
-            //Assert.IsFalse(response.Success);
-            //Assert.IsNull(response.Data);
-            //Assert.AreEqual(1, response.Errors.Count);
+            result.ShouldThrow<FitbitException>();
         }
 
         [Test] [Category("Portable")]

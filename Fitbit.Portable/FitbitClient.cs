@@ -56,7 +56,6 @@ namespace Fitbit.Api.Portable
             ConfigureTokenManager(tokenManager);
 
             CreateHttpClientForOAuth2();
-
         }
 
         /// <summary>
@@ -94,6 +93,11 @@ namespace Fitbit.Api.Portable
         {
             AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.AccessToken.Token);
             this.HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
+        }
+
+        public async Task<OAuth2AccessToken> RefreshOAuth2Token()
+        {
+            return await this.TokenManager.RefreshToken(this);
         }
 
         /// <summary>

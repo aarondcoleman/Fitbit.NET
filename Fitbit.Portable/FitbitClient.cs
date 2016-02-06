@@ -196,6 +196,21 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Requests the lifetime activity details of the encoded user id or none supplied the current logged in user
+        /// </summary>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns></returns>
+        public async Task<ActivitiesStats> GetActivitiesStatsAsync(string encodedUserId = null)
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities.json", encodedUserId);
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            return serializer.Deserialize<ActivitiesStats>(responseBody);
+        }
+
+        /// <summary>
         /// Requests the sleep data for the specified date for the logged in user
         /// </summary>
         /// <param name="sleepDate"></param>

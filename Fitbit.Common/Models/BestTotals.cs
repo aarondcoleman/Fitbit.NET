@@ -14,6 +14,6 @@ namespace Fitbit.Models
         public FloorStats Floors { get; set; }
 
         [JsonProperty("steps")]
-        public StepStats StepsStats { get; set; }
+        public StepStats Steps { get; set; }
     }
 }

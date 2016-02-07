@@ -197,14 +197,28 @@ namespace SampleWebMVC.Controllers
         }
 
          */
+
+        /// <summary>
+        /// HttpClient and hence FitbitClient are designed to be long-lived for the duration of the session. This method ensures only one client is created for the duration of the session.
+        /// More info at: http://stackoverflow.com/questions/22560971/what-is-the-overhead-of-creating-a-new-httpclient-per-call-in-a-webapi-client
+        /// </summary>
+        /// <returns></returns>
         private FitbitClient GetFitbitClient()
         {
-            var oa2Token = (OAuth2AccessToken)Session["AccessToken"];
-            var appCredentials = (FitbitAppCredentials)Session["AppCredentials"];
+            if (Session["FitbitClient"] == null)
+            {
+                var oa2Token = (OAuth2AccessToken)Session["AccessToken"];
+                var appCredentials = (FitbitAppCredentials)Session["AppCredentials"];
 
-            FitbitClient client = new FitbitClient(appCredentials, oa2Token);
+                FitbitClient client = new FitbitClient(appCredentials, oa2Token);
 
-            return client;
+                Session["FitbitClient"] = client;
+                return client;
+            }
+            else
+            {
+                return (FitbitClient)Session["FitbitClient"];
+            }
         }
     }
 }

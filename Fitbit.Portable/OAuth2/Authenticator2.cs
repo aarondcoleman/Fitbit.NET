@@ -75,32 +75,5 @@ namespace Fitbit.Api.Portable
             return accessToken;
         }
 
-
-
-        public async Task<OAuth2AccessToken> RefreshAccessToken(OAuth2AccessToken accessToken)
-        {
-            string postUrl = OAuth2Helper.FitbitOauthPostUrl;
-
-            var content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("grant_type", "refresh_token"),
-                new KeyValuePair<string, string>("refresh_token", accessToken.RefreshToken),
-            });
-
-
-            var httpClient = new HttpClient();
-
-            var clientIdConcatSecret = OAuth2Helper.Base64Encode(ClientId + ":" + AppSecret);
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", clientIdConcatSecret);
-
-            HttpResponseMessage response = await httpClient.PostAsync(postUrl, content);
-            string responseString = await response.Content.ReadAsStringAsync();
-
-            return OAuth2Helper.ParseAccessTokenResponse(responseString);
-        }
-
-
-
-
     }
 }

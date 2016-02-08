@@ -102,19 +102,24 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         internal static HttpMessageHandler CreatePipeline(this FitbitClient client, List<IFitbitInterceptor> interceptors)
         {
-            // inspired by the code referenced from the web api source; this creates the russian doll effect
-            FitbitHttpClientMessageHandler innerHandler = new FitbitHttpClientMessageHandler(client, interceptors[0]);
-
-            var innerHandlers = interceptors.GetRange(1, interceptors.Count - 1);
-
-            foreach (var handler in innerHandlers)
+            if(interceptors.Count > 0)
             {
-                var messageHandler = new FitbitHttpClientMessageHandler(client, handler);
-                messageHandler.InnerHandler = innerHandler;
-                innerHandler = messageHandler;
-            }
+                // inspired by the code referenced from the web api source; this creates the russian doll effect
+                FitbitHttpClientMessageHandler innerHandler = new FitbitHttpClientMessageHandler(client, interceptors[0]);
 
-            return innerHandler;
+                var innerHandlers = interceptors.GetRange(1, interceptors.Count - 1);
+
+                foreach (var handler in innerHandlers)
+                {
+                    var messageHandler = new FitbitHttpClientMessageHandler(client, handler);
+                    messageHandler.InnerHandler = innerHandler;
+                    innerHandler = messageHandler;
+                }
+
+                return innerHandler;
+            }
+            
+            return null;
         }
     }
 }

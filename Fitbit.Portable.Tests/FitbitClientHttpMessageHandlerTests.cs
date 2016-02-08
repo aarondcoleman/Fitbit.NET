@@ -91,7 +91,7 @@
             //we shortcircuit the request to fake an expired token on the first request, and assuming the token is different the second time we let the request through
             var fakeServer = new StaleTokenFaker();
 
-            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, fakeManager.Object, /*Explicity activate autorefresh, default is true*/true);
+            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, /*Explicity activate autorefresh, default is true*/true, fakeManager.Object);
 
             //Act
             var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
@@ -151,7 +151,7 @@
             //we shortcircuit the request to fake an expired token on the first request, and assuming the token is different the second time we let the request through
             var fakeServer = new StaleTokenFaker();
 
-            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, fakeManager.Object, false);
+            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, false, fakeManager.Object);
 
             //Act
             var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
@@ -183,7 +183,7 @@
             {
                 requestCount++;
                 if (requestCount <= desiredStaleTokenReplies)
-                    return Task.Run( () =>staleTokenresponse);
+                    return Task.Run(() => staleTokenresponse);
                 else
                     return null;
             }
@@ -194,27 +194,5 @@
                 return null;
             }
         }
-
-        public class InterceptorCounter : IFitbitInterceptor
-        {
-            public int RequestCount = 0;
-            public int ResponseCount = 0;
-
-            public string responseContent;
-
-            public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken, FitbitClient client)
-            {
-                RequestCount++;
-                return null;
-            }
-
-            public async Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
-            {
-                ResponseCount++;
-                this.responseContent = await response.Result.Content.ReadAsStringAsync();
-                return null;
-            }
-        }
-
     }
 }

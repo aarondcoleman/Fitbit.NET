@@ -91,7 +91,7 @@
             //we shortcircuit the request to fake an expired token on the first request, and assuming the token is different the second time we let the request through
             var fakeServer = new StaleTokenFaker();
 
-            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, fakeManager.Object);
+            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, fakeManager.Object, /*Explicity activate autorefresh, default is true*/true);
 
             //Act
             var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
@@ -131,6 +131,7 @@
             //Act
             var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
 
+
             Assert.Throws<System.AggregateException>(() => r.Wait());
         }
 
@@ -150,8 +151,7 @@
             //we shortcircuit the request to fake an expired token on the first request, and assuming the token is different the second time we let the request through
             var fakeServer = new StaleTokenFaker();
 
-            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, fakeManager.Object);
-            sut.EnableOAuth2TokenRefresh = false;
+            var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, fakeManager.Object, false);
 
             //Act
             var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
@@ -179,7 +179,7 @@
                 };
             }
 
-            public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken)
+            public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken, FitbitClient client)
             {
                 requestCount++;
                 if (requestCount <= desiredStaleTokenReplies)
@@ -188,9 +188,10 @@
                     return null;
             }
 
-            public async Task InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken)
+            public async Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
             {
-                return;
+                //let the pipeline continue
+                return null;
             }
         }
 
@@ -201,16 +202,17 @@
 
             public string responseContent;
 
-            public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken)
+            public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken, FitbitClient client)
             {
                 RequestCount++;
                 return null;
             }
 
-            public async Task InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken)
+            public async Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
             {
                 ResponseCount++;
                 this.responseContent = await response.Result.Content.ReadAsStringAsync();
+                return null;
             }
         }
 

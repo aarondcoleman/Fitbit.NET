@@ -19,7 +19,7 @@
 
             var httpClient = new HttpClient();
 
-            var clientIdConcatSecret = OAuth2Helper.Base64Encode(client.AppCredentials.Value.ClientId + ":" + client.AppCredentials.Value.ClientSecret);
+            var clientIdConcatSecret = OAuth2Helper.Base64Encode(client.AppCredentials.ClientId + ":" + client.AppCredentials.ClientSecret);
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", clientIdConcatSecret);
 
             HttpResponseMessage response = await httpClient.PostAsync(postUrl, content);

@@ -12,7 +12,7 @@ namespace Fitbit.Api.Portable
 {
     public class FitbitClient : IFitbitClient
     {
-        public FitbitAppCredentials? AppCredentials { get; private set; }
+        public FitbitAppCredentials AppCredentials { get; private set; }
 
         private OAuth2AccessToken _accesToken;
         public OAuth2AccessToken AccessToken {

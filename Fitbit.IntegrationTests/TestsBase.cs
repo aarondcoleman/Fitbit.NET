@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using Fitbit.Api;
+﻿using Fitbit.Api;
 using RestSharp;
-using Fitbit.Models;
-
 
 namespace Fitbit.IntegrationTests
 {
@@ -25,6 +18,5 @@ namespace Fitbit.IntegrationTests
         }
 
         protected IFitbitClient client;
-
     }
 }

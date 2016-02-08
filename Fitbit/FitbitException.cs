@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
 
 namespace Fitbit.Api
@@ -11,28 +9,26 @@ namespace Fitbit.Api
     /// </summary>
     public class FitbitException : Exception
     {
-        public HttpStatusCode HttpStatusCode { get; set; }
+        public HttpStatusCode HttpStatusCode { get; private set; }
 
-        public IList<Fitbit.Models.ApiError> ApiErrors { get; set; }
+        public IList<Models.ApiError> ApiErrors { get; private set; }
 
         /// <summary>
         /// Number of seconds until the request can be retried - not null if provided by fitbit
         /// </summary>
-        public int? retryAfter { get; set; }
+        public int? RetryAfter { get; set; }
 
-        public FitbitException(string message, HttpStatusCode statusCode)
-            : this(message, statusCode, new List<Fitbit.Models.ApiError>())
+        public FitbitException(string message, HttpStatusCode statusCode) : this(message, statusCode, new List<Models.ApiError>())
         {
         }
 
-        public FitbitException(string message, HttpStatusCode statusCode, IList<Fitbit.Models.ApiError> apiErrors)
-            : base(message)
+        public FitbitException(string message, HttpStatusCode statusCode, IList<Models.ApiError> apiErrors) : base(message)
         {
-            this.HttpStatusCode = statusCode;
-            this.ApiErrors = apiErrors;
+            HttpStatusCode = statusCode;
+            ApiErrors = apiErrors;
         }
 
-        public bool containsRateError
+        public bool ContainsRateError
         {
             get
             {

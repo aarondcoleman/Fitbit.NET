@@ -1,0 +1,63 @@
+﻿{
+    "sleep": [
+        {
+            "isMainSleep": true,
+            "logId": 29744,
+            "efficiency": 98,
+            "startTime": "2011-06-16T00:00:00.000",
+            "duration": 28800000,
+            "minutesToFallAsleep": 0,
+            "minutesAsleep": 480,
+            "minutesAwake": 0,
+            "minutesAfterWakeup": 0,
+            "awakeningsCount": 0, // deprecated
+            "awakeCount": 0,
+            "awakeDuration": 0,
+            "restlessCount": 0,
+            "restlessDuration": 0,
+            "timeInBed": 480,
+            "minuteData": [
+                {
+                    "dateTime": "00:00:00",
+                    "value": "3"
+                },
+                {
+                    "dateTime": "00:01:00",
+                    "value": "2"
+                },
+                {
+                    "dateTime": "00:02:00",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "isMainSleep": false,
+            "logId": 29745,
+            "efficiency": 93,
+            "startTime": "2011-06-16T14:00:00.000",
+            "duration": 3600000,
+            "minutesToFallAsleep": 20,
+            "minutesAsleep": 38,
+            "minutesAwake": 0,
+            "minutesAfterWakeup": 2,
+            "awakeningsCount": 0,
+            "awakeCount": 0,
+            "awakeDuration": 0,
+            "restlessCount": 0,
+            "restlessDuration": 0,
+            "timeInBed": 60,
+            "minuteData": [
+                {
+                    "dateTime": "14:00:00",
+                    "value": "3"
+                }
+            ]
+        }
+    ],
+    "summary":{
+        "totalMinutesAsleep":518,
+        "totalSleepRecords":2,
+        "totalTimeInBed":540
+    }
+}

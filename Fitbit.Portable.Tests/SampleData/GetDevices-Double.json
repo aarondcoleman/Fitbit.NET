@@ -1,0 +1,18 @@
+﻿[
+   {
+    "battery": "High",
+    "deviceVersion": "Zip",
+    "id": "5656888",
+    "lastSyncTime": "2014-07-17T13:38:13.000",
+    "mac": "FE1111111111",
+    "type": "TRACKER"
+  },
+  {
+    "battery": "High",
+    "deviceVersion": "Aria",
+    "id": "5656777",
+    "lastSyncTime": "2014-07-17T13:38:13.000",
+    "mac": "SC1111111111",
+    "type": "SCALE"
+  }
+]

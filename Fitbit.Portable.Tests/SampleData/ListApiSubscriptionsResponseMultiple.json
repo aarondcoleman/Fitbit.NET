@@ -1,0 +1,18 @@
+﻿{
+    apiSubscriptions:[
+        {
+            "collectionType": "user",
+            "ownerId": "227YZL",
+            "ownerType": "user",
+            "subscriberId": "1",
+            "subscriptionId": "323"
+        },
+        {
+            "collectionType": "user",
+            "ownerId": "227YZL",
+            "ownerType": "user",
+            "subscriberId": "2",
+            "subscriptionId": "3230"
+        }
+    ]
+}

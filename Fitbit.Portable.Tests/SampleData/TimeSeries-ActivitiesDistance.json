@@ -1,0 +1,34 @@
+﻿{
+	"activities-distance": [{
+		"dateTime": "2014-08-12",
+		"value": "1.0"
+	},
+	{
+		"dateTime": "2014-08-13",
+		"value": "2.0"
+	},
+	{
+		"dateTime": "2014-08-14",
+		"value": "4.0"
+	},
+	{
+		"dateTime": "2014-08-15",
+		"value": "8.0"
+	},
+	{
+		"dateTime": "2014-08-16",
+		"value": "16.0"
+	},
+	{
+		"dateTime": "2014-08-17",
+		"value": "32.0"
+	},
+	{
+		"dateTime": "2014-08-18",
+		"value": "64.0"
+	},
+	{
+		"dateTime": "2014-08-19",
+        "value": "128.0"
+	}]
+}

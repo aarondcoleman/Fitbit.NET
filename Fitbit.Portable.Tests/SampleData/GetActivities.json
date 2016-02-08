@@ -1,0 +1,71 @@
+﻿{
+  "activities":  [
+     {
+      "activityId": 2382124,
+      "activityParentId": 2382124,
+      "activityParentName": "Running (jogging), 6.7 mph (9 min mile) (MyFitnessPal)",
+      "calories": 541,
+      "description": "",
+      "duration": 2400000,
+      "hasStartTime": true,
+      "isFavorite": false,
+      "lastModified": "2014-09-25T20:57:46.000+01:00",
+      "logId": 105415286,
+      "name": "Running (jogging), 6.7 mph (9 min mile) (MyFitnessPal)",
+      "startDate": "2014-09-25",
+      "startTime": "20:16"
+    }
+  ],
+  "goals":  {
+    "activeMinutes": 30,
+    "caloriesOut": 2820,
+    "distance": 8.05,
+    "steps": 10000
+  },
+  "summary":  {
+    "activeScore": -1,
+    "activityCalories": 1457,
+    "caloriesBMR": 1623,
+    "caloriesOut": 2828,
+    "distances":  [
+       {
+        "activity": "total",
+        "distance": 12.32
+      },
+       {
+        "activity": "tracker",
+        "distance": 12.32
+      },
+       {
+        "activity": "loggedActivities",
+        "distance": 0
+      },
+       {
+        "activity": "veryActive",
+        "distance": 9.69
+      },
+       {
+        "activity": "moderatelyActive",
+        "distance": 1.99
+      },
+       {
+        "activity": "lightlyActive",
+        "distance": 0.57
+      },
+       {
+        "activity": "sedentaryActive",
+        "distance": 0
+      },
+       {
+        "activity": "Running (jogging), 6.7 mph (9 min mile) (MyFitnessPal)",
+        "distance": 0
+      }
+    ],
+    "fairlyActiveMinutes": 63,
+    "lightlyActiveMinutes": 59,
+    "marginalCalories": 1067,
+    "sedentaryMinutes": 1155,
+    "steps": 15720,
+    "veryActiveMinutes": 91
+  }
+}

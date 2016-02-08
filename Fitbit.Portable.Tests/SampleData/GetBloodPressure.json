@@ -1,0 +1,20 @@
+﻿{
+    "average": {
+        "condition": "Prehypertension",
+        "diastolic": 85,
+        "systolic": 115
+    },
+    "bp": [
+        {
+            "diastolic": 80,
+            "logId": 483697,
+            "systolic": 120
+        },
+        {
+            "diastolic": 90,
+            "logId": 483699,
+            "systolic": 110,
+            "time": "08:00"
+        }
+    ]
+}

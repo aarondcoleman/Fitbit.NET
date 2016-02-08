@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Fitbit.Models;
 using RestSharp;
 using RestSharp.Authenticators;
 using System.Xml.Linq;
-using System.Web;
-using System.Runtime.InteropServices;
-using System.Net;
 
 namespace Fitbit.Api
 {
@@ -78,6 +74,7 @@ namespace Fitbit.Api
             restClient.Authenticator = OAuth1Authenticator.ForProtectedResource(this.consumerKey, this.consumerSecret, this.accessToken, this.accessSecret);
         }
 
+        [Obsolete]
         public ActivitySummary GetDayActivitySummary(DateTime activityDate)
         {
             //RestClient client = new RestClient(baseApiUrl);
@@ -98,6 +95,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Activity GetDayActivity(DateTime activityDate)
         {
             string apiCall = GetActivityApiExtentionURL(activityDate);
@@ -115,6 +113,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Weight GetWeight(DateTime startDate, DateTime? endDate = null)
         {
             if (startDate.AddDays(31) < endDate)
@@ -140,12 +139,13 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Weight GetWeight(DateTime startDate, DateRangePeriod period)
         {
             if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
                 throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Weight");
 
-            string apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period));
+            string apiCall = String.Format("/1/user/-/body/log/weight/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), period.GetStringValue());
 
             RestRequest request = new RestRequest(apiCall);
             request.RootElement = "weight";
@@ -157,6 +157,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Fat GetFat(DateTime startDate, DateTime? endDate = null)
         {
             if (startDate.AddDays(31) < endDate)
@@ -188,12 +189,13 @@ namespace Fitbit.Api
         /// <param name="startDate"></param>
         /// <param name="period"></param>
         /// <returns></returns>
+        [Obsolete]
         public Fat GetFat(DateTime startDate, DateRangePeriod period)
         {
             if (period != DateRangePeriod.OneDay && period != DateRangePeriod.OneWeek && period != DateRangePeriod.ThirtyDays && period != DateRangePeriod.OneMonth)
                 throw new Exception("This API endpoint only supports range up to 31 days. See https://wiki.fitbit.com/display/API/API-Get-Body-Fat");
 
-            string apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), StringEnum.GetStringValue(period));
+            string apiCall = String.Format("/1/user/-/body/log/fat/date/{0}/{1}.xml", startDate.ToString("yyyy-MM-dd"), period.GetStringValue());
 
             RestRequest request = new RestRequest(apiCall);
             request.RootElement = "fat";
@@ -206,6 +208,7 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete]
         public Food GetFood(DateTime date, string userId = null)
         {
             string userSignifier = "-"; //used for current user
@@ -227,6 +230,7 @@ namespace Fitbit.Api
         /// Get current authenticated user's profile
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         public UserProfile GetUserProfile()
         {
             return GetUserProfile(null);
@@ -237,6 +241,7 @@ namespace Fitbit.Api
         /// </summary>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
+        [Obsolete]
         public UserProfile GetUserProfile(string encodedUserId)
         {
             string apiCall;
@@ -259,13 +264,12 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete]
         public List<UserProfile> GetFriends()
         {
             RestRequest request = new RestRequest("/1/user/-/friends.xml");
             request.RootElement = "friends";
             
-
-
             var response = restClient.Execute<List<Friend>>(request);
 
             HandleResponse(response);
@@ -280,9 +284,9 @@ namespace Fitbit.Api
             return userProfiles;
 
             //return response.Data;
-
         }
 
+        [Obsolete]
         public List<Device> GetDevices()
         {
             RestRequest request = new RestRequest("/1/user/-/devices.xml");
@@ -292,7 +296,6 @@ namespace Fitbit.Api
             HandleResponse(response);
 
             return response.Data;
-
         }
 
         public List<TrackerAlarm> GetAlarms(string deviceId)
@@ -315,24 +318,28 @@ namespace Fitbit.Api
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
+        [Obsolete]
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate)
         {
             return GetTimeSeries(timeSeriesResourceType, startDate, endDate, null);
         }
 
+        [Obsolete]
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string userId)
         {
             return GetTimeSeries(timeSeriesResourceType, startDate, endDate.ToString("yyyy-MM-dd"), userId);
         }
 
+        [Obsolete]
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period)
         {
             return GetTimeSeries(timeSeriesResourceType, endDate, period, null);
         }
 
+        [Obsolete]
         public TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string userId)
         {
-            return GetTimeSeries(timeSeriesResourceType, endDate, StringEnum.GetStringValue(period), userId);
+            return GetTimeSeries(timeSeriesResourceType, endDate, period.GetStringValue(), userId);
         }
 
         /// <summary>
@@ -343,6 +350,7 @@ namespace Fitbit.Api
         /// <param name="endDate"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
+        [Obsolete]
         private TimeSeriesDataList GetTimeSeries(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string userId)
         {
 
@@ -350,7 +358,7 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
+            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, timeSeriesResourceType.GetStringValue(), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
             RestRequest request = new RestRequest(requestUrl);
 
             request.OnBeforeDeserialization = resp => {
@@ -391,24 +399,28 @@ namespace Fitbit.Api
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate)
         {
             return GetTimeSeriesInt(timeSeriesResourceType, startDate, endDate, null);
         }
 
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string userId)
         {
             return GetTimeSeriesInt(timeSeriesResourceType, startDate, endDate.ToString("yyyy-MM-dd"), userId);
         }
 
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period)
         {
             return GetTimeSeriesInt(timeSeriesResourceType, endDate, period, null);
         }
 
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string userId)
         {
-            return GetTimeSeriesInt(timeSeriesResourceType, endDate, StringEnum.GetStringValue(period), userId);
+            return GetTimeSeriesInt(timeSeriesResourceType, endDate, period.GetStringValue(), userId);
         }
 
         /// <summary>
@@ -419,6 +431,7 @@ namespace Fitbit.Api
         /// <param name="endDate"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
+        [Obsolete]
         public TimeSeriesDataListInt GetTimeSeriesInt(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string userId)
         {
 
@@ -426,7 +439,7 @@ namespace Fitbit.Api
             if (!string.IsNullOrWhiteSpace(userId))
                 userSignifier = userId;
 
-            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, StringEnum.GetStringValue(timeSeriesResourceType), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
+            string requestUrl = string.Format("/1/user/{0}{1}/date/{2}/{3}.xml", userSignifier, timeSeriesResourceType.GetStringValue(), baseDate.ToString("yyyy-MM-dd"), endDateOrPeriod);
             RestRequest request = new RestRequest(requestUrl);
 
             request.OnBeforeDeserialization = resp =>
@@ -472,7 +485,7 @@ namespace Fitbit.Api
             )
             { 
                 requestUrl = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.xml", 
-                                        StringEnum.GetStringValue(timeSeriesResourceType), 
+                                        timeSeriesResourceType.GetStringValue(), 
                                         dayAndStartTime.ToString("yyyy-MM-dd"), 
                                         dayAndStartTime.ToString("HH:mm"), 
                                         dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"));
@@ -480,7 +493,7 @@ namespace Fitbit.Api
             else //just get the today data, there was a date specified but the timerange was likely too large or negative
             {
                 requestUrl = string.Format("/1/user/-{0}/date/{1}/1d.xml", 
-                                        StringEnum.GetStringValue(timeSeriesResourceType), 
+                                        timeSeriesResourceType.GetStringValue(), 
                                         dayAndStartTime.ToString("yyyy-MM-dd"));
             }
             //                /1/user/-/activities/calories/date/2011-07-05/1d/time/12:20/12:45.xml
@@ -521,6 +534,7 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public HeartRates GetHeartRates(DateTime date)
         {
             string apiCall = string.Format("/1/user/-/heart/date/{0}.xml", date.ToString("yyyy-MM-dd"));
@@ -544,11 +558,13 @@ namespace Fitbit.Api
 
         }
 
+        [Obsolete]
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
         {
             return AddSubscription(apiCollectionType, uniqueSubscriptionId, string.Empty);
         }
 
+        [Obsolete]
         public ApiSubscription AddSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId)
         {
             
@@ -598,9 +614,6 @@ namespace Fitbit.Api
             HandleResponse(response);
 
             return response.Data;
-
-
-
         }
 
         public ApiSubscription RemoveSubscription(APICollectionType apiCollectionType, string uniqueSubscriptionId)
@@ -650,10 +663,13 @@ namespace Fitbit.Api
             return response.Data;
         }
 		
+        [Obsolete]
         public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date)
         {
             return GetBodyMeasurements(date, string.Empty);
         }
+
+        [Obsolete]
         public Fitbit.Models.BodyMeasurements GetBodyMeasurements(DateTime date, string userId)
         {
             string userSignifier = "-"; //used for current user
@@ -671,10 +687,13 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete]
         public Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date)
         {
             return GetBloodPressure(date, string.Empty);
         }
+
+        [Obsolete]
         public Fitbit.Models.BloodPressureData GetBloodPressure(DateTime date, string userId)
         {
             string userSignifier = "-"; //used for current user
@@ -692,6 +711,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete("Use SetGoalAsync")]
         public ActivityGoals SetStepGoal(int newStepGoal)
         {
             string apiCall = "/1/user/-/activities/goals/daily.json";
@@ -710,8 +730,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
-        #region Log Methods
-
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public HeartRateLog LogHeartRate(HeartRateLog log, string userId = null)
         {
             string userSignifier = "-"; // used for current user
@@ -736,6 +755,7 @@ namespace Fitbit.Api
             return response.Data;
         }
 
+        [Obsolete("Depricated https://community.fitbit.com/t5/Web-API/October-2014-Fitbit-API-Updates-and-Deprecations/m-p/565132")]
         public void DeleteHeartRateLog(int logId)
         {
             string subscriptionAPIEndpoint = string.Format("/1/user/-/heart/{0}.xml", logId);
@@ -745,7 +765,88 @@ namespace Fitbit.Api
             HandleResponse(response);
         }
 
-        #endregion 
+        [Obsolete]
+        public WaterData GetWater(DateTime date)
+        {
+            return GetWater(date, string.Empty);
+        }
+
+        // GET https://api.fitbit.com/1/user/-/foods/log/water/date/yyyy-mm-dd.json
+        [Obsolete]
+        public WaterData GetWater(DateTime date, string userId)
+        {
+            string userSignifier = "-"; //used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+                userSignifier = userId;
+
+            string apiCall = String.Format("/1/user/{0}/foods/log/water/date/{1}.json",
+                userSignifier,
+                date.ToString("yyyy-MM-dd"));
+
+            RestRequest request = new RestRequest(apiCall);
+
+            var response = restClient.Execute<Fitbit.Models.WaterData>(request);
+
+            HandleResponse(response);
+
+            return response.Data;
+        }
+
+        [Obsolete]
+        public WaterLog LogWater(DateTime date, WaterLog log)
+        {
+            return LogWater(date, log, string.Empty);
+        }
+
+        // POST https://api.fitbit.com/1/user/-/foods/log/water.json?amount=200&date=yyyy-mm-dd
+        [Obsolete]
+        public WaterLog LogWater(DateTime date, WaterLog log, string userId)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/foods/log/water.json", userSignifier);
+            RestRequest request = new RestRequest(endPoint, Method.POST);
+            request.RootElement = "waterLog";
+            AddPostParameter(request, "amount", log.Amount);
+            AddPostParameter(request, "date", date.ToString("yyyy-MM-dd"));
+
+            var response = restClient.Execute<WaterLog>(request);
+
+            HandleResponse(response);
+
+            return response.Data;
+        }
+
+        [Obsolete]
+        public void DeleteWaterLog(long logId)
+        {
+            DeleteWaterLog(logId, string.Empty);
+        }
+
+        // DELETE https://api.fitbit.com/1/user/-/foods/log/water/XXXXX.json
+        [Obsolete]
+        public void DeleteWaterLog(long logId, string userId)
+        {
+            string userSignifier = "-"; // used for current user
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                userSignifier = userId;
+            }
+
+            string endPoint = string.Format("/1/user/{0}/foods/log/water/{1}.json",
+                userSignifier,
+                logId);
+
+            RestRequest request = new RestRequest(endPoint, Method.DELETE);
+
+            var response = restClient.Execute<WaterLog>(request);
+
+            HandleResponse(response);
+        }
 
         #region Derived Methods from API Calls
 
@@ -778,6 +879,7 @@ namespace Fitbit.Api
             return null; //this is an account where the device 
         }
 
+        [Obsolete]
         public SleepData GetSleep(DateTime sleepDate)
         {
             string apiCall = string.Format("/1/user/-/sleep/date/{0}.xml", sleepDate.ToString("yyyy-MM-dd"));
@@ -832,10 +934,6 @@ namespace Fitbit.Api
 
         }
 
-        #endregion
-
-        #region Helpers
-
         /// <summary>
         /// Generic handling of status responses
         /// See: https://wiki.fitbit.com/display/API/API+Response+Format+And+Errors
@@ -872,13 +970,14 @@ namespace Fitbit.Api
                     int retryAfter;
                     if (int.TryParse(retryAfterHeader.Value.ToString(), out retryAfter))
                     {
-                        exception.retryAfter = retryAfter;
+                        exception.RetryAfter = retryAfter;
                     }
                 }
                 throw exception;
             }
         }
 
+        [Obsolete]
         private string GetActivityApiExtentionURL(DateTime activityDate)
         {
             const string ApiExtention = "/1/user/-/activities/date/{0}-{1}-{2}.xml";
@@ -895,7 +994,5 @@ namespace Fitbit.Api
         }
 
         #endregion
-
-
     }
 }

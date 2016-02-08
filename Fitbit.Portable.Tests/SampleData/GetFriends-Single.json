@@ -1,0 +1,24 @@
+﻿{	"friends": [
+	{
+		"user": {
+			"avatar": "http://www.fitbit.com/images/profile/defaultProfile_100_female.gif",
+			"avatar150": "http://www.fitbit.com/images/profile/defaultProfile_150_female.gif",
+			"country": "GB",
+			"dateOfBirth": "1984-09-07",
+			"displayName": "Laura",
+			"encodedId": "24WXXX",
+			"fullName": "",
+			"gender": "FEMALE",
+			"height": 165,
+			"locale": "en_GB",
+			"memberSince": "2013-02-01",
+			"nickname": "",
+			"offsetFromUTCMillis": 3600000,
+			"startDayOfWeek": "SUNDAY",
+			"strideLengthRunning": 0,
+			"strideLengthWalking": 0,
+			"timezone": "Europe/London",
+			"weight": 0
+		}
+	}]
+}

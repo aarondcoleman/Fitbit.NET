@@ -1,0 +1,9 @@
+﻿{
+  "errors": [
+    {
+      "errorType": "insufficient_permissions",
+      "message": "Read-only API client is not authorized to update resources."
+    }
+  ],
+  "success": false
+}

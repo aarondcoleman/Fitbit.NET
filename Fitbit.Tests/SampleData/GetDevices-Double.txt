@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<devices>
+    <device>
+        <battery>Full</battery>
+        <id>123456</id> 
+        <lastSyncTime>2011-08-26T11:19:03.000</lastSyncTime>
+        <type>TRACKER</type>
+        <deviceVersion>Ultra</deviceVersion>
+    </device>
+    <device>
+        <battery>High</battery>
+        <id>987654</id> 
+        <lastSyncTime>2011-08-26T11:19:03.000</lastSyncTime>
+        <type>SCALE</type>
+        <deviceVersion>Aria</deviceVersion>
+    </device>
+</devices>

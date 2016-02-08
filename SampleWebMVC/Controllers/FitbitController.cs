@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Fitbit;
 using Fitbit.Api;
 using System.Configuration;
 using Fitbit.Models;
@@ -17,7 +14,7 @@ namespace SampleWebMVC.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -38,7 +35,7 @@ namespace SampleWebMVC.Controllers
                                                                                     "http://api.fitbit.com/oauth/authorize");
             RequestToken token = authenticator.GetRequestToken();
             Session.Add("FitbitRequestTokenSecret", token.Secret.ToString()); //store this somehow, like in Session as we'll need it after the Callback() action
-            
+
             //note: at this point the RequestToken object only has the Token and Secret properties supplied. Verifier happens later.
 
             string authUrl = authenticator.GenerateAuthUrlFromRequestToken(token, true);
@@ -80,7 +77,7 @@ namespace SampleWebMVC.Controllers
             Session["FitbitAuthToken"] = credential.AuthToken;
             Session["FitbitAuthTokenSecret"] = credential.AuthTokenSecret;
             Session["FitbitUserId"] = credential.UserId;
-            
+
             return RedirectToAction("Index", "Home");
 
         }
@@ -106,7 +103,7 @@ namespace SampleWebMVC.Controllers
             FitbitClient client = GetFitbitClient();
 
             TimeSeriesDataList results = client.GetTimeSeries(TimeSeriesResourceType.Distance, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
-            
+
             return View(results);
         }
 
@@ -158,7 +155,7 @@ namespace SampleWebMVC.Controllers
 
             Weight weight = client.GetWeight(dateStart, DateRangePeriod.OneMonth);
 
-            if (weight == null || weight.Weights== null) //succeeded but no records
+            if (weight == null || weight.Weights == null) //succeeded but no records
             {
                 weight = new Weight();
                 weight.Weights = new List<WeightLog>();
@@ -189,7 +186,7 @@ namespace SampleWebMVC.Controllers
                 Session["FitbitAuthToken"].ToString(),
                 Session["FitbitAuthTokenSecret"].ToString());
 
-            IntradayData data = client.GetIntraDayTimeSeries(IntradayResourceType.Steps, new DateTime(2012,5,28,11,0,0), new TimeSpan(1,0,0));
+            IntradayData data = client.GetIntraDayTimeSeries(IntradayResourceType.Steps, new DateTime(2012, 5, 28, 11, 0, 0), new TimeSpan(1, 0, 0));
 
             string result = "";
 

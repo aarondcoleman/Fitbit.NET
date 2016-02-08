@@ -75,7 +75,7 @@
                     if(!responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
                     {
                         var clonedRequest = await responseTask.Result.RequestMessage.CloneAsync();
-                        clonedRequest.Headers.Add("Fitbit.Net-StaleTokenRetry", "Fitbit.Net-StaleTokenRetry");
+                        clonedRequest.Headers.Add("X-Fitbit.NET-StaleTokenRetry", "X-Fitbit.NET-StaleTokenRetry");
                         return await Client.HttpClient.SendAsync(clonedRequest, cancellationToken);
                     }
                     else if (responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))

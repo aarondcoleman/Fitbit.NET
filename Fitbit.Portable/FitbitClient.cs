@@ -15,17 +15,17 @@ namespace Fitbit.Api.Portable
         public FitbitAppCredentials AppCredentials { get; private set; }
 
         private OAuth2AccessToken _accesToken;
-        public OAuth2AccessToken AccessToken {
+        public OAuth2AccessToken AccessToken
+        {
             get
             {
                 return _accesToken;
             }
-
             set
             {
                 _accesToken = value;
                 //If we update the AccessToken after HttpClient has been created, then reconfigure authorization header
-                if(this.HttpClient != null)
+                if (HttpClient != null)
                     ConfigureAuthorizationHeader();
             }
         }
@@ -35,9 +35,10 @@ namespace Fitbit.Api.Portable
         /// </summary>
         public HttpClient HttpClient { get; private set; }
 
-        private IFitbitInterceptor MessageInterceptor { get; set; }
+        private IFitbitInterceptor MessageInterceptor { get; }
 
         public ITokenManager TokenManager { get; private set; }
+
         public bool EnableOAuth2TokenRefresh { get; set; }
 
         /// <summary>
@@ -65,39 +66,32 @@ namespace Fitbit.Api.Portable
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
         public FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null, ITokenManager tokenManager = null)
         {
-            this.EnableOAuth2TokenRefresh = false;
+            EnableOAuth2TokenRefresh = false;
 
             ConfigureTokenManager(tokenManager);
-            this.HttpClient = customFactory(new FitbitHttpMessageHandler(this, interceptor, this.TokenManager));
+            HttpClient = customFactory(new FitbitHttpMessageHandler(this, interceptor, TokenManager));
         }
 
         private void ConfigureTokenManager(ITokenManager tokenManager)
         {
-            if(tokenManager != null)
-            {
-                this.TokenManager = tokenManager;
-            }
-            else
-            {
-                this.TokenManager = new DefaultTokenManager();
-            }
+            TokenManager = tokenManager ?? new DefaultTokenManager();
         }
 
         private void CreateHttpClientForOAuth2()
         {
-            this.HttpClient = new HttpClient(new FitbitHttpMessageHandler(this, MessageInterceptor, this.TokenManager));
+            HttpClient = new HttpClient(new FitbitHttpMessageHandler(this, MessageInterceptor, TokenManager));
             ConfigureAuthorizationHeader();
         }
 
         private void ConfigureAuthorizationHeader()
         {
-            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", this.AccessToken.Token);
-            this.HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
+            AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", AccessToken.Token);
+            HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
         }
 
         public async Task<OAuth2AccessToken> RefreshOAuth2Token()
         {
-            return await this.TokenManager.RefreshToken(this);
+            return await TokenManager.RefreshToken(this);
         }
 
         /// <summary>
@@ -372,8 +366,7 @@ namespace Fitbit.Api.Portable
             string apiCall;
 
             if (intraDayTimeSpan > new TimeSpan(0, 1, 0) && //the timespan is greater than a minute
-                dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day //adding the timespan doesn't go in to the next day
-            )
+                dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day) //adding the timespan doesn't go in to the next day
             {
                 apiCall = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.json",
                                         timeSeriesResourceType.GetStringValue(),

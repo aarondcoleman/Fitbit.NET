@@ -16,7 +16,6 @@
                 new KeyValuePair<string, string>("refresh_token", client.AccessToken.RefreshToken),
             });
 
-
             var httpClient = new HttpClient();
 
             var clientIdConcatSecret = OAuth2Helper.Base64Encode(client.AppCredentials.ClientId + ":" + client.AppCredentials.ClientSecret);

@@ -133,7 +133,7 @@
     <Compile Include="AddSubscriptionTests.cs" />
     <Compile Include="TimeSeriesDataListIntTests.cs" />
     <Compile Include="TimeSeriesDataListTests.cs" />
-    <Compile Include="FitbitClientHttpMessageHandlerTests.cs" />
+    <Compile Include="FitbitHttpMessageHandlerTests.cs" />
     <Compile Include="UserProfileTests.cs" />
     <Compile Include="WaterTests.cs" />
     <Compile Include="WeightTests.cs" />

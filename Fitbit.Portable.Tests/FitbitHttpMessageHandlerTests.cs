@@ -10,7 +10,7 @@
     using Fitbit.Portable.Tests.Helpers;
     using Moq;
     [TestFixture]
-    public class FitbitClientHttpMessageHandlerTests
+    public class FitbitHttpMessageHandlerTests
     {
         FitbitAppCredentials dummyCredentials = new FitbitAppCredentials();
         OAuth2AccessToken dummyToken = new OAuth2AccessToken();

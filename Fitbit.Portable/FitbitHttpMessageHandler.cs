@@ -25,7 +25,7 @@
             this.Client = client;
             this.interceptor = interceptor;
             this.TokenManager = client.TokenManager;
-            responseHandler = ResponseHandler;
+            responseHandler = ResponseHandler; 
             //Define the inner must handler. Otherwise exception is thrown.
             InnerHandler = new HttpClientHandler();
         }
@@ -68,12 +68,12 @@
                 if (interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
                 {
                     //If we are faking the response, have the courtesy of setting the original HttpRequestMessage
-                    interceptorFakeResponse.RequestMessage = responseTask.Result.RequestMessage;
+                    interceptorFakeResponse.RequestMessage = (await responseTask).RequestMessage;
                     return interceptorFakeResponse;
                 }
             }
 
-            return responseTask.Result;
+            return await responseTask;
         }
 
         [Conditional("DEBUG")]

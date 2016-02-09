@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
     <Compile Include="FitbitAppCredentials.cs" />
-    <Compile Include="FitbitHtppClientMessageHandler.cs" />
+    <Compile Include="FitbitHttpMessageHandler.cs" />
     <Compile Include="HttpRequestMessageExtensionMethods.cs" />
     <Compile Include="OAuth2\Authenticator2.cs" />
     <Compile Include="Constants.cs" />

@@ -68,7 +68,7 @@ namespace Fitbit.Api.Portable
             this.EnableOAuth2TokenRefresh = false;
 
             ConfigureTokenManager(tokenManager);
-            this.HttpClient = customFactory(new FitbitHttpClientMessageHandler(this, interceptor, this.TokenManager));
+            this.HttpClient = customFactory(new FitbitHttpMessageHandler(this, interceptor, this.TokenManager));
         }
 
         private void ConfigureTokenManager(ITokenManager tokenManager)
@@ -85,7 +85,7 @@ namespace Fitbit.Api.Portable
 
         private void CreateHttpClientForOAuth2()
         {
-            this.HttpClient = new HttpClient(new FitbitHttpClientMessageHandler(this, MessageInterceptor, this.TokenManager));
+            this.HttpClient = new HttpClient(new FitbitHttpMessageHandler(this, MessageInterceptor, this.TokenManager));
             ConfigureAuthorizationHeader();
         }
 

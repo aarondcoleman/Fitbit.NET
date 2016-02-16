@@ -20,7 +20,7 @@
 
         public FitbitClient Client { get; private set; }
 
-        public FitbitHttpClientMessageHandler(FitbitClient client, IFitbitInterceptor interceptor)
+        public FitbitHttpMessageHandler(FitbitClient client, IFitbitInterceptor interceptor)
         {
             this.Client = client;
             this.interceptor = interceptor;

@@ -128,7 +128,7 @@ namespace Fitbit.Api.Portable
             this.OAuth2TokenAutoRefresh = false;
 
             ConfigureTokenManager(tokenManager);
-            this.HttpClient = customFactory(new FitbitHttpClientMessageHandler(this, interceptor));
+            this.HttpClient = customFactory(new FitbitHttpMessageHandler(this, interceptor));
         }
 
         private void ConfigureTokenManager(ITokenManager tokenManager)

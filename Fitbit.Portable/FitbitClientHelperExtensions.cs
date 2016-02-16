@@ -105,13 +105,13 @@ namespace Fitbit.Api.Portable
             if(interceptors.Count > 0)
             {
                 // inspired by the code referenced from the web api source; this creates the russian doll effect
-                FitbitHttpClientMessageHandler innerHandler = new FitbitHttpClientMessageHandler(client, interceptors[0]);
+                FitbitHttpMessageHandler innerHandler = new FitbitHttpMessageHandler(client, interceptors[0]);
 
                 var innerHandlers = interceptors.GetRange(1, interceptors.Count - 1);
 
                 foreach (var handler in innerHandlers)
                 {
-                    var messageHandler = new FitbitHttpClientMessageHandler(client, handler);
+                    var messageHandler = new FitbitHttpMessageHandler(client, handler);
                     messageHandler.InnerHandler = innerHandler;
                     innerHandler = messageHandler;
                 }

@@ -104,6 +104,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AccessTokenTests.cs" />
     <Compile Include="ActivitiesStatsTests.cs" />
     <Compile Include="ApiErrorTests.cs" />
     <Compile Include="AuthenticatorTests.cs" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="SampleData\AccessToken.json" />
     <None Include="SampleData\ActivitiesStats.json" />
     <None Include="SampleData\ActivityGoals.json" />
     <None Include="SampleData\AddSubscriptionResponse.json" />

@@ -804,20 +804,10 @@ namespace Fitbit.Api.Portable
         /// <param name="response"></param>
         private async Task HandleResponse(HttpResponseMessage response)
         {
-            var errors = new List<ApiError>();
-            
             if (!response.IsSuccessStatusCode)
             {
-                try
-                {
-                    var serializer = new JsonDotNetSerializer { RootProperty = "errors" };
-                    errors.AddRange(serializer.Deserialize<List<ApiError>>(await response.Content.ReadAsStringAsync()));
-                }
-                catch
-                {
-                    // if there is an error with the serialization then we need to default the errors back to an instantiated list
-                    errors = new List<ApiError>();
-                }  
+                // assumption is error response from fitbit in the 4xx range  
+                var errors = new JsonDotNetSerializer().Errors(await response.Content.ReadAsStringAsync());
 
                 // rate limit hit
                 if (429 == (int)response.StatusCode)
@@ -829,7 +819,7 @@ namespace Fitbit.Api.Portable
                         int retryAfter;
                         if (int.TryParse(retryAfterHeader, out retryAfter))
                         {
-                            throw new FitbitRateLimitException(retryAfter) { ApiErrors =  errors };
+                            throw new FitbitRateLimitException(retryAfter, errors);
                         }
                     }
                 }
@@ -841,11 +831,11 @@ namespace Fitbit.Api.Portable
                     case HttpStatusCode.Unauthorized:
                     case HttpStatusCode.Forbidden:
                     case HttpStatusCode.NotFound:
-                        throw new FitbitRequestException(response.StatusCode) { ApiErrors = errors };
+                        throw new FitbitRequestException(response.StatusCode, errors);
                 }
 
                 // if we've got here then something unexpected has occured
-                throw new FitbitException("An error has occured. Please see error list for details.", response.StatusCode);
+                throw new FitbitException($"An error has occured. Please see error list for details - {response.StatusCode}", errors);
             }
         }
     }

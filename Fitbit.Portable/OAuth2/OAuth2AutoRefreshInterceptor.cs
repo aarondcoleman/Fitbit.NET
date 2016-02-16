@@ -42,7 +42,7 @@ namespace Fitbit.Api.Portable.OAuth2
                     }
                     else if (response.Result.RequestMessage.Headers.Contains(CUSTOM_HEADER))
                     {
-                        throw new FitbitException("We received an unexpected stale token response -- during the retry for a call whose token we just refreshed", response.Result.StatusCode);
+                        throw new FitbitTokenException(message: $"We received an unexpected stale token response - during the retry for a call whose token we just refreshed {response.Result.StatusCode}");   
                     }
                 }                
             }
@@ -53,17 +53,8 @@ namespace Fitbit.Api.Portable.OAuth2
 
         private bool IsTokenStale(string responseBody)
         {
-            JObject response = JObject.Parse(responseBody);
-            IList<JToken> errors = response["errors"].Children().ToList();
-
-            foreach (JToken error in errors)
-            {
-                var apiError = JsonConvert.DeserializeObject<ApiError>(error.ToString());
-                if (apiError.ErrorType == "expired_token")
-                    return true;
-            }
-
-            return false;
+            var errors = new JsonDotNetSerializer().Errors(responseBody);
+            return errors.Any(error => error.ErrorType == "expired_token");
         }
     }
 }

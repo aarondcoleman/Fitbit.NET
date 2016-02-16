@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using Fitbit.Api.Portable.Models;
 
 namespace Fitbit.Api.Portable
 {
     public class FitbitException : Exception
     {
-        public HttpStatusCode HttpStatusCode { get; }
-
         public List<ApiError> ApiErrors { get; set; }
 
-        public FitbitException(string message, HttpStatusCode statusCode) : base(message)
+        public FitbitException(string message, IEnumerable<ApiError> errors) : base(message)
         {
-            HttpStatusCode = statusCode;
+            ApiErrors = errors != null ? new List<ApiError>(errors) : new List<ApiError>();
         }
     }
 }

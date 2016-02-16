@@ -1,5 +1,5 @@
 ﻿using Fitbit.Api.Portable;
-using Fitbit.Models;
+using Fitbit.Api.Portable.Models;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests

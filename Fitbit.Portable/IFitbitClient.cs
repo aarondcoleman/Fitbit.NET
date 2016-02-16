@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Fitbit.Models;
+using Fitbit.Api.Portable.Models;
 
 namespace Fitbit.Api.Portable
 {

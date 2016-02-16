@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using Fitbit.Api.Portable.Models;
 
 namespace Fitbit.Api.Portable
 {
@@ -8,7 +9,7 @@ namespace Fitbit.Api.Portable
     {
         public HttpStatusCode HttpStatusCode { get; }
 
-        public List<Models.ApiError> ApiErrors { get; set; }
+        public List<ApiError> ApiErrors { get; set; }
 
         public FitbitException(string message, HttpStatusCode statusCode) : base(message)
         {

@@ -5,8 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable.OAuth2;
-using Fitbit.Models;
 using System.Net.Http.Headers;
+using Fitbit.Api.Portable.Models;
 
 namespace Fitbit.Api.Portable
 {

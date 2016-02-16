@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Fitbit.Api.Portable;
-using Fitbit.Models;
+using Fitbit.Api.Portable.Models;
 
 namespace SampleWebMVC.Portable.Controllers
 {

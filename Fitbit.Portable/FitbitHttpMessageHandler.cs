@@ -18,13 +18,13 @@
 
         public ITokenManager TokenManager { get; private set; }
 
-        public FitbitClient Client { get; private set; }
+        public FitbitClient FitbitClient { get; private set; }
 
-        public FitbitHttpMessageHandler(FitbitClient client, IFitbitInterceptor interceptor)
+        public FitbitHttpMessageHandler(FitbitClient fitbitClient, IFitbitInterceptor interceptor)
         {
-            this.Client = client;
+            this.FitbitClient = fitbitClient;
             this.interceptor = interceptor;
-            this.TokenManager = client.TokenManager;
+            this.TokenManager = fitbitClient.TokenManager;
             responseHandler = ResponseHandler;
             //Define the inner must handler. Otherwise exception is thrown.
             InnerHandler = new HttpClientHandler();
@@ -38,7 +38,7 @@
             Debug.WriteLine("Entering Http client's request message handler. Request details: {0}", request.ToString());
 
             if (interceptor != null)
-                interceptorFakeResponse = interceptor.InterceptRequest(request, cancellationToken, Client);
+                interceptorFakeResponse = interceptor.InterceptRequest(request, cancellationToken, FitbitClient);
 
             if (interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
             {
@@ -63,7 +63,7 @@
 
             if (interceptor != null)
             {
-                var interceptorFakeResponse = await interceptor.InterceptResponse(responseTask, cancellationToken, Client);
+                var interceptorFakeResponse = await interceptor.InterceptResponse(responseTask, cancellationToken, FitbitClient);
 
                 if (interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
                 {

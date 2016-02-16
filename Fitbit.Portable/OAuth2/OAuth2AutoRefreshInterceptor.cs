@@ -14,7 +14,7 @@ namespace Fitbit.Api.Portable.OAuth2
 {
     public class OAuth2AutoRefreshInterceptor : IFitbitInterceptor
     {
-        private const string CUSTOM_HEADER = "X-Fitbit.NET-StaleTokenRetry";
+        private const string CUSTOM_HEADER = "Fitbit.NET-StaleTokenRetry";
 
         public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken, FitbitClient Client)
         {

@@ -25,7 +25,7 @@
             this.Client = client;
             this.interceptor = interceptor;
             this.TokenManager = client.TokenManager;
-            responseHandler = ResponseHandler; 
+            responseHandler = ResponseHandler;
             //Define the inner must handler. Otherwise exception is thrown.
             InnerHandler = new HttpClientHandler();
         }

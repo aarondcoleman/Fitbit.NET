@@ -88,7 +88,7 @@ namespace Fitbit.Api.Portable
             this.FitbitInterceptorPipeline = new List<IFitbitInterceptor>();
 
             if(interceptors != null && interceptors.Count > 0)
-            this.FitbitInterceptorPipeline.AddRange(interceptors);
+                this.FitbitInterceptorPipeline.AddRange(interceptors);
 
             ConfigureTokenManager(tokenManager);
 
@@ -140,7 +140,7 @@ namespace Fitbit.Api.Portable
         {
             var pipeline = this.CreatePipeline(FitbitInterceptorPipeline);
             if (pipeline != null)
-            this.HttpClient = new HttpClient(pipeline);
+                this.HttpClient = new HttpClient(pipeline);
             else
                 this.HttpClient = new HttpClient();
 

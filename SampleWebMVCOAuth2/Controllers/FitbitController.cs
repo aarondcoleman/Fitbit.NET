@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fitbit.Api;
 using System.Configuration;
-using Fitbit.Models;
+using Fitbit.Api.Portable.Models;
 using Fitbit.Api.Portable;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable.OAuth2;

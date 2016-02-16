@@ -5,21 +5,11 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C284DD15-3355-4C6A-9EE0-D0A3BEA4D8A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit", "Fitbit.csproj", "{D2C08C58-269F-45DE-8A25-C5492BC625F8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.IntegrationTests", "..\Fitbit.IntegrationTests\Fitbit.IntegrationTests.csproj", "{D918CF21-DA5D-4AA9-81B3-6E4A03920E07}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Common", "..\Fitbit.Common\Fitbit.Common.csproj", "{37636456-5640-4258-ADF5-11292E6B422E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable", "..\Fitbit.Portable\Fitbit.Portable.csproj", "{1358D3B4-0698-4003-97EB-B6D489E04138}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable.Tests", "..\Fitbit.Portable.Tests\Fitbit.Portable.Tests.csproj", "{F811594D-3323-4147-9780-D3A1F930B99F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portable", "Portable", "{750B7532-1468-4300-959C-3E23AFE7BE54}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Regular", "Regular", "{96879064-63D7-4832-90B1-D516DD4CE08E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Tests", "..\Fitbit.Tests\Fitbit.Tests.csproj", "{D7C6CB76-5296-4F10-927B-CBA106706AF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,24 +18,6 @@ Global
 		TrialRelease|Any CPU = TrialRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D2C08C58-269F-45DE-8A25-C5492BC625F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2C08C58-269F-45DE-8A25-C5492BC625F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2C08C58-269F-45DE-8A25-C5492BC625F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2C08C58-269F-45DE-8A25-C5492BC625F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2C08C58-269F-45DE-8A25-C5492BC625F8}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{D2C08C58-269F-45DE-8A25-C5492BC625F8}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
-		{D918CF21-DA5D-4AA9-81B3-6E4A03920E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D918CF21-DA5D-4AA9-81B3-6E4A03920E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D918CF21-DA5D-4AA9-81B3-6E4A03920E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D918CF21-DA5D-4AA9-81B3-6E4A03920E07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D918CF21-DA5D-4AA9-81B3-6E4A03920E07}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{D918CF21-DA5D-4AA9-81B3-6E4A03920E07}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
-		{37636456-5640-4258-ADF5-11292E6B422E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37636456-5640-4258-ADF5-11292E6B422E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37636456-5640-4258-ADF5-11292E6B422E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37636456-5640-4258-ADF5-11292E6B422E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37636456-5640-4258-ADF5-11292E6B422E}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{37636456-5640-4258-ADF5-11292E6B422E}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
 		{1358D3B4-0698-4003-97EB-B6D489E04138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1358D3B4-0698-4003-97EB-B6D489E04138}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1358D3B4-0698-4003-97EB-B6D489E04138}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -58,21 +30,12 @@ Global
 		{F811594D-3323-4147-9780-D3A1F930B99F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F811594D-3323-4147-9780-D3A1F930B99F}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{F811594D-3323-4147-9780-D3A1F930B99F}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
-		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{D7C6CB76-5296-4F10-927B-CBA106706AF3}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D2C08C58-269F-45DE-8A25-C5492BC625F8} = {96879064-63D7-4832-90B1-D516DD4CE08E}
-		{D918CF21-DA5D-4AA9-81B3-6E4A03920E07} = {96879064-63D7-4832-90B1-D516DD4CE08E}
 		{1358D3B4-0698-4003-97EB-B6D489E04138} = {750B7532-1468-4300-959C-3E23AFE7BE54}
 		{F811594D-3323-4147-9780-D3A1F930B99F} = {750B7532-1468-4300-959C-3E23AFE7BE54}
-		{D7C6CB76-5296-4F10-927B-CBA106706AF3} = {96879064-63D7-4832-90B1-D516DD4CE08E}
 	EndGlobalSection
 EndGlobal

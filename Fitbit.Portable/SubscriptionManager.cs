@@ -1,6 +1,7 @@
-﻿namespace Fitbit.Api.Portable
+﻿using Fitbit.Api.Portable.Models;
+
+namespace Fitbit.Api.Portable
 {
-    using Fitbit.Models;
     using System;
     using System.Collections.Generic;
 

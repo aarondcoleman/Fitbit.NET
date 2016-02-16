@@ -18,13 +18,13 @@
 
         public ITokenManager TokenManager { get; private set; }
 
-        public FitbitClient Client { get; private set; }
+        public FitbitClient FitbitClient { get; private set; }
 
-        public FitbitHttpMessageHandler(FitbitClient client, IFitbitInterceptor interceptor, ITokenManager tokenManager)
+        public FitbitHttpMessageHandler(FitbitClient fitbitClient, IFitbitInterceptor interceptor)
         {
-            this.Client = client;
+            this.FitbitClient = fitbitClient;
             this.interceptor = interceptor;
-            this.TokenManager = tokenManager;
+            this.TokenManager = fitbitClient.TokenManager;
             responseHandler = ResponseHandler;
             //Define the inner must handler. Otherwise exception is thrown.
             InnerHandler = new HttpClientHandler();
@@ -38,7 +38,7 @@
             Debug.WriteLine("Entering Http client's request message handler. Request details: {0}", request.ToString());
 
             if (interceptor != null)
-                interceptorFakeResponse = interceptor.InterceptRequest(request, cancellationToken);
+                interceptorFakeResponse = interceptor.InterceptRequest(request, cancellationToken, FitbitClient);
 
             if (interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
             {
@@ -61,49 +61,19 @@
         {
             DebugLogResponse(responseTask);
 
-            if (responseTask.Result.StatusCode == System.Net.HttpStatusCode.Unauthorized)//Unauthorized, then there is a chance token is stale
+            if (interceptor != null)
             {
-                var responseBody = await responseTask.Result.Content.ReadAsStringAsync();
+                var interceptorFakeResponse = await interceptor.InterceptResponse(responseTask, cancellationToken, FitbitClient);
 
-                if (Client.EnableOAuth2TokenRefresh && IsTokenStale(responseBody))
+                if (interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
                 {
-                    Debug.WriteLine("Stale token detected. Invoking registered tokenManager.RefreskToken to refresh it");
-                    var RefreshedToken = TokenManager.RefreshToken(Client).Result;
-                    this.Client.AccessToken = RefreshedToken;
-
-                    //Only retry the first time.
-                    if (!responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
-                    {
-                        var clonedRequest = await responseTask.Result.RequestMessage.CloneAsync();
-                        clonedRequest.Headers.Add("X-Fitbit.NET-StaleTokenRetry", "X-Fitbit.NET-StaleTokenRetry");
-                        return await Client.HttpClient.SendAsync(clonedRequest, cancellationToken);
-                    }
-                    else if (responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
-                    {
-                        throw new FitbitException("We received an unexpected stale token response -- during the retry for a call whose token we just refreshed", responseTask.Result.StatusCode);
-                    }
+                    //If we are faking the response, have the courtesy of setting the original HttpRequestMessage
+                    interceptorFakeResponse.RequestMessage = (await responseTask).RequestMessage;
+                    return interceptorFakeResponse;
                 }
             }
 
-            if (interceptor != null)
-                await interceptor.InterceptResponse(responseTask, cancellationToken);
-
-            return responseTask.Result;
-        }
-
-        private bool IsTokenStale(string responseBody)
-        {
-            JObject response = JObject.Parse(responseBody);
-            IList<JToken> errors = response["errors"].Children().ToList();
-
-            foreach (JToken error in errors)
-            {
-                var apiError = JsonConvert.DeserializeObject<ApiError>(error.ToString());
-                if (apiError.ErrorType == "expired_token")
-                    return true;
-            }
-
-            return false;
+            return await responseTask;
         }
 
         [Conditional("DEBUG")]

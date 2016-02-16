@@ -18,7 +18,7 @@
             this.fakeResponse = fakeResponse;
         }
 
-        public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> InterceptRequest(HttpRequestMessage request, CancellationToken cancellationToken, FitbitClient client)
         {
             RequestCount++;
             if (fakeResponse != null)
@@ -32,9 +32,10 @@
                 return null;
         }
 
-        public async Task InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken)
+        public async Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
         {
             ResponseCount++;
+            return null;
         }
 
     }

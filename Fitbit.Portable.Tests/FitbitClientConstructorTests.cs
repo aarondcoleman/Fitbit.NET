@@ -34,6 +34,30 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(sut.HttpClient);
         }
 
+        [Test]
+        [Category("constructor")]
+        public void Can_Instantiate_Without_Any_Interceptors()
+        {
+            var credentials = new FitbitAppCredentials() { ClientId = "SomeID", ClientSecret = "THE Secret ;)" };
+            var accessToken = new OAuth2AccessToken() { Token = "", TokenType = "", ExpiresIn = 3600, RefreshToken = "" };
 
+            //Ensure not even the auto-token-refresh interceptor is active
+            var sut = new FitbitClient(credentials, accessToken, false);
+
+            Assert.IsNotNull(sut.HttpClient);
+        }
+
+        [Test]
+        [Category("constructor")]
+        public void Can_Use_Interceptors_Without_Autorefresh()
+        {
+            var credentials = new FitbitAppCredentials() { ClientId = "SomeID", ClientSecret = "THE Secret ;)" };
+            var accessToken = new OAuth2AccessToken() { Token = "", TokenType = "", ExpiresIn = 3600, RefreshToken = "" };
+
+            //Registere an interceptor, but disable the auto-token-refresh interceptor
+            var sut = new FitbitClient(credentials, accessToken, new InterceptorCounter(), false);
+
+            Assert.IsNotNull(sut.HttpClient);
+        }
     }
 }

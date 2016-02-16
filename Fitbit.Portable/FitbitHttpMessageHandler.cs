@@ -78,9 +78,10 @@
                         clonedRequest.Headers.Add("X-Fitbit.NET-StaleTokenRetry", "X-Fitbit.NET-StaleTokenRetry");
                         return await Client.HttpClient.SendAsync(clonedRequest, cancellationToken);
                     }
-                    else if (responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
+
+                    if (responseTask.Result.RequestMessage.Headers.Contains("Fitbit.Net-StaleTokenRetry"))
                     {
-                        throw new FitbitException("We received an unexpected stale token response -- during the retry for a call whose token we just refreshed", responseTask.Result.StatusCode);
+                        throw new FitbitTokenException(message: $"We received an unexpected stale token response - during the retry for a call whose token we just refreshed {responseTask.Result.StatusCode}");
                     }
                 }
             }
@@ -93,17 +94,8 @@
 
         private bool IsTokenStale(string responseBody)
         {
-            JObject response = JObject.Parse(responseBody);
-            IList<JToken> errors = response["errors"].Children().ToList();
-
-            foreach (JToken error in errors)
-            {
-                var apiError = JsonConvert.DeserializeObject<ApiError>(error.ToString());
-                if (apiError.ErrorType == "expired_token")
-                    return true;
-            }
-
-            return false;
+            var errors = new JsonDotNetSerializer().Errors(responseBody);
+            return errors.Any(error => error.ErrorType == "expired_token");
         }
 
         [Conditional("DEBUG")]

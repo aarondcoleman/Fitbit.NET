@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
@@ -14,10 +13,8 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("ApiError.json");
 
-            var deserializer = new JsonDotNetSerializer();
-            deserializer.RootProperty = "errors";
-            List<ApiError> result = deserializer.Deserialize<List<ApiError>>(content);
-
+            var result = new JsonDotNetSerializer().Errors(content);
+            
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);
             ApiError error = result.First();
@@ -31,9 +28,7 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("ApiError-Request-BadRequest.json");
 
-            var deserializer = new JsonDotNetSerializer();
-            deserializer.RootProperty = "errors";
-            List<ApiError> result = deserializer.Deserialize<List<ApiError>>(content);
+            var result = new JsonDotNetSerializer().Errors(content);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);
@@ -49,9 +44,7 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("ApiError-Request-Forbidden.json");
 
-            var deserializer = new JsonDotNetSerializer();
-            deserializer.RootProperty = "errors";
-            List<ApiError> result = deserializer.Deserialize<List<ApiError>>(content);
+            var result = new JsonDotNetSerializer().Errors(content);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);
@@ -67,9 +60,7 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("ApiError-Request-Unauthorized.json");
 
-            var deserializer = new JsonDotNetSerializer();
-            deserializer.RootProperty = "errors";
-            List<ApiError> result = deserializer.Deserialize<List<ApiError>>(content);
+            var result = new JsonDotNetSerializer().Errors(content);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);

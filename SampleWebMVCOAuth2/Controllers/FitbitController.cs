@@ -6,6 +6,7 @@ using System.Configuration;
 using Fitbit.Models;
 using Fitbit.Api.Portable;
 using System.Threading.Tasks;
+using Fitbit.Api.Portable.OAuth2;
 
 namespace SampleWebMVC.Controllers
 {
@@ -24,15 +25,16 @@ namespace SampleWebMVC.Controllers
         // Setup - prepare the user redirect to Fitbit.com to prompt them to authorize this app.
         public ActionResult Authorize()
         {
-
+            var appCredentials = new FitbitAppCredentials() {
+                    ClientId = ConfigurationManager.AppSettings["FitbitClientId"],
+                    ClientSecret = ConfigurationManager.AppSettings["FitbitClientSecret"]
+            };
             //make sure you've set these up in Web.Config under <appSettings>:
-            string ConsumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
-            string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
-            string ClientId = ConfigurationManager.AppSettings["FitbitClientId"];
 
+            Session["AppCredentials"] = appCredentials;
 
-            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(ClientId,
-                                                                                    ConsumerSecret,
+            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(appCredentials.ClientId,
+                                                                                    appCredentials.ClientSecret,
                                                                                     Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
                                                                                     );
             string[] scopes = new string[] {"profile"};
@@ -45,14 +47,10 @@ namespace SampleWebMVC.Controllers
         //Final step. Take this authorization information and use it in the app
         public async Task<ActionResult> Callback()
         {
-            //make sure you've set these up in Web.Config under <appSettings>:
-            string ConsumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
-            string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
-            string ClientId = ConfigurationManager.AppSettings["FitbitClientId"];
+            FitbitAppCredentials appCredentials = (FitbitAppCredentials)Session["AppCredentials"];
 
-
-            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(ClientId,
-                                                                                    ConsumerSecret,
+            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(appCredentials.ClientId,
+                                                                                    appCredentials.ClientSecret,
                                                                                     Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
                                                                                     );
 
@@ -71,16 +69,9 @@ namespace SampleWebMVC.Controllers
 
         public async Task<ActionResult> RefreshToken()
         {
-            string ConsumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
-            string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
-            string ClientId = ConfigurationManager.AppSettings["FitbitClientId"];
+            var fitbitClient = GetFitbitClient();
 
-            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(ClientId,
-                                                                                    ConsumerSecret,
-                                                                                    Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
-                                                                                    );
-
-            ViewBag.AccessToken = await authenticator.RefreshAccessToken((OAuth2AccessToken)Session["AccessToken"]);
+            ViewBag.AccessToken = await fitbitClient.RefreshOAuth2Token();
 
             return View("Callback");
         }
@@ -114,9 +105,8 @@ namespace SampleWebMVC.Controllers
 
         public async Task<ActionResult> LastWeekSteps()
         {
-            OAuth2AccessToken accessToken = (OAuth2AccessToken)Session["AccessToken"];
 
-            FitbitClient client = GetFitbitClient(accessToken.Token, accessToken.RefreshToken);
+            FitbitClient client = GetFitbitClient();
 
             var response = await client.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
 
@@ -207,13 +197,28 @@ namespace SampleWebMVC.Controllers
         }
 
          */
-        private FitbitClient GetFitbitClient(string bearerToken, string refreshToken)
+
+        /// <summary>
+        /// HttpClient and hence FitbitClient are designed to be long-lived for the duration of the session. This method ensures only one client is created for the duration of the session.
+        /// More info at: http://stackoverflow.com/questions/22560971/what-is-the-overhead-of-creating-a-new-httpclient-per-call-in-a-webapi-client
+        /// </summary>
+        /// <returns></returns>
+        private FitbitClient GetFitbitClient()
         {
-            OAuth2Authorization authorization = new OAuth2Authorization(bearerToken, refreshToken);
+            if (Session["FitbitClient"] == null)
+            {
+                var oa2Token = (OAuth2AccessToken)Session["AccessToken"];
+                var appCredentials = (FitbitAppCredentials)Session["AppCredentials"];
 
-            FitbitClient client = new FitbitClient(authorization);
+                FitbitClient client = new FitbitClient(appCredentials, oa2Token);
 
-            return client;
+                Session["FitbitClient"] = client;
+                return client;
+            }
+            else
+            {
+                return (FitbitClient)Session["FitbitClient"];
+            }
         }
     }
 }

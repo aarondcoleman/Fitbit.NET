@@ -11,7 +11,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    internal class FitbitHttpClientMessageHandler : DelegatingHandler
+    internal class FitbitHttpMessageHandler : DelegatingHandler
     {
         private IFitbitInterceptor interceptor;
         Func<Task<HttpResponseMessage>, CancellationToken, Task<HttpResponseMessage>> responseHandler;
@@ -20,7 +20,7 @@
 
         public FitbitClient Client { get; private set; }
 
-        public FitbitHttpClientMessageHandler(FitbitClient client, IFitbitInterceptor interceptor, ITokenManager tokenManager)
+        public FitbitHttpMessageHandler(FitbitClient client, IFitbitInterceptor interceptor, ITokenManager tokenManager)
         {
             this.Client = client;
             this.interceptor = interceptor;

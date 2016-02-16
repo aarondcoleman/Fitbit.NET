@@ -15,7 +15,6 @@
         private IFitbitInterceptor interceptor;
         Func<Task<HttpResponseMessage>, CancellationToken, Task<HttpResponseMessage>> responseHandler;
 
-        public ITokenManager TokenManager { get; private set; }
 
         public FitbitClient FitbitClient { get; private set; }
 
@@ -23,7 +22,6 @@
         {
             this.FitbitClient = fitbitClient;
             this.interceptor = interceptor;
-            this.TokenManager = fitbitClient.TokenManager;
             responseHandler = ResponseHandler;
             //Define the inner must handler. Otherwise exception is thrown.
             InnerHandler = new HttpClientHandler();

@@ -1,4 +1,6 @@
-﻿namespace Fitbit.Api.Portable.Models
+﻿using Fitbit.Api.Portable;
+
+namespace Fitbit.Models
 {
     /// <summary>
     /// All date ranges that can be queried from fitbit

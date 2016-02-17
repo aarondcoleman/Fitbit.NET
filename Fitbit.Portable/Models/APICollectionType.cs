@@ -1,4 +1,4 @@
-﻿namespace Fitbit.Api.Portable.Models
+﻿namespace Fitbit.Models
 {
     public enum APICollectionType
     {

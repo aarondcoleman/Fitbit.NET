@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using Fitbit.Api.Portable;
-using Fitbit.Api.Portable.Models;
+using Fitbit.Models;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests

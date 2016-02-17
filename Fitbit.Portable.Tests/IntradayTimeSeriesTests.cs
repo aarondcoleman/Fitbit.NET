@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using Fitbit.Api.Portable.Models;
+using Fitbit.Models;
 using FluentAssertions;
 using NUnit.Framework;
 

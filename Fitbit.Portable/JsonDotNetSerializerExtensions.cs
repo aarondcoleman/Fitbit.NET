@@ -14,7 +14,7 @@ namespace Fitbit.Api.Portable
         /// <param name="serializer"></param>
         /// <param name="errorJson"></param>
         /// <returns></returns>
-        internal static List<ApiError> Errors(this JsonDotNetSerializer serializer, string errorJson)
+        internal static List<ApiError> ParseErrors(this JsonDotNetSerializer serializer, string errorJson)
         {
             if (string.IsNullOrWhiteSpace(errorJson))
             {

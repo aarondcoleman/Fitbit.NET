@@ -16,7 +16,7 @@ namespace Fitbit.Api.Portable.OAuth2
             var error = responseObject["errors"];
             if (error != null)
             {
-                var errors = new JsonDotNetSerializer().Errors(responseString);
+                var errors = new JsonDotNetSerializer().ParseErrors(responseString);
                 throw new FitbitTokenException(errors);
             }
 

@@ -53,7 +53,7 @@ namespace Fitbit.Api.Portable.OAuth2
 
         private bool IsTokenStale(string responseBody)
         {
-            var errors = new JsonDotNetSerializer().Errors(responseBody);
+            var errors = new JsonDotNetSerializer().ParseErrors(responseBody);
             return errors.Any(error => error.ErrorType == "expired_token");
         }
     }

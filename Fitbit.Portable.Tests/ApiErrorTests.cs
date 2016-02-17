@@ -14,7 +14,7 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("ApiError.json");
 
-            var result = new JsonDotNetSerializer().Errors(content);
+            var result = new JsonDotNetSerializer().ParseErrors(content);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);
@@ -29,7 +29,7 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("ApiError-Request-BadRequest.json");
 
-            var result = new JsonDotNetSerializer().Errors(content);
+            var result = new JsonDotNetSerializer().ParseErrors(content);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);
@@ -45,7 +45,7 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("ApiError-Request-Forbidden.json");
 
-            var result = new JsonDotNetSerializer().Errors(content);
+            var result = new JsonDotNetSerializer().ParseErrors(content);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);
@@ -61,7 +61,7 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("ApiError-Request-Unauthorized.json");
 
-            var result = new JsonDotNetSerializer().Errors(content);
+            var result = new JsonDotNetSerializer().ParseErrors(content);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);

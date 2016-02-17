@@ -807,7 +807,7 @@ namespace Fitbit.Api.Portable
             if (!response.IsSuccessStatusCode)
             {
                 // assumption is error response from fitbit in the 4xx range  
-                var errors = new JsonDotNetSerializer().Errors(await response.Content.ReadAsStringAsync());
+                var errors = new JsonDotNetSerializer().ParseErrors(await response.Content.ReadAsStringAsync());
 
                 // rate limit hit
                 if (429 == (int)response.StatusCode)

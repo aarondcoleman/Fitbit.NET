@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C284DD
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Common", "..\Fitbit.Common\Fitbit.Common.csproj", "{37636456-5640-4258-ADF5-11292E6B422E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable", "..\Fitbit.Portable\Fitbit.Portable.csproj", "{1358D3B4-0698-4003-97EB-B6D489E04138}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable.Tests", "..\Fitbit.Portable.Tests\Fitbit.Portable.Tests.csproj", "{F811594D-3323-4147-9780-D3A1F930B99F}"

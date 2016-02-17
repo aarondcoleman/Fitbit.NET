@@ -12,6 +12,9 @@ using Fitbit.Api.Portable.Models;
 
 namespace Fitbit.Api.Portable.OAuth2
 {
+    /// <summary>
+    /// An Http interceptor that intercepts "stale token" responses and invokes the Token Manager of the FitbitClient to get a new token.
+    /// </summary>
     public class OAuth2AutoRefreshInterceptor : IFitbitInterceptor
     {
         private const string CUSTOM_HEADER = "Fitbit.NET-StaleTokenRetry";
@@ -30,8 +33,7 @@ namespace Fitbit.Api.Portable.OAuth2
                 if (IsTokenStale(responseBody))
                 {
                     Debug.WriteLine("Stale token detected. Invoking registered tokenManager.RefreskToken to refresh it");
-                    var RefreshedToken = Client.TokenManager.RefreshToken(Client).Result;
-                    Client.AccessToken = RefreshedToken;
+                    await Client.RefreshOAuth2Token();
 
                     //Only retry the first time.
                     if (!response.Result.RequestMessage.Headers.Contains(CUSTOM_HEADER))

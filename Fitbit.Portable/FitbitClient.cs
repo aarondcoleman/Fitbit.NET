@@ -155,7 +155,8 @@ namespace Fitbit.Api.Portable
 
         public async Task<OAuth2AccessToken> RefreshOAuth2Token()
         {
-            return await TokenManager.RefreshToken(this);
+            this.AccessToken = await TokenManager.RefreshToken(this);
+            return this.AccessToken;
         }
 
         /// <summary>

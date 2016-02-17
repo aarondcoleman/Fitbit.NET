@@ -16,6 +16,7 @@
       2.0.0 Adds:
       *Support for OAuth 2.0
       *Support for async
+      *Request/Response transparent interception through IFitbitInterceptor
     </releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>Fitbit OAuth API</tags>
@@ -26,7 +27,5 @@
   <files>
     <file src="$buildOutputPath$\Fitbit.Portable.dll" target="lib\net451" exclude="" />
     <file src="$buildOutputPath$\Fitbit.Portable.pdb" target="lib\net451" exclude="" />
-    <file src="$buildOutputPath$\Fitbit.Common.dll" target="lib\net451" exclude="" />
-    <file src="$buildOutputPath$\Fitbit.Common.dll" target="lib\net451" exclude="" />
   </files>
 </package>

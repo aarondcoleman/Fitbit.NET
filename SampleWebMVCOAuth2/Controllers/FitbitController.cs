@@ -33,6 +33,8 @@ namespace SampleWebMVC.Controllers
 
             Session["AppCredentials"] = appCredentials;
 
+            //Provide the App Credentials. You get those by registering your app at dev.fitbit.com
+            //Configure Fitbit authenticaiton request to perform a callback to this constructor's Callback method
             Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(appCredentials.ClientId,
                                                                                     appCredentials.ClientSecret,
                                                                                     Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
@@ -58,15 +60,20 @@ namespace SampleWebMVC.Controllers
 
             OAuth2AccessToken accessToken = await authenticator.ExchangeAuthCodeForAccessTokenAsync(code);
 
-            // For demo, put this in the session managed by ASP.NET
+            //Store credentials in FitbitClient. The client in its default implementation manages the Refresh process
+            var fitbitClient = GetFitbitClient(accessToken);
+            fitbitClient.AccessToken = accessToken;
 
-            Session["AccessToken"] = accessToken;
             ViewBag.AccessToken = accessToken;
 
             return View();
 
         }
 
+        /// <summary>
+        /// In this example we show how to explicitly request a token refresh. However, FitbitClient V2 on its default implementation provide an OOB automatic token refresh.
+        /// </summary>
+        /// <returns>A refreshed token</returns>
         public async Task<ActionResult> RefreshToken()
         {
             var fitbitClient = GetFitbitClient();
@@ -203,17 +210,22 @@ namespace SampleWebMVC.Controllers
         /// More info at: http://stackoverflow.com/questions/22560971/what-is-the-overhead-of-creating-a-new-httpclient-per-call-in-a-webapi-client
         /// </summary>
         /// <returns></returns>
-        private FitbitClient GetFitbitClient()
+        private FitbitClient GetFitbitClient(OAuth2AccessToken accessToken = null)
         {
             if (Session["FitbitClient"] == null)
             {
-                var oa2Token = (OAuth2AccessToken)Session["AccessToken"];
-                var appCredentials = (FitbitAppCredentials)Session["AppCredentials"];
+                if (accessToken != null)
+                {
+                    var appCredentials = (FitbitAppCredentials)Session["AppCredentials"];
+                    FitbitClient client = new FitbitClient(appCredentials, accessToken);
+                    Session["FitbitClient"] = client;
+                    return client;
+                }
+                else
+                {
+                    throw new Exception("First time requesting a FitbitClient from the session you must pass the AccessToken.");
+                }
 
-                FitbitClient client = new FitbitClient(appCredentials, oa2Token);
-
-                Session["FitbitClient"] = client;
-                return client;
             }
             else
             {

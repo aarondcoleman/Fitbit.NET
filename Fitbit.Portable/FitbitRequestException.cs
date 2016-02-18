@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using Fitbit.Api.Portable.Models;
+using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
 {

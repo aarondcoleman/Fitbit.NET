@@ -160,15 +160,6 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// Use this constructor if an authorized httpclient has already been setup and accessing the resources is what is required.
-        /// </summary>
-        /// <param name="httpClient"></param>
-        [Obsolete]
-        public FitbitClient(HttpClient httpClient) : this(string.Empty, string.Empty, string.Empty, string.Empty, httpClient)
-        {
-        }
-
-        /// <summary>
         /// Use this constructor if the access tokens and keys are known. A httpclient with the correct authorizaton information will be setup to use in the calls.
         /// </summary>
         /// <param name="consumerKey"></param>

@@ -831,19 +831,17 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        public async Task DeleteSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string collection = null, string subscriberId = null)
+        public async Task DeleteSubscriptionAsync(string uniqueSubscriptionId, APICollectionType? collection = null, string subscriberId = null)
         {
-
-            string path = FormatKey(apiCollectionType, Constants.Formatting.TrailingSlash);
-            string resource = FormatKey(apiCollectionType, Constants.Formatting.LeadingDash);
+            var collectionString = string.Empty;
 
             if (collection != null)
-                collection = collection + @"/";
+                collectionString = collection.Value.ToString() + @"/";
 
             string url = "/1/user/-/{2}apiSubscriptions/{1}.json";
-            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {  uniqueSubscriptionId, collection });
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {  uniqueSubscriptionId, collectionString });
 
-            if (!string.IsNullOrWhiteSpace(subscriberId))
+            if (subscriberId != null)
             {
                 HttpClient.DefaultRequestHeaders.Add(Constants.Headers.XFitbitSubscriberId, subscriberId);
             }

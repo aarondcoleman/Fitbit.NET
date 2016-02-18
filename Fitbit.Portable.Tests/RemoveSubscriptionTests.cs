@@ -20,26 +20,24 @@ namespace Fitbit.Portable.Tests
         {
             var subId = "320";
             var expectedUrl = @"https://api.fitbit.com/1/user/-/apiSubscriptions/"+subId+".json";
-            var api = new APICollectionType();
 
             var sut = this.SetupFitbitClient(null, expectedUrl, HttpMethod.Delete);
 
             //Any unexpected behavior will throw exception or fail on request checks (in handler)
-            sut.DeleteSubscriptionAsync(api, subId).Wait();
+            sut.DeleteSubscriptionAsync(subId).Wait();
         }
 
         [Test]
         public void DeleteSubscriptonFromSpecificCollection()
         {
             var subId = "320";
-            var collection = "activities";
-            var expectedUrl = @"https://api.fitbit.com/1/user/-/"+collection+@"/apiSubscriptions/" + subId + ".json";
-            var api = new APICollectionType();
+            var collection = APICollectionType.activities;
+            var expectedUrl = @"https://api.fitbit.com/1/user/-/"+ collection +@"/apiSubscriptions/" + subId + ".json";
 
             var sut = this.SetupFitbitClient(null, expectedUrl, HttpMethod.Delete);
 
             //Any unexpected behavior will throw exception or fail on request checks (in handler)
-            sut.DeleteSubscriptionAsync(api, subId, collection).Wait();
+            sut.DeleteSubscriptionAsync(subId, collection).Wait();
 
         }
 

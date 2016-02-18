@@ -175,7 +175,7 @@ namespace Fitbit.Api.Portable
         /// <param name="consumerSecret"></param>
         /// <param name="accessToken"></param>
         /// <param name="accessSecret"></param>
-        [Obsolete]
+        [Obsolete]  
         public FitbitClient(string consumerKey, string consumerSecret, string accessToken, string accessSecret) : this(consumerKey, consumerSecret, accessToken, accessSecret, httpClient: null)
         {
             // note: do not remove the httpclient optional parameter above, even if resharper says you should, as otherwise it will make a cyclic constructor call .... which is bad!

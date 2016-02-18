@@ -1,4 +1,4 @@
-﻿namespace Fitbit.Api.Portable.Models
+﻿namespace Fitbit.Models
 {
     /*
     <activityId>51007</activityId>

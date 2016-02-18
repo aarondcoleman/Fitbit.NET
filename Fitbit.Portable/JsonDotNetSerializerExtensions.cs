@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fitbit.Api.Portable.Models;
+using Fitbit.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Fitbit.Api.Portable

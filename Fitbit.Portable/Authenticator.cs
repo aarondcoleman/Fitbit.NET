@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AsyncOAuth;
-using Fitbit.Api.Portable.Models;
-using RequestToken = Fitbit.Api.Portable.Models.RequestToken;
+using Fitbit.Models;
+using RequestToken = Fitbit.Models.RequestToken;
 
 namespace Fitbit.Api.Portable
 {

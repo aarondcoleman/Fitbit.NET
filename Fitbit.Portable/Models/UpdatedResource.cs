@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fitbit.Api.Portable.Models
+namespace Fitbit.Models
 {
     /// <summary>
     /// Class that represents the subscription information sent from Fitbit to alert of new updated resources

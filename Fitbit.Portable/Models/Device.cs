@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Fitbit.Api.Portable.Models
+namespace Fitbit.Models
 {
     public class Device
     {

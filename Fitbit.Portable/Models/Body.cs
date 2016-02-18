@@ -1,4 +1,4 @@
-﻿namespace Fitbit.Api.Portable.Models
+﻿namespace Fitbit.Models
 {
     // https://wiki.fitbit.com/display/API/API-Get-Body-Measurements
     public class Body

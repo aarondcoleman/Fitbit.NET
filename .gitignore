@@ -1,6 +1,10 @@
 #Exclude config secrets
 *.SECRETS.config
 
+#exclude local test nuget packages
+*.local.nuspec
+*.Local.nuspec
+
 #SVN
 
 .svn

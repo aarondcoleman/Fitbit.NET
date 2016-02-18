@@ -1,5 +1,6 @@
 using System;
-using System.Net;
+using System.Collections.Generic;
+using Fitbit.Api.Portable.Models;
 
 namespace Fitbit.Api.Portable
 {
@@ -10,8 +11,8 @@ namespace Fitbit.Api.Portable
         /// </summary>
         public DateTime RetryAfter { get; }
 
-        public FitbitRateLimitException(int retryAfterSeconds) 
-            : base($"Rate limit exceeded. Try again in {retryAfterSeconds} seconds. See exception for details.", (HttpStatusCode)429)
+        public FitbitRateLimitException(int retryAfterSeconds, IEnumerable<ApiError> errors)
+            : base($"Rate limit exceeded. Try again in {retryAfterSeconds} seconds. See exception for details.", errors)
         {
             RetryAfter = DateTime.UtcNow.AddSeconds(retryAfterSeconds);
         }

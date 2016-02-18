@@ -38,6 +38,7 @@
     <Compile Include="Authenticator.cs" />
     <Compile Include="FitbitAppCredentials.cs" />
     <Compile Include="FitbitHttpMessageHandler.cs" />
+    <Compile Include="FitbitTokenException.cs" />
     <Compile Include="HttpRequestMessageExtensionMethods.cs" />
     <Compile Include="Models\ActivitiesStats.cs" />
     <Compile Include="Models\Activity.cs" />

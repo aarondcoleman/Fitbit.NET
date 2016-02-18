@@ -24,8 +24,9 @@ namespace Fitbit.Portable.Tests
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .Returns(Task<HttpResponseMessage>.Factory.StartNew(response))
                 .Callback(verificationCallback);
-            var httpClient = new HttpClient(handler.Object);
-            return new FitbitClient(httpClient);
+
+            //We ignore the handler that is wired to IFitbitInterceptor
+            return new FitbitClient(messageHandler => new HttpClient(handler.Object));
         }
 
         /// <summary>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fitbit.Api;
 using System.Configuration;
-using Fitbit.Api.Portable.Models;
+using Fitbit.Models;
 using Fitbit.Api.Portable;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable.OAuth2;
@@ -81,6 +81,17 @@ namespace SampleWebMVC.Controllers
             ViewBag.AccessToken = await fitbitClient.RefreshOAuth2Token();
 
             return View("Callback");
+        }
+
+        public async Task<ActionResult> TestToken()
+        {
+            var fitbitClient = GetFitbitClient();
+
+            ViewBag.AccessToken = fitbitClient.AccessToken;
+
+            ViewBag.UserProfile = await fitbitClient.GetUserProfileAsync();
+
+            return View("TestToken");
         }
 
         /*

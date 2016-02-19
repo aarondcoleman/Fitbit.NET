@@ -830,5 +830,29 @@ namespace Fitbit.Api.Portable
                 throw new FitbitException($"An error has occured. Please see error list for details - {response.StatusCode}", errors);
             }
         }
+
+        public async Task DeleteSubscriptionAsync(string uniqueSubscriptionId, APICollectionType? collection = null, string subscriberId = null)
+        {
+            var collectionString = string.Empty;
+
+            if (collection != null)
+                collectionString = collection.Value.ToString() + @"/";
+
+            string url = "/1/user/-/{2}apiSubscriptions/{1}.json";
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {  uniqueSubscriptionId, collectionString });
+
+            if (subscriberId != null)
+            {
+                HttpClient.DefaultRequestHeaders.Add(Constants.Headers.XFitbitSubscriberId, subscriberId);
+            }
+
+            var response = await HttpClient.DeleteAsync(apiCall);
+
+            if (response.StatusCode != HttpStatusCode.NoContent)
+            {
+                var errors = new JsonDotNetSerializer().ParseErrors(await response.Content.ReadAsStringAsync());
+                throw new FitbitException("Unexpected response message", errors);
+            }
+        }
     }
 }

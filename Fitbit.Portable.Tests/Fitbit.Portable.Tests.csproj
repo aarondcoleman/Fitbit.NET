@@ -129,6 +129,7 @@
     <Compile Include="Models\FatLogTests.cs" />
     <Compile Include="Models\WeightLogTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoveSubscriptionTests.cs" />
     <Compile Include="SampleDataHelper.cs" />
     <Compile Include="DeviceTests.cs" />
     <Compile Include="SleepTests.cs" />

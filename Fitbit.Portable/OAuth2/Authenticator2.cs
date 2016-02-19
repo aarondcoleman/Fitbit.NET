@@ -17,14 +17,14 @@ namespace Fitbit.Api.Portable
         const string OAuthBase = "/oauth2";
 
         private string ClientId;
-        private string AppSecret;      
+        private string ClientSecret;      
 
         private string RedirectUri;
 
-        public Authenticator2(string clientId, string appSecret, string redirectUri)
+        public Authenticator2(FitbitAppCredentials credentials, string redirectUri)
         {
-            this.ClientId = clientId;
-            this.AppSecret = appSecret;
+            this.ClientId = credentials.ClientId;
+            this.ClientSecret = credentials.ClientSecret;
             this.RedirectUri = redirectUri;
         }
 
@@ -63,7 +63,7 @@ namespace Fitbit.Api.Portable
             });
 
 
-            string clientIdConcatSecret = OAuth2Helper.Base64Encode(ClientId + ":" + AppSecret);
+            string clientIdConcatSecret = OAuth2Helper.Base64Encode(ClientId + ":" + ClientSecret);
 
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", clientIdConcatSecret); 
 

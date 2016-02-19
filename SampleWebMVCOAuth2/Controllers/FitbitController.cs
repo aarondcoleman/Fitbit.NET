@@ -35,10 +35,7 @@ namespace SampleWebMVC.Controllers
 
             //Provide the App Credentials. You get those by registering your app at dev.fitbit.com
             //Configure Fitbit authenticaiton request to perform a callback to this constructor's Callback method
-            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(appCredentials.ClientId,
-                                                                                    appCredentials.ClientSecret,
-                                                                                    Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
-                                                                                    );
+            var authenticator = new OAuth2Helper(appCredentials, Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback");
             string[] scopes = new string[] {"profile"};
             
             string authUrl = authenticator.GenerateAuthUrl(scopes, null);
@@ -51,10 +48,7 @@ namespace SampleWebMVC.Controllers
         {
             FitbitAppCredentials appCredentials = (FitbitAppCredentials)Session["AppCredentials"];
 
-            Fitbit.Api.Portable.Authenticator2 authenticator = new Fitbit.Api.Portable.Authenticator2(appCredentials.ClientId,
-                                                                                    appCredentials.ClientSecret,
-                                                                                    Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback"
-                                                                                    );
+            var authenticator = new OAuth2Helper(appCredentials, Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback");
 
             string code = Request.Params["code"];
 

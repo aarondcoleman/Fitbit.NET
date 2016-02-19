@@ -2,10 +2,10 @@
 <package >
   <metadata>
     <id>Fitbit.NET</id>
-    <version>2.0.0$buildNumber$-BETA</version>
+    <version>2.0.1-RC2-DEV-$buildNumber$</version>
     <title>Fitbit.NET</title>
-    <authors>aarondcoleman, ducas</authors>
-    <owners>aarondcoleman, ducas</owners>
+    <authors>Fitbit.Net contributors Team -- @WestDiscGolf, @aarondcoleman, @mxa0079</authors>
+    <owners></owners>
     <licenseUrl>https://github.com/aarondcoleman/Fitbit.NET</licenseUrl>
     <projectUrl>https://github.com/aarondcoleman/Fitbit.NET</projectUrl>
     <iconUrl>http://static3.fitbit.com/simple.b-dis-png.h76d53d8e6a0653b38326a825b2b9cf57.pack?items=%2Fimages%2Fcommon%2Fbg_branding_b.png</iconUrl>
@@ -18,10 +18,14 @@
       *Support for async
       *Request/Response transparent interception through IFitbitInterceptor
     </releaseNotes>
-    <copyright>Copyright 2014</copyright>
+    <copyright>Copyright 2016</copyright>
     <tags>Fitbit OAuth API</tags>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="8.0.2" />
+      <dependency id="Microsoft.Bcl.Build" version="1.0.14" />
+	  <dependency id="Microsoft.Bcl" version="1.1.9" />
+	  <dependency id="Microsoft.Bcl.Async" version="1.0.168" />
+	  <dependency id="Microsoft.Net.Http" version="2.2.22" />
+	  <dependency id="Newtonsoft.Json" version="8.0.2" />
     </dependencies>
   </metadata>
   <files>

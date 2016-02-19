@@ -102,7 +102,6 @@
     <Compile Include="Models\WaterSummary.cs" />
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Models\WeightLog.cs" />
-    <Compile Include="OAuth2\Authenticator2.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="EmptyDateToMinDateConverter.cs" />
     <Compile Include="FitbitClient.cs" />

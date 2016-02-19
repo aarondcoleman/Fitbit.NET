@@ -831,12 +831,14 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        public async Task DeleteSubscriptionAsync(string uniqueSubscriptionId, APICollectionType? collection = null, string subscriberId = null)
+        public async Task DeleteSubscriptionAsync(string uniqueSubscriptionId, APICollectionType collection, string subscriberId = null)
         {
             var collectionString = string.Empty;
 
-            if (collection != null)
-                collectionString = collection.Value.ToString() + @"/";
+            if (collection == APICollectionType.user)
+                collectionString = string.Empty;
+            else
+                collectionString = collection.ToString() + @"/";
 
             string url = "/1/user/-/{2}apiSubscriptions/{1}.json";
             string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {  uniqueSubscriptionId, collectionString });

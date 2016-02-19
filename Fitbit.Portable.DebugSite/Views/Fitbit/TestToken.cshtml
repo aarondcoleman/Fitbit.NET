@@ -1,0 +1,21 @@
+﻿<div class="row">
+    @if (ViewBag.AccessToken != null)
+    {
+        <p>Token -- <a id="accessTokenId">@ViewBag.AccessToken.Token</a></p>
+        <p>Token type --    <a id="accessTokenType"> @ViewBag.AccessToken.TokenType</a> </p>
+        <p>Expires In --    <a id="accessTokenExpiration"> @ViewBag.AccessToken.ExpiresIn</a> </p>
+        <p>Refresh token -- <a id="RefreshToken"> @ViewBag.AccessToken.RefreshToken</a>
+        </p>
+
+        <h2>Fitbit call results</h2>
+
+    }
+    else {
+        <p>The current session has not been authenticated with fitbit</p>
+    }
+
+    @Html.ActionLink("Refresh Token", "RefreshToken", "Fitbit")
+
+    <p>User Profile Name -- @ViewBag.UserProfile.FullName</p>
+
+</div>

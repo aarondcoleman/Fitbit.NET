@@ -14,13 +14,9 @@ namespace Fitbit.OAuth1Migration
         /// <param name="accessToken"></param>
         /// <param name="accessSecret"></param>
         /// <param name="httpClient"></param>
-        public static FitbitClient Create(string consumerKey, string consumerSecret, string accessToken, string accessSecret, HttpClient httpClient = null)
+        public static FitbitClient Create(string consumerKey, string consumerSecret, string accessToken, string accessSecret, IFitbitInterceptor interceptor = null)
         {
-            throw new NotImplementedException();
 
-            var HttpClient = httpClient;
-            if (HttpClient == null)
-            {
                 #region Parameter checking
                 if (string.IsNullOrWhiteSpace(consumerKey))
                 {
@@ -43,21 +39,23 @@ namespace Fitbit.OAuth1Migration
                 }
                 #endregion
 
-                HttpClient = AsyncOAuth.OAuthUtility.CreateOAuthClient(consumerKey, consumerSecret, new AsyncOAuth.AccessToken(accessToken, accessSecret));
+            if (interceptor != null)
+            {
+                return new FitbitClient(mh =>
+                {
+                    //Injecting the Message Handler provided by FitbitClient library (mh) allows us to invoke any IFitbitInterceptor that has been registered
+                    return AsyncOAuth.OAuthUtility.CreateOAuthClient(mh, consumerKey, consumerSecret,
+                        new AsyncOAuth.AccessToken(accessToken, accessSecret));
+                }, interceptor);
             }
-        }
-
-        /// <summary>
-        /// Use this constructor if the access tokens and keys are known. A httpclient with the correct authorizaton information will be setup to use in the calls.
-        /// </summary>
-        /// <param name="consumerKey"></param>
-        /// <param name="consumerSecret"></param>
-        /// <param name="accessToken"></param>
-        /// <param name="accessSecret"></param>
-        public static FitbitClient Create(string consumerKey, string consumerSecret, string accessToken, string accessSecret)
-        {
-            // note: do not remove the httpclient optional parameter above, even if resharper says you should, as otherwise it will make a cyclic constructor call .... which is bad!
-            return FitbitClientOA1Factory.Create(consumerKey, consumerSecret, accessToken, accessSecret, httpClient: null);
+            else
+            {
+                return new FitbitClient(mh =>
+                {
+                    return AsyncOAuth.OAuthUtility.CreateOAuthClient(consumerKey, consumerSecret,
+                        new AsyncOAuth.AccessToken(accessToken, accessSecret));
+                });
+            }
         }
     }
 }

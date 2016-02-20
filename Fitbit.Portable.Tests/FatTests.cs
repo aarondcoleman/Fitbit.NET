@@ -6,17 +6,26 @@ using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace Fitbit.Portable.Tests
 {
     [TestFixture]
     public class FatTests
     {
+        public Fixture fixture { get; set; }
+
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            fixture = new Fixture();
+        }
+
         [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_ThreeMonths()
         {
-            var client = new FitbitClient("key", "secret", "access", "accessSecret");
+            var client = fixture.Create<FitbitClient>();
             await client.GetFatAsync(DateTime.Now, DateRangePeriod.ThreeMonths);
         }
 
@@ -24,7 +33,7 @@ namespace Fitbit.Portable.Tests
         [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_SixMonths()
         {
-            var client = new FitbitClient("key", "secret", "access", "accessSecret");
+            var client = fixture.Create<FitbitClient>();
             await client.GetFatAsync(DateTime.Now, DateRangePeriod.SixMonths);
         }
 
@@ -32,7 +41,7 @@ namespace Fitbit.Portable.Tests
         [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_OneYear()
         {
-            var client = new FitbitClient("key", "secret", "access", "accessSecret");
+            var client = fixture.Create<FitbitClient>();
             await client.GetFatAsync(DateTime.Now, DateRangePeriod.OneYear);
         }
 
@@ -40,7 +49,7 @@ namespace Fitbit.Portable.Tests
         [ExpectedException(typeof(ArgumentException))]
         public async void GetFatAsync_DateRangePeriod_Max()
         {
-            var client = new FitbitClient("key", "secret", "access", "accessSecret");
+            var client = fixture.Create<FitbitClient>();
             await client.GetFatAsync(DateTime.Now, DateRangePeriod.Max);
         }
 

@@ -4,17 +4,26 @@ using System.Net.Http;
 using System.Threading;
 using Fitbit.Api.Portable;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace Fitbit.Portable.Tests
 {
     [TestFixture]
     public class GoalsTests
     {
+        public Fixture fixture { get; set; }
+
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            fixture = new Fixture();
+        }
+
         [Test] [Category("Portable")]
         [ExpectedException(typeof(ArgumentException))]
         public async void SetGoalsAsync_NoGoalsSet()
         {
-            var client = new FitbitClient("key", "secret", "token", "asecret");
+            var client = fixture.Create<FitbitClient>();
             await client.SetGoalsAsync();
         }
 

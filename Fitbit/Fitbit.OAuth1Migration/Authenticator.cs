@@ -5,7 +5,7 @@ using AsyncOAuth;
 using Fitbit.Models;
 using RequestToken = Fitbit.Models.RequestToken;
 
-namespace Fitbit.Api.Portable
+namespace Fitbit.OAuth1Migration
 {
     public class Authenticator
     {

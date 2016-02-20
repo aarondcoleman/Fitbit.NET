@@ -107,7 +107,6 @@
     <Compile Include="AccessTokenTests.cs" />
     <Compile Include="ActivitiesStatsTests.cs" />
     <Compile Include="ApiErrorTests.cs" />
-    <Compile Include="AuthenticatorTests.cs" />
     <Compile Include="BloodPressureTests.cs" />
     <Compile Include="BodyMeasurementTests.cs" />
     <Compile Include="DayActivityTests.cs" />

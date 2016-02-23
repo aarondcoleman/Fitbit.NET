@@ -1,4 +1,6 @@
-﻿namespace Fitbit.Portable.Tests.Helpers
+﻿using System.Net;
+
+namespace Fitbit.Portable.Tests.Helpers
 {
     using Fitbit.Api.Portable;
     using System.Net.Http;
@@ -12,6 +14,11 @@
         public int RequestCount = 0;
         public int ResponseCount = 0;
 
+        public ResponseFaker(string content, HttpStatusCode code = HttpStatusCode.OK)
+        {
+            var c = new StringContent(content);
+            this.fakeResponse = new HttpResponseMessage(code) { Content = c };
+        }
 
         public ResponseFaker(HttpResponseMessage fakeResponse = null)
         {

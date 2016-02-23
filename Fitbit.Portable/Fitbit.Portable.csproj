@@ -95,6 +95,7 @@
     <Compile Include="Models\TimeSeriesDataListInt.cs" />
     <Compile Include="Models\TimeSeriesResourceType.cs" />
     <Compile Include="Models\UpdatedResource.cs" />
+    <Compile Include="Models\UpdatedResourceList.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\WaterData.cs" />
     <Compile Include="Models\WaterLog.cs" />

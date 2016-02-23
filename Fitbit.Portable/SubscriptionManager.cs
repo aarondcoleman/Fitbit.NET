@@ -1,4 +1,9 @@
-﻿using Fitbit.Models;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+using Fitbit.Api.Portable.Models;
+using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
 {
@@ -7,17 +12,19 @@ namespace Fitbit.Api.Portable
 
     public class SubscriptionManager
     {
-        public List<UpdatedResource> ProcessUpdateReponseBody(string bodyContent)
+        public UpdatedResourceList ProcessUpdateReponseBody(string bodyContent)
         {
 
-            //bodyContent = StripSignatureString(bodyContent);
+            bodyContent = StripSignatureString(bodyContent);
 
-            //var deserializer = new RestSharp.Deserializers.XmlDeserializer();
+            var ser = new XmlSerializer(typeof(UpdatedResourceList), "");
 
-            //List<UpdatedResource> result = deserializer.Deserialize<List<UpdatedResource>>(new RestResponse() { Content = bodyContent });
-
-            //return result;
-            throw new NotImplementedException();
+            using (var stringReader = new StringReader(bodyContent))
+            {
+                var deserializedBody = (UpdatedResourceList)ser.Deserialize(stringReader);
+                Debug.WriteLine(deserializedBody.Resources[0]);
+                return deserializedBody;
+            }
         }
 
         public string StripSignatureString(string bodyContent)

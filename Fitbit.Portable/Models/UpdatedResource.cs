@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace Fitbit.Models
 {
@@ -9,10 +10,17 @@ namespace Fitbit.Models
     /// 
     public class UpdatedResource
     {
+        [XmlElement("collectionType")]
         public APICollectionType CollectionType { get; set; }
+
+        [XmlElement("date")]
         public DateTime Date { get; set; }
+
+        [XmlElement("ownerId")]
         public string OwnerId { get; set; }
         public ResourceOwnerType OwnerType { get; set; }
+
+        [XmlElement("subscriptionId")]
         public string SubscriptionId { get; set; }
     }
 }

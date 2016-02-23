@@ -35,7 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Authenticator.cs" />
     <Compile Include="FitbitAppCredentials.cs" />
     <Compile Include="FitbitHttpMessageHandler.cs" />
     <Compile Include="FitbitTokenException.cs" />
@@ -126,9 +125,6 @@
     <Compile Include="SubscriptionManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="AsyncOAuth">
-      <HintPath>..\Fitbit\packages\AsyncOAuth.0.8.4\lib\AsyncOAuth.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\Fitbit\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>

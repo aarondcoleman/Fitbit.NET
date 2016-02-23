@@ -6,17 +6,26 @@ using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace Fitbit.Portable.Tests
 {
     [TestFixture]
     public class WeightTests
     {
+        public Fixture fixture { get; set; }
+
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            fixture = new Fixture();
+        }
+
         [Test] [Category("Portable")]
         [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRangePeriod_ThreeMonths()
         {
-            var client = new FitbitClient("key", "secret", "access", "accessSecret");
+            var client = fixture.Create<FitbitClient>();
             await client.GetWeightAsync(DateTime.Now, DateRangePeriod.ThreeMonths);
         }
 
@@ -24,7 +33,7 @@ namespace Fitbit.Portable.Tests
         [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRangePeriod_SixMonths()
         {
-            var client = new FitbitClient("key", "secret", "access", "accessSecret");
+            var client = fixture.Create<FitbitClient>();
             await client.GetWeightAsync(DateTime.Now, DateRangePeriod.SixMonths);
         }
 
@@ -32,7 +41,7 @@ namespace Fitbit.Portable.Tests
         [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRangePeriod_OneYear()
         {
-            var client = new FitbitClient("key", "secret", "access", "accessSecret");
+            var client = fixture.Create<FitbitClient>();
             await client.GetWeightAsync(DateTime.Now, DateRangePeriod.OneYear);
         }
 
@@ -40,7 +49,7 @@ namespace Fitbit.Portable.Tests
         [ExpectedException(typeof (ArgumentOutOfRangeException))]
         public async void GetWeightAsync_DateRangePeriod_Max()
         {
-            var client = new FitbitClient("key", "secret", "access", "accessSecret");
+            var client = fixture.Create<FitbitClient>();
             await client.GetWeightAsync(DateTime.Now, DateRangePeriod.Max);
         }
 

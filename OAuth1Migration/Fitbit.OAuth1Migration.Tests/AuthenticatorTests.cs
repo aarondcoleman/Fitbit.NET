@@ -2,7 +2,7 @@
 using Fitbit.Models;
 using NUnit.Framework;
 
-namespace Fitbit.Portable.Tests
+namespace Fitbit.OAuth1Migration.Tests
 {
     [TestFixture]
     public class AuthenticatorTests

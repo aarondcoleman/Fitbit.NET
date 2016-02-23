@@ -153,16 +153,12 @@ namespace Fitbit.Api.Portable
             HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
         }
 
-        public async Task<OAuth2AccessToken> RefreshOAuth2Token()
+        public async Task<OAuth2AccessToken> RefreshOAuth2TokenAsync()
         {
-            this.AccessToken = await TokenManager.RefreshToken(this);
-            return this.AccessToken;
+            AccessToken = await TokenManager.RefreshToken(this);
+            return AccessToken;
         }
-
-       
-
         
-
         /// <summary>
         /// Requests the activity details of the encoded user id or if none supplied the current logged in user for the specified date
         /// </summary>
@@ -727,12 +723,11 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// Pass a freeform url. Good for debuging pursposes
+        /// Pass a freeform url. Good for debuging pursposes to get the pure json response back.
         /// </summary>
-        /// <param name="date"></param>
-        /// <param name="encodedUserId"></param>
+        /// <param name="apiPath">Fully qualified path including the Fitbit domain.</param>
         /// <returns></returns>
-        public async Task<string> GetApiFreeResponse(string apiPath)
+        public async Task<string> GetApiFreeResponseAsync(string apiPath)
         {
             string apiCall = apiPath;
 

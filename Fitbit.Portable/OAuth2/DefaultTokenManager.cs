@@ -6,9 +6,11 @@
 
     internal class DefaultTokenManager : ITokenManager
     {
+        private static string FitbitOauthPostUrl => "https://api.fitbit.com/oauth2/token";
+
         public async Task<OAuth2AccessToken> RefreshToken(FitbitClient client)
         {
-            string postUrl = OAuth2Helper.FitbitOauthPostUrl;
+            string postUrl = FitbitOauthPostUrl;
 
             var content = new FormUrlEncodedContent(new[]
             {

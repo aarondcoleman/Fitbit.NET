@@ -73,7 +73,8 @@ namespace Fitbit.Api.Portable.OAuth2
 
         private static string FitbitOauthPostUrl => "https://api.fitbit.com/oauth2/token";
 
-        internal static OAuth2AccessToken ParseAccessTokenResponse(string responseString)
+
+        public static OAuth2AccessToken ParseAccessTokenResponse(string responseString)
         {
             // assumption is the errors json will return in usual format eg. errors array
             JObject responseObject = JObject.Parse(responseString);

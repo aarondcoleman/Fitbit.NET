@@ -137,6 +137,7 @@
     <Compile Include="DeviceTests.cs" />
     <Compile Include="SleepTests.cs" />
     <Compile Include="AddSubscriptionTests.cs" />
+    <Compile Include="SubscriptionManagerTests.cs" />
     <Compile Include="TimeSeriesDataListIntTests.cs" />
     <Compile Include="TimeSeriesDataListTests.cs" />
     <Compile Include="FitbitHttpMessageHandlerTests.cs" />
@@ -254,6 +255,8 @@
     <Content Include="SampleData\LogWater-WaterLog.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SampleData\MultipleSingleSubscriptionNotification.xml" />
+    <Content Include="SampleData\SingleSubscriptionNotification.xml" />
     <Content Include="SampleData\TimeSeries-ActivitiesSteps.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

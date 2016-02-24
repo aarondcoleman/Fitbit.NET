@@ -11,11 +11,13 @@ using NUnit.Framework;
 using Fitbit.Models;
 
 namespace Fitbit.Portable.Tests
-{
-    [TestFixture]
+{        
+    [TestFixture] 
     public class RemoveSubscriptionTests
     {
         [Test]
+        [Category("PubSub")]
+        [Category("Portable")]
         public void DeleteSubscription_Correctly()
         {
             var subId = "320";
@@ -29,6 +31,8 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
+        [Category("PubSub")]
+        [Category("Portable")]
         public void DeleteSubscriptonFromSpecificCollection()
         {
             var subId = "320";

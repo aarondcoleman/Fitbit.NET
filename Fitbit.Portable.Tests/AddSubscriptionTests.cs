@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace Fitbit.Portable.Tests
 {
     [TestFixture]
+    [Category("PubSub")]
     public class AddSubscriptionTests
     {
         private const string SubScriberId = "my_subscriber_id";
@@ -23,6 +24,7 @@ namespace Fitbit.Portable.Tests
 
         //https://wiki.fitbit.com/display/API/Fitbit+Subscriptions+API#FitbitSubscriptionsAPI-Addasubscription
         [Test]
+        [Category("PubSub")]
         [Category("Portable")]
         public async void AddSubscription_UserEndPoint_WithoutSubscriberId()
         {
@@ -38,6 +40,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_UserEndPoint_WithSubscriberId()
         {
@@ -59,6 +62,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_ActivitiesEndPoint_WithoutSubscriberId()
         {
@@ -74,6 +78,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_ActivitiesEndPoint_WithSubscriberId()
         {
@@ -95,6 +100,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_BodyEndPoint_WithoutSubscriberId()
         {
@@ -110,6 +116,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_BodyEndPoint_WithSubscriberId()
         {
@@ -131,6 +138,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_FoodEndPoint_WithoutSubscriberId()
         {
@@ -146,6 +154,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_FoodEndPoint_WithSubscriberId()
         {
@@ -167,6 +176,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_MealsEndPoint_WithoutSubscriberId()
         {
@@ -182,6 +192,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_MealsEndPoint_WithSubscriberId()
         {
@@ -203,6 +214,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_SleepEndPoint_WithoutSubscriberId()
         {
@@ -218,6 +230,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_SleepEndPoint_WithSubscriberId()
         {
@@ -239,6 +252,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_WeightEndPoint_WithoutSubscriberId()
         {
@@ -254,6 +268,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public async void AddSubscription_WeightEndPoint_WithSubscriberId()
         {
@@ -275,6 +290,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", response.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public void Can_Deserialize_UpdatedResource()
         {
@@ -289,6 +305,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public void Can_Deserialize_ApiSubscription()
         {
@@ -306,6 +323,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("323", subscription.SubscriptionId);
         }
 
+        [Category("PubSub")]
         [Test] [Category("Portable")]
         public void Can_Deserialize_ApiNotifications()
         {

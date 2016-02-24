@@ -33,7 +33,7 @@ namespace Fitbit.Api.Portable.OAuth2
                 if (IsTokenStale(responseBody))
                 {
                     Debug.WriteLine("Stale token detected. Invoking registered tokenManager.RefreskToken to refresh it");
-                    await Client.RefreshOAuth2Token();
+                    await Client.RefreshOAuth2TokenAsync();
 
                     //Only retry the first time.
                     if (!response.Result.RequestMessage.Headers.Contains(CUSTOM_HEADER))

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Fitbit.Api.Portable.Models;
@@ -12,7 +13,7 @@ namespace Fitbit.Api.Portable
 
     public class SubscriptionManager
     {
-        public UpdatedResourceList ProcessUpdateReponseBody(string bodyContent)
+        public List<UpdatedResource> ProcessUpdateReponseBody(string bodyContent)
         {
 
             bodyContent = StripSignatureString(bodyContent);
@@ -23,7 +24,7 @@ namespace Fitbit.Api.Portable
             {
                 var deserializedBody = (UpdatedResourceList)ser.Deserialize(stringReader);
                 Debug.WriteLine(deserializedBody.Resources[0]);
-                return deserializedBody;
+                return deserializedBody.Resources;
             }
         }
 

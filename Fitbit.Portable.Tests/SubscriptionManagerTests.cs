@@ -30,11 +30,11 @@ namespace Fitbit.Portable.Tests
 
             var sut = new SubscriptionManager();
 
-            UpdatedResourceList resultResourceList = sut.ProcessUpdateReponseBody(content);
+            List<UpdatedResource> resultResourceList = sut.ProcessUpdateReponseBody(content);
             Assert.IsNotNull(resultResourceList);
-            Assert.AreEqual(ExpectedResourceUpdateCount, resultResourceList.Resources.Count);
+            Assert.AreEqual(ExpectedResourceUpdateCount, resultResourceList.Count);
 
-            UpdatedResource result = resultResourceList.Resources[0];
+            UpdatedResource result = resultResourceList[0];
 
             Assert.AreEqual(Expected_ownerId, result.OwnerId);
             Assert.AreEqual(Expected_subId, result.SubscriptionId);
@@ -59,12 +59,12 @@ namespace Fitbit.Portable.Tests
 
             var sut = new SubscriptionManager();
 
-            UpdatedResourceList resultResourceList = sut.ProcessUpdateReponseBody(content);
+            List<UpdatedResource> resultResourceList = sut.ProcessUpdateReponseBody(content);
 
             Assert.IsNotNull(resultResourceList);
-            Assert.AreEqual(Expect_TWO_UpdatedResources, resultResourceList.Resources.Count);
+            Assert.AreEqual(Expect_TWO_UpdatedResources, resultResourceList.Count);
 
-            UpdatedResource result = resultResourceList.Resources[1];
+            UpdatedResource result = resultResourceList[1];
 
             Assert.AreEqual(Expected_ownerId, result.OwnerId);
             Assert.AreEqual(Expected_subId, result.SubscriptionId);

@@ -71,7 +71,7 @@ namespace Fitbit.Api.Portable.OAuth2
             return accessToken;
         }
 
-        private static string FitbitOauthPostUrl => "https://api.fitbit.com/oauth2/token";
+        public static readonly string FitbitOauthPostUrl = "https://api.fitbit.com/oauth2/token";
 
 
         public static OAuth2AccessToken ParseAccessTokenResponse(string responseString)

@@ -9,10 +9,10 @@ namespace Fitbit.Api.Portable.OAuth2
 {
     public class OAuth2Helper
     {
-        const string FitbitWebAuthBaseUrl = "https://www.fitbit.com";
-        const string FitbitApiBaseUrl = "https://api.fitbit.com";
+        private const string FitbitWebAuthBaseUrl = "https://www.fitbit.com";
+        private const string FitbitApiBaseUrl = "https://api.fitbit.com";
 
-        const string OAuthBase = "/oauth2";
+        private const string OAuthBase = "/oauth2";
 
         private string ClientId;
         private string ClientSecret;
@@ -71,7 +71,7 @@ namespace Fitbit.Api.Portable.OAuth2
             return accessToken;
         }
 
-        public static string FitbitOauthPostUrl => "https://api.fitbit.com/oauth2/token";
+        private static string FitbitOauthPostUrl => "https://api.fitbit.com/oauth2/token";
 
         internal static OAuth2AccessToken ParseAccessTokenResponse(string responseString)
         {
@@ -89,8 +89,12 @@ namespace Fitbit.Api.Portable.OAuth2
             return deserializer.Deserialize<OAuth2AccessToken>(responseString);
         }
 
-        //http://stackoverflow.com/a/11743162
-        internal static string Base64Encode(string plainText)
+        /// <summary>
+        /// Convert plain text to a base 64 encoded string - http://stackoverflow.com/a/11743162
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <returns></returns>
+        public static string Base64Encode(string plainText)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             return Convert.ToBase64String(plainTextBytes);

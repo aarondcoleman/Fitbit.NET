@@ -39,6 +39,7 @@
     <Compile Include="FitbitHttpMessageHandler.cs" />
     <Compile Include="FitbitTokenException.cs" />
     <Compile Include="HttpRequestMessageExtensionMethods.cs" />
+    <Compile Include="Interceptors\FitbitHttpErrorHandler.cs" />
     <Compile Include="Models\ActivitiesStats.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityDistance.cs" />

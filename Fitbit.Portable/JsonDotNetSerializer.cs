@@ -23,6 +23,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(data))
             {
+                //TO DO: Is this the behavior we want? Or should we be throwing an exception?
                 return default(T);
             }
 

@@ -35,7 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fitbit.Portable, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\Fitbit\packages\Fitbit.NET.2.0.1-RC3\lib\net451\Fitbit.Portable.dll</HintPath>
+      <HintPath>..\..\Fitbit\packages\Fitbit.NET.2.0.020160302.3-RC2-Dev\lib\net451\Fitbit.Portable.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

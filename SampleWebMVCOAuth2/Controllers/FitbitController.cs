@@ -56,7 +56,6 @@ namespace SampleWebMVC.Controllers
 
             //Store credentials in FitbitClient. The client in its default implementation manages the Refresh process
             var fitbitClient = GetFitbitClient(accessToken);
-            fitbitClient.AccessToken = accessToken;
 
             ViewBag.AccessToken = accessToken;
 

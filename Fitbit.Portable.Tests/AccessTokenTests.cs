@@ -60,7 +60,7 @@ namespace Fitbit.Portable.Tests
             var fixture = new Fixture();
             //Create a token whose expiration date is in the future
             var tokenWithFutureExpirationDate = fixture.Build<OAuth2AccessToken>()
-                                                .With(t => t.ExpirationDate, DateTime.UtcNow.AddHours(1.0))
+                                                .With(t => t.UtcExpirationDate, DateTime.UtcNow.AddHours(1.0))
                                                 .Create();
 
             Assert.IsTrue(tokenWithFutureExpirationDate.IsFresh());
@@ -75,7 +75,7 @@ namespace Fitbit.Portable.Tests
             var fixture = new Fixture();
             //Create a token whose expiration date is in the future
             var tokenWithFutureExpirationDate = fixture.Build<OAuth2AccessToken>()
-                                                .With(t => t.ExpirationDate, DateTime.UtcNow.AddHours(-1.0))
+                                                .With(t => t.UtcExpirationDate, DateTime.UtcNow.AddHours(-1.0))
                                                 .Create();
 
             Assert.IsFalse(tokenWithFutureExpirationDate.IsFresh());

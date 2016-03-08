@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Fitbit.Api.Portable.OAuth2
 {
@@ -18,5 +19,19 @@ namespace Fitbit.Api.Portable.OAuth2
 
         [JsonProperty("user_id")]
         public string UserId { get; set; }
+
+        /// <summary>
+        /// This property is NOT set by the library. It is simply provided as a covenience placeholder. The library consumer is responsible for setting up this field.
+        /// The library assums this DateTime is UTC for token validation purposes.
+        /// </summary>
+        public DateTime UtcExpirationDate { get; set; }
+
+        public bool IsFresh()
+        {
+            if (DateTime.MinValue == UtcExpirationDate)
+                throw new InvalidOperationException(
+                    $"The {nameof(UtcExpirationDate)} property needs to be set before using this method.");
+            return DateTime.Compare(DateTime.UtcNow, UtcExpirationDate) < 0;
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using Fitbit.Api.Portable;
 using Fitbit.Api.Portable.OAuth2;
 using FluentAssertions;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace Fitbit.Portable.Tests
 {
@@ -47,6 +49,49 @@ namespace Fitbit.Portable.Tests
                 // can only use ShouldThrow on async funcs of Task
                 exception.ApiErrors.Count.Should().Be(1);
             }
+        }
+
+        [Test]
+        [Category("Portable")]
+        [Category("OAuth2")]
+        public void AccessToken_Knows_Token_Is_Valid()
+        {
+            //arrenge
+            var fixture = new Fixture();
+            //Create a token whose expiration date is in the future
+            var tokenWithFutureExpirationDate = fixture.Build<OAuth2AccessToken>()
+                                                .With(t => t.UtcExpirationDate, DateTime.UtcNow.AddHours(1.0))
+                                                .Create();
+
+            Assert.IsTrue(tokenWithFutureExpirationDate.IsFresh());
+        }
+
+        [Test]
+        [Category("Portable")]
+        [Category("OAuth2")]
+        public void AccessToken_Knows_Token_Is_Stale()
+        {
+            //arrenge
+            var fixture = new Fixture();
+            //Create a token whose expiration date is in the future
+            var tokenWithFutureExpirationDate = fixture.Build<OAuth2AccessToken>()
+                                                .With(t => t.UtcExpirationDate, DateTime.UtcNow.AddHours(-1.0))
+                                                .Create();
+
+            Assert.IsFalse(tokenWithFutureExpirationDate.IsFresh());
+        }
+
+        [Test]
+        [Category("Portable")]
+        [Category("OAuth2")]
+        public void AccessToken_With_No_Expiration_Time_Throws_On_IsFresh()
+        {
+            //arrenge
+            var fixture = new Fixture();
+            //Create a token with no Expiration time
+            var sut = new OAuth2AccessToken();
+
+            Assert.Throws<InvalidOperationException>(() => sut.IsFresh());
         }
 
         public void Validate(OAuth2AccessToken token)

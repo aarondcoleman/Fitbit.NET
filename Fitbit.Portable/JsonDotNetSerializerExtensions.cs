@@ -155,7 +155,7 @@ namespace Fitbit.Api.Portable
                     {
                         Time = DateTime.Parse(date + " " + item["time"]),
                         Value = item["value"].ToString(),
-                        METs = item["value"].ToString(),
+                        METs = item["mets"].ToString(),
                         Level = item["level"].ToString()
                     }).ToList()
             };

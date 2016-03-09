@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Fitbit.NET.OAuth1Migration</id>
-    <version>1.0.0-RC2</version>
+    <version>1.0.0.0</version>
     <title>Fitbit.NET.OAuth1Migration</title>
     <authors>Fitbit.Net contributors Team -- @WestDiscGolf, @aarondcoleman, @mxa0079</authors>
     <owners></owners>

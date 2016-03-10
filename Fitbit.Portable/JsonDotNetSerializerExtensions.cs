@@ -154,9 +154,9 @@ namespace Fitbit.Api.Portable
                     select new IntradayDataValues
                     {
                         Time = DateTime.Parse(date + " " + item["time"]),
-                        Value = item["value"].ToString(),
-                        METs = item["value"].ToString(),
-                        Level = item["level"].ToString()
+                        Value = item["value"].ToObject<double>().ToString("R"), //converting to double is required to keep precision
+                        METs = item["mets"] != null ? item["mets"].ToString() : null,
+                        Level = item["level"] != null ? item["level"].ToString() : null
                     }).ToList()
             };
 

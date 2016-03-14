@@ -699,11 +699,14 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<ApiSubscription> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string))
         {
+            //This function is smart enough to know when to return an empty string (for apiCollectionType.user) or the proper collection type suffixed by a slash
             string path = FormatKey(apiCollectionType, Constants.Formatting.TrailingSlash);
-            string resource = FormatKey(apiCollectionType, Constants.Formatting.LeadingDash);
 
-            string url = "/1/user/-/{1}apiSubscriptions/{3}{2}.json";
-            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {path, resource, uniqueSubscriptionId});
+            //sometimes {path} will be an empty string but when it is not, it will have a slash suffix is in foods/apiSubscriptions
+            string url = $"/1/user/-/{path}apiSubscriptions/{uniqueSubscriptionId}.json";
+            
+            //TODO: 
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {path});
             if (!string.IsNullOrWhiteSpace(subscriberId))
             {
                 HttpClient.DefaultRequestHeaders.Add(Constants.Headers.XFitbitSubscriberId, subscriberId);    

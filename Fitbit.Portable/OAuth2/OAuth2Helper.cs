@@ -83,7 +83,7 @@ namespace Fitbit.Api.Portable.OAuth2
             if (error != null)
             {
                 var errors = new JsonDotNetSerializer().ParseErrors(responseString);
-                throw new FitbitTokenException(errors);
+                throw new FitbitException($"Unable to parse token response in method -- {nameof(ParseAccessTokenResponse)}.", errors);
             }
 
             var deserializer = new JsonDotNetSerializer();

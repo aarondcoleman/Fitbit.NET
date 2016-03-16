@@ -9,8 +9,8 @@ namespace Fitbit.Api.Portable
     {
         public HttpResponseMessage Response { get; set; }
 
-        public FitbitRequestException(HttpResponseMessage response, IEnumerable<ApiError> errors)
-            : base($"Request exception - see errors for more details - {response.StatusCode}", errors)
+        public FitbitRequestException(HttpResponseMessage response, IEnumerable<ApiError> errors, string message = default(string))
+            : base(message ?? $"Fitbit Request exception - Http Status Code: {response.StatusCode} - see errors for more details.", errors)
         {
             this.Response = response;
         }

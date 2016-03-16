@@ -36,21 +36,6 @@
         [Test]
         [Category("Portable")]
         [Category("Interceptor")]
-        public void CanReadResponseMultipleTimes()
-        {
-            //arrenge
-            var messageHandler = new InterceptorCounter();
-            var sut = new FitbitClient(dummyCredentials, dummyToken, messageHandler);
-
-            //Act
-            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
-            r.Wait();
-            var responseContent = r.Result.Content.ReadAsStringAsync().Result;
-
-            //Assert
-            Assert.AreEqual(messageHandler.responseContent, responseContent);
-        }
-
         public async Task CanInterceptHttpRequestAndFakeResponse()
         {
             const int EXPECT_ONE_REQUEST = 1;

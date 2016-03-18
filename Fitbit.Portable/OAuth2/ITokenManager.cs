@@ -5,6 +5,6 @@ namespace Fitbit.Api.Portable
 {
     public interface ITokenManager
     {
-        Task<OAuth2AccessToken> RefreshToken(FitbitClient client);
+        Task<OAuth2AccessToken> RefreshTokenAsync(FitbitClient client);
     }
 }

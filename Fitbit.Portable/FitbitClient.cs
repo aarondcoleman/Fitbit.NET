@@ -777,7 +777,7 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        public async Task DeleteSubscriptionAsync(string uniqueSubscriptionId, APICollectionType collection, string subscriberId = null)
+        public async Task DeleteSubscriptionAsync(APICollectionType collection, string uniqueSubscriptionId, string subscriberId = null)
         {
             var collectionString = string.Empty;
 

@@ -27,7 +27,7 @@ namespace Fitbit.Portable.Tests
 
             //Any unexpected behavior will throw exception or fail on request checks (in handler)
             //Pass APICollectionType.user to delete subscriptions for all data sets
-            sut.DeleteSubscriptionAsync(subId, APICollectionType.user).Wait();
+            sut.DeleteSubscriptionAsync(APICollectionType.user, subId).Wait();
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace Fitbit.Portable.Tests
             var sut = this.SetupFitbitClient(null, expectedUrl, HttpMethod.Delete);
 
             //Any unexpected behavior will throw exception or fail on request checks (in handler)
-            sut.DeleteSubscriptionAsync(subId, collection).Wait();
+            sut.DeleteSubscriptionAsync(collection, subId).Wait();
 
         }
 

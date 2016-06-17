@@ -8,7 +8,7 @@
     {
         private static string FitbitOauthPostUrl => "https://api.fitbit.com/oauth2/token";
 
-        public async Task<OAuth2AccessToken> RefreshToken(FitbitClient client)
+        public async Task<OAuth2AccessToken> RefreshTokenAsync(FitbitClient client)
         {
             string postUrl = FitbitOauthPostUrl;
 

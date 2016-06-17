@@ -231,6 +231,9 @@
     <None Include="SampleData\GetFriends-Multiple.json" />
     <None Include="SampleData\GetDevices-Double.json" />
     <None Include="SampleData\GetDevices-Single.json" />
+    <Content Include="SampleData\IntradayActivitiesSteps.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleData\ApiError.json">

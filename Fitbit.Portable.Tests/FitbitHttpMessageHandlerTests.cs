@@ -19,15 +19,14 @@
         [Category("Portable")]
         [Category("Interceptor")]
 
-        public void CanSnifftHttpRequests()
+        public async Task CanSnifftHttpRequests()
         {
             //arrenge
             var messageHandler = new InterceptorCounter();
             var sut = new FitbitClient(dummyCredentials, dummyToken, messageHandler);
 
             //Act
-            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
-            r.Wait();
+            var r = await sut.HttpClient.GetAsync("https://dev.fitbit.com/");
 
             //Assert
             Assert.AreEqual(1, messageHandler.RequestCount);
@@ -37,25 +36,7 @@
         [Test]
         [Category("Portable")]
         [Category("Interceptor")]
-        public void CanReadResponseMultipleTimes()
-        {
-            //arrenge
-            var messageHandler = new InterceptorCounter();
-            var sut = new FitbitClient(dummyCredentials, dummyToken, messageHandler);
-
-            //Act
-            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
-            r.Wait();
-            var responseContent = r.Result.Content.ReadAsStringAsync().Result;
-
-            //Assert
-            Assert.AreEqual(messageHandler.responseContent, responseContent);
-        }
-
-        [Test]
-        [Category("Portable")]
-        [Category("Interceptor")]
-        public void CanInterceptHttpRequestAndFakeResponse()
+        public async Task CanInterceptHttpRequestAndFakeResponse()
         {
             const int EXPECT_ONE_REQUEST = 1;
             var fakeResponse = new HttpResponseMessage(System.Net.HttpStatusCode.Unused);
@@ -65,9 +46,7 @@
             var sut = new FitbitClient(dummyCredentials, dummyToken, responseFaker);
 
             //Act
-            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
-            r.Wait();
-            var actualResponse = r.Result;
+            var actualResponse = await sut.HttpClient.GetAsync("https://dev.fitbit.com/");
 
             Assert.AreSame(fakeResponse, actualResponse);
             //Ensure that the response handler is still invoked, even though we short circuited the request 
@@ -79,14 +58,14 @@
         [Category("Portable")]
         [Category("Interceptor")]
         [Category("OAuth2")]
-        public void Correctly_Detects_Stale_Token_Refreshes_And_Retries_Original_Request()
+        public async Task Correctly_Detects_Stale_Token_Refreshes_And_Retries_Original_Request()
         {
             var originalToken = new OAuth2AccessToken() { Token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzAzNDM3MzUsInNjb3BlcyI6Indwcm8gd2xvYyB3bnV0IHdzbGUgd3NldCB3aHIgd3dlaSB3YWN0IHdzb2MiLCJzdWIiOiJBQkNERUYiLCJhdWQiOiJJSktMTU4iLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJpYXQiOjE0MzAzNDAxMzV9.z0VHrIEzjsBnjiNMBey6wtu26yHTnSWz_qlqoEpUlpc" };
             var refreshedToken = new OAuth2AccessToken() { Token = "Refreshed" };
 
             //mocking our implementation of token manager. This test is concerned with ensuring the wiring is done correctly. Not the actual refresh process.
             var fakeManager = new Mock<ITokenManager>();
-            fakeManager.Setup(m => m.RefreshToken(It.IsAny<FitbitClient>())).Returns(() => Task.Run(() => refreshedToken));
+            fakeManager.Setup(m => m.RefreshTokenAsync(It.IsAny<FitbitClient>())).Returns(() => Task.Run(() => refreshedToken));
 
             //we shortcircuit the request to fake an expired token on the first request, and assuming the token is different the second time we let the request through
             var fakeServer = new StaleTokenFaker();
@@ -94,15 +73,13 @@
             var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, /*Explicity activate autorefresh, default is true*/true, fakeManager.Object);
 
             //Act
-            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
-            r.Wait();
-            var actualResponse = r.Result;
+            var actualResponse = await sut.HttpClient.GetAsync("https://dev.fitbit.com/");
 
             //Assert
             Assert.AreEqual(refreshedToken, sut.AccessToken);
             //Ensure the client is updated with the refreshed token
             Assert.AreEqual(refreshedToken.Token, sut.HttpClient.DefaultRequestHeaders.Authorization.Parameter);
-            fakeManager.Verify(m => m.RefreshToken(It.IsAny<FitbitClient>()), Times.Once);
+            fakeManager.Verify(m => m.RefreshTokenAsync(It.IsAny<FitbitClient>()), Times.Once);
             //Expecte two interceptions. First when we get the 401 refresh, and second when we retry after refreshing the stale token
             Assert.AreEqual(2, fakeServer.requestCount, "It looks like either the client did not retry after the token was refreshed, or the stale token was not detected");
 
@@ -121,7 +98,7 @@
 
             //mocking our implementation of token manager. This test is concerned with ensuring the wiring is done correctly. Not the actual refresh process.
             var fakeManager = new Mock<ITokenManager>();
-            fakeManager.Setup(m => m.RefreshToken(It.IsAny<FitbitClient>())).Returns(() => Task.Run(() => refreshedToken));
+            fakeManager.Setup(m => m.RefreshTokenAsync(It.IsAny<FitbitClient>())).Returns(() => Task.Run(() => refreshedToken));
 
             //simulate failed refresh token. 
             var fakeServer = new StaleTokenFaker(10);
@@ -139,24 +116,22 @@
         [Category("Portable")]
         [Category("Interceptor")]
         [Category("OAuth2")]
-        public void Disable_Automatic_Token_Refresh()
+        public async Task Disable_Automatic_Token_Refresh()
         {
             var originalToken = new OAuth2AccessToken() { Token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzAzNDM3MzUsInNjb3BlcyI6Indwcm8gd2xvYyB3bnV0IHdzbGUgd3NldCB3aHIgd3dlaSB3YWN0IHdzb2MiLCJzdWIiOiJBQkNERUYiLCJhdWQiOiJJSktMTU4iLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJpYXQiOjE0MzAzNDAxMzV9.z0VHrIEzjsBnjiNMBey6wtu26yHTnSWz_qlqoEpUlpc" };
             var refreshedToken = new OAuth2AccessToken() { Token = "Refreshed" };
 
             //mocking our implementation of token manager. This test is concerned with ensuring the wiring is done correctly. Not the actual refresh process.
             var fakeManager = new Mock<ITokenManager>();
-            fakeManager.Setup(m => m.RefreshToken(It.IsAny<FitbitClient>())).Returns(() => Task.Run(() => refreshedToken));
+            fakeManager.Setup(m => m.RefreshTokenAsync(It.IsAny<FitbitClient>())).Returns(() => Task.Run(() => refreshedToken));
 
-            //we shortcircuit the request to fake an expired token on the first request, and assuming the token is different the second time we let the request through
+            //we shortcircuit the request to return a stale token and ensure that the client lets the stale token response through
             var fakeServer = new StaleTokenFaker();
 
             var sut = new FitbitClient(dummyCredentials, originalToken, fakeServer, false, fakeManager.Object);
 
             //Act
-            var r = sut.HttpClient.GetAsync("https://dev.fitbit.com/");
-            r.Wait();
-            var actualResponse = r.Result;
+            var actualResponse = await sut.HttpClient.GetAsync("https://dev.fitbit.com/");
 
             //Assert
             Assert.AreEqual(fakeServer.staleTokenresponse, actualResponse);

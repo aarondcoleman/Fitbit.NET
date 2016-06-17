@@ -95,6 +95,10 @@ namespace Fitbit.Portable.Tests
             Assert.IsNotNull(f.NutritionalValues);
 
             // todo: further parsing of child objects
+            Assert.IsNotNull(f.LoggedFood.Unit);
+            Assert.AreEqual(147, f.LoggedFood.Unit.Id);
+            Assert.AreEqual("gram", f.LoggedFood.Unit.Name);
+            Assert.AreEqual("grams", f.LoggedFood.Unit.Plural);
         }
     }
 }

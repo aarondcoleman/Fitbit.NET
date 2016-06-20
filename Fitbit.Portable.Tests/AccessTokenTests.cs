@@ -44,7 +44,7 @@ namespace Fitbit.Portable.Tests
             {
                 OAuth2Helper.ParseAccessTokenResponse(content);
             }
-            catch (FitbitTokenException exception)
+            catch (FitbitException exception)
             {
                 // can only use ShouldThrow on async funcs of Task
                 exception.ApiErrors.Count.Should().Be(1);

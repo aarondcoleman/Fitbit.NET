@@ -44,7 +44,7 @@ namespace Fitbit.Api.Portable.OAuth2
                     }
                     else if (response.Result.RequestMessage.Headers.Contains(CUSTOM_HEADER))
                     {
-                        throw new FitbitTokenException(message: $"We received an unexpected stale token response - during the retry for a call whose token we just refreshed {response.Result.StatusCode}");   
+                        throw new FitbitTokenException(response.Result, message: $"In interceptor {nameof(OAuth2AutoRefreshInterceptor)} inside method {nameof(InterceptResponse)} we received an unexpected stale token response - during the retry for a call whose token we just refreshed {response.Result.StatusCode}");   
                     }
                 }                
             }

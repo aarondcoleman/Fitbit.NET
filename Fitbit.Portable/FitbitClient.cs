@@ -716,6 +716,33 @@ namespace Fitbit.Api.Portable
             return serializer.Deserialize<ApiSubscription>(responseBody);
         }
 
+
+        public async Task DeleteSubscriptionAsync(APICollectionType collection, string uniqueSubscriptionId, string subscriberId = null)
+        {
+            var collectionString = string.Empty;
+
+            if (collection == APICollectionType.user)
+                collectionString = string.Empty;
+            else
+                collectionString = collection.ToString() + @"/";
+
+            string url = "/1/user/-/{2}apiSubscriptions/{1}.json";
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] { uniqueSubscriptionId, collectionString });
+
+            if (subscriberId != null)
+            {
+                HttpClient.DefaultRequestHeaders.Add(Constants.Headers.XFitbitSubscriberId, subscriberId);
+            }
+
+            var response = await HttpClient.DeleteAsync(apiCall);
+
+            if (response.StatusCode != HttpStatusCode.NoContent)
+            {
+                var errors = new JsonDotNetSerializer().ParseErrors(await response.Content.ReadAsStringAsync());
+                throw new FitbitException("Unexpected response message", errors);
+            }
+        }
+
         private string FormatKey(APICollectionType apiCollectionType, string format)
         {
             string strValue = apiCollectionType == APICollectionType.user ? string.Empty : apiCollectionType.ToString();
@@ -774,32 +801,6 @@ namespace Fitbit.Api.Portable
 
                 // if we've got here then something unexpected has occured
                 throw new FitbitException($"An error has occured. Please see error list for details - {response.StatusCode}", errors);
-            }
-        }
-
-        public async Task DeleteSubscriptionAsync(string uniqueSubscriptionId, APICollectionType collection, string subscriberId = null)
-        {
-            var collectionString = string.Empty;
-
-            if (collection == APICollectionType.user)
-                collectionString = string.Empty;
-            else
-                collectionString = collection.ToString() + @"/";
-
-            string url = "/1/user/-/{2}apiSubscriptions/{1}.json";
-            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] {  uniqueSubscriptionId, collectionString });
-
-            if (subscriberId != null)
-            {
-                HttpClient.DefaultRequestHeaders.Add(Constants.Headers.XFitbitSubscriberId, subscriberId);
-            }
-
-            var response = await HttpClient.DeleteAsync(apiCall);
-
-            if (response.StatusCode != HttpStatusCode.NoContent)
-            {
-                var errors = new JsonDotNetSerializer().ParseErrors(await response.Content.ReadAsStringAsync());
-                throw new FitbitException("Unexpected response message", errors);
             }
         }
     }

@@ -33,5 +33,6 @@ namespace Fitbit.Api.Portable
 
         Task<List<ApiSubscription>> GetSubscriptionsAsync();
         Task<ApiSubscription> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string));
+        Task DeleteSubscriptionAsync(APICollectionType collection, string uniqueSubscriptionId, string subscriberId = null);
     }
 }

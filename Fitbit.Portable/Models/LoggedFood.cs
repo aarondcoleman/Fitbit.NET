@@ -12,6 +12,6 @@
         //Todo: Map to a locale object
         public string Locale { get; set; }
         public string Name { get; set; }
-        //Todo: Add unit and units
+        public FoodLogUnit Unit { get; set; }
     }
 }

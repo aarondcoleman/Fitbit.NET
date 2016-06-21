@@ -1,4 +1,6 @@
-﻿namespace Fitbit.Portable.Tests
+﻿using Fitbit.Portable.Tests.Interceptors;
+
+namespace Fitbit.Portable.Tests
 {
     using System;
     using System.Net.Http;

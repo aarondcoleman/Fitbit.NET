@@ -38,6 +38,7 @@
     <Compile Include="FitbitAppCredentials.cs" />
     <Compile Include="FitbitHttpMessageHandler.cs" />
     <Compile Include="FitbitTokenException.cs" />
+    <Compile Include="Helpers\HttpClientFactory.cs" />
     <Compile Include="HttpRequestMessageExtensionMethods.cs" />
     <Compile Include="Interceptors\FitbitHttpErrorHandler.cs" />
     <Compile Include="Models\ActivitiesStats.cs" />
@@ -160,6 +161,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

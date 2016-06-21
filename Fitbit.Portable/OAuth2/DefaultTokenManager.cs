@@ -1,4 +1,6 @@
-﻿namespace Fitbit.Api.Portable.OAuth2
+﻿using Fitbit.Api.Portable.Helpers;
+
+namespace Fitbit.Api.Portable.OAuth2
 {
     using System.Collections.Generic;
     using System.Net.Http;
@@ -19,7 +21,7 @@
             });
 
 
-            var httpClient = new HttpClient();
+            var httpClient = HttpClientFactory.Create(client, client.FitbitInterceptorPipeline);
 
             var clientIdConcatSecret = OAuth2Helper.Base64Encode(client.AppCredentials.ClientId + ":" + client.AppCredentials.ClientSecret);
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", clientIdConcatSecret);

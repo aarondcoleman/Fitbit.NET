@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Fitbit.Portable.Tests.Interceptors;
 
 namespace Fitbit.Portable.Tests
 {

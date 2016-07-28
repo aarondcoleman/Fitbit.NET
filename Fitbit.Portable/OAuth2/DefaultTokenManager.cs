@@ -10,14 +10,21 @@
 
         public async Task<OAuth2AccessToken> RefreshTokenAsync(FitbitClient client)
         {
+            return await RefreshTokenAsync(client, null);
+        }
+
+        public async Task<OAuth2AccessToken> RefreshTokenAsync(FitbitClient client, int? expiresIn = null)
+        {
             string postUrl = FitbitOauthPostUrl;
 
-            var content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("grant_type", "refresh_token"),
-                new KeyValuePair<string, string>("refresh_token", client.AccessToken.RefreshToken),
-            });
+            List<KeyValuePair<string, string>> contentValues = new List<KeyValuePair<string, string>>();
+            contentValues.Add(new KeyValuePair<string, string>("grant_type", "refresh_token"));
+            contentValues.Add(new KeyValuePair<string, string>("refresh_token", client.AccessToken.RefreshToken));
 
+            if (expiresIn.HasValue)
+                contentValues.Add(new KeyValuePair<string, string>("expires_in", expiresIn.Value.ToString()));
+
+            var content = new FormUrlEncodedContent(contentValues);
 
             var httpClient = new HttpClient();
 

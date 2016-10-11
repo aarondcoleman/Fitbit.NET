@@ -3,5 +3,6 @@
   "expires_in": 3600,
   "refresh_token": "c643a63c072f0f05478e9d18b991db80ef6061e4f8e6c822d83fed53e5fafdd7",
   "token_type": "Bearer",
-  "user_id": "26FWFL"
+  "user_id": "26FWFL",
+  "scope": "heartrate weight nutrition settings activity sleep"
 }

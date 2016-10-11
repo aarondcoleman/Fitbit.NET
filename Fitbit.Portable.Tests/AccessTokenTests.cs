@@ -102,6 +102,7 @@ namespace Fitbit.Portable.Tests
             token.ExpiresIn.Should().Be(3600);
             token.RefreshToken.Should().Be("c643a63c072f0f05478e9d18b991db80ef6061e4f8e6c822d83fed53e5fafdd7");
             token.UserId.Should().Be("26FWFL");
+            token.Scope.Should().Be("heartrate weight nutrition settings activity sleep");
         }
     }
 }

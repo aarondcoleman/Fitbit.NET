@@ -17,9 +17,16 @@
                 new KeyValuePair<string, string>("grant_type", "refresh_token"),
                 new KeyValuePair<string, string>("refresh_token", client.AccessToken.RefreshToken),
             });
-
-
-            var httpClient = new HttpClient();
+            
+            HttpClient httpClient;
+            if (client.HttpClient == null)
+            {
+                httpClient = new HttpClient();
+            }
+            else
+            {
+                httpClient = client.HttpClient;
+            }
 
             var clientIdConcatSecret = OAuth2Helper.Base64Encode(client.AppCredentials.ClientId + ":" + client.AppCredentials.ClientSecret);
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", clientIdConcatSecret);

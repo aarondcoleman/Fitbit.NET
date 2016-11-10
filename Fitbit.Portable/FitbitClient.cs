@@ -390,7 +390,20 @@ namespace Fitbit.Api.Portable
             await HandleResponse(response);
             string responseBody = await response.Content.ReadAsStringAsync();
             var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
-            return serializer.GetIntradayTimeSeriesData(responseBody);
+
+            IntradayData data = null;
+
+            try
+            {
+                data = serializer.GetIntradayTimeSeriesData(responseBody);
+            }
+            catch(Exception ex)
+            {
+                FitbitRequestException fEx = new FitbitRequestException(response, null, "Serialization Error in GetIntradayTimeSeriesData", ex);
+                throw fEx;                
+            }
+
+            return data;
         }
 
         /// <summary>

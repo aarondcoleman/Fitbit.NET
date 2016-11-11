@@ -389,6 +389,12 @@ namespace Fitbit.Api.Portable
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             await HandleResponse(response);
             string responseBody = await response.Content.ReadAsStringAsync();
+
+            if(string.IsNullOrWhiteSpace(responseBody))
+            {
+                throw new FitbitRequestException(response, null, "The Intraday data response body was null");
+            }
+
             var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
 
             IntradayData data = null;

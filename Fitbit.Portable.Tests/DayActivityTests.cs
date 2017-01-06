@@ -165,7 +165,7 @@ namespace Fitbit.Portable.Tests
             // startdate
             Assert.AreEqual("20:16", a.StartTime); // todo: change this to date time as per FatLog and WeightLog
             // steps?
-
+            
             // goals
             var g = activity.Goals;
             ValidateActivityGoals(g);
@@ -189,6 +189,19 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1155, summary.SedentaryMinutes);
             Assert.AreEqual(15720, summary.Steps);
             Assert.AreEqual(91, summary.VeryActiveMinutes);
+
+            Assert.AreEqual(1623, summary.CaloriesBMR);
+            Assert.AreEqual(26, summary.Floors);
+            Assert.AreEqual(1067, summary.MarginalCalories);
+            Assert.AreEqual(73, summary.RestingHeartRate);
+
+            //HeartRateZones
+            Assert.AreEqual(4, summary.HeartRateZones.Count);
+            Assert.AreEqual("Out of Range", summary.HeartRateZones[0].Name);
+            Assert.AreEqual(1198, summary.HeartRateZones[0].Minutes);
+            Assert.AreEqual(30, summary.HeartRateZones[0].Min);
+            Assert.AreEqual(94, summary.HeartRateZones[0].Max);
+            Assert.AreEqual(1594.36823f, summary.HeartRateZones[0].CaloriesOut);
 
             // distances
             var d = summary.Distances.First(x => x.Activity == "total");

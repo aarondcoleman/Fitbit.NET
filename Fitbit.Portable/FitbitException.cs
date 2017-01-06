@@ -9,7 +9,7 @@ namespace Fitbit.Api.Portable
     {
         public List<ApiError> ApiErrors { get; set; }
 
-        public FitbitException(string message, IEnumerable<ApiError> errors) : base(message)
+        public FitbitException(string message, IEnumerable<ApiError> errors, Exception innerEx = null) : base(message, innerEx)
         {
             ApiErrors = errors != null ? new List<ApiError>(errors) : new List<ApiError>();
         }

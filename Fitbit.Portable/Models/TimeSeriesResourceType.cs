@@ -18,6 +18,8 @@ namespace Fitbit.Models
         //activity
         [StringValue("/activities/calories")]
         CaloriesOut,
+        [StringValue("/activities/caloriesBMR")]
+        CaloriesBMR,
         [StringValue("/activities/steps")]
         Steps,
         [StringValue("/activities/distance")]

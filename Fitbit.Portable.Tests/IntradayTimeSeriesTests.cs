@@ -36,7 +36,28 @@ namespace Fitbit.Portable.Tests
             response.DataSet[1].METs.Should().Be("10");
             response.DataSet[1].Level.Should().Be("0");
             response.DataSet[1].Value.Should().Be("1.1857000589370628");
-            
+        }
+
+        [Test]
+        [Category("Portable")]
+        public async void GetIntraDayTimeSeriesCaloriesIntensityMetsAsync_ReturnsNullIfMissingDateTime()
+        {
+            string content = SampleDataHelper.GetContent("IntradayActivitiesCaloriesMissingDateTime.json");
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
+
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                message.Method.Should().Be(HttpMethod.Get);
+                message.RequestUri.AbsoluteUri.Should().Be("https://api.fitbit.com/1/user/-/activities/calories/date/2015-03-20/1d.json");
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+            IntradayData response = await fitbitClient.GetIntraDayTimeSeriesAsync(IntradayResourceType.CaloriesOut, new DateTime(2015, 3, 20), new TimeSpan(24, 0, 0));
+
+            response.Should().Be(null);
         }
 
         [Test]

@@ -145,7 +145,17 @@ namespace Fitbit.Api.Portable
             var parsedJToken = JToken.Parse(intradayDataJson);
 
             // need to parse the date first  
-            var date = parsedJToken.SelectToken(serializer.RootProperty).First["dateTime"];
+            JToken date;
+            try
+            {
+                date = parsedJToken.SelectToken(serializer.RootProperty).First["dateTime"];
+            }
+            catch (NullReferenceException nullReferenceException)
+            {
+                //We'll nullref here if we're querying a future date - Fitbit omits dateTime in that case.
+                //Return null since this error will, in all cases, coincide with an otherwise empty (all zeros) object
+                return null;
+            }
             var dataPoints = parsedJToken.SelectTokens(serializer.RootProperty + "-intraday.dataset");
 
             var result = new IntradayData

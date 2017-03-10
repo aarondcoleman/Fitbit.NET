@@ -30,9 +30,22 @@ namespace Fitbit.Api.Portable
         Task<WaterData> GetWaterAsync(DateTime date);
         Task<WaterLog> LogWaterAsync(DateTime date, WaterLog log);
         Task DeleteWaterLogAsync(long logId);
-
         Task<List<ApiSubscription>> GetSubscriptionsAsync();
         Task<ApiSubscription> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string));
         Task DeleteSubscriptionAsync(APICollectionType collection, string uniqueSubscriptionId, string subscriberId = null);
+        Task<ActivityLog> LogActivityAsync(ActivityLog model);
+        Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string date, string period,
+            string encodedUserId = default(string));
+        Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string baseDate, DateTime endDate,
+            string encodedUserId = default(string));
+        Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, DateTime endDate, string detailLevel,
+            string encodedUserId = default(string));
+        Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, DateTime endDate, string detailLevel,
+            TimeSpan startTime, TimeSpan endTime, string encodedUserId = default(string));
+        Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, string detailLevel,
+            string encodedUserId = default(string));
+        Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, string detailLevel, TimeSpan startTime,
+            TimeSpan endTime, string encodedUserId = default(string));
+        Task<List<ActivityList>> GetActivityLogsList(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string));
     }
 }

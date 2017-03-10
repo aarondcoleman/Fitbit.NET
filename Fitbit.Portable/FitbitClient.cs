@@ -770,8 +770,7 @@ namespace Fitbit.Api.Portable
         /// <returns>ActivityLog</returns>
         public async Task<ActivityLog> LogActivityAsync(ActivityLog model)
         {
-            var url = "/1/user/-/activities.json";
-            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url);
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities.json");
 
             var items = new Dictionary<string, string>
             {

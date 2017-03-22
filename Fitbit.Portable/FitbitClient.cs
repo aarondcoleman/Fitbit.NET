@@ -774,14 +774,19 @@ namespace Fitbit.Api.Portable
 
             var items = new Dictionary<string, string>
             {
-                {"activityId", model.ActivityId.ToString()},
+                {"activityName", Uri.EscapeDataString(model.Name)},
                 {"manualCalories", model.Calories.ToString()},
                 {"startTime", model.StartTime},
                 {"durationMillis", model.Duration.ToString()},
-                {"date", DateTime.Now.ToFitbitFormat()},
+                {"date", model.Date},
                 {"distance", model.Distance.ToString()}
             };
 
+            if (!string.IsNullOrEmpty(model.ActivityId.ToString()) && model.ActivityId != 0)
+            {
+                items.Add("activityId", model.ActivityId.ToString());
+            }
+            
             apiCall = $"{apiCall}?{string.Join("&", items.Select(x => $"{x.Key}={x.Value}"))}";
 
             HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new StringContent(string.Empty));

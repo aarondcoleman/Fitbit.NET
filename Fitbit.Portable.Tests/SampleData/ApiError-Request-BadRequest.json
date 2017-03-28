@@ -1,0 +1,10 @@
+﻿{
+  "errors": [
+    {
+      "errorType": "invalid_request",
+      "fieldName": "n/a",
+      "message": "There was an error reading the request body."
+    }
+  ],
+  "success": false
+}

@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1358D3B4-0698-4003-97EB-B6D489E04138}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fitbit.Api.Portable</RootNamespace>
+    <AssemblyName>Fitbit.Portable</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile344</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\Fitbit\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;REQUIRES_JSONNET</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;REQUIRES_JSONNET</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="FitbitAppCredentials.cs" />
+    <Compile Include="FitbitHttpMessageHandler.cs" />
+    <Compile Include="FitbitTokenException.cs" />
+    <Compile Include="HttpRequestMessageExtensionMethods.cs" />
+    <Compile Include="Interceptors\FitbitHttpErrorHandler.cs" />
+    <Compile Include="Models\ActivitiesStats.cs" />
+    <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivityDistance.cs" />
+    <Compile Include="Models\ActivityGoals.cs" />
+    <Compile Include="Models\ActivityLog.cs" />
+    <Compile Include="Models\ActivitySummary.cs" />
+    <Compile Include="Models\APICollectionType.cs" />
+    <Compile Include="Models\ApiError.cs" />
+    <Compile Include="Models\ApiSubscription.cs" />
+    <Compile Include="Models\AuthCredential.cs" />
+    <Compile Include="Models\BestStats.cs" />
+    <Compile Include="Models\BestTotals.cs" />
+    <Compile Include="Models\BloodPressure.cs" />
+    <Compile Include="Models\BloodPressureAverage.cs" />
+    <Compile Include="Models\BloodPressureData.cs" />
+    <Compile Include="Models\Body.cs" />
+    <Compile Include="Models\BodyGoals.cs" />
+    <Compile Include="Models\BodyMeasurements.cs" />
+    <Compile Include="Models\CaloriesOutStats.cs" />
+    <Compile Include="Models\DateRangePeriod.cs" />
+    <Compile Include="Models\Device.cs" />
+    <Compile Include="Models\DeviceType.cs" />
+    <Compile Include="Models\DistanceStats.cs" />
+    <Compile Include="Models\Fat.cs" />
+    <Compile Include="Models\FatLog.cs" />
+    <Compile Include="Models\FloorStats.cs" />
+    <Compile Include="Models\Food.cs" />
+    <Compile Include="Models\FoodGoals.cs" />
+    <Compile Include="Models\FoodLog.cs" />
+    <Compile Include="Models\FoodLogUnit.cs" />
+    <Compile Include="Models\FoodSummary.cs" />
+    <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\HeartActivities.cs" />
+    <Compile Include="Models\HeartActivitiesIntraday.cs" />
+    <Compile Include="Models\HeartActivitiesTimeSeries.cs" />
+    <Compile Include="Models\HeartRateResolution.cs" />
+    <Compile Include="Models\HeartRateZone.cs" />
+    <Compile Include="Models\IntradayData.cs" />
+    <Compile Include="Models\IntradayResourceType.cs" />
+    <Compile Include="Models\LifetimeStats.cs" />
+    <Compile Include="Models\LifetimeTotals.cs" />
+    <Compile Include="Models\LoggedFood.cs" />
+    <Compile Include="Models\MinuteData.cs" />
+    <Compile Include="Models\NutritionalValues.cs" />
+    <Compile Include="Models\RequestToken.cs" />
+    <Compile Include="Models\ResourceOwnerType.cs" />
+    <Compile Include="Models\Sleep.cs" />
+    <Compile Include="Models\SleepData.cs" />
+    <Compile Include="Models\SleepLog.cs" />
+    <Compile Include="Models\SleepSummary.cs" />
+    <Compile Include="Models\StepStats.cs" />
+    <Compile Include="Models\SubscriptionResponse.cs" />
+    <Compile Include="Models\TimeSeriesDataList.cs" />
+    <Compile Include="Models\TimeSeriesDataListInt.cs" />
+    <Compile Include="Models\TimeSeriesResourceType.cs" />
+    <Compile Include="Models\UpdatedResource.cs" />
+    <Compile Include="Models\UpdatedResourceList.cs" />
+    <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\WaterData.cs" />
+    <Compile Include="Models\WaterLog.cs" />
+    <Compile Include="Models\WaterSummary.cs" />
+    <Compile Include="Models\Weight.cs" />
+    <Compile Include="Models\WeightLog.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="EmptyDateToMinDateConverter.cs" />
+    <Compile Include="FitbitClient.cs" />
+    <Compile Include="FitbitClientHelper.cs" />
+    <Compile Include="FitbitClientHelperExtensions.cs" />
+    <Compile Include="FitbitException.cs" />
+    <Compile Include="FitbitRateLimitException.cs" />
+    <Compile Include="FitbitRequestException.cs" />
+    <Compile Include="IFitbitClient.cs" />
+    <Compile Include="IFitbitInterceptor.cs" />
+    <Compile Include="ITokenStore.cs" />
+    <Compile Include="JsonDotNetSerializer.cs" />
+    <Compile Include="JsonDotNetSerializerExtensions.cs" />
+    <Compile Include="OAuth2\DefaultTokenManager.cs" />
+    <Compile Include="OAuth2\ITokenManager.cs" />
+    <Compile Include="OAuth2\OAuth2AccessToken.cs" />
+    <Compile Include="OAuth2\OAuth2AutoRefreshInterceptor.cs" />
+    <Compile Include="OAuth2\OAuth2Helper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringAttributeExtensions.cs" />
+    <Compile Include="StringValueAttribute.cs" />
+    <Compile Include="SubscriptionManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\Fitbit\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\Fitbit\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Fitbit\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>..\Fitbit\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\Fitbit\packages\Microsoft.Net.Http.2.2.22\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\Fitbit\packages\Microsoft.Net.Http.2.2.22\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\Fitbit\packages\Microsoft.Net.Http.2.2.22\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\Fitbit\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\Fitbit\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

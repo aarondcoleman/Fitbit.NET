@@ -1,0 +1,180 @@
+﻿@model IEnumerable<Fitbit.Models.UserProfile>
+
+@{
+    ViewBag.Title = "Friends";
+}
+
+<h2>Friends</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AboutMe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Avatar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Avatar150)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DistanceUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EncodedId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodsLocale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GlucoseUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Height)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HeightUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Locale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MemberSince)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nickname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OffsetFromUTCMillis)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDayOfWeek)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StrideLengthRunning)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StrideLengthWalking)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Timezone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VolumeUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WaterUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Weight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WeightUnit)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AboutMe)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Avatar)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Avatar150)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Country)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DistanceUnit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EncodedId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FoodsLocale)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GlucoseUnit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Height)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HeightUnit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Locale)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MemberSince)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nickname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OffsetFromUTCMillis)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDayOfWeek)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StrideLengthRunning)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StrideLengthWalking)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Timezone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VolumeUnit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WaterUnit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Weight)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WeightUnit)
+        </td>
+    </tr>
+}
+
+</table>

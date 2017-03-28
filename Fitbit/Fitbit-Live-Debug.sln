@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable", "..\Fitbi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable.Tests", "..\Fitbit.Portable.Tests\Fitbit.Portable.Tests.csproj", "{F811594D-3323-4147-9780-D3A1F930B99F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable.DebugSite", "..\Fitbit.Portable.DebugSite\Fitbit.Portable.DebugSite.csproj", "{61C8AD29-A128-442E-BF0B-539A990B15C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,12 @@ Global
 		{F811594D-3323-4147-9780-D3A1F930B99F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F811594D-3323-4147-9780-D3A1F930B99F}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{F811594D-3323-4147-9780-D3A1F930B99F}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{61C8AD29-A128-442E-BF0B-539A990B15C7}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

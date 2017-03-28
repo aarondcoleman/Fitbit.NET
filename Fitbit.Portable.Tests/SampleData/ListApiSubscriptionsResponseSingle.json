@@ -1,0 +1,11 @@
+﻿{
+    apiSubscriptions:[
+        {
+            "collectionType":"user",
+            "ownerId":"227YZL",
+            "ownerType":"user",
+            "subscriberId":"1",
+            "subscriptionId":"323"
+        }
+    ]
+}

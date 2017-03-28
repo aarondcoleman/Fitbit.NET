@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Fitbit.NET.OAuth1Migration</id>
+    <version>1.0.0.0</version>
+    <title>Fitbit.NET.OAuth1Migration</title>
+    <authors>Fitbit.Net contributors Team -- @WestDiscGolf, @aarondcoleman, @mxa0079</authors>
+    <owners></owners>
+    <licenseUrl>https://github.com/aarondcoleman/Fitbit.NET</licenseUrl>
+    <projectUrl>https://github.com/aarondcoleman/Fitbit.NET</projectUrl>
+    <iconUrl>http://static3.fitbit.com/simple.b-dis-png.h76d53d8e6a0653b38326a825b2b9cf57.pack?items=%2Fimages%2Fcommon%2Fbg_branding_b.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Fitbit API client for .NET</description>
+    <summary>Complementary libary to Fitbit.Net to aide with migration off OAuth1 and into OAuth2</summary>
+    <releaseNotes>
+            Complementary libary to Fitbit.Net to aide with migration off OAuth1 and into OAuth2
+    </releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Fitbit OAuth2 API .NET IoT Wearables</tags>
+    <dependencies>
+	  <dependency id="Fitbit.Net" version="2.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="$buildOutputPath$\Fitbit.OAuth1Migration.dll" target="lib\net451" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.OAuth1Migration.pdb" target="lib\net451" exclude="" />
+  </files>
+</package>

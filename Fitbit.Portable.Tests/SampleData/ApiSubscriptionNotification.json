@@ -1,0 +1,24 @@
+﻿[
+                {
+                  "collectionType":"foods",
+                  "date":"2010-03-01",
+                  "ownerId":"228S74",
+                  "ownerType":"user",
+                  "subscriptionId":"1234",
+                },
+                {
+                  "collectionType":"foods",
+                  "date":"2010-03-02",
+                  "ownerId":"228S74",
+                  "ownerType":"user",
+                  "subscriptionId":"1234",
+                },
+                {
+ 
+                  "collectionType":"activities",
+                  "date":"2010-03-01",
+                  "ownerId":"184X36",
+                  "ownerType":"user",
+                  "subscriptionId":"2345",
+                }
+            ]

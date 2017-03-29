@@ -183,6 +183,8 @@ namespace Fitbit.Portable.Tests
             // activity calories?
             // calories BMR?
             Assert.AreEqual(2828, summary.CaloriesOut);
+            Assert.AreEqual(1457, summary.ActivityCalories);
+            Assert.AreEqual(79.25, summary.Elevation);
             Assert.AreEqual(63, summary.FairlyActiveMinutes);
             Assert.AreEqual(59, summary.LightlyActiveMinutes);
             // marginal caloties?

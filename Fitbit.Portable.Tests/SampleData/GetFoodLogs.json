@@ -1,0 +1,26 @@
+﻿{
+    "foods":[
+        {
+            "isFavorite":true,
+            "logDate":"2011-06-29",
+            "logId":1820,
+            "loggedFood":{
+                "accessLevel":"PUBLIC",
+                "amount":132.57,
+                "brand":"",
+                "calories":752,
+                "foodId":18828,
+                "mealTypeId":4,
+                "locale":"en_US",
+                "name":"Chocolate, Milk",
+                "unit":{"id":147,"name":"gram","plural":"grams"},
+                "units":[226,180,147,389]
+            },
+            "nutritionalValues":{"calories":752,"carbs":66.5,"fat":49,"fiber":0.5,"protein":12.5,"sodium":186}
+        }
+    ],
+    "summary":{"calories":752,"carbs":66.5,"fat":49,"fiber":0.5,"protein":12.5,"sodium":186,"water":0},
+    "goals":{
+        "calories": 2286
+    }
+}

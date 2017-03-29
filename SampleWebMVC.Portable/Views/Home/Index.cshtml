@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Welcome</h2>
+@if (ViewBag.FitbitConnected == false)
+{
+    <p>Welcome. Please connect your Fitbit account <a href="/Fitbit/Authorize">here</a>.</p>
+    <p style="font-style:italic">(TIP: if local debugging, copy this page URL to the clipboard. On your return, make sure your callback url is correct, port number + /fitbit/callback?" )</p>
+}
+else
+{
+    <p>Welcome Fitbit User @Session["FitbitUserId"].ToString()</p>
+    <ul>
+        <li>@Html.ActionLink("Current Logged in User", "UserProfile", "Fitbit")</li>
+        <li>@Html.ActionLink("Current Users Devices", "Devices", "Fitbit")</li>
+        <li>@Html.ActionLink("Current Users Friends", "Friends", "Fitbit")</li>
+        @*<li><a href="/Fitbit/LastWeekDistance">View Last Week Distances</a></li>
+        <li><a href="/Fitbit/LastWeekSteps">View Last Week Active Score</a></li>
+        <li><a href="/Fitbit/LastYearWeight">View Last Year Weight</a></li>
+        <li><a href="/Fitbit/LastYearFat">View Last Year Fat (Time Series API)</a></li>
+        <li><a href="/Fitbit/MonthFat/@DateTime.UtcNow.AddDays(-30).ToString("yyyy-MM-dd")">View Last Month Fat (Body API)</a></li>
+        <li><a href="/Fitbit/LastYearWeight">View Last Year Weight (Time Series API)</a></li>
+        <li><a href="/Fitbit/MonthWeight/@DateTime.UtcNow.AddDays(-30).ToString("yyyy-MM-dd")">View Last Month Weight (Body API)</a></li>*@
+    </ul>
+}

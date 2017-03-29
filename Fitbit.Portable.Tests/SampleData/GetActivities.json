@@ -1,0 +1,104 @@
+﻿{
+  "activities":  [
+     {
+      "activityId": 2382124,
+      "activityParentId": 2382124,
+      "activityParentName": "Running (jogging), 6.7 mph (9 min mile) (MyFitnessPal)",
+      "calories": 541,
+      "description": "",
+      "duration": 2400000,
+      "hasStartTime": true,
+      "isFavorite": false,
+      "lastModified": "2014-09-25T20:57:46.000+01:00",
+      "logId": 105415286,
+      "name": "Running (jogging), 6.7 mph (9 min mile) (MyFitnessPal)",
+      "startDate": "2014-09-25",
+      "startTime": "20:16"
+    }
+  ],
+  "goals":  {
+    "activeMinutes": 30,
+    "caloriesOut": 2820,
+    "distance": 8.05,
+    "steps": 10000
+  },
+  "summary": {
+    "activeScore": -1,
+    "activityCalories": 1457,
+    "caloriesBMR": 1623,
+    "caloriesOut": 2828,
+    "distances": [
+      {
+        "activity": "total",
+        "distance": 12.32
+      },
+      {
+        "activity": "tracker",
+        "distance": 12.32
+      },
+      {
+        "activity": "loggedActivities",
+        "distance": 0
+      },
+      {
+        "activity": "veryActive",
+        "distance": 9.69
+      },
+      {
+        "activity": "moderatelyActive",
+        "distance": 1.99
+      },
+      {
+        "activity": "lightlyActive",
+        "distance": 0.57
+      },
+      {
+        "activity": "sedentaryActive",
+        "distance": 0
+      },
+      {
+        "activity": "Running (jogging), 6.7 mph (9 min mile) (MyFitnessPal)",
+        "distance": 0
+      }
+    ],
+    "elevation": 79.25,
+    "fairlyActiveMinutes": 63,
+    "floors": 26,
+    "heartRateZones": [
+      {
+        "caloriesOut": 1594.36823,
+        "max": 94,
+        "min": 30,
+        "minutes": 1198,
+        "name": "Out of Range"
+      },
+      {
+        "caloriesOut": 742.01185,
+        "max": 131,
+        "min": 94,
+        "minutes": 192,
+        "name": "Fat Burn"
+      },
+      {
+        "caloriesOut": 105.47127,
+        "max": 159,
+        "min": 131,
+        "minutes": 11,
+        "name": "Cardio"
+      },
+      {
+        "caloriesOut": 0,
+        "max": 220,
+        "min": 159,
+        "minutes": 0,
+        "name": "Peak"
+      }
+    ],
+    "lightlyActiveMinutes": 59,
+    "marginalCalories": 1067,
+    "restingHeartRate": 73,
+    "sedentaryMinutes": 1155,
+    "steps": 15720,
+    "veryActiveMinutes": 91
+  }
+}

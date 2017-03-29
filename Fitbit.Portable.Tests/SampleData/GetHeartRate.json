@@ -1,0 +1,60 @@
+﻿{
+    "average": [
+        {
+            "heartRate": 70,
+            "tracker": "Resting Heart Rate"
+        },
+        {
+            "heartRate": 83,
+            "tracker": "Normal Heart Rate"
+        },
+        {
+            "heartRate": 130,
+            "tracker": "Exertive Heart Rate"
+        },
+        {
+            "heartRate": 150,
+            "tracker": "Running"
+        }
+    ],
+    "heart": [
+        {
+            "heartRate": 70,
+            "logId": 1428,
+            "tracker": "Resting Heart Rate"
+        },
+        {
+            "heartRate": 85,
+            "logId": 1427,
+            "tracker": "Normal Heart Rate"
+        },
+        {
+            "heartRate": 81,
+            "logId": 1431,
+            "tracker": "Normal Heart Rate"
+        },
+        {
+            "heartRate": 130,
+            "logId": 1429,
+            "tracker": "Exertive Heart Rate"
+        },
+        {
+            "heartRate": 150,
+            "logId": 1425,
+            "time": "12:20",
+            "tracker": "Running"
+        },
+        {
+            "heartRate": 145,
+            "logId": 1432,
+            "time": "12:21",
+            "tracker": "Running"
+        },
+        {
+            "heartRate": 157,
+            "logId": 1433,
+            "time": "12:22",
+            "tracker": "Running"
+        }
+    ]
+}

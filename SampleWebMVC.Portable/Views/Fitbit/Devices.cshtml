@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Fitbit.Models.Device>
+
+@{
+    ViewBag.Title = "Devices";
+}
+
+<h2>Devices</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Battery)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastSyncTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeviceVersion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mac)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Battery)
+        </td>
+        <td>
+            @item.Type.ToString()
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastSyncTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeviceVersion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mac)
+        </td>
+    </tr>
+}
+
+</table>

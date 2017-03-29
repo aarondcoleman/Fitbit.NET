@@ -1,0 +1,9 @@
+﻿{
+  "errors": [
+    {
+      "errorType": "invalid_request",
+      "message": "Authorization header required."
+    }
+  ],
+  "success": false
+}

@@ -1,0 +1,9 @@
+﻿{
+  "errors":  [
+     {
+      "errorType": "request",
+      "fieldName": "n/a",
+      "message": "Rate limit exceeded for the user with the access token 39ab9109aba. Please try again at the start of the hour. More information about rate limiting is at &lt;https://dev.fitbit.com/&gt;."
+    }
+  ]
+}

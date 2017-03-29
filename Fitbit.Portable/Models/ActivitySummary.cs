@@ -7,10 +7,11 @@ namespace Fitbit.Models
     {
         // removed from Fitbit API:  https://groups.google.com/forum/#!topic/fitbit-api/8IRaX6RW7g4
         //public int ActiveScore{ get; set; }
-
+        public int ActivityCalories { get; set; }
         public int CaloriesOut { get; set; }
         public int CaloriesBMR { get; set; }
         public List<ActivityDistance> Distances { get; set; }
+        public float? Elevation { get; set; }
         public float FairlyActiveMinutes { get; set; }
         public int? Floors { get; set; }
         public List<HeartRateZone> HeartRateZones { get; set; }

@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable", "..\Fitbit.Portable\Fitbit.Portable.csproj", "{1358D3B4-0698-4003-97EB-B6D489E04138}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitbit.Portable.Tests", "..\Fitbit.Portable.Tests\Fitbit.Portable.Tests.csproj", "{F811594D-3323-4147-9780-D3A1F930B99F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitBitConsoleTester", "FitBitConsoleTester\FitBitConsoleTester.csproj", "{4883D16A-FA6C-43A5-87D9-826CB49BF83C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F811594D-3323-4147-9780-D3A1F930B99F} = {F811594D-3323-4147-9780-D3A1F930B99F}
+		{1358D3B4-0698-4003-97EB-B6D489E04138} = {1358D3B4-0698-4003-97EB-B6D489E04138}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +32,12 @@ Global
 		{F811594D-3323-4147-9780-D3A1F930B99F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F811594D-3323-4147-9780-D3A1F930B99F}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{F811594D-3323-4147-9780-D3A1F930B99F}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
+		{4883D16A-FA6C-43A5-87D9-826CB49BF83C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4883D16A-FA6C-43A5-87D9-826CB49BF83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4883D16A-FA6C-43A5-87D9-826CB49BF83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4883D16A-FA6C-43A5-87D9-826CB49BF83C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4883D16A-FA6C-43A5-87D9-826CB49BF83C}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{4883D16A-FA6C-43A5-87D9-826CB49BF83C}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

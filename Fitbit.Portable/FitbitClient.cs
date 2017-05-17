@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable.OAuth2;
 using System.Net.Http.Headers;
+using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
@@ -199,7 +200,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<ActivitiesStats> GetActivitiesStatsAsync(string encodedUserId = null)
         {
-            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities.json", encodedUserId);
+           string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities.json", encodedUserId);
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             await HandleResponse(response);
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -208,7 +209,8 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// Requests the sleep data for the specified date for the logged in user
+        /// Requests the sleep data for the specified date for the logged in user 
+        /// NOTE: This is for the V1 of the sleep api which is now Deprecated
         /// </summary>
         /// <param name="sleepDate"></param>
         /// <returns></returns>
@@ -222,6 +224,25 @@ namespace Fitbit.Api.Portable
             var serializer = new JsonDotNetSerializer();
             var data = serializer.Deserialize<SleepData>(responseBody);
             FitbitClientExtensions.ProcessSleepData(data);
+            return data;
+        }
+
+        /// <summary>
+        /// Requests the sleep data for a specified date for the logged in user
+        /// </summary>
+        /// <param name="sleepDate"></param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public async Task<RootSleepLogDate> GetSleepDateAsync(DateTime sleepDate, string encodedUserId = null)
+        {
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1.2/user/{0}/sleep/date/{1}.json", encodedUserId, sleepDate.ToFitbitFormat());
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            var data = serializer.Deserialize<RootSleepLogDate>(responseBody);
+            
             return data;
         }
 
@@ -371,11 +392,8 @@ namespace Fitbit.Api.Portable
             if (intraDayTimeSpan > new TimeSpan(0, 1, 0) && //the timespan is greater than a minute
                 dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day) //adding the timespan doesn't go in to the next day
             {
-                apiCall = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.json",
-                                        timeSeriesResourceType.GetStringValue(),
-                                        dayAndStartTime.ToFitbitFormat(),
-                                        dayAndStartTime.ToString("HH:mm"),
-                                        dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"));
+                apiCall =
+                    $"/1/user/-{timeSeriesResourceType.GetStringValue()}/date/{dayAndStartTime.ToFitbitFormat()}/1d/time/{dayAndStartTime.ToString("HH:mm")}/{dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm")}.json";
             }
             else //just get the today data, there was a date specified but the timerange was likely too large or negative
             {

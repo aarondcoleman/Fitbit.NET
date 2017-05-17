@@ -89,6 +89,7 @@
     <Compile Include="Models\Sleep.cs" />
     <Compile Include="Models\SleepData.cs" />
     <Compile Include="Models\SleepLog.cs" />
+    <Compile Include="Models\SleepLogDate.cs" />
     <Compile Include="Models\SleepSummary.cs" />
     <Compile Include="Models\StepStats.cs" />
     <Compile Include="Models\SubscriptionResponse.cs" />

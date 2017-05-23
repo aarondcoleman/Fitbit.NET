@@ -372,21 +372,37 @@ namespace Fitbit.Api.Portable
                 dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day) //adding the timespan doesn't go in to the next day
             {
                 apiCall = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.json",
-                                        timeSeriesResourceType.GetStringValue(),
-                                        dayAndStartTime.ToFitbitFormat(),
-                                        dayAndStartTime.ToString("HH:mm"),
-                                        dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"));
+                    timeSeriesResourceType.GetStringValue(),
+                    dayAndStartTime.ToFitbitFormat(),
+                    dayAndStartTime.ToString("HH:mm"),
+                    dayAndStartTime.Add(intraDayTimeSpan).ToString("HH:mm"));
             }
             else //just get the today data, there was a date specified but the timerange was likely too large or negative
             {
                 apiCall = string.Format("/1/user/-{0}/date/{1}/1d.json",
-                                        timeSeriesResourceType.GetStringValue(),
-                                        dayAndStartTime.ToFitbitFormat());
+                    timeSeriesResourceType.GetStringValue(),
+                    dayAndStartTime.ToFitbitFormat());
             }
 
             apiCall = FitbitClientHelperExtensions.ToFullUrl(apiCall);
 
-            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await HttpClient.GetAsync(apiCall);
+            }
+            catch (FitbitRequestException fre)
+            {
+                if (fre.ApiErrors.Any(err => err.Message == Constants.FloorsUnsupportedOnDeviceError))
+                {
+                    return null;
+                }
+                else
+                {
+                    //otherwise, rethrow because we only want to alter behavior for the very specific case above
+                    throw;
+                }
+            }
             await HandleResponse(response);
             string responseBody = await response.Content.ReadAsStringAsync();
 

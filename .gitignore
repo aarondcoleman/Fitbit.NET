@@ -13,6 +13,7 @@
 #Fitbit.NET specific files
 Configuration.cs
 /Fitbit.IntegrationTests/Configuration.cs
+/NuGet/package/lib/
 
 ################
 ## Eclipse

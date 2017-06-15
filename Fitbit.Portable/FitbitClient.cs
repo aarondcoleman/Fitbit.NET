@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Fitbit.Api.Portable.OAuth2;
 using System.Net.Http.Headers;
 using Fitbit.Api.Portable.Models;
+using Fitbit.Api.Portable.Models.Deprecated;
 using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
@@ -214,6 +215,7 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="sleepDate"></param>
         /// <returns></returns>
+        [Obsolete("This method is now deprecated. Please use the new Sleep API calls ")]
         public async Task<SleepData> GetSleepAsync(DateTime sleepDate)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/sleep/date/{1}.json", args: sleepDate.ToFitbitFormat());
@@ -245,6 +247,34 @@ namespace Fitbit.Api.Portable
             
             return data;
         }
+
+        /// <summary>
+        /// Requests the sleep data for a specified date range for the logged in user
+        /// </summary>
+        /// <param name="sleepDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="encodedUserId"></param>
+        /// <param name="startDate"></param>
+        /// <returns></returns>
+        public async Task<RootObjectSleepRange> GetSleepDateRangeAsync(DateTime startDate, DateTime endDate, string encodedUserId = null)
+        {
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1.2/user/{0}/sleep/date/{1}/{2}.json", encodedUserId, startDate.ToFitbitFormat(), endDate.ToFitbitFormat());
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var serializer = new JsonDotNetSerializer();
+            var data = serializer.Deserialize<RootObjectSleepRange>(responseBody);
+
+            return data;
+        }
+
+
+
+
+
+
+
 
         /// <summary>
         /// Requests the devices for the current logged in user

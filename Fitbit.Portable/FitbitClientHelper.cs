@@ -1,4 +1,5 @@
 ﻿using System;
+using Fitbit.Api.Portable.Models.Deprecated;
 using Fitbit.Models;
 
 namespace Fitbit.Api.Portable

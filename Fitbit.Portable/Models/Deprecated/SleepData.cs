@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Fitbit.Models;
 
-namespace Fitbit.Models
+namespace Fitbit.Api.Portable.Models.Deprecated
 {
     public class SleepData
     {

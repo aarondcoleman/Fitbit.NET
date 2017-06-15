@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable;
+using Fitbit.Api.Portable.Models.Deprecated;
 using Fitbit.Models;
 using FluentAssertions;
 using NUnit.Framework;

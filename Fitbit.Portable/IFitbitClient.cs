@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable.Models;
-using Fitbit.Api.Portable.Models.Deprecated;
 using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
@@ -13,8 +12,8 @@ namespace Fitbit.Api.Portable
         Task<ActivitySummary> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<ActivitiesStats> GetActivitiesStatsAsync(string encodedUserId = default(string));
         Task<SleepData> GetSleepAsync(DateTime sleepDate);
-        Task<RootSleepLogDate> GetSleepDateAsync(DateTime sleepDate, string encodedUserId = default(string));
-        Task<RootObjectSleepRange> GetSleepDateRangeAsync(DateTime startDate, DateTime endDate, string encodedUserId = default(string));
+        Task<SleepLogDateBase> GetSleepDateAsync(DateTime sleepDate, string encodedUserId = default(string));
+        Task<SleepDateRangeBase> GetSleepDateRangeAsync(DateTime startDate, DateTime endDate, string encodedUserId = default(string));
         Task<List<Device>> GetDevicesAsync();
         Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string));
         Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string));

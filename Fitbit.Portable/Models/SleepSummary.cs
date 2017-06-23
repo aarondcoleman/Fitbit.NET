@@ -1,4 +1,4 @@
-﻿namespace Fitbit.Api.Portable.Models.Deprecated
+﻿namespace Fitbit.Api.Portable.Models
 {
     public class SleepSummary
     {

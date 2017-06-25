@@ -1,63 +1,66 @@
-﻿{
+{
     "sleep": [
         {
-            "isMainSleep": true,
-            "logId": 29744,
-            "efficiency": 98,
-            "startTime": "2011-06-16T00:00:00.000",
+            "dateOfSleep": "2017-04-02",
             "duration": 28800000,
-            "minutesToFallAsleep": 0,
-            "minutesAsleep": 480,
-            "minutesAwake": 0,
+            "efficiency": 85,
+            "isMainSleep": true,
+            "levels": {
+                "summary": {
+                    "deep": {
+                        "count": 5,
+                        "minutes": 99,
+                        "thirtyDayAvgMinutes": 70
+                    },
+                    "light": {
+                        "count": 32,
+                        "minutes": 296,
+                        "thirtyDayAvgMinutes": 247
+                    },
+                    "rem": {
+                        "count": 12,
+                        "minutes": 105,
+                        "thirtyDayAvgMinutes": 81
+                    },
+                    "wake": {
+                        "count": 39,
+                        "minutes": 86,
+                        "thirtyDayAvgMinutes": 72
+                    }
+                },
+                "data": [
+                  {
+                    "datetime": "2017-04-01T00:00:00.000",
+                    "level": "wake",
+                    "seconds": 360
+                  },
+                  {
+                    "datetime": "2017-04-02T00:00:00.000",
+                    "level": "rem",
+                    "seconds": 2490
+                  }
+                ],
+                "shortData": [
+                    {
+                        "datetime": "2017-04-02T00:00:00.000",
+                        "level": "wake",
+                        "seconds": 560
+                    }
+                ]
+            },
+            "logId": 15040942043,
             "minutesAfterWakeup": 0,
-            "awakeningsCount": 0, // deprecated
-            "awakeCount": 0,
-            "awakeDuration": 0,
-            "restlessCount": 0,
-            "restlessDuration": 0,
-            "timeInBed": 480,
-            "minuteData": [
-                {
-                    "dateTime": "00:00:00",
-                    "value": "3"
-                },
-                {
-                    "dateTime": "00:01:00",
-                    "value": "2"
-                },
-                {
-                    "dateTime": "00:02:00",
-                    "value": "1"
-                }
-            ]
-        },
-        {
-            "isMainSleep": false,
-            "logId": 29745,
-            "efficiency": 93,
-            "startTime": "2011-06-16T14:00:00.000",
-            "duration": 3600000,
-            "minutesToFallAsleep": 20,
-            "minutesAsleep": 38,
-            "minutesAwake": 0,
-            "minutesAfterWakeup": 2,
-            "awakeningsCount": 0,
-            "awakeCount": 0,
-            "awakeDuration": 0,
-            "restlessCount": 0,
-            "restlessDuration": 0,
-            "timeInBed": 60,
-            "minuteData": [
-                {
-                    "dateTime": "14:00:00",
-                    "value": "3"
-                }
-            ]
+            "minutesAsleep": 500,
+            "minutesAwake": 86,
+            "minutesToFallAsleep": 0,
+            "startTime": "2017-04-01T00:00:00.000",
+            "timeInBed": 586,
+            "type": "stages"
         }
     ],
-    "summary":{
-        "totalMinutesAsleep":518,
-        "totalSleepRecords":2,
-        "totalTimeInBed":540
+    "summary": {
+        "totalMinutesAsleep": 500,
+        "totalSleepRecords": 1,
+        "totalTimeInBed": 586
     }
 }

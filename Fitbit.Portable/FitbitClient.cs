@@ -269,6 +269,24 @@ namespace Fitbit.Api.Portable
             return data;
         }
 
+        /// <summary>
+        /// The Get Sleep Logs List endpoint returns a list of a user's sleep logs (including naps) 
+        /// before or after a given day with offset, limit, and sort order.
+        /// </summary>
+        /// <param name="beforeDate"></param>
+        /// <param name="afterDate"></param>
+        /// <param name="sort">The sort order of entries by date. Required. asc for ascending, desc for descending</param>
+        /// <param name="limit">The max of the number of sleep logs returned. Required.</param>
+        /// <param name="offset">This should always be set to 0. Required for now.</param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public Task<SleepLogListBase> GetSleepLogListAsync(DateTime beforeDate, DateTime afterDate, string sort, string limit, int offset = 0,
+            string encodedUserId = null)
+        {
+
+            return null;
+        }
+
         #endregion SleepDateRange
 
         /// <summary>

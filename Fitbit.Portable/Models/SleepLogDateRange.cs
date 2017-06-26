@@ -2,16 +2,6 @@
 
 namespace Fitbit.Api.Portable.Models
 {
-
-    /// <summary>
-    /// When calling sleep logs by a single date this is the objects that are returned
-    /// </summary>
-    public class SleepLogDateBase
-    {
-        public SleepLogDateRange[] Sleep { get; set; }
-        public Summary Summary { get; set; }
-    }
-
     public class SleepLogDateRange
     {
         public DateTime DateOfSleep { get; set; }

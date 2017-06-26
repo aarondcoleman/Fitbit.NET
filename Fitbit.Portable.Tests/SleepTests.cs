@@ -76,6 +76,82 @@ namespace Fitbit.Portable.Tests
            ValidateSleep(sleep);
         }
 
+        [Test]
+        [Category("Portable")]
+        public void Can_Deserialize_Sleep_Range()
+        {
+            string content = SampleDataHelper.GetContent("GetSleepRange.json");
+            var deserializer = new JsonDotNetSerializer();
+
+            SleepDateRangeBase sleep = deserializer.Deserialize<SleepDateRangeBase>(content);
+
+            ValidateSleepRange(sleep);
+        }
+
+        private void ValidateSleepRange(SleepDateRangeBase sleep)
+        {
+            // general
+            Assert.IsNotNull(sleep);
+            Assert.IsNotNull(sleep.Sleep);
+
+            // logs
+            Assert.AreEqual(1, sleep.Sleep.Length);
+            var first = sleep.Sleep.First();
+            Assert.AreEqual(new DateTime(2017, 4, 2).Date, first.DateOfSleep);
+            Assert.AreEqual(28800000, first.Duration);
+            Assert.AreEqual(85, first.Efficiency);
+            Assert.AreEqual(true, first.IsMainSleep);
+            Assert.AreEqual(15040942043, first.LogId);
+            Assert.AreEqual(0, first.MinutesAfterWakeup);
+
+            Assert.AreEqual(500, first.MinutesAsleep);
+            Assert.AreEqual(86, first.MinutesAwake);
+            Assert.AreEqual(0, first.MinutesToFallAsleep);
+            Assert.AreEqual(new DateTime(2017, 4, 1), first.StartTime);
+            Assert.AreEqual(586, first.TimeInBed);
+            Assert.AreEqual("stages", first.Type);
+
+            //sleep log levels
+            var levels = first.Levels;
+            Assert.IsNotNull(levels.Summary);
+            Assert.IsNotNull(levels.Data);
+            Assert.IsNotNull(levels.ShortData);
+
+            // Levels Summary deep
+            Assert.AreEqual(5, levels.Summary.Deep.Count);
+            Assert.AreEqual(99, levels.Summary.Deep.Minutes);
+            Assert.AreEqual(70, levels.Summary.Deep.ThirtyDayAvgMinutes);
+
+            // Levels Summary light
+            Assert.AreEqual(32, levels.Summary.Light.Count);
+            Assert.AreEqual(296, levels.Summary.Light.Minutes);
+            Assert.AreEqual(247, levels.Summary.Light.ThirtyDayAvgMinutes);
+
+            // Levels Summary rem
+            Assert.AreEqual(12, levels.Summary.Rem.Count);
+            Assert.AreEqual(105, levels.Summary.Rem.Minutes);
+            Assert.AreEqual(81, levels.Summary.Rem.ThirtyDayAvgMinutes);
+
+            // Levels Summary wake
+            Assert.AreEqual(39, levels.Summary.Wake.Count);
+            Assert.AreEqual(86, levels.Summary.Wake.Minutes);
+            Assert.AreEqual(72, levels.Summary.Wake.ThirtyDayAvgMinutes);
+
+            //sleep log data
+            var data = levels.Data.First();
+            Assert.IsNotNull(data);
+            Assert.AreEqual(new DateTime(2017, 4, 1), data.DateTime);
+            Assert.AreEqual("wake", data.Level);
+            Assert.AreEqual(360, data.Seconds);
+
+            //sleep log short data
+            var dataShort = levels.ShortData.First();
+            Assert.IsNotNull(dataShort);
+            Assert.AreEqual(new DateTime(2017, 4, 2), dataShort.DateTime);
+            Assert.AreEqual("wake", dataShort.Level);
+            Assert.AreEqual(560, dataShort.Seconds);
+        }
+
         private void ValidateSleep(SleepLogDateBase sleep)
         {
             // general

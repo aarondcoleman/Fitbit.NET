@@ -101,6 +101,7 @@
     <Compile Include="Models\SleepDateRangeLevels.cs" />
     <Compile Include="Models\SleepDateRangeSummary.cs" />
     <Compile Include="Models\SleepLog.cs" />
+    <Compile Include="Models\SleepLogDateBase.cs" />
     <Compile Include="Models\SleepLogDateRange.cs" />
     <Compile Include="Models\SleepSummary.cs" />
     <Compile Include="Models\StepStats.cs" />

@@ -14,7 +14,7 @@ namespace Fitbit.Api.Portable.Models
 
     public class SleepLogDateRange
     {
-        public string DateOfSleep { get; set; }
+        public DateTime DateOfSleep { get; set; }
         public int Duration { get; set; }
         public int Efficiency { get; set; }
         public bool IsMainSleep { get; set; }

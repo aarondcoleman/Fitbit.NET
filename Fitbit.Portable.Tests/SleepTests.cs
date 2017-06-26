@@ -34,7 +34,7 @@ namespace Fitbit.Portable.Tests
             
             var response = await fitbitClient.GetSleepAsync(new DateTime(2014, 10, 17));
             
-            ValidatSleepOld(response);
+            ValidateSleepOld(response);
         }
 
         [Test] [Category("Portable")]
@@ -61,7 +61,7 @@ namespace Fitbit.Portable.Tests
 
             SleepData sleep = deserializer.Deserialize<SleepData>(content);
 
-            ValidatSleepOld(sleep);
+            ValidateSleepOld(sleep);
         }
 
         [Test]
@@ -73,10 +73,10 @@ namespace Fitbit.Portable.Tests
 
             SleepLogDateBase sleep = deserializer.Deserialize<SleepLogDateBase>(content);
 
-           ValidatSleep(sleep);
+           ValidateSleep(sleep);
         }
 
-        private void ValidatSleep(SleepLogDateBase sleep)
+        private void ValidateSleep(SleepLogDateBase sleep)
         {
             // general
             Assert.IsNotNull(sleep);
@@ -92,8 +92,7 @@ namespace Fitbit.Portable.Tests
             // logs
             Assert.AreEqual(1, sleep.Sleep.Length);
             var first = sleep.Sleep.First();
-
-            Assert.AreEqual("2017-04-02", first.DateOfSleep); 
+            Assert.AreEqual(new DateTime(2017,4,2).Date, first.DateOfSleep); 
             Assert.AreEqual(28800000, first.Duration);
             Assert.AreEqual(85, first.Efficiency);
             Assert.AreEqual(true, first.IsMainSleep);
@@ -135,21 +134,21 @@ namespace Fitbit.Portable.Tests
 
             //sleep log data
             var data = levels.Data.First();
+            Assert.IsNotNull(data);
             Assert.AreEqual(new DateTime(2017,4,1), data.DateTime);
             Assert.AreEqual("wake", data.Level);
             Assert.AreEqual(360, data.Seconds);
 
             //sleep log short data
             var dataShort = levels.ShortData.First();
+            Assert.IsNotNull(dataShort);
             Assert.AreEqual(new DateTime(2017, 4, 2), dataShort.DateTime);
             Assert.AreEqual("wake", dataShort.Level);
             Assert.AreEqual(560, dataShort.Seconds);
 
-
-
-
         }
-        private void ValidatSleepOld(SleepData sleep)
+
+        private void ValidateSleepOld(SleepData sleep)
         {
             // general
             Assert.IsNotNull(sleep);

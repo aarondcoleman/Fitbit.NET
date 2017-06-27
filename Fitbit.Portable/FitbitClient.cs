@@ -269,9 +269,9 @@ namespace Fitbit.Api.Portable
             }
 
             string apiCall = String.Format("https://api.fitbit.com/1.1/user/{0}/activities/heart/date/{1}/{2}.json", userId, date.ToString("yyyy-MM-dd"), dateRangePeriod.GetStringValue());
-
-            //TO DO: Handle exception
+            
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
 
             string responseBody = await response.Content.ReadAsStringAsync();
             var seralizer = new JsonDotNetSerializer();
@@ -294,9 +294,9 @@ namespace Fitbit.Api.Portable
                 resolutionText = "15min";
 
             string apiCall = String.Format("https://api.fitbit.com/1.1/user/-/activities/heart/date/{0}/{1}/{2}/time/00:00:00/23:59:59.json", date.ToString("yyyy-MM-dd"), date.ToString("yyyy-MM-dd"), resolutionText);
-
-            //TO DO: handle exceptions
+            
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
 
             string responseBody = await response.Content.ReadAsStringAsync();
             var seralizer = new JsonDotNetSerializer();

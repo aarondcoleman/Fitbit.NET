@@ -201,6 +201,9 @@ namespace Fitbit.Api.Portable
             return result;
         }
 
+
+
+
         internal static IntradayData GetIntradayTimeSeriesData(this JsonDotNetSerializer serializer, string intradayDataJson)
         {
             if (string.IsNullOrWhiteSpace(intradayDataJson))

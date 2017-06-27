@@ -260,7 +260,13 @@ namespace Fitbit.Api.Portable
 
 
 
-
+        /// <summary>
+        /// Request to get heart rate in specific in a range time
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="dateRangePeriod"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
@@ -281,6 +287,13 @@ namespace Fitbit.Api.Portable
             return fitbitResponse;
         }
 
+
+        /// <summary>
+        /// Request to get heart rate in a day
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="resolution"></param>
+        /// <returns></returns>
         public async Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution)
         {
             string resolutionText = null;

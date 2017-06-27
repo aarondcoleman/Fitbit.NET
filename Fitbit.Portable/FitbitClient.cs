@@ -39,6 +39,8 @@ namespace Fitbit.Api.Portable
         public bool OAuth2TokenAutoRefresh { get; set; }
         public List<IFitbitInterceptor> FitbitInterceptorPipeline { get; private set; }
 
+
+
         /// <summary>
         /// Simplest constructor for OAuth2- requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
         /// </summary>
@@ -255,6 +257,57 @@ namespace Fitbit.Api.Portable
             var serializer = new JsonDotNetSerializer();
             return serializer.GetFriends(responseBody);
         }
+
+
+
+
+        public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = null)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                userId = "-";
+            }
+
+            string apiCall = String.Format("https://api.fitbit.com/1.1/user/{0}/activities/heart/date/{1}/{2}.json", userId, date.ToString("yyyy-MM-dd"), dateRangePeriod.GetStringValue());
+
+            //TO DO: Handle exception
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer();
+
+            var fitbitResponse = seralizer.GetHeartActivitiesTimeSeries(responseBody);
+
+            return fitbitResponse;
+        }
+
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution)
+        {
+            string resolutionText = null;
+
+            //this little big of section is necessary because enums can't start with numbers
+            if (resolution == HeartRateResolution.oneSecond)
+                resolutionText = "1sec";
+            else if (resolution == HeartRateResolution.oneMinute)
+                resolutionText = "1min";
+            else
+                resolutionText = "15min";
+
+            string apiCall = String.Format("https://api.fitbit.com/1.1/user/-/activities/heart/date/{0}/{1}/{2}/time/00:00:00/23:59:59.json", date.ToString("yyyy-MM-dd"), date.ToString("yyyy-MM-dd"), resolutionText);
+
+            //TO DO: handle exceptions
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer();
+
+            return seralizer.GetHeartRateIntraday(date, responseBody);
+        }
+
+
+
+
+
 
         /// <summary>
         /// Requests the user profile of the encoded user id or if none specified the current logged in user
@@ -838,5 +891,6 @@ namespace Fitbit.Api.Portable
                 throw new FitbitException($"An error has occured. Please see error list for details - {response.StatusCode}", errors);
             }
         }
+
     }
 }

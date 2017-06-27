@@ -219,7 +219,7 @@ namespace Fitbit.Api.Portable
             {
                 date = parsedJToken.SelectToken(serializer.RootProperty).First["dateTime"];
             }
-            catch (NullReferenceException nullReferenceException)
+            catch (NullReferenceException)
             {
                 //We'll nullref here if we're querying a future date - Fitbit omits dateTime in that case.
                 //Return null since this error will, in all cases, coincide with an otherwise empty (all zeros) object

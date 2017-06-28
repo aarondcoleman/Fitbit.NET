@@ -38,11 +38,11 @@ namespace Fitbit.Api.Portable.Interceptors
                 // assumption is error response from fitbit in the 4xx range  
                 errors = new JsonDotNetSerializer().ParseErrors(await response.Content.ReadAsStringAsync());
             }
-            catch(ArgumentNullException emptyBodyException)
+            catch(ArgumentNullException)
             {
                 errors = new List<ApiError>() { {new ApiError() {ErrorType = "Fitbit.Net client library error", Message = "Error parsing content body. The content was empty"} } };
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 errors = new List<ApiError>() { { new ApiError() { ErrorType = "Fitbit.Net client library error", Message = "Unexpected error when deserializing the content of Fitbit's response." } } };
             }

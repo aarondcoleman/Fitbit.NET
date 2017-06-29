@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -28,13 +29,13 @@ namespace Fitbit.Portable.Tests
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 Assert.AreEqual(HttpMethod.Get, message.Method);
-                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/heart/date/{1}/{2}.json", message.RequestUri.AbsoluteUri);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json", message.RequestUri.AbsoluteUri);
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetHeartRateTimeSeries("", "");
-            //ValidateBloodPressureData(response);
+            var response = await fitbitClient.GetHeartRateTimeSeries("today", "1d");
+            ValidateHeartRateTimeSeriesData(response);
         }
 
         [Test]
@@ -59,11 +60,11 @@ namespace Fitbit.Portable.Tests
         public void Can_Deserialize_HeartRateTimeSeries()
         {
             string content = SampleDataHelper.GetContent("GetHeartRateTimeSeries.json");
-            var deserializer = new JsonDotNetSerializer();
+            var deserializer = new JsonDotNetSerializer { RootProperty = "activities-heart" };
 
             List<HeartActivitiesTimeSeries> stats = deserializer.Deserialize<List<HeartActivitiesTimeSeries>>(content);
 
-            //ValidateActivity(stats);
+            ValidateHeartRateTimeSeriesData(stats);
         }
 
         [Test]
@@ -80,13 +81,13 @@ namespace Fitbit.Portable.Tests
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 Assert.AreEqual(HttpMethod.Get, message.Method);
-                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/heart/date/{1}/{2}/{3}.json", message.RequestUri.AbsoluteUri);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json", message.RequestUri.AbsoluteUri);
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetHeartRateTimeSeries("", "");
-            //ValidateBloodPressureData(response);
+            var response = await fitbitClient.GetHeartRateTimeSeries("today", "1d");
+            ValidateHeartRateTimeSeriesData(response);
         }
 
         [Test]
@@ -111,11 +112,33 @@ namespace Fitbit.Portable.Tests
         public void Can_Deserialize_HeartRateIntradayTimeSeries()
         {
             string content = SampleDataHelper.GetContent("GetHeartRateIntradayTimeSeries.json");
-            var deserializer = new JsonDotNetSerializer();
+            var deserializer = new JsonDotNetSerializer {RootProperty = "activities-heart-intraday"};
 
             HeartActivitiesIntraday stats = deserializer.Deserialize<HeartActivitiesIntraday>(content);
 
-            //ValidateActivity(stats);
+            ValidateHeartRateTimeSeriesData(stats);
+        }
+
+        private void ValidateHeartRateTimeSeriesData(HeartActivitiesIntraday activity)
+        {
+            activity.Dataset.First().Time.TimeOfDay.Should().Be(new TimeSpan(0,0,0,0));
+            activity.Dataset.First().Value.Should().Be(58);
+        }
+
+        private void ValidateHeartRateTimeSeriesData(List<HeartActivitiesTimeSeries> activities)
+        {
+            var activity = activities.First();
+
+            activity.DateTime.Should().Be(new DateTime(2017, 6, 29));
+            //activity.Value.CustomHeartRateZones
+              
+            //activity.Value.HeartRateZones.First().CaloriesOut.Should().Be(1693.83222);
+            activity.Value.HeartRateZones.First().Max.Should().Be(95);
+            activity.Value.HeartRateZones.First().Min.Should().Be(30);
+            activity.Value.HeartRateZones.First().Minutes.Should().Be(1122);
+            activity.Value.HeartRateZones.First().Name.Should().Be("Out of Range");
+
+            activity.Value.RestingHeartRate.Should().Be(59);
         }
     }
 }

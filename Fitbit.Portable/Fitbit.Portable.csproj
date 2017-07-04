@@ -106,6 +106,7 @@
     <Compile Include="Models\Pagination.cs" />
     <Compile Include="Models\SleepLogListBase.cs" />
     <Compile Include="Models\SleepSummary.cs" />
+    <Compile Include="Models\SortEnum.cs" />
     <Compile Include="Models\StepStats.cs" />
     <Compile Include="Models\SubscriptionResponse.cs" />
     <Compile Include="Models\SleepDateRangeBase.cs" />

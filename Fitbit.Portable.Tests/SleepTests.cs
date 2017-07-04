@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
     {
         [Test]
         [Category("Portable")]
-        public async void GetSleepAsync_Success()
+        public async void GetSleepAsyncOld_Success()
         {
             string content = SampleDataHelper.GetContent("GetSleepOld.json");
 
@@ -38,6 +38,32 @@ namespace Fitbit.Portable.Tests
 
             ValidateSleepOld(response);
         }
+
+        [Test]
+        [Category("Portable")]
+        public async void GetSleepAsync_Success()
+        {
+            string content = SampleDataHelper.GetContent("GetSleep.json");
+
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
+
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1.2/user/-/sleep/date/2014-10-17.json",
+                    message.RequestUri.AbsoluteUri);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+
+            var response = await fitbitClient.GetSleepDateAsync(new DateTime(2014, 10, 17));
+
+            ValidateSleep(response);
+        }
+
 
         [Test]
         [Category("Portable")]
@@ -91,6 +117,21 @@ namespace Fitbit.Portable.Tests
 
             ValidateSleepRange(sleep);
         }
+
+        //TODO finish this
+        [Test]
+        [Category("Portable")]
+        public void Can_Deserialize_Sleep_Log_List()
+        {
+            string content = SampleDataHelper.GetContent("GetSleepRange.json");
+            var deserializer = new JsonDotNetSerializer();
+
+            SleepDateRangeBase sleep = deserializer.Deserialize<SleepDateRangeBase>(content);
+
+            ValidateSleepRange(sleep);
+        }
+
+
 
         private void ValidateSleepRange(SleepDateRangeBase sleep)
         {

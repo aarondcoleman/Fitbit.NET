@@ -269,6 +269,7 @@ namespace Fitbit.Api.Portable
             return data;
         }
 
+
         /// <summary>
         /// The Get Sleep Logs List endpoint returns a list of a user's sleep logs (including naps) 
         /// before or after a given day with offset, limit, and sort order.
@@ -277,10 +278,9 @@ namespace Fitbit.Api.Portable
         /// <param name="afterDate">The date in the format yyyy-MM-ddTHH:mm:ss. Only yyyy-MM-dd is required. Either beforeDate or afterDate must be specified. Set sort to asc when using afterDate.</param>
         /// <param name="sort">The sort order of entries by date. Required. asc for ascending, desc for descending</param>
         /// <param name="limit">The max of the number of sleep logs returned. Required.</param>
-        /// <param name="offset">This should always be set to 0. Required for now.</param>
         /// <param name="encodedUserId"></param>
         /// <returns></returns>
-        public async Task<SleepLogListBase> GetSleepLogListAsync(DateTime beforeDate, DateTime afterDate, Enum sort, int limit,
+        public async Task<SleepLogListBase> GetSleepLogListAsync(DateTime beforeDate, DateTime afterDate, SortEnum sort, int limit,
             string encodedUserId = null)
         {
             // https://api.fitbit.com/1.2/user/-/sleep/list.json?beforeDate=2017-03-27&sort=desc&offset=0&limit=1
@@ -299,18 +299,18 @@ namespace Fitbit.Api.Portable
                 dateToUse = afterDate;
                 dateString = "afterDate";
             }
-            
-
-
 
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1.2/user/{0}/sleep/list.json?{1}={2}&sort={3}&offset=0&limit={4}", 
-                encodedUserId, dateString, dateToUse.ToFitbitFormat(), "asc", 0, limit);
+                encodedUserId, dateString, dateToUse.ToFitbitFormat(), sort, 0, limit);
+
 
             HttpResponseMessage respone = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(respone);
+            string responseBody = await respone.Content.ReadAsStringAsync();
+            var serialzer = new JsonDotNetSerializer();
+            var data = serialzer.Deserialize<SleepLogListBase>(responseBody);
 
-
-
-            return null;
+            return data;
         }
 
         #endregion SleepDateRange

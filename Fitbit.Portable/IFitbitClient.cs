@@ -15,6 +15,7 @@ namespace Fitbit.Api.Portable
         Task<SleepLogDateBase> GetSleepDateAsync(DateTime sleepDate, string encodedUserId = default(string));
         Task<SleepDateRangeBase> GetSleepDateRangeAsync(DateTime startDate, DateTime endDate, string encodedUserId = default(string));
         Task<SleepLogListBase> GetSleepLogListAsync(DateTime dateToList, SleepEnum decisionDate, SortEnum sort,  int limit, string encodedUserId = default(string));
+        Task<SleepLogDateRange> PostLogSleepAsync(string startTime, int duration, DateTime date, string encodedUserId = default(string));
         Task<List<Device>> GetDevicesAsync();
         Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string));
         Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string));

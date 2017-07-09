@@ -208,7 +208,7 @@ namespace Fitbit.Api.Portable
             return serializer.Deserialize<ActivitiesStats>(responseBody);
         }
 
-        #region  SleepDateRange
+        #region  Sleep
 
         /// <summary>
         /// Requests the sleep data for the specified date for the logged in user 
@@ -251,7 +251,6 @@ namespace Fitbit.Api.Portable
         /// <summary>
         /// Requests the sleep data for a specified date range for the logged in user
         /// </summary>
-        /// <param name="sleepDate"></param>
         /// <param name="endDate"></param>
         /// <param name="encodedUserId"></param>
         /// <param name="startDate"></param>
@@ -275,7 +274,6 @@ namespace Fitbit.Api.Portable
         /// before or after a given day with offset, limit, and sort order.
         /// </summary>
         /// <param name="dateToList">	The date in the format yyyy-MM-ddTHH:mm:ss. Only yyyy-MM-dd is required. Set sort to desc when using beforeDate.</param>
-        /// The date in the format yyyy-MM-ddTHH:mm:ss. Only yyyy-MM-dd is required. Either beforeDate or afterDate must be specified. Set sort to asc when using afterDate.</param>
         /// <param name="decisionDate"></param>
         /// <param name="sort">The sort order of entries by date. Required. asc for ascending, desc for descending</param>
         /// <param name="limit">The max of the number of sleep logs returned. Required.</param>
@@ -284,10 +282,8 @@ namespace Fitbit.Api.Portable
         public async Task<SleepLogListBase> GetSleepLogListAsync(DateTime dateToList, SleepEnum decisionDate, SortEnum sort, int limit,
             string encodedUserId = null)
         {
-            // https://api.fitbit.com/1.2/user/-/sleep/list.json?beforeDate=2017-03-27&sort=desc&offset=0&limit=1
-
             string setSleepDecision, setSort;
-
+           
             //decide if date retrieval is before or after
             switch (decisionDate)
             {
@@ -318,12 +314,10 @@ namespace Fitbit.Api.Portable
                     setSort = "asc";
                     break;
             }
-
             
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1.2/user/{0}/sleep/list.json?{1}={2}&sort={3}&offset=0&limit={4}", 
                 encodedUserId, setSleepDecision, dateToList.ToFitbitFormat(), setSort, limit);
-
-
+            
             HttpResponseMessage respone = await HttpClient.GetAsync(apiCall);
             await HandleResponse(respone);
             string responseBody = await respone.Content.ReadAsStringAsync();
@@ -333,7 +327,31 @@ namespace Fitbit.Api.Portable
             return data;
         }
 
-        #endregion SleepDateRange
+
+        /// <summary>
+        /// TODO write this description
+        /// </summary>
+        /// <param name="startTime">Start time; hours and minutes in the format HH:mm. </param>
+        /// <param name="duration">Duration in milliseconds.</param>
+        /// <param name="date">Log entry date in the format yyyy-MM-dd. </param>
+        /// <param name="encodedUserId"></param>
+        /// <returns></returns>
+        public async Task<SleepLogDateRange> PostLogSleepAsync(string startTime, int duration, DateTime date, string encodedUserId = null)
+        {
+            
+            var apiCall =
+                FitbitClientHelperExtensions.ToFullUrl("/1.2/user/{0}/sleep.json?date={1}&startTime={2}&duration={3}",
+                    encodedUserId, date.ToFitbitFormat(), startTime, duration);
+
+            HttpResponseMessage respone = await HttpClient.PostAsync(apiCall, new StringContent(string.Empty));
+            await HandleResponse(respone);
+            string responeBody = await respone.Content.ReadAsStringAsync();
+            var serialzer = new JsonDotNetSerializer();
+            
+            return serialzer.Deserialize<SleepLogDateRange>(responeBody);
+        }
+
+        #endregion Sleep
 
         /// <summary>
         /// Requests the devices for the current logged in user

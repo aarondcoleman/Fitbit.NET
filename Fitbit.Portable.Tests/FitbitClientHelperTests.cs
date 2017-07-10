@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Fitbit.Api.Portable;
+using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
 using NUnit.Framework;
 

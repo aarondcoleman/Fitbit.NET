@@ -224,6 +224,8 @@
     <None Include="SampleData\GetBodyMeasurements.json" />
     <None Include="SampleData\GetFriends-Single-2.json" />
     <None Include="SampleData\GetHeartRate.json" />
+    <None Include="SampleData\GetSleepRange.json" />
+    <None Include="SampleData\GetSleep.json" />
     <None Include="SampleData\GetWater-WaterData.json" />
     <None Include="SampleData\GetWeight.json" />
     <None Include="SampleData\GetFat.json" />
@@ -248,7 +250,7 @@
     <Content Include="SampleData\GetFriends-Single.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SampleData\GetSleep.json">
+    <Content Include="SampleData\GetSleepOld.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleData\IntradayActivitiesCalories.json">

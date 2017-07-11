@@ -331,7 +331,7 @@ namespace Fitbit.Api.Portable
 
 
         /// <summary>
-        /// TODO write this description
+        /// Creates a log entry for a sleep event and returns a response in the format requested
         /// </summary>
         /// <param name="startTime">Start time; hours and minutes in the format HH:mm. </param>
         /// <param name="duration">Duration in milliseconds.</param>

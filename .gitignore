@@ -13,6 +13,7 @@
 #Fitbit.NET specific files
 Configuration.cs
 /Fitbit.IntegrationTests/Configuration.cs
+/NuGet/package/lib/
 
 ################
 ## Eclipse
@@ -188,5 +189,4 @@ NuGet/package/lib/net45/Fitbit.dll
 NuGet/package/lib/net45/Fitbit.dll.config
 NuGet/package/lib/net45/RestSharp.dll
 NuGet/package/lib/net45/RestSharp.xml
-*.nupkg
 *.nupkg

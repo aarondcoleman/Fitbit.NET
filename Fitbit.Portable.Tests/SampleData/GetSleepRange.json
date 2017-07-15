@@ -57,10 +57,5 @@
             "timeInBed": 586,
             "type": "stages"
         }
-    ],
-    "summary": {
-        "totalMinutesAsleep": 500,
-        "totalSleepRecords": 1,
-        "totalTimeInBed": 586
-    }
+    ]
 }

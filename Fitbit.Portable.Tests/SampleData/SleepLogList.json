@@ -1,0 +1,71 @@
+{
+    "pagination": {
+        "beforeDate": "2017-03-27",
+        "limit": 1,
+        "next": "https://api.fitbit.com/1.2/user/-/sleep/list.json?offset=1&limit=1&sort=desc&beforeDate=2017-03-27",
+        "offset": 0,
+        "previous": "",
+        "sort": "desc"
+    },
+    "sleep": [
+        {
+            "dateOfSleep": "2017-03-26",
+            "duration": 0,
+            "efficiency": 0,
+            "levels": {
+                "summary": {
+                    "deep": {
+                        "count": 0,
+                        "minutes": 0,
+                        "thirtyDayAvgMinutes": 0
+                    },
+                    "light": {
+                        "count": 0,
+                        "minutes": 0,
+                        "thirtyDayAvgMinutes": 0
+                    },
+                    "rem": {
+                        "count": 0,
+                        "minutes": 0,
+                        "thirtyDayAvgMinutes": 0
+                    },
+                    "wake": {
+                        "count": 0,
+                        "minutes": 0,
+                        "thirtyDayAvgMinutes": 0
+                    }
+                },
+                "data": [
+                    {
+                        "datetime": "2017-03-25T23:58:30.000",
+                        "level": "wake",
+                        "seconds": 0
+                    },
+                    {
+                        "datetime": "2017-03-26T00:16:30.000",
+                        "level": "light",
+                        "seconds": 0
+                    }
+                    
+                ],
+                "shortData": [
+                    {
+                        "datetime": "2017-03-26T05:58:30.000",
+                        "level": "wake",
+                        "seconds": 0
+                    }
+                    
+                ]
+            },
+            "logId": 0,
+            "minutesAfterWakeup": 0,
+            "minutesAsleep": 0,
+            "minutesAwake": 0,
+            "minutesToFallAsleep": 0, // this is generally 0 for autosleep created sleep logs
+            "startTime": "2017-03-25T23:58:30.000",
+            "timeInBed": 0,
+            "type": "stages"
+        }
+        
+    ]
+}

@@ -2,9 +2,9 @@
 <package >
   <metadata>
     <id>Fitbit.NET</id>
-    <version>2.0.1-RC3</version>
+    <version>2.2.0</version>
     <title>Fitbit.NET</title>
-    <authors>Fitbit.Net contributors Team -- @WestDiscGolf, @aarondcoleman, @mxa0079</authors>
+    <authors>Fitbit.Net contributors Team -- @WestDiscGolf, @aarondcoleman, @mxa0079, @joshFitabase</authors>
     <owners></owners>
     <licenseUrl>https://github.com/aarondcoleman/Fitbit.NET</licenseUrl>
     <projectUrl>https://github.com/aarondcoleman/Fitbit.NET</projectUrl>
@@ -13,12 +13,9 @@
     <description>Fitbit API client for .NET</description>
     <summary>.NET client library to make structure calls to Fitbit API using OAuth2 </summary>
     <releaseNotes>
-      2.0.1 Adds:
-      *Support for OAuth 2.0
-      *Support for async
-      *Request/Response transparent interception through IFitbitInterceptor
+      2.2 is our full supported version that now strips away all OAuth 1.0 code. This has been thoroughly tested to be stable, with more endpoints to be added to the master branch of Fitbit.NET going forward.
     </releaseNotes>
-    <copyright>Copyright 2016</copyright>
+    <copyright>Copyright 2017</copyright>
     <tags>Fitbit OAuth2 API .NET IoT Wearables</tags>
     <dependencies>
       <dependency id="Microsoft.Bcl.Build" version="1.0.14" />

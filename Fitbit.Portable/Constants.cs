@@ -7,6 +7,7 @@
         public const string TemporaryCredentialsAccessTokenUri = "oauth/access_token";
         public const string AuthorizeUri = "oauth/authorize";
         public const string LogoutAndAuthorizeUri = "oauth/logout_and_authorize";
+        public const string FloorsUnsupportedOnDeviceError = "Invalid time series resource path: /activities/floors";
 
         public class Headers
         {

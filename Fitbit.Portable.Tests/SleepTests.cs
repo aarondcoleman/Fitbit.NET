@@ -14,6 +14,8 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class SleepTests
     {
+        #region Success Test
+
         [Test]
         [Category("Portable")]
         public async void GetSleepAsyncOld_Success()
@@ -47,7 +49,7 @@ namespace Fitbit.Portable.Tests
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+                return new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(content)};
             });
 
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
@@ -64,6 +66,61 @@ namespace Fitbit.Portable.Tests
             ValidateSleep(response);
         }
 
+        [Test]
+        [Category("Portable")]
+        public async void GetSleepRangeAsync_Success()
+        {
+            string content = SampleDataHelper.GetContent("GetSleepRange.json");
+
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
+
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1.2/user/-/sleep/date/2017-04-02/2017-04-02.json",
+                    message.RequestUri.AbsoluteUri);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+
+            var response = await fitbitClient.GetSleepDateRangeAsync(new DateTime(2017, 04, 02), new DateTime(2017, 04, 02));
+
+            ValidateSleepRange(response);
+        }
+
+        //TODO Adjust this
+        [Test]
+        [Category("Portable")]
+        public async void GetSleepLogListAsync_Success()
+        {
+            //TODO THIS
+            string content = SampleDataHelper.GetContent("SleepLogList.json");
+
+            var responseMessage = new Func<HttpResponseMessage>(() =>
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
+            });
+
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1.2/user/-/sleep/date/2017-04-02/2017-04-02.json",
+                    message.RequestUri.AbsoluteUri);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+
+            var response = await fitbitClient.GetSleepDateRangeAsync(new DateTime(2017, 04, 02), new DateTime(2017, 04, 02));
+
+            ValidateSleepRange(response);
+        }
+
+        #endregion Success Test
+
+        #region Error Test
 
         [Test]
         [Category("Portable")]
@@ -81,6 +138,12 @@ namespace Fitbit.Portable.Tests
 
             result.ShouldThrow<FitbitException>();
         }
+        
+
+
+        #endregion Error Test
+
+        #region Deserialize Test
 
         [Test]
         [Category("Portable")]
@@ -131,7 +194,9 @@ namespace Fitbit.Portable.Tests
             ValidateSleepRange(sleep);
         }
 
+        #endregion Deserialize Test
 
+        #region Validation Methods
 
         private void ValidateSleepRange(SleepDateRangeBase sleep)
         {
@@ -344,5 +409,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(new DateTime(1900, 1, 1, 14, 0, 0).TimeOfDay, min.DateTime.TimeOfDay);
             Assert.AreEqual(3, min.Value);
         }
+
+        #endregion Validation Methods
     }
 }

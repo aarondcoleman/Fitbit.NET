@@ -111,7 +111,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetSleepLogListAsync(new DateTime(2017,3,27), SleepEnum.Before, SortEnum.Dsc, 1 );
+            var response = await fitbitClient.GetSleepLogListAsync(new DateTime(2017,3,27), SleepEnum.Before, SortEnum.desc, 1 );
 
             ValidateSleepLogList(response);
         }
@@ -124,7 +124,7 @@ namespace Fitbit.Portable.Tests
 
         [Test]
         [Category("Portable")]
-        public void GetUserProfileAsync_Failure_Errors()
+        public void GetSleepAsyncOld_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
@@ -138,8 +138,74 @@ namespace Fitbit.Portable.Tests
 
             result.ShouldThrow<FitbitException>();
         }
-        
 
+        [Test]
+        [Category("Portable")]
+        public void GetSleepAsync_Failure_Errors()
+        {
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+
+            Func<Task<SleepLogDateBase>> result = () => fitbitClient.GetSleepDateAsync(new DateTime(2017, 4, 4));
+
+            result.ShouldThrow<FitbitException>();
+        }
+
+        [Test]
+        [Category("Portable")]
+        public void GetSleepRangeAsync_Failure_Errors()
+        {
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+
+            Func<Task<SleepDateRangeBase>> result = () => fitbitClient.GetSleepDateRangeAsync(new DateTime(2017, 4, 4), new DateTime(2017,6,23));
+
+            result.ShouldThrow<FitbitException>();
+        }
+
+        [Test]
+        [Category("Portable")]
+        public void GetSleepLogListAsync_Failure_Errors()
+        {
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+
+            Func<Task<SleepLogListBase>> result = () => fitbitClient.GetSleepLogListAsync(new DateTime(2017,4,4), SleepEnum.After, SortEnum.asc, 2 );
+
+            result.ShouldThrow<FitbitException>();
+        }
+        
+        [Test]
+        [Category("Portable")]
+        public void PostLogSleepAsync_Failure_Errors()
+        {
+            var responseMessage = Helper.CreateErrorResponse();
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Post, message.Method);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+
+            Func<Task<SleepLogDateRange>> result = () => fitbitClient.PostLogSleepAsync("12:12",1,new DateTime(2017,4,4));
+
+            result.ShouldThrow<FitbitException>();
+        }
 
         #endregion Error Test
 
@@ -181,17 +247,16 @@ namespace Fitbit.Portable.Tests
             ValidateSleepRange(sleep);
         }
 
-        //TODO finish this
         [Test]
         [Category("Portable")]
         public void Can_Deserialize_Sleep_Log_List()
         {
-            string content = SampleDataHelper.GetContent("GetSleepRange.json");
+            string content = SampleDataHelper.GetContent("SleepLogList.json");
             var deserializer = new JsonDotNetSerializer();
 
-            SleepDateRangeBase sleep = deserializer.Deserialize<SleepDateRangeBase>(content);
+            SleepLogListBase sleep = deserializer.Deserialize<SleepLogListBase>(content);
 
-            ValidateSleepRange(sleep);
+            ValidateSleepLogList(sleep);
         }
 
         #endregion Deserialize Test
@@ -410,9 +475,73 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(3, min.Value);
         }
 
-        private void ValidateSleepLogList(SleepLogListBase response)
+        private void ValidateSleepLogList(SleepLogListBase sleep)
         {
-            
+            //General
+            Assert.IsNotNull(sleep);
+            Assert.IsNotNull(sleep.Pagination);
+            Assert.IsNotNull(sleep.Sleep);
+
+            //Pagination 
+            var sleepPagination = sleep.Pagination;
+            Assert.AreEqual(new DateTime(2017,03,27), sleepPagination.BeforeDate);
+            Assert.AreEqual(1, sleepPagination.Limit);
+            Assert.AreEqual("https://api.fitbit.com/1.2/user/-/sleep/list.json?offset=1&limit=1&sort=desc&beforeDate=2017-03-27", sleepPagination.Next);
+            Assert.IsEmpty(sleepPagination.Previous);
+            Assert.AreEqual(0, sleepPagination.Offset);
+            Assert.AreEqual(SortEnum.desc.ToString(), sleepPagination.Sort);
+
+            var firstSleep = sleep.Sleep.First();
+
+            //sleep log levels
+            var levels = firstSleep.Levels;
+            Assert.IsNotNull(levels.Summary);
+            Assert.IsNotNull(levels.Data);
+            Assert.IsNotNull(levels.ShortData);
+
+            // Levels Summary deep
+            Assert.AreEqual(0, levels.Summary.Deep.Count);
+            Assert.AreEqual(0, levels.Summary.Deep.Minutes);
+            Assert.AreEqual(0, levels.Summary.Deep.ThirtyDayAvgMinutes);
+
+            // Levels Summary light
+            Assert.AreEqual(0, levels.Summary.Light.Count);
+            Assert.AreEqual(0, levels.Summary.Light.Minutes);
+            Assert.AreEqual(0, levels.Summary.Light.ThirtyDayAvgMinutes);
+
+            // Levels Summary rem
+            Assert.AreEqual(0, levels.Summary.Rem.Count);
+            Assert.AreEqual(0, levels.Summary.Rem.Minutes);
+            Assert.AreEqual(0, levels.Summary.Rem.ThirtyDayAvgMinutes);
+
+            // Levels Summary wake
+            Assert.AreEqual(0, levels.Summary.Wake.Count);
+            Assert.AreEqual(0, levels.Summary.Wake.Minutes);
+            Assert.AreEqual(0, levels.Summary.Wake.ThirtyDayAvgMinutes);
+
+            //sleep log data
+            var data = levels.Data.First();
+            Assert.IsNotNull(data);
+            Assert.AreEqual(new DateTime(2017, 3, 25, 23,58,30), data.DateTime);
+            Assert.AreEqual("wake", data.Level);
+            Assert.AreEqual(0, data.Seconds);
+
+            //sleep log short data
+            var dataShort = levels.ShortData.First();
+            Assert.IsNotNull(dataShort);
+            Assert.AreEqual(new DateTime(2017, 3, 26,5,58,30), dataShort.DateTime);
+            Assert.AreEqual("wake", dataShort.Level);
+            Assert.AreEqual(0, dataShort.Seconds);
+
+            Assert.AreEqual(0, firstSleep.LogId);
+            Assert.AreEqual(0, firstSleep.MinutesAfterWakeup);
+            Assert.AreEqual(0, firstSleep.MinutesAsleep);
+            Assert.AreEqual(0, firstSleep.MinutesAwake);
+            Assert.AreEqual(0, firstSleep.MinutesToFallAsleep);
+            Assert.AreEqual(new DateTime(2017, 03, 25,23,58,30), firstSleep.StartTime);
+            Assert.AreEqual(0, firstSleep.TimeInBed);
+            Assert.AreEqual("stages", firstSleep.Type);
+
         }
 
         #endregion Validation Methods

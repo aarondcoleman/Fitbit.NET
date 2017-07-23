@@ -304,11 +304,11 @@ namespace Fitbit.Api.Portable
             //decide if we are sorting asc or dsc
             switch (sort)
             {
-                    case SortEnum.Asc:
+                    case SortEnum.asc:
                         setSort = "asc";
                     break;
                     
-                    case SortEnum.Dsc:
+                    case SortEnum.desc:
                         setSort = "desc";
                         break;
                 default:

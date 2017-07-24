@@ -137,7 +137,7 @@ namespace Fitbit.Api.Portable
         private void ConfigureTokenManager(ITokenManager tokenManager)
         {
             TokenManager = tokenManager ?? new DefaultTokenManager();
-            }
+        }
 
         private void CreateHttpClientForOAuth2()
         {
@@ -386,8 +386,6 @@ namespace Fitbit.Api.Portable
             return serializer.GetFriends(responseBody);
         }
 
-
-
         /// <summary>
         /// Request to get heart rate in specific in a range time
         /// </summary>
@@ -414,7 +412,6 @@ namespace Fitbit.Api.Portable
 
             return fitbitResponse;
         }
-
 
         /// <summary>
         /// Request to get heart rate in a day
@@ -444,11 +441,6 @@ namespace Fitbit.Api.Portable
 
             return seralizer.GetHeartRateIntraday(date, responseBody);
         }
-
-
-
-
-
 
         /// <summary>
         /// Requests the user profile of the encoded user id or if none specified the current logged in user

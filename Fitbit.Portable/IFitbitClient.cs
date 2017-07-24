@@ -18,6 +18,8 @@ namespace Fitbit.Api.Portable
         Task<SleepLogDateRange> PostLogSleepAsync(string startTime, int duration, DateTime date, string encodedUserId = default(string));
         Task<List<Device>> GetDevicesAsync();
         Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string));
+        Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = null);
+        Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution);
         Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string));
         Task<TimeSeriesDataList> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = default(string));
         Task<TimeSeriesDataList> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = default(string));

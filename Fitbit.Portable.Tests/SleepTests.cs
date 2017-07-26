@@ -14,8 +14,7 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class SleepTests
     {
-        #region Success Test
-
+    
         [Test]
         [Category("Portable")]
         public async void GetSleepAsyncOld_Success()
@@ -116,12 +115,6 @@ namespace Fitbit.Portable.Tests
             ValidateSleepLogList(response);
         }
 
-        
-
-        #endregion Success Test
-
-        #region Error Test
-
         [Test]
         [Category("Portable")]
         public void GetSleepAsyncOld_Failure_Errors()
@@ -207,10 +200,6 @@ namespace Fitbit.Portable.Tests
             result.ShouldThrow<FitbitException>();
         }
 
-        #endregion Error Test
-
-        #region Deserialize Test
-
         [Test]
         [Category("Portable")]
         public void Can_Deserialize_Sleep_Old()
@@ -258,10 +247,6 @@ namespace Fitbit.Portable.Tests
 
             ValidateSleepLogList(sleep);
         }
-
-        #endregion Deserialize Test
-
-        #region Validation Methods
 
         private void ValidateSleepRange(SleepDateRangeBase sleep)
         {
@@ -544,6 +529,5 @@ namespace Fitbit.Portable.Tests
 
         }
 
-        #endregion Validation Methods
     }
 }

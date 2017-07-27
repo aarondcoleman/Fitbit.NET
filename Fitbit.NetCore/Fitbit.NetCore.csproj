@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DefineConstants>DEBUG;NETSTANDARD_13</DefineConstants>
+    <DefineConstants>DEBUG;NETSTANDARD1_3</DefineConstants>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU</Platforms>
     <AssemblyName>Fitbit</AssemblyName>
@@ -14,10 +14,6 @@
     <Compile Include="..\Fitbit.Portable\**\*.cs" Exclude="..\Fitbit.Portable\**\AssemblyInfo.cs">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Class1.cs" />
   </ItemGroup>
 
   <ItemGroup>

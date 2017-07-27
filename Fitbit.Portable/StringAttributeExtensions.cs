@@ -16,7 +16,7 @@ namespace Fitbit.Api.Portable
 
             //in the field's custom attributes
 
-#if NETSTANDARD_13
+#if NETSTANDARD1_3
             FieldInfo fi = type.GetTypeInfo().GetDeclaredField(value.ToString());
 #else
             FieldInfo fi = type.GetField(value.ToString());

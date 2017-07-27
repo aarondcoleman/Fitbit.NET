@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable;
 using Fitbit.Api.Portable.Interceptors;
-using NUnit.Core;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Kernel;
@@ -28,22 +27,23 @@ namespace Fitbit.Portable.Tests.Interceptors
             fixture.Customizations.Add(new TypeRelay(typeof(HttpContent), typeof(ByteArrayContent)));
         }
 
-        //TO DO: Migrate to newer framework to move away from atribute base exception checking
         [Test]
-        [ExpectedException(typeof(FitbitRequestException))]
-        public async void Throws_On_500()
+        public void Throws_On_500()
         {
             var cancellationToken = new CancellationToken();
             var unsuccesfulResponse =
                 fixture.Build<HttpResponseMessage>().With(r => r.StatusCode, HttpStatusCode.InternalServerError).Create();
             var sut = fixture.Create<FitbitHttpErrorHandler>();
 
-            await sut.InterceptResponse(Task.FromResult(unsuccesfulResponse), cancellationToken, null);
+            Assert.That(
+                new AsyncTestDelegate(async () => await sut.InterceptResponse(Task.FromResult(unsuccesfulResponse), cancellationToken, null)),
+                Throws.InstanceOf<FitbitRequestException>()
+            );
         }
 
         //TO DO: Migrate to newer framework to move away from atribute base exception checking
         [Test]
-        public async void Proceeds_On_200()
+        public async Task Proceeds_On_200()
         {
             var cancellationToken = new CancellationToken();
             var unsuccesfulResponse =

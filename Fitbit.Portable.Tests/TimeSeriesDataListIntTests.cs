@@ -6,14 +6,16 @@ using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
 {
     [TestFixture]
     public class TimeSeriesDataListIntTests
     {
-        [Test] [Category("Portable")]
-        public async void GetTimeSeriesDataListIntAsync_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetTimeSeriesDataListIntAsync_Success()
         {
             string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesSteps.json");
 
@@ -29,14 +31,15 @@ namespace Fitbit.Portable.Tests
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
-            
+
             var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), DateRangePeriod.SevenDays);
 
             ValidateDataList(response);
         }
 
-        [Test] [Category("Portable")]
-        public async void GetTimeSeriesDataListIntAsync_DoubleDate_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetTimeSeriesDataListIntAsync_DoubleDate_Success()
         {
             string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesSteps.json");
 
@@ -52,21 +55,25 @@ namespace Fitbit.Portable.Tests
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
-            
+
             var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), new DateTime(2014, 9, 7));
 
             ValidateDataList(response);
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
+        [Category("Portable")]
         public void Serializer_Passed_Invalid_Data_To_Serialize()
         {
             var serialiser = new JsonDotNetSerializer();
-            serialiser.GetTimeSeriesDataListInt(string.Empty);
+            Assert.That(
+                new TestDelegate(() => serialiser.GetTimeSeriesDataListInt(string.Empty)),
+                Throws.ArgumentNullException
+            );
         }
 
-        [Test] [Category("Portable")]
+        [Test]
+        [Category("Portable")]
         public void Can_Deserialize_Activities_Distance()
         {
             string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesSteps.json");

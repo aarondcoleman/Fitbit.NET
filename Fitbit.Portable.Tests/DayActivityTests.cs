@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
     public class DayActivityTests
     {
         [Test] [Category("Portable")]
-        public async void GetDayActivityAsync_Success()
+        public async Task GetDayActivityAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetActivities.json");
 
@@ -54,7 +54,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void GetDayActivitySummaryAsync_Success()
+        public async Task GetDayActivitySummaryAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetActivities.json");
 

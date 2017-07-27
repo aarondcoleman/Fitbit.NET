@@ -5,6 +5,7 @@ using System.Threading;
 using Fitbit.Models;
 using FluentAssertions;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
 {
@@ -13,7 +14,7 @@ namespace Fitbit.Portable.Tests
     {
         [Test]
         [Category("Portable")]
-        public async void GetIntraDayTimeSeriesCaloriesIntensityMetsAsync_Success()
+        public async Task GetIntraDayTimeSeriesCaloriesIntensityMetsAsync_Success()
         {
             DateTime expectedResult = new DateTime(2015, 3, 20, 0, 1, 0);
 
@@ -40,7 +41,7 @@ namespace Fitbit.Portable.Tests
 
         [Test]
         [Category("Portable")]
-        public async void GetIntraDayTimeSeriesCaloriesIntensityMetsAsync_ReturnsNullIfMissingDateTime()
+        public async Task GetIntraDayTimeSeriesCaloriesIntensityMetsAsync_ReturnsNullIfMissingDateTime()
         {
             string content = SampleDataHelper.GetContent("IntradayActivitiesCaloriesMissingDateTime.json");
             var responseMessage = new Func<HttpResponseMessage>(() =>
@@ -62,7 +63,7 @@ namespace Fitbit.Portable.Tests
 
         [Test]
         [Category("Portable")]
-        public async void GetIntraDayTimeSeriesStepsAsync_Success()
+        public async Task GetIntraDayTimeSeriesStepsAsync_Success()
         {
             DateTime expectedResult = new DateTime(2016, 3, 8, 0, 1, 0);
 

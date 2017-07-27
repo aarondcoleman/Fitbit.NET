@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
     public class BloodPressureTests
     {       
         [Test] [Category("Portable")]
-        public async void GetBloodPressureAsync_Success()
+        public async Task GetBloodPressureAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetBloodPressure.json");
 

@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
     {
         [Test]
         [Category("Portable")]
-        public async void GetSleepAsyncOld_Success()
+        public async Task GetSleepAsyncOld_Success()
         {
             string content = SampleDataHelper.GetContent("GetSleepOld.json");
 
@@ -41,7 +41,7 @@ namespace Fitbit.Portable.Tests
 
         [Test]
         [Category("Portable")]
-        public async void GetSleepAsync_Success()
+        public async Task GetSleepAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetSleep.json");
 

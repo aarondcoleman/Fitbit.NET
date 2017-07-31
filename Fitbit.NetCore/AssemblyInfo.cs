@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Fitbit.NetCore")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Fitbit API client for .NET")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Fitbit.Portable")]

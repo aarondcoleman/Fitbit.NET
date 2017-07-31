@@ -97,7 +97,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
- 
+
+  <!-- When testing, we want to use the .NET Standard 1.3 asset and not the 4.5 one -->
+  <PropertyGroup>
+    <ReferringTargetFrameworkForProjectReferences>netstandard1.3</ReferringTargetFrameworkForProjectReferences>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

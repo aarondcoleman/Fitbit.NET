@@ -1,28 +1,20 @@
 ﻿namespace Fitbit.Api.Portable
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
 
     internal class FitbitHttpMessageHandler : DelegatingHandler
     {
-        private IFitbitInterceptor interceptor;
-        Func<Task<HttpResponseMessage>, CancellationToken, Task<HttpResponseMessage>> responseHandler;
+        private readonly IFitbitInterceptor _interceptor;
 
-
-        public FitbitClient FitbitClient { get; private set; }
+        public FitbitClient FitbitClient { get; }
 
         public FitbitHttpMessageHandler(FitbitClient fitbitClient, IFitbitInterceptor interceptor)
         {
-            this.FitbitClient = fitbitClient;
-            this.interceptor = interceptor;
-            responseHandler = ResponseHandler;
+            FitbitClient = fitbitClient;
+            _interceptor = interceptor;
             //Define the inner must handler. Otherwise exception is thrown.
             InnerHandler = new HttpClientHandler();
         }
@@ -34,23 +26,20 @@
             Task<HttpResponseMessage> interceptorFakeResponse = null;
             Debug.WriteLine("Entering Http client's request message handler. Request details: {0}", request.ToString());
 
-            if (interceptor != null)
-                interceptorFakeResponse = interceptor.InterceptRequest(request, cancellationToken, FitbitClient);
+            if (_interceptor != null)
+            {
+                interceptorFakeResponse = _interceptor.InterceptRequest(request, cancellationToken, FitbitClient);
+            }
 
             if (interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
             {
                 //If we are faking the response, have the courtesy of setting the original HttpRequestMessage
                 interceptorFakeResponse.Result.RequestMessage = request;
-                return interceptorFakeResponse.ContinueWith(
-                        responseTask => ResponseHandler(responseTask, cancellationToken).Result
-                    );
+                return interceptorFakeResponse.ContinueWith(responseTask => ResponseHandler(responseTask, cancellationToken).Result, cancellationToken);
             }
-            else //Let the base object continue with the request pipeline. Invoke Response handler at return.
-            {
-                return base.SendAsync(request, cancellationToken).ContinueWith(
-                     responseTask => ResponseHandler(responseTask, cancellationToken).Result
-                 );
-            }
+            
+            //Let the base object continue with the request pipeline. Invoke Response handler at return.
+            return base.SendAsync(request, cancellationToken).ContinueWith(responseTask => ResponseHandler(responseTask, cancellationToken).Result, cancellationToken);
         }
 
         //Handle the following method with EXTREME care as it will be invoked on ALL responses made by FitbitClient
@@ -58,9 +47,9 @@
         {
             DebugLogResponse(responseTask);
 
-            if (interceptor != null)
+            if (_interceptor != null)
             {
-                var interceptorFakeResponse = await interceptor.InterceptResponse(responseTask, cancellationToken, FitbitClient);
+                var interceptorFakeResponse = await _interceptor.InterceptResponse(responseTask, cancellationToken, FitbitClient);
 
                 if (interceptorFakeResponse != null) //then highjack the request pipeline and return the HttpResponse returned by interceptor. Invoke Response handler at return.
                 {
@@ -76,12 +65,9 @@
         [Conditional("DEBUG")]
         private static void DebugLogResponse(Task<HttpResponseMessage> requestTask)
         {
-            string responseContent = null;
+            var responseContent = requestTask?.Result?.Content?.ReadAsStringAsync().Result;
 
-            if (requestTask.Result.Content != null)
-                responseContent = requestTask.Result.Content.ReadAsStringAsync().Result;
-
-            Debug.WriteLine("Entering Http client's response message handler. Response details: \n {0}", requestTask.Result);
+            Debug.WriteLine("Entering Http client's response message handler. Response details: \n {0}", requestTask?.Result);
             Debug.WriteLine("Response Content: \n {0}", responseContent ?? "Response body was empty");
         }
     }

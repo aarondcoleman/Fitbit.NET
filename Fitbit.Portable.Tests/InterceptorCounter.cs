@@ -21,7 +21,7 @@ namespace Fitbit.Portable.Tests
         public async Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
         {
             ResponseCount++;
-            this.responseContent = await response.Result.Content.ReadAsStringAsync();
+            responseContent = await response.Result.Content.ReadAsStringAsync();
             return null;
         }
     }

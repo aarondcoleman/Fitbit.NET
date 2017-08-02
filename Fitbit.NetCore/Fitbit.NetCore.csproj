@@ -19,6 +19,11 @@
     <PackageOutputPath>..\NuGet</PackageOutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.3|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\Fitbit.Portable\**\*.cs" Exclude="..\Fitbit.Portable\**\AssemblyInfo.cs">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>

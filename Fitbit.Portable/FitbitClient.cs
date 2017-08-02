@@ -13,21 +13,20 @@ namespace Fitbit.Api.Portable
 {
     public class FitbitClient : IFitbitClient
     {
-        public FitbitAppCredentials AppCredentials { get; private set; }
+        public FitbitAppCredentials AppCredentials { get; }
 
         private OAuth2AccessToken _accesToken;
         public OAuth2AccessToken AccessToken
         {
-            get
-            {
-                return _accesToken;
-            }
+            get => _accesToken;
             set
             {
                 _accesToken = value;
                 //If we update the AccessToken after HttpClient has been created, then reconfigure authorization header
                 if (HttpClient != null)
+                {
                     ConfigureAuthorizationHeader();
+                }
             }
         }
 
@@ -37,10 +36,10 @@ namespace Fitbit.Api.Portable
         public HttpClient HttpClient { get; private set; }
 
         public ITokenManager TokenManager { get; private set; }
+
         public bool OAuth2TokenAutoRefresh { get; set; }
-        public List<IFitbitInterceptor> FitbitInterceptorPipeline { get; private set; }
 
-
+        public List<IFitbitInterceptor> FitbitInterceptorPipeline { get; } = new List<IFitbitInterceptor>();
 
         /// <summary>
         /// Simplest constructor for OAuth2- requires the minimum information required by FitBit.Net client to make succesful calls to Fitbit Api
@@ -48,17 +47,16 @@ namespace Fitbit.Api.Portable
         /// <param name="credentials">Obtain this information from your developer dashboard. App credentials are required to perform token refresh</param>
         /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
+        /// <param name="enableOAuth2TokenRefresh">Enable auto refresh for the OAuth2 auhtorization token</param>
+        /// <param name="tokenManager">ITokenManager implementation; if none provided an instance of DefaultTokenManager is used</param>
         public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitInterceptor interceptor = null, bool enableOAuth2TokenRefresh = true, ITokenManager tokenManager = null)
         {
-            this.AppCredentials = credentials;
-            this.AccessToken = accessToken;
-
-            this.FitbitInterceptorPipeline = new List<IFitbitInterceptor>();
-
-
+            AppCredentials = credentials;
+            AccessToken = accessToken;
+            
             if(interceptor != null)
             {
-                this.FitbitInterceptorPipeline.Add(interceptor);
+                FitbitInterceptorPipeline.Add(interceptor);
             }
 
             ConfigureTokenManager(tokenManager);
@@ -71,10 +69,11 @@ namespace Fitbit.Api.Portable
 
         private void ConfigureAutoRefresh(bool enableOAuth2TokenRefresh)
         {
-            this.OAuth2TokenAutoRefresh = enableOAuth2TokenRefresh;
-            if(OAuth2TokenAutoRefresh)
-                this.FitbitInterceptorPipeline.Add(new OAuth2AutoRefreshInterceptor());
-            return;
+            OAuth2TokenAutoRefresh = enableOAuth2TokenRefresh;
+            if (OAuth2TokenAutoRefresh)
+            {
+                FitbitInterceptorPipeline.Add(new OAuth2AutoRefreshInterceptor());
+            }
         }
 
         /// <summary>
@@ -85,13 +84,15 @@ namespace Fitbit.Api.Portable
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
         public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, List <IFitbitInterceptor> interceptors, bool enableOAuth2TokenRefresh = true, ITokenManager tokenManager = null)
         {
-            this.AppCredentials = credentials;
-            this.AccessToken = accessToken;
+            AppCredentials = credentials;
+            AccessToken = accessToken;
 
-            this.FitbitInterceptorPipeline = new List<IFitbitInterceptor>();
+            FitbitInterceptorPipeline = new List<IFitbitInterceptor>();
 
-            if(interceptors != null && interceptors.Count > 0)
-                this.FitbitInterceptorPipeline.AddRange(interceptors);
+            if (interceptors != null && interceptors.Count > 0)
+            {
+                FitbitInterceptorPipeline.AddRange(interceptors);
+            }
 
             ConfigureTokenManager(tokenManager);
 
@@ -99,7 +100,6 @@ namespace Fitbit.Api.Portable
             ConfigureAutoRefresh(enableOAuth2TokenRefresh);
             CreateHttpClientForOAuth2();
         }
-
 
         public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, bool enableOAuth2TokenRefresh) : this(credentials, accessToken, null, enableOAuth2TokenRefresh)
         {
@@ -126,12 +126,12 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="customFactory">A function or lambda expression who is in charge of creating th HttpClient. It takes as an argument a HttpMessageHandler which does wiring for IFitbitInterceptor. To use IFitbitInterceptor you must pass this HttpMessageHandler as anargument to the constuctor of HttpClient</param>
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
-        public FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null, ITokenManager tokenManager = null)
+        internal FitbitClient(Func<HttpMessageHandler, HttpClient> customFactory, IFitbitInterceptor interceptor = null, ITokenManager tokenManager = null)
         {
-            this.OAuth2TokenAutoRefresh = false;
+            OAuth2TokenAutoRefresh = false;
 
             ConfigureTokenManager(tokenManager);
-            this.HttpClient = customFactory(new FitbitHttpMessageHandler(this, interceptor));
+            HttpClient = customFactory(new FitbitHttpMessageHandler(this, interceptor));
         }
 
         private void ConfigureTokenManager(ITokenManager tokenManager)
@@ -142,10 +142,7 @@ namespace Fitbit.Api.Portable
         private void CreateHttpClientForOAuth2()
         {
             var pipeline = this.CreatePipeline(FitbitInterceptorPipeline);
-            if (pipeline != null)
-                this.HttpClient = new HttpClient(pipeline);
-            else
-                this.HttpClient = new HttpClient();
+            HttpClient = pipeline != null ? new HttpClient(pipeline) : new HttpClient();
 
             ConfigureAuthorizationHeader();
         }
@@ -202,16 +199,14 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<ActivitiesStats> GetActivitiesStatsAsync(string encodedUserId = null)
         {
-           string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities.json", encodedUserId);
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities.json", encodedUserId);
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             await HandleResponse(response);
             string responseBody = await response.Content.ReadAsStringAsync();
             var serializer = new JsonDotNetSerializer();
             return serializer.Deserialize<ActivitiesStats>(responseBody);
         }
-
-        #region  Sleep
-
+        
         /// <summary>
         /// Requests the sleep data for the specified date for the logged in user 
         /// NOTE: This is for the V1 of the sleep api which is now Deprecated
@@ -269,7 +264,6 @@ namespace Fitbit.Api.Portable
 
             return data;
         }
-
 
         /// <summary>
         /// The Get Sleep Logs List endpoint returns a list of a user's sleep logs (including naps) 
@@ -329,7 +323,6 @@ namespace Fitbit.Api.Portable
             return data;
         }
 
-
         /// <summary>
         /// Creates a log entry for a sleep event and returns a response in the format requested
         /// </summary>
@@ -352,9 +345,7 @@ namespace Fitbit.Api.Portable
             
             return serialzer.Deserialize<SleepLogDateRange>(responeBody);
         }
-
-        #endregion Sleep
-
+        
         /// <summary>
         /// Requests the devices for the current logged in user
         /// </summary>
@@ -424,14 +415,22 @@ namespace Fitbit.Api.Portable
             string resolutionText = null;
 
             //this little big of section is necessary because enums can't start with numbers
-            if (resolution == HeartRateResolution.oneSecond)
-                resolutionText = "1sec";
-            else if (resolution == HeartRateResolution.oneMinute)
-                resolutionText = "1min";
-            else
-                resolutionText = "15min";
+            switch (resolution)
+            {
+                case HeartRateResolution.oneSecond:
+                    resolutionText = "1sec";
+                    break;
 
-            string apiCall = String.Format("https://api.fitbit.com/1.1/user/-/activities/heart/date/{0}/{1}/{2}/time/00:00:00/23:59:59.json", date.ToString("yyyy-MM-dd"), date.ToString("yyyy-MM-dd"), resolutionText);
+                case HeartRateResolution.oneMinute:
+                    resolutionText = "1min";
+                    break;
+
+                default:
+                    resolutionText = "15min";
+                    break;
+            }
+
+            string apiCall = string.Format("https://api.fitbit.com/1.1/user/-/activities/heart/date/{0}/{1}/{2}/time/00:00:00/23:59:59.json", date.ToString("yyyy-MM-dd"), date.ToString("yyyy-MM-dd"), resolutionText);
             
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             await HandleResponse(response);
@@ -501,8 +500,7 @@ namespace Fitbit.Api.Portable
 
             string responseBody = await response.Content.ReadAsStringAsync();
             var serializer = new JsonDotNetSerializer {RootProperty = timeSeriesResourceType.ToTimeSeriesProperty()};
-            return serializer.GetTimeSeriesDataList(responseBody);   
-
+            return serializer.GetTimeSeriesDataList(responseBody);
         }
 
         /// <summary>
@@ -554,8 +552,8 @@ namespace Fitbit.Api.Portable
         {
             string apiCall;
 
-            if (intraDayTimeSpan > new TimeSpan(0, 1, 0) && //the timespan is greater than a minute
-                dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day) //adding the timespan doesn't go in to the next day
+            if (intraDayTimeSpan > new TimeSpan(0, 1, 0)  //the timespan is greater than a minute
+                && dayAndStartTime.Day == dayAndStartTime.Add(intraDayTimeSpan).Day) //adding the timespan doesn't go in to the next day
             {
                 apiCall = string.Format("/1/user/-{0}/date/{1}/1d/time/{2}/{3}.json",
                     timeSeriesResourceType.GetStringValue(),
@@ -572,7 +570,7 @@ namespace Fitbit.Api.Portable
 
             apiCall = FitbitClientHelperExtensions.ToFullUrl(apiCall);
 
-            HttpResponseMessage response = null;
+            HttpResponseMessage response;
             try
             {
                 response = await HttpClient.GetAsync(apiCall);
@@ -583,11 +581,9 @@ namespace Fitbit.Api.Portable
                 {
                     return null;
                 }
-                else
-                {
-                    //otherwise, rethrow because we only want to alter behavior for the very specific case above
-                    throw;
-                }
+                
+                //otherwise, rethrow because we only want to alter behavior for the very specific case above
+                throw;
             }
             await HandleResponse(response);
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -599,16 +595,15 @@ namespace Fitbit.Api.Portable
 
             var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
 
-            IntradayData data = null;
+            IntradayData data;
 
             try
             {
                 data = serializer.GetIntradayTimeSeriesData(responseBody);
             }
-            catch(Exception ex)
+            catch(Exception exception)
             {
-                FitbitRequestException fEx = new FitbitRequestException(response, null, "Serialization Error in GetIntradayTimeSeriesData", ex);
-                throw fEx;                
+                throw new FitbitRequestException(response, null, "Serialization Error in GetIntradayTimeSeriesData", exception);                
             }
 
             return data;
@@ -940,12 +935,7 @@ namespace Fitbit.Api.Portable
 
         public async Task DeleteSubscriptionAsync(APICollectionType collection, string uniqueSubscriptionId, string subscriberId = null)
         {
-            var collectionString = string.Empty;
-
-            if (collection == APICollectionType.user)
-                collectionString = string.Empty;
-            else
-                collectionString = collection.ToString() + @"/";
+            var collectionString = collection == APICollectionType.user ? string.Empty : collection + @"/";
 
             string url = "/1/user/-/{2}apiSubscriptions/{1}.json";
             string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, args: new object[] { uniqueSubscriptionId, collectionString });
@@ -1024,6 +1014,5 @@ namespace Fitbit.Api.Portable
                 throw new FitbitException($"An error has occured. Please see error list for details - {response.StatusCode}", errors);
             }
         }
-
     }
 }

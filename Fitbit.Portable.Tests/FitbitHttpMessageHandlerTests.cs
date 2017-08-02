@@ -92,7 +92,6 @@
         [Category("OAuth2")]
         public void Can_Handle_Failed_Refresh_Operation()
         {
-            const int EXPECT_TWO_COUNT_STALE_AND_RETRY = 2;
             var originalToken = new OAuth2AccessToken() { Token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzAzNDM3MzUsInNjb3BlcyI6Indwcm8gd2xvYyB3bnV0IHdzbGUgd3NldCB3aHIgd3dlaSB3YWN0IHdzb2MiLCJzdWIiOiJBQkNERUYiLCJhdWQiOiJJSktMTU4iLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJpYXQiOjE0MzAzNDAxMzV9.z0VHrIEzjsBnjiNMBey6wtu26yHTnSWz_qlqoEpUlpc" };
             var refreshedToken = new OAuth2AccessToken() { Token = "Refreshed" };
 
@@ -163,10 +162,10 @@
                     return null;
             }
 
-            public async Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
+            public Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
             {
                 //let the pipeline continue
-                return null;
+                return Task.FromResult<HttpResponseMessage>(null);
             }
         }
     }

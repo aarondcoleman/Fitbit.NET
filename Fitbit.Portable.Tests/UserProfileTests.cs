@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
     public class UserProfileTests
     {
         [Test] [Category("Portable")]
-        public async void GetUserProfileAsync_Success()
+        public async Task GetUserProfileAsync_Success()
         {
             string content = SampleDataHelper.GetContent("UserProfile.json");
 

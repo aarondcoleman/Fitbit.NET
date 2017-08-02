@@ -4,7 +4,7 @@ namespace Fitbit.Portable.Tests
 {
     public static class SampleDataHelper
     {
-        private static readonly string SampleDataPath = Path.Combine(Path.GetFullPath(@"..\..\"), "SampleData");
+        private static readonly string SampleDataPath = Path.Combine(Path.GetDirectoryName(typeof(SampleDataHelper).Assembly.Location), "SampleData");
 
         private static string PathFor(string sampleFile)
         {

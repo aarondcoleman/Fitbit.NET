@@ -14,7 +14,7 @@ namespace Fitbit.Portable.Tests
     public class BodyMeasurementTests
     {
         [Test] [Category("Portable")]
-        public async void GetBodyMeasurementsAsync_Success()
+        public async Task GetBodyMeasurementsAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetBodyMeasurements.json");
 

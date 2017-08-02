@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
     public class WaterTests
     {
         [Test] [Category("Portable")]
-        public async void GetWaterAsync_Success()
+        public async Task GetWaterAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetWater-WaterData.json");
 
@@ -54,7 +54,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void PostWaterLogAsync_Success()
+        public async Task PostWaterLogAsync_Success()
         {
             string content = SampleDataHelper.GetContent("LogWater-WaterLog.json");
 
@@ -77,7 +77,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void DeleteWaterLogAsync_Success()
+        public async Task DeleteWaterLogAsync_Success()
         {
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {

@@ -6,6 +6,7 @@ using Fitbit.Api.Portable;
 using Fitbit.Models;
 using FluentAssertions;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
 {
@@ -13,7 +14,7 @@ namespace Fitbit.Portable.Tests
     {
         [Test]
         [Category("Portable")]
-        public async void GetActivityStatsAsync_Success()
+        public async Task GetActivityStatsAsync_Success()
         {
             string content = SampleDataHelper.GetContent("ActivitiesStats.json");
 

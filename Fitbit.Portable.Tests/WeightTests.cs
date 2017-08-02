@@ -7,6 +7,7 @@ using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
 {
@@ -21,40 +22,55 @@ namespace Fitbit.Portable.Tests
             fixture = new Fixture();
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof (ArgumentOutOfRangeException))]
-        public async void GetWeightAsync_DateRangePeriod_ThreeMonths()
+        [Test]
+        [Category("Portable")]
+        public void GetWeightAsync_DateRangePeriod_ThreeMonths()
         {
             var client = fixture.Create<FitbitClient>();
-            await client.GetWeightAsync(DateTime.Now, DateRangePeriod.ThreeMonths);
+            Assert.That(
+                new AsyncTestDelegate(async () => await client.GetWeightAsync(DateTime.Now, DateRangePeriod.ThreeMonths)),
+                Throws.InstanceOf<ArgumentOutOfRangeException>()
+            );
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof (ArgumentOutOfRangeException))]
-        public async void GetWeightAsync_DateRangePeriod_SixMonths()
+        [Test]
+        [Category("Portable")]
+        public void GetWeightAsync_DateRangePeriod_SixMonths()
         {
             var client = fixture.Create<FitbitClient>();
-            await client.GetWeightAsync(DateTime.Now, DateRangePeriod.SixMonths);
+            Assert.That(
+                new AsyncTestDelegate(async () => await client.GetWeightAsync(DateTime.Now, DateRangePeriod.SixMonths)),
+                Throws.InstanceOf<ArgumentOutOfRangeException>()
+            );
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof (ArgumentOutOfRangeException))]
-        public async void GetWeightAsync_DateRangePeriod_OneYear()
+        [Test]
+        [Category("Portable")]
+        public void GetWeightAsync_DateRangePeriod_OneYear()
         {
             var client = fixture.Create<FitbitClient>();
-            await client.GetWeightAsync(DateTime.Now, DateRangePeriod.OneYear);
+            ;
+            Assert.That(
+                new AsyncTestDelegate(async () => await client.GetWeightAsync(DateTime.Now, DateRangePeriod.OneYear)),
+                Throws.InstanceOf<ArgumentOutOfRangeException>()
+            );
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof (ArgumentOutOfRangeException))]
-        public async void GetWeightAsync_DateRangePeriod_Max()
+        [Test]
+        [Category("Portable")]
+        public void GetWeightAsync_DateRangePeriod_Max()
         {
             var client = fixture.Create<FitbitClient>();
-            await client.GetWeightAsync(DateTime.Now, DateRangePeriod.Max);
+
+            Assert.That(
+                    new AsyncTestDelegate(async () => await client.GetWeightAsync(DateTime.Now, DateRangePeriod.Max)),
+                    Throws.InstanceOf<ArgumentOutOfRangeException>()
+                );
         }
 
-        [Test] [Category("Portable")]
-        public async void GetWeightAsync_OneDay_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetWeightAsync_OneDay_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/weight/date/2012-03-05/1d.json");
 
@@ -63,8 +79,9 @@ namespace Fitbit.Portable.Tests
             ValidateWeight(response);
         }
 
-        [Test] [Category("Portable")]
-        public async void GetWeightAsync_SevenDay_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetWeightAsync_SevenDay_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/weight/date/2012-03-05/7d.json");
 
@@ -73,48 +90,53 @@ namespace Fitbit.Portable.Tests
             ValidateWeight(response);
         }
 
-        [Test] [Category("Portable")]
-        public async void GetWeightAsync_OneWeek_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetWeightAsync_OneWeek_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/weight/date/2012-03-05/1w.json");
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneWeek);
-            
+
             ValidateWeight(response);
         }
 
-        [Test] [Category("Portable")]
-        public async void GetWeightAsync_ThirtyDays_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetWeightAsync_ThirtyDays_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/weight/date/2012-03-05/30d.json");
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), DateRangePeriod.ThirtyDays);
-            
+
             ValidateWeight(response);
         }
 
-        [Test] [Category("Portable")]
-        public async void GetWeightAsync_OneMonth_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetWeightAsync_OneMonth_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/weight/date/2012-03-05/1m.json");
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5), DateRangePeriod.OneMonth);
-            
+
             ValidateWeight(response);
         }
 
-        [Test] [Category("Portable")]
-        public async void GetWeightAsync_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetWeightAsync_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/weight/date/2012-03-05.json");
 
             var response = await fitbitClient.GetWeightAsync(new DateTime(2012, 3, 5));
-            
+
             ValidateWeight(response);
         }
 
-        [Test] [Category("Portable")]
-        public async void GetWeightAsync_TimeSpan_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetWeightAsync_TimeSpan_Success()
         {
             var fitbitClient = SetupFitbitClient("https://api.fitbit.com/1/user/-/body/log/weight/date/2012-03-05/2012-03-06.json");
 
@@ -123,41 +145,57 @@ namespace Fitbit.Portable.Tests
             ValidateWeight(response);
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof (ArgumentOutOfRangeException))]
-        public async void GetWeightAsync_DateRange_Span_Too_Large()
+        [Test]
+        [Category("Portable")]
+        public void GetWeightAsync_DateRange_Span_Too_Large()
         {
             var fitbitClient = Helper.CreateFitbitClient(() => new HttpResponseMessage(), (r, c) => { });
             var basedate = DateTime.Now;
 
-            await fitbitClient.GetWeightAsync(basedate.AddDays(-35), basedate);
+            Assert.That(
+                    new AsyncTestDelegate(async () => await fitbitClient.GetWeightAsync(basedate.AddDays(-35), basedate)),
+                    Throws.InstanceOf<ArgumentOutOfRangeException>()
+                );
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Test]
+        [Category("Portable")]
         public void Throws_Exception_With_Empty_String()
         {
             var deserializer = new JsonDotNetSerializer();
-            deserializer.GetWeight(string.Empty);
+
+            Assert.That(
+                new TestDelegate(() => deserializer.GetWeight(string.Empty)),
+                Throws.ArgumentNullException
+            );
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Test]
+        [Category("Portable")]
         public void Throws_Exception_With_Null_String()
         {
             var deserializer = new JsonDotNetSerializer();
-            deserializer.GetWeight(null);
+
+            Assert.That(
+                new TestDelegate(() => deserializer.GetWeight(null)),
+                Throws.ArgumentNullException
+            );
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Test]
+        [Category("Portable")]
         public void Throws_Exception_With_WhiteSpace()
         {
             var deserializer = new JsonDotNetSerializer();
-            deserializer.GetWeight("         ");
+            
+            Assert.That(
+                new TestDelegate(() => deserializer.GetWeight("         ")),
+                Throws.ArgumentNullException
+            );
         }
 
-        [Test] [Category("Portable")]
+        [Test]
+        [Category("Portable")]
         public void Can_Deserialize_Weight()
         {
             string content = SampleDataHelper.GetContent("GetWeight.json");

@@ -5,6 +5,7 @@ using System.Threading;
 using Fitbit.Api.Portable;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
 {
@@ -13,22 +14,22 @@ namespace Fitbit.Portable.Tests
     {
         public Fixture fixture { get; set; }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             fixture = new Fixture();
         }
 
         [Test] [Category("Portable")]
-        [ExpectedException(typeof(ArgumentException))]
-        public async void SetGoalsAsync_NoGoalsSet()
+        public void SetGoalsAsync_NoGoalsSet()
         {
             var client = fixture.Create<FitbitClient>();
-            await client.SetGoalsAsync();
+            Assert.That(new AsyncTestDelegate(async () => await client.SetGoalsAsync()), Throws.ArgumentException);
+            
         }
 
         [Test] [Category("Portable")]
-        public async void SetGoalsAsync_CaloriesOutSet()
+        public async Task SetGoalsAsync_CaloriesOutSet()
         {
             var fitbitClient = SetupFitbitClient("caloriesOut=2000");
 
@@ -38,7 +39,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void SetGoalsAsync_DistanceSet()
+        public async Task SetGoalsAsync_DistanceSet()
         {
             var fitbitClient = SetupFitbitClient("distance=8.5");
 
@@ -48,7 +49,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void SetGoalsAsync_FloorsSet()
+        public async Task SetGoalsAsync_FloorsSet()
         {
             var fitbitClient = SetupFitbitClient("floors=20");
 
@@ -58,7 +59,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void SetGoalsAsync_StepsSet()
+        public async Task SetGoalsAsync_StepsSet()
         {
             var fitbitClient = SetupFitbitClient("steps=10000");
 
@@ -68,7 +69,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void SetGoalsAsync_ActiveMinuitesSet()
+        public async Task SetGoalsAsync_ActiveMinuitesSet()
         {
             var fitbitClient = SetupFitbitClient("activeMinutes=50");
 
@@ -78,7 +79,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void SetGoalsAsync_AllSet()
+        public async Task SetGoalsAsync_AllSet()
         {
             var fitbitClient = SetupFitbitClient("caloriesOut=2000&distance=8.5&floors=20&steps=10000&activeMinutes=50");
 

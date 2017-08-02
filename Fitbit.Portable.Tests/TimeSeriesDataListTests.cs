@@ -6,6 +6,7 @@ using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
 {
@@ -13,7 +14,7 @@ namespace Fitbit.Portable.Tests
     public class TimeSeriesDataListTests
     {
         [Test] [Category("Portable")]
-        public async void GetTimeSeriesDataListAsync_Success()
+        public async Task GetTimeSeriesDataListAsync_Success()
         {
             string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesDistance.json");
 
@@ -36,7 +37,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void GetTimeSeriesDataListAsync_DoubleDate_Success()
+        public async Task GetTimeSeriesDataListAsync_DoubleDate_Success()
         {
             string content = SampleDataHelper.GetContent("TimeSeries-ActivitiesDistance.json");
 
@@ -59,11 +60,14 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        //TODO: fix [ExpectedException(typeof(ArgumentNullException))]
         public void Serializer_Passed_Invalid_Data_To_Serialize()
         {
             var serialiser = new JsonDotNetSerializer();
-            serialiser.GetTimeSeriesDataList(string.Empty);
+            Assert.That(
+                new TestDelegate(()=> serialiser.GetTimeSeriesDataList(string.Empty)),
+                Throws.ArgumentNullException
+                );
         }
 
         [Test] [Category("Portable")]

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+#if NETSTANDARD1_3
+using System.Reflection;
+#endif
 
 namespace Fitbit.Models
 {
@@ -83,7 +86,11 @@ namespace Fitbit.Models
 
         public override bool CanConvert(Type objectType)
         {
+#if NETSTANDARD1_3
+            return typeof(HeartActivitiesIntraday).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+#else
             return typeof(HeartActivitiesIntraday).IsAssignableFrom(objectType);
+#endif
         }
     }
 

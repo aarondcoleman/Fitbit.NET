@@ -15,7 +15,7 @@ namespace Fitbit.Portable.Tests
     public class FoodTests
     {
         [Test] [Category("Portable")]
-        public async void GetFoodAsync_Success()
+        public async Task GetFoodAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetFoodLogs.json");
 

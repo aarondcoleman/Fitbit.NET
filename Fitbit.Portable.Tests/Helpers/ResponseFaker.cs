@@ -39,10 +39,10 @@ namespace Fitbit.Portable.Tests.Helpers
                 return null;
         }
 
-        public async Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
+        public Task<HttpResponseMessage> InterceptResponse(Task<HttpResponseMessage> response, CancellationToken cancellationToken, FitbitClient client)
         {
             ResponseCount++;
-            return null;
+            return Task.FromResult<HttpResponseMessage>(null);
         }
 
     }

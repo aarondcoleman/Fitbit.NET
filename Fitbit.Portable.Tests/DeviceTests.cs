@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
     public class DeviceTests
     {
         [Test] [Category("Portable")]
-        public async void GetDevicesAsync_Success()
+        public async Task GetDevicesAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetDevices-Single.json");
 
@@ -41,7 +41,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test] [Category("Portable")]
-        public async void GetDevicesAsync_Success_Mulitiple()
+        public async Task GetDevicesAsync_Success_Mulitiple()
         {
             string content = SampleDataHelper.GetContent("GetDevices-Double.json");
 

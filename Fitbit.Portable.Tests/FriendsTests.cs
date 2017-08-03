@@ -15,8 +15,9 @@ namespace Fitbit.Portable.Tests
     [TestFixture]
     public class FriendsTests
     {
-        [Test] [Category("Portable")]
-        public async void GetFriendsMultipleAsync_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetFriendsMultipleAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Multiple.json");
 
@@ -32,15 +33,16 @@ namespace Fitbit.Portable.Tests
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
-            
+
             var response = await fitbitClient.GetFriendsAsync();
-            
+
             Assert.AreEqual(3, response.Count);
             ValidateMultipleFriends(response);
         }
 
-        [Test] [Category("Portable")]
-        public async void GetFriendsSingleAsync_Success()
+        [Test]
+        [Category("Portable")]
+        public async Task GetFriendsSingleAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Single.json");
 
@@ -56,13 +58,14 @@ namespace Fitbit.Portable.Tests
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
-            
+
             var response = await fitbitClient.GetFriendsAsync();
-            
+
             ValidateSingleFriend(response);
         }
 
-        [Test] [Category("Portable")]
+        [Test]
+        [Category("Portable")]
         public void GetFriendsAsync_Failure_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse();
@@ -72,42 +75,53 @@ namespace Fitbit.Portable.Tests
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
-            
+
             Func<Task<List<UserProfile>>> result = () => fitbitClient.GetFriendsAsync();
 
             result.ShouldThrow<FitbitException>();
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
+        [Category("Portable")]
         public void Throws_Exception_With_Empty_String()
         {
             var deserializer = new JsonDotNetSerializer();
-            deserializer.GetFriends(string.Empty);
+            Assert.That(
+                new TestDelegate(() => deserializer.GetFriends(string.Empty)),
+                Throws.ArgumentNullException
+            );
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
+        [Category("Portable")]
         public void Throws_Exception_With_Null_String()
         {
             var deserializer = new JsonDotNetSerializer();
-            deserializer.GetFriends(null);
+            
+            Assert.That(
+                new TestDelegate(() => deserializer.GetFriends(null)),
+                Throws.ArgumentNullException
+            );
         }
 
-        [Test] [Category("Portable")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
+        [Category("Portable")]
         public void Throws_Exception_With_WhiteSpace()
         {
             var deserializer = new JsonDotNetSerializer();
-            deserializer.GetFriends("         ");
+            Assert.That(
+                new TestDelegate(() => deserializer.GetFriends("         ")),
+                Throws.ArgumentNullException
+            );
         }
 
-        [Test] [Category("Portable")]
+        [Test]
+        [Category("Portable")]
         public void Can_Deserialize_Friends_Multiple()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Multiple.json");
             var deserializer = new JsonDotNetSerializer();
-            
+
             List<UserProfile> friends = deserializer.GetFriends(content);
 
             Assert.IsNotNull(friends);
@@ -116,7 +130,8 @@ namespace Fitbit.Portable.Tests
             ValidateMultipleFriends(friends);
         }
 
-        [Test] [Category("Portable")]
+        [Test]
+        [Category("Portable")]
         public void Can_Deserialize_Friends_Single()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Single.json");
@@ -128,7 +143,8 @@ namespace Fitbit.Portable.Tests
             ValidateSingleFriend(friends);
         }
 
-        [Test] [Category("Portable")]
+        [Test]
+        [Category("Portable")]
         public void Can_Deserialize_Friends_Single_NullDateOfBirth()
         {
             string content = SampleDataHelper.GetContent("GetFriends-Single-2.json");
@@ -140,7 +156,8 @@ namespace Fitbit.Portable.Tests
             ValidateSingleFriendNullDateOfBirth(friends);
         }
 
-        [Test] [Category("Portable")]
+        [Test]
+        [Category("Portable")]
         public void Can_Deserialize_Friends_None()
         {
             string content = SampleDataHelper.GetContent("GetFriends-None.json");
@@ -244,28 +261,28 @@ namespace Fitbit.Portable.Tests
         }
 
         private void ValidateSingleFriendNullDateOfBirth(List<UserProfile> friends)
-        {  
-            Assert.IsTrue(friends.Count == 1);  
-        
-            var friend = friends.First();  
-            Assert.AreEqual("http://www.fitbit.com/images/profile/defaultProfile_100_female.gif", friend.Avatar);  
-            Assert.AreEqual("http://www.fitbit.com/images/profile/defaultProfile_150_female.gif", friend.Avatar150);  
-            Assert.AreEqual("GB", friend.Country);  
-            Assert.AreEqual(DateTime.MinValue, friend.DateOfBirth);  
-            Assert.AreEqual("Laura", friend.DisplayName);  
-            Assert.AreEqual("24WXXX", friend.EncodedId);  
-            Assert.AreEqual("", friend.FullName);  
-            Assert.AreEqual(Gender.FEMALE, friend.Gender);  
-            Assert.AreEqual(165, friend.Height);  
-            Assert.AreEqual("en_GB", friend.Locale);  
-            Assert.AreEqual(DateTime.Parse("2013-02-01"), friend.MemberSince);  
-            Assert.AreEqual("", friend.Nickname);  
-            Assert.AreEqual(3600000, friend.OffsetFromUTCMillis);  
-            Assert.AreEqual("SUNDAY", friend.StartDayOfWeek);  
-            Assert.AreEqual(0, friend.StrideLengthRunning);  
-            Assert.AreEqual(0, friend.StrideLengthWalking);  
-            Assert.AreEqual("Europe/London", friend.Timezone);  
-            Assert.AreEqual(0, friend.Weight);  
+        {
+            Assert.IsTrue(friends.Count == 1);
+
+            var friend = friends.First();
+            Assert.AreEqual("http://www.fitbit.com/images/profile/defaultProfile_100_female.gif", friend.Avatar);
+            Assert.AreEqual("http://www.fitbit.com/images/profile/defaultProfile_150_female.gif", friend.Avatar150);
+            Assert.AreEqual("GB", friend.Country);
+            Assert.AreEqual(DateTime.MinValue, friend.DateOfBirth);
+            Assert.AreEqual("Laura", friend.DisplayName);
+            Assert.AreEqual("24WXXX", friend.EncodedId);
+            Assert.AreEqual("", friend.FullName);
+            Assert.AreEqual(Gender.FEMALE, friend.Gender);
+            Assert.AreEqual(165, friend.Height);
+            Assert.AreEqual("en_GB", friend.Locale);
+            Assert.AreEqual(DateTime.Parse("2013-02-01"), friend.MemberSince);
+            Assert.AreEqual("", friend.Nickname);
+            Assert.AreEqual(3600000, friend.OffsetFromUTCMillis);
+            Assert.AreEqual("SUNDAY", friend.StartDayOfWeek);
+            Assert.AreEqual(0, friend.StrideLengthRunning);
+            Assert.AreEqual(0, friend.StrideLengthWalking);
+            Assert.AreEqual("Europe/London", friend.Timezone);
+            Assert.AreEqual(0, friend.Weight);
         }
     }
 }

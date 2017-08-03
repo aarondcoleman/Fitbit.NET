@@ -7,6 +7,7 @@ using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
 {
@@ -26,7 +27,7 @@ namespace Fitbit.Portable.Tests
         [Test]
         [Category("PubSub")]
         [Category("Portable")]
-        public async void AddSubscription_UserEndPoint_WithoutSubscriberId()
+        public async Task AddSubscription_UserEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -42,7 +43,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_UserEndPoint_WithSubscriberId()
+        public async Task AddSubscription_UserEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -64,7 +65,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_ActivitiesEndPoint_WithoutSubscriberId()
+        public async Task AddSubscription_ActivitiesEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -80,7 +81,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_ActivitiesEndPoint_WithSubscriberId()
+        public async Task AddSubscription_ActivitiesEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -102,7 +103,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_BodyEndPoint_WithoutSubscriberId()
+        public async Task AddSubscription_BodyEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -118,7 +119,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_BodyEndPoint_WithSubscriberId()
+        public async Task AddSubscription_BodyEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -140,7 +141,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_FoodEndPoint_WithoutSubscriberId()
+        public async Task AddSubscription_FoodEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -156,7 +157,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_FoodEndPoint_WithSubscriberId()
+        public async Task AddSubscription_FoodEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -178,7 +179,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_MealsEndPoint_WithoutSubscriberId()
+        public async Task AddSubscription_MealsEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -194,7 +195,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_MealsEndPoint_WithSubscriberId()
+        public async Task AddSubscription_MealsEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -216,7 +217,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_SleepEndPoint_WithoutSubscriberId()
+        public async Task AddSubscription_SleepEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -232,7 +233,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_SleepEndPoint_WithSubscriberId()
+        public async Task AddSubscription_SleepEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -254,7 +255,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_WeightEndPoint_WithoutSubscriberId()
+        public async Task AddSubscription_WeightEndPoint_WithoutSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {
@@ -270,7 +271,7 @@ namespace Fitbit.Portable.Tests
 
         [Category("PubSub")]
         [Test] [Category("Portable")]
-        public async void AddSubscription_WeightEndPoint_WithSubscriberId()
+        public async Task AddSubscription_WeightEndPoint_WithSubscriberId()
         {
             Action<HttpRequestMessage> additionalChecks = message =>
             {

@@ -18,7 +18,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(errorJson))
             {
-                throw new ArgumentNullException(nameof(errorJson), "errorJson can not be empty, null or whitespace");
+                throw new ArgumentNullException(nameof(errorJson), $"{nameof(errorJson)} can not be empty, null or whitespace");
             }
 
             serializer.RootProperty = "errors";
@@ -35,7 +35,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(fatJson))
             {
-                throw new ArgumentNullException(nameof(fatJson), "fatJson can not be empty, null or whitespace");
+                throw new ArgumentNullException(nameof(fatJson), $"{nameof(fatJson)} can not be empty, null or whitespace");
             }
 
             var fatlogs = JToken.Parse(fatJson)["fat"];
@@ -54,7 +54,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(weightJson))
             {
-                throw new ArgumentNullException(nameof(weightJson), "weightJson can not be empty, null or whitespace");
+                throw new ArgumentNullException(nameof(weightJson), $"{nameof(weightJson)} can not be empty, null or whitespace");
             }
 
             var weightlogs = JToken.Parse(weightJson)["weight"];
@@ -73,7 +73,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(friendsJson))
             {
-                throw new ArgumentNullException(nameof(friendsJson), "friendsJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(friendsJson), $"{nameof(friendsJson)} can not be empty, null or whitespace.");
             }
 
             serializer.RootProperty = "user";
@@ -92,7 +92,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(heartRateIntradayJson))
             {
-                throw new ArgumentNullException(nameof(heartRateIntradayJson), "heartRateIntradayJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(heartRateIntradayJson), $"{nameof(heartRateIntradayJson)} can not be empty, null or whitespace.");
             }
 
             var activitiesHeartIntraday = JToken.Parse(heartRateIntradayJson)["activities-heart-intraday"];
@@ -118,7 +118,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(heartActivitiesTimeSeries))
             {
-                throw new ArgumentNullException(nameof(heartActivitiesTimeSeries), "heartActivitiesTimeSeries can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(heartActivitiesTimeSeries), $"{nameof(heartActivitiesTimeSeries)} can not be empty, null or whitespace.");
             }
 
             var activitiesHeartIntraday = JToken.Parse(heartActivitiesTimeSeries)["activities-heart"];
@@ -148,7 +148,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(timeSeriesDataJson))
             {
-                throw new ArgumentNullException(nameof(timeSeriesDataJson), "timeSeriesDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(timeSeriesDataJson), $"{nameof(timeSeriesDataJson)} can not be empty, null or whitespace.");
             }
 
             var dataPoints = JToken.Parse(timeSeriesDataJson)[serializer.RootProperty];
@@ -175,7 +175,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(timeSeriesDataJson))
             {
-                throw new ArgumentNullException(nameof(timeSeriesDataJson), "timeSeriesDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(timeSeriesDataJson), $"{nameof(timeSeriesDataJson)} can not be empty, null or whitespace.");
             }
 
             var dataPoints = JToken.Parse(timeSeriesDataJson)[serializer.RootProperty];
@@ -196,7 +196,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(intradayDataJson))
             {
-                throw new ArgumentNullException(nameof(intradayDataJson), "intradayDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(intradayDataJson), $"{nameof(intradayDataJson)} can not be empty, null or whitespace.");
             }
 
             var parsedJToken = JToken.Parse(intradayDataJson);

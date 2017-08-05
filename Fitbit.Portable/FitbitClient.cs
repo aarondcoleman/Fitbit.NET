@@ -18,7 +18,7 @@ namespace Fitbit.Api.Portable
         private OAuth2AccessToken _accesToken;
         public OAuth2AccessToken AccessToken
         {
-            get => _accesToken;
+            get { return _accesToken; }
             set
             {
                 _accesToken = value;

@@ -109,6 +109,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ActivityLogTests.cs" />
     <Compile Include="AccessTokenTests.cs" />
     <Compile Include="ActivitiesStatsTests.cs" />
     <Compile Include="ApiErrorTests.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="FriendsTests.cs" />
     <Compile Include="GetSubscriptionTests.cs" />
     <Compile Include="GoalsTests.cs" />
+    <Compile Include="HeartRateTests.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Helpers\ResponseFaker.cs" />
     <Compile Include="InterceptorCounter.cs" />
@@ -220,6 +222,9 @@
     <None Include="SampleData\ApiError-Request-BadRequest.json" />
     <None Include="SampleData\ApiSubscriptionNotification.json" />
     <None Include="SampleData\GetActivities.json" />
+    <None Include="SampleData\GetHeartRateTimeSeries.json" />
+    <None Include="SampleData\GetHeartRateIntradayTimeSeries.json" />
+    <None Include="SampleData\GetActivityLogsList.json" />
     <None Include="SampleData\GetBloodPressure.json" />
     <None Include="SampleData\GetBodyMeasurements.json" />
     <None Include="SampleData\GetFriends-Single-2.json" />

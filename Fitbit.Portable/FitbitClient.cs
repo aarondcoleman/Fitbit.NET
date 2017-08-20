@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable.OAuth2;
 using System.Net.Http.Headers;
+using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
@@ -776,6 +777,189 @@ namespace Fitbit.Api.Portable
                 var errors = new JsonDotNetSerializer().ParseErrors(await response.Content.ReadAsStringAsync());
                 throw new FitbitException("Unexpected response message", errors);
             }
+        }
+
+        /// <summary>
+        /// Logs the specified Activity item for the current logged in user - https://dev.fitbit.com/docs/activity/#activity-logging
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>ActivityLog</returns>
+        public async Task<ActivityLog> LogActivityAsync(ActivityLog model)
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities.json");
+
+            var items = new Dictionary<string, string>
+            {
+                {"activityName", Uri.EscapeDataString(model.Name)},
+                {"manualCalories", model.Calories.ToString()},
+                {"startTime", model.StartTime},
+                {"durationMillis", model.Duration.ToString()},
+                {"date", model.Date},
+                {"distance", model.Distance.ToString()}
+            };
+
+            if (!string.IsNullOrEmpty(model.ActivityId.ToString()) && model.ActivityId != 0)
+            {
+                items.Add("activityId", model.ActivityId.ToString());
+            }
+            
+            apiCall = $"{apiCall}?{string.Join("&", items.Select(x => $"{x.Key}={x.Value}"))}";
+
+            HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new StringContent(string.Empty));
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return (new JsonDotNetSerializer() { RootProperty = "activityLog" }).Deserialize<ActivityLog>(responseBody);
+        }
+
+        /// <summary>
+        /// The Get Activity Logs List endpoint retrieves a list of a user's activity log entries before or after a given day with offset and limit using units in the unit system which corresponds to the Accept-Language header provided. - https://dev.fitbit.com/docs/activity/#get-activity-logs-list
+        /// </summary>
+        /// <param name="beforeDate">The date in the format yyyy-MM-ddTHH:mm:ss. Only yyyy-MM-dd is required. Either beforeDate or afterDate must be specified. Set sort to desc when using beforeDate.</param>
+        /// <param name="afterDate">The date in the format yyyy-MM-ddTHH:mm:ss. Only yyyy-MM-dd is required. Either beforeDate or afterDate must be specified. Set sort to asc when using afterDate.</param>
+        /// <param name="limit">The max of the number of entries returned (maximum: 20)</param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>ActivityLog</returns>
+        public async Task<List<ActivityList>> GetActivityLogsList(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
+        {
+            var apiCall = string.Empty;
+            limit = limit > 20 ? 20 : limit;
+            const int offset = 0;
+            var sort = string.Empty;
+            var dateString = string.Empty;
+            var date = string.Empty;
+
+            if (beforeDate != null && afterDate != null)
+            {
+                throw new ArgumentException("Please only specify a beforeDate or afterDate, not both: https://dev.fitbit.com/docs/activity/#get-activity-logs-list");
+            }
+
+            if (beforeDate != null)
+            {
+                dateString = "beforeDate";
+                date = beforeDate.Value.ToString("yyyy-MM-ddTHH:mm:ss");
+                sort = "desc";
+            }
+            if (afterDate != null)
+            {
+                dateString = "afterDate";
+                date = afterDate.Value.ToString("yyyy-MM-ddTHH:mm:ss");
+                sort = "asc";
+            }
+
+            apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/list.json?{1}={2}&sort={3}&limit={4}&offset={5}", encodedUserId, dateString, date, sort, limit, offset);
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return (new JsonDotNetSerializer() { RootProperty = "activities" }).Deserialize<List<ActivityList>>(responseBody);
+        }
+
+        /// <summary>
+        /// The Get Heart Rate Time Series endpoint returns time series data in the specified range for a given resource in the format requested using units in the unit systems that corresponds to the Accept-Language header provided. - https://dev.fitbit.com/docs/heart-rate/#get-heart-rate-time-series
+        /// </summary>
+        /// <param name="date">The end date of the period specified in the format yyyy-MM-dd or today.</param>
+        /// <param name="period">The range for which data will be returned. Options are 1d, 7d, 30d, 1w, 1m.</param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>List of HeartActivitiesTimeSeries</returns>
+        public async Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string date, string period, string encodedUserId = default(string))
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/{2}.json", encodedUserId, date, period);
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return (new JsonDotNetSerializer() { RootProperty = "activities-heart" }).Deserialize<List<HeartActivitiesTimeSeries>>(responseBody);
+        }
+
+        /// <summary>
+        /// The Get Heart Rate Time Series endpoint returns time series data in the specified range for a given resource in the format requested using units in the unit systems that corresponds to the Accept-Language header provided. - https://dev.fitbit.com/docs/heart-rate/#get-heart-rate-time-series
+        /// </summary>
+        /// <param name="baseDate">The range start date, in the format yyyy-MM-dd or today.</param>
+        /// <param name="endDate">The end date of the range.</param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>List of HeartActivitiesTimeSeries</returns>
+        public async Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string baseDate, DateTime endDate, string encodedUserId = default(string))
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/{2}.json", encodedUserId, baseDate, endDate.ToFitbitFormat());
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return (new JsonDotNetSerializer() { RootProperty = "activities-heart" }).Deserialize<List<HeartActivitiesTimeSeries>>(responseBody);
+        }
+
+        /// <summary>
+        /// The Get Heart Rate Intraday Time Series endpoint returns the intraday time series for a given resource in the format requested. - https://dev.fitbit.com/docs/heart-rate/#get-heart-rate-intraday-time-series
+        /// </summary>
+        /// <param name="date">The date, in the format yyyy-MM-dd or today.</param>
+        /// <param name="endDate">The end date of the range.</param>
+        /// <param name="detailLevel">Number of data points to include. Either 1sec or 1min.</param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>List of HeartActivitiesIntraday</returns>
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, DateTime endDate, string detailLevel, string encodedUserId = default(string))
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/{2}/{3}.json", encodedUserId, date, endDate.ToFitbitFormat(), detailLevel);
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return (new JsonDotNetSerializer() { RootProperty = "activities-heart-intraday" }).Deserialize<HeartActivitiesIntraday>(responseBody);
+        }
+
+        /// <summary>
+        /// The Get Heart Rate Intraday Time Series endpoint returns the intraday time series for a given resource in the format requested. - https://dev.fitbit.com/docs/heart-rate/#get-heart-rate-intraday-time-series
+        /// </summary>
+        /// <param name="date">The date, in the format yyyy-MM-dd or today.</param>
+        /// <param name="endDate">The end date of the range.</param>
+        /// <param name="detailLevel">Number of data points to include. Either 1sec or 1min.</param>
+        /// <param name="startTime">The start of the period, in the format HH:mm.</param>
+        /// <param name="endTime">The end of the period, in the format HH:mm.</param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>List of HeartActivitiesIntraday</returns>
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, DateTime endDate, string detailLevel, TimeSpan startTime, TimeSpan endTime, string encodedUserId = default(string))
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/{2}/{3}/time/{4}/{5}.json", encodedUserId, date, endDate.ToFitbitFormat(), detailLevel, startTime.ToString("HH:mm"), endTime.ToString("HH:mm"));
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return (new JsonDotNetSerializer() { RootProperty = "activities-heart-intraday" }).Deserialize<HeartActivitiesIntraday>(responseBody);
+        }
+
+        /// <summary>
+        /// The Get Heart Rate Intraday Time Series endpoint returns the intraday time series for a given resource in the format requested. - https://dev.fitbit.com/docs/heart-rate/#get-heart-rate-intraday-time-series
+        /// </summary>
+        /// <param name="date">The date, in the format yyyy-MM-dd or today.</param>
+        /// <param name="detailLevel">Number of data points to include. Either 1sec or 1min.</param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>List of HeartActivitiesIntraday</returns>
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, string detailLevel, string encodedUserId = default(string))
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/1d/{2}.json", encodedUserId, date, detailLevel);
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return (new JsonDotNetSerializer() { RootProperty = "activities-heart-intraday" }).Deserialize<HeartActivitiesIntraday>(responseBody);
+        }
+
+        /// <summary>
+        /// The Get Heart Rate Intraday Time Series endpoint returns the intraday time series for a given resource in the format requested. - https://dev.fitbit.com/docs/heart-rate/#get-heart-rate-intraday-time-series
+        /// </summary>
+        /// <param name="date">The date, in the format yyyy-MM-dd or today.</param>
+        /// <param name="detailLevel">Number of data points to include. Either 1sec or 1min.</param>
+        /// <param name="startTime">The start of the period, in the format HH:mm.</param>
+        /// <param name="endTime">The end of the period, in the format HH:mm.</param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>List of HeartActivitiesIntraday</returns>
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, string detailLevel, TimeSpan startTime, TimeSpan endTime, string encodedUserId = default(string))
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/1d/{2}/time/{3}/{4}.json", encodedUserId, date, detailLevel, startTime.ToString("HH:mm"), endTime.ToString("HH:mm"));
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return (new JsonDotNetSerializer() { RootProperty = "activities-heart-intraday" }).Deserialize<HeartActivitiesIntraday>(responseBody);
         }
 
         private string FormatKey(APICollectionType apiCollectionType, string format)

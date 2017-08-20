@@ -27,6 +27,7 @@
         public bool IsFavorite { get; set; }
         public long LogId { get; set; }
         public string Name { get; set; }
+        public string Date { get; set; }
         public string StartTime { get; set; }
         public int Steps { get; set; }
     }

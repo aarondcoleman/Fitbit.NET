@@ -46,6 +46,7 @@
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityDistance.cs" />
     <Compile Include="Models\ActivityGoals.cs" />
+    <Compile Include="Models\ActivityList.cs" />
     <Compile Include="Models\ActivityLog.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
     <Compile Include="Models\APICollectionType.cs" />

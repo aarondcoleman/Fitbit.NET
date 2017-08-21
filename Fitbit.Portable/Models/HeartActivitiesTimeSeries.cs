@@ -10,10 +10,10 @@ namespace Fitbit.Models
         public DateTime DateTime { get; set; }
 
         [JsonProperty(PropertyName = "value")]
-        public Value Value { get; set; }
+        public HeartActivitiesValue HeartActivitiesValue { get; set; }
     }
 
-    public class Value
+    public class HeartActivitiesValue
     {
         [JsonProperty(PropertyName = "customHeartRateZones")]
         public List<object> CustomHeartRateZones { get; set; }

@@ -16,7 +16,7 @@ namespace Fitbit.Models
     public class HeartActivitiesValue
     {
         [JsonProperty(PropertyName = "customHeartRateZones")]
-        public List<object> CustomHeartRateZones { get; set; }
+        public List<HeartRateZone> CustomHeartRateZones { get; set; }
 
         [JsonProperty(PropertyName = "heartRateZones")]
         public List<HeartRateZone> HeartRateZones { get; set; }

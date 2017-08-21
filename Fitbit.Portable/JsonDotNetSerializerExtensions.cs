@@ -120,26 +120,25 @@ namespace Fitbit.Api.Portable
         }
 
 
-        internal static HeartActivitiesTimeSeries GetHeartActivitiesTimeSeries(this JsonDotNetSerializer serializer, string heartActivitiesTimeSeries)
+        internal static List<HeartActivitiesTimeSeries> GetHeartActivitiesTimeSeries(this JsonDotNetSerializer serializer, string heartActivitiesTimeSeries)
         {
             if (string.IsNullOrWhiteSpace(heartActivitiesTimeSeries))
             {
-                throw new ArgumentNullException("heartActivitiesTimeSeries", "heartActivitiesTimeSeries can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(heartActivitiesTimeSeries), "heartActivitiesTimeSeries can not be empty, null or whitespace.");
             }
 
             var activitiesHeartIntraday = JToken.Parse(heartActivitiesTimeSeries)["activities-heart"];
-            //var dataset = activitiesHeartIntraday["dataset"];
 
-            var result = new HeartActivitiesTimeSeries()
+            List<HeartActivitiesTimeSeries> result = activitiesHeartIntraday.Select(x => new HeartActivitiesTimeSeries()
             {
-                HeartActivities = (from item in activitiesHeartIntraday
-                                   select new HeartActivities
-                                   {
-                                       DateTime = DateTime.Parse(item["dateTime"].ToString()), //here, maybe pass in the date so we have a full object of date and time
-                                       HeartRateZones = serializer.Deserialize<List<HeartRateZone>>(item["value"]["heartRateZones"]),
-                                       CustomHeartRateZones = serializer.Deserialize<List<HeartRateZone>>(item["value"]["customHeartRateZones"])
-                                   }).ToList(),
-            };
+                DateTime = DateTime.Parse(x["dateTime"].ToString()),
+                HeartActivitiesValue = new HeartActivitiesValue()
+                {
+                    CustomHeartRateZones = serializer.Deserialize<List<HeartRateZone>>(x["value"]["customHeartRateZones"]),
+                    HeartRateZones = serializer.Deserialize<List<HeartRateZone>>(x["value"]["heartRateZones"]),
+                    RestingHeartRate = serializer.Deserialize<int>(x["value"]["restingHeartRate"])
+                }
+            }).ToList();
 
             return result;
         }

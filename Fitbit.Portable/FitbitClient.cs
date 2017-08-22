@@ -1004,7 +1004,7 @@ namespace Fitbit.Api.Portable
         /// <param name="limit">The max of the number of entries returned (maximum: 20)</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>ActivityLog</returns>
-        public async Task<List<ActivityList>> GetActivityLogsList(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = "-")
+        public async Task<List<ActivityList>> GetActivityLogsList(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
         {
             var apiCall = string.Empty;
             limit = limit > 20 ? 20 : limit;

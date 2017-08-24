@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
 using Newtonsoft.Json.Linq;
 
@@ -106,7 +107,7 @@ namespace Fitbit.Api.Portable
             var result = new HeartActivitiesIntraday
             {
                 Dataset = (from item in dataset
-                           select new DatasetInterval
+                           select new HeartRateDatasetInterval
                            {
                                Time = DateTime.Parse(date.ToString("yyyy-MM-dd") + " " + item["time"].ToString()), //here, maybe pass in the date so we have a full object of date and time
                                Value = int.Parse(item["value"].ToString())
@@ -139,6 +140,41 @@ namespace Fitbit.Api.Portable
                     RestingHeartRate = serializer.Deserialize<int>(x["value"]["restingHeartRate"])
                 }
             }).ToList();
+
+            return result;
+        }
+
+        internal static HeartActivitiesIntradayTimeSeries GetHeartIntradayTimeSeries(this JsonDotNetSerializer serializer, string intradayHeartTimeSeriesJson)
+        {
+            if (string.IsNullOrWhiteSpace(intradayHeartTimeSeriesJson))
+            {
+                throw new ArgumentNullException(nameof(intradayHeartTimeSeriesJson), "intradayHeartTimeSeriesJson can not be empty, null or whitespace.");
+            }
+
+            JToken parsedJsonObject = JToken.Parse(intradayHeartTimeSeriesJson)["activities-heart"];
+            JToken seriesToken = parsedJsonObject["activities-heart"];
+            JToken seriesIntradayToken = parsedJsonObject["activities-heart-intraday"];
+
+            List<ActivitesHeart> activitiesHeartList = seriesToken.Select(x => new ActivitesHeart() {
+                DateTime = seriesToken["dateTime"].ToString(),
+                CustomHeartRateZones = serializer.Deserialize<List<HeartRateZone>>(x["customHeartRateZones"]),
+                HeartRateZones = serializer.Deserialize<List<HeartRateZone>>(x["heartRateZones"]),
+                Value = serializer.Deserialize<int>(x["value"])
+            }).ToList();
+
+            ActivitesHeartIntraday activitesHeartIntraday = new ActivitesHeartIntraday()
+            {
+                Dataset = serializer.Deserialize<List<HeartRateDatasetInterval>>(seriesIntradayToken["dataset"]),
+                DatasetInterval = serializer.Deserialize<int>(seriesIntradayToken["datasetInterval"]),
+                DatasetType = seriesIntradayToken["datasetType"].ToString()
+            };
+
+            HeartActivitiesIntradayTimeSeries result  = new HeartActivitiesIntradayTimeSeries()
+            {
+                ActivitiesHeart = activitiesHeartList,
+                ActivitiesHeartIntraday = activitesHeartIntraday
+                
+            };
 
             return result;
         }

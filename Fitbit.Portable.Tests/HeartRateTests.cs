@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable;
+using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
 using FluentAssertions;
 using NUnit.Framework;
@@ -21,10 +22,7 @@ namespace Fitbit.Portable.Tests
         {
             string content = SampleDataHelper.GetContent("GetHeartRateTimeSeries.json");
 
-            var responseMessage = new Func<HttpResponseMessage>(() =>
-            {
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
-            });
+            var responseMessage = new Func<HttpResponseMessage>(() => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
 
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
@@ -34,7 +32,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetHeartRateTimeSeries("today", "1d");
+            var response = await fitbitClient.GetHeartRateTimeSeries("today", DateRangePeriod.OneDay);
             ValidateHeartRateTimeSeriesData(response);
         }
 
@@ -50,7 +48,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            Func<Task<List<HeartActivitiesTimeSeries>>> result = () => fitbitClient.GetHeartRateTimeSeries("", "");
+            Func<Task<List<HeartActivitiesTimeSeries>>> result = () => fitbitClient.GetHeartRateTimeSeries("", DateRangePeriod.OneDay);
 
             result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
@@ -86,7 +84,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetHeartRateTimeSeries("today", "1d");
+            var response = await fitbitClient.GetHeartRateTimeSeries("today", DateRangePeriod.OneDay);
             ValidateHeartRateTimeSeriesData(response);
         }
 
@@ -102,7 +100,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            Func<Task<HeartActivitiesIntraday>> result = () => fitbitClient.GetHeartRateIntradayTimeSeries("", "");
+            Func<Task<HeartActivitiesIntradayTimeSeries>> result = () => fitbitClient.GetHeartRateIntraday("", HeartRateResolution.fifteenMinute);
 
             result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
@@ -114,12 +112,12 @@ namespace Fitbit.Portable.Tests
             string content = SampleDataHelper.GetContent("GetHeartRateIntradayTimeSeries.json");
             var deserializer = new JsonDotNetSerializer {RootProperty = "activities-heart-intraday"};
 
-            HeartActivitiesIntraday stats = deserializer.Deserialize<HeartActivitiesIntraday>(content);
+            HeartActivitiesIntradayTimeSeries stats = deserializer.Deserialize<HeartActivitiesIntradayTimeSeries>(content);
 
             ValidateHeartRateTimeSeriesData(stats);
         }
 
-        private void ValidateHeartRateTimeSeriesData(HeartActivitiesIntraday activity)
+        private void ValidateHeartRateTimeSeriesData(HeartActivitiesIntradayTimeSeries activity)
         {
             activity.Dataset.First().Time.TimeOfDay.Should().Be(new TimeSpan(0,0,0,0));
             activity.Dataset.First().Value.Should().Be(58);

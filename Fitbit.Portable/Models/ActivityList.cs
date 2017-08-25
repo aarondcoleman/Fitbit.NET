@@ -43,7 +43,7 @@ namespace Fitbit.Models
         public DateTime LastModified { get; set; }
 
         [JsonProperty(PropertyName = "logId")]
-        public int LogId { get; set; }
+        public long LogId { get; set; }
 
         [JsonProperty(PropertyName = "logType")]
         public string LogType { get; set; }

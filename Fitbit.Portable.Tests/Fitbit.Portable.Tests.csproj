@@ -258,8 +258,6 @@
     <None Include="SampleData\GetDevices-Single.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="SampleData\AccessToken.json" />
     <None Include="SampleData\ActivitiesStats.json" />
     <None Include="SampleData\ActivityGoals.json" />

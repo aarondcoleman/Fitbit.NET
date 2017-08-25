@@ -39,8 +39,10 @@ namespace Fitbit.Api.Portable
         Task<ApiSubscription> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string));
         Task DeleteSubscriptionAsync(APICollectionType collection, string uniqueSubscriptionId, string subscriberId = null);
         Task<ActivityLog> LogActivityAsync(ActivityLog model);
+        Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string date, DateRangePeriod dateRangePeriod, string userId = default(string));
         Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod,string userId = default(string));
         Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(DateTime startDate, DateTime endDate, string userId = default(string));
+        Task<HeartActivitiesIntradayTimeSeries> GetHeartRateIntraday(string date, HeartRateResolution resolution, string encodedUserId = default(string));
         Task<HeartActivitiesIntradayTimeSeries> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution, string encodedUserId = default(string));
         Task<HeartActivitiesIntradayTimeSeries> GetHeartRateIntraday(DateTime date, TimeSpan startTime, TimeSpan endTime, HeartRateResolution resolution, string encodedUserId = default(string));
         Task<HeartActivitiesIntradayTimeSeries> GetHeartRateIntraday(DateTime startDate, DateTime endDate, HeartRateResolution resolution, string encodedUserId = default(string));

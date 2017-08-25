@@ -1003,6 +1003,36 @@ namespace Fitbit.Api.Portable
         /// <summary>
         /// Requests the Heart Rate Time Series for a specific time period.
         /// </summary>
+        /// <param name="date">The end date of the period specified in format yyyy-MM-dd or today</param>
+        /// <param name="dateRangePeriod">The range for which data will be returned.</param>
+        /// <param name="userId">The encoded ID of the user.</param>
+        /// <returns></returns>
+        public async Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string date, DateRangePeriod dateRangePeriod, string userId = default(string))
+        {
+            DateTime dateFormatted;
+            if (date.ToLower() == "today")
+            {
+                dateFormatted = DateTime.Today;
+            }
+            else if (DateTime.TryParse(date, out dateFormatted))
+            {
+                //Do nothing since dateFormatted wil be filled in out
+            }
+            else
+            {
+                throw new FitbitException("Parameter date must be a date in format yyyy-MM-dd or today", new List<ApiError>());
+
+            }
+
+            string path = $"1.1/user/{userId}/activities/heart/date/{dateFormatted:yyyy-MM-dd}/{dateRangePeriod.GetStringValue()}.json";
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl(path);
+            return await ProcessHeartRateTimeSeries(apiCall);
+
+        }
+
+        /// <summary>
+        /// Requests the Heart Rate Time Series for a specific time period.
+        /// </summary>
         /// <param name="date">The end date of the period specified.</param>
         /// <param name="dateRangePeriod">The range for which data will be returned.</param>
         /// <param name="userId">The encoded ID of the user.</param>
@@ -1058,6 +1088,33 @@ namespace Fitbit.Api.Portable
                 default:
                     return "15min";
             }
+        }
+
+        /// <summary>
+        /// Requests the Intraday Heart Rate Time Series for a specific date in format yyyy-MM-dd or today.
+        /// </summary>
+        /// <param name="date">The start date and time of series.</param>
+        /// <param name="resolution">Number of data points to include.</param>
+        /// <param name="encodedUserId">Optional: Encoded id of the user.</param>
+        /// <returns></returns>
+        public async Task<HeartActivitiesIntradayTimeSeries> GetHeartRateIntraday(string date, HeartRateResolution resolution, string encodedUserId = default(string))
+        {
+            DateTime dateFormatted;
+            if (date.ToLower() == "today")
+            {
+                dateFormatted = DateTime.Today;
+            }
+            else if (DateTime.TryParse(date, out dateFormatted))
+            {
+                //Do nothing since dateFormatted wil be filled in out
+            }
+            else
+            {
+                throw new FitbitException("Parameter date must be a date in format yyyy-MM-dd or today", new List<ApiError>());
+
+            }
+
+            return await GetHeartRateIntradayTimeSeries(dateFormatted, dateFormatted, resolution, TimeSpan.Parse("00:00:00"), TimeSpan.Parse("23:59:59"), encodedUserId);
         }
 
         /// <summary>

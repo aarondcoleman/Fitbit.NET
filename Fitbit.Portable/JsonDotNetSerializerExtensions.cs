@@ -96,7 +96,7 @@ namespace Fitbit.Api.Portable
             List<HeartActivitiesTimeSeries> result = activitiesHeartIntraday.Select(x => new HeartActivitiesTimeSeries()
             {
                 DateTime = DateTime.Parse(x["dateTime"].ToString()),
-                HeartActivitiesValue = new HeartActivitiesValue()
+                Value = new HeartActivitiesValue()
                 {
                     CustomHeartRateZones = serializer.Deserialize<List<HeartRateZone>>(x["value"]["customHeartRateZones"]),
                     HeartRateZones = serializer.Deserialize<List<HeartRateZone>>(x["value"]["heartRateZones"]),
@@ -119,7 +119,7 @@ namespace Fitbit.Api.Portable
             JToken seriesIntradayToken = parsedJsonObject["activities-heart-intraday"];
 
             List<ActivitesHeart> activitiesHeartList = seriesToken.Select(x => new ActivitesHeart() {
-                DateTime = seriesToken["dateTime"].ToString(),
+                DateTime = DateTime.Parse(seriesToken["dateTime"].ToString()),
                 CustomHeartRateZones = serializer.Deserialize<List<HeartRateZone>>(x["customHeartRateZones"]),
                 HeartRateZones = serializer.Deserialize<List<HeartRateZone>>(x["heartRateZones"]),
                 Value = serializer.Deserialize<int>(x["value"])

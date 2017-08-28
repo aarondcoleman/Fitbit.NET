@@ -9,6 +9,7 @@ using Fitbit.Api.Portable;
 using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
 using FluentAssertions;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -109,34 +110,54 @@ namespace Fitbit.Portable.Tests
         [Category("Portable")]
         public void Can_Deserialize_HeartRateIntradayTimeSeries()
         {
-            string content = SampleDataHelper.GetContent("GetHeartRateIntradayTimeSeries.json");
-            var deserializer = new JsonDotNetSerializer {RootProperty = "activities-heart-intraday"};
+            //assemble
+            string content = SampleDataHelper.GetContent("GetHeartRateIntradayTimeSeries1.1.json");
 
-            HeartActivitiesIntradayTimeSeries stats = deserializer.Deserialize<HeartActivitiesIntradayTimeSeries>(content);
+            //act
+            HeartActivitiesIntradayTimeSeries stats = JsonConvert.DeserializeObject<HeartActivitiesIntradayTimeSeries>(content);
 
+            //assert
             ValidateHeartRateTimeSeriesData(stats);
         }
 
         private void ValidateHeartRateTimeSeriesData(HeartActivitiesIntradayTimeSeries activity)
         {
-            activity.Dataset.First().Time.TimeOfDay.Should().Be(new TimeSpan(0,0,0,0));
-            activity.Dataset.First().Value.Should().Be(58);
+            //Activities Heart Intraday
+            var actIntraday = activity.ActivitiesHeartIntraday;
+
+            actIntraday.Dataset.Count().Should().Be(96);
+            actIntraday.Dataset[0].Time.TimeOfDay.Should().Be(new TimeSpan(0,0,0,0)); //First entry
+            actIntraday.Dataset[0].Value.Should().Be(57);
+            actIntraday.Dataset[95].Time.TimeOfDay.Should().Be(new TimeSpan(0, 23,45, 0)); //Last entry
+            actIntraday.Dataset[95].Value.Should().Be(47);
+
+            actIntraday.DatasetInterval.Should().Be(15);
+
+            actIntraday.DatasetType.Should().Be("minute");
+
+            //Activities Heart
+            var act = activity.ActivitiesHeart.First();
+
+            act.DateTime.Should().Be(new DateTime(2017, 8, 21));
+
+            act.HeartRateZones.Count().Should().Be(4);
+            act.HeartRateZones[0].CaloriesOut.Should().Be(2071.96748);
+            act.HeartRateZones[0].Max.Should().Be(92);
+            act.HeartRateZones[0].Min.Should().Be(30);
+            act.HeartRateZones[0].Minutes.Should().Be(1387);
+            act.HeartRateZones[0].Name.Should().Be("Out of Range");
+
+            act.CustomHeartRateZones.Count().Should().Be(0);
+
+            act.Value.Should().Be(55.44);
+
         }
 
         private void ValidateHeartRateTimeSeriesData(List<HeartActivitiesTimeSeries> activities)
         {
             var activity = activities.First();
 
-            activity.DateTime.Should().Be(new DateTime(2017, 6, 29));
-            //activity.Value.CustomHeartRateZones
-              
-            //activity.Value.HeartRateZones.First().CaloriesOut.Should().Be(1693.83222);
-            activity.Value.HeartRateZones.First().Max.Should().Be(95);
-            activity.Value.HeartRateZones.First().Min.Should().Be(30);
-            activity.Value.HeartRateZones.First().Minutes.Should().Be(1122);
-            activity.Value.HeartRateZones.First().Name.Should().Be("Out of Range");
-
-            activity.Value.RestingHeartRate.Should().Be(59);
+            
         }
     }
 }

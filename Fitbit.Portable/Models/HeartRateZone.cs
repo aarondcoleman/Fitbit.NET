@@ -5,7 +5,7 @@ namespace Fitbit.Models
     public class HeartRateZone
     {
         [JsonProperty(PropertyName = "caloriesOut")]
-        public float CaloriesOut { get; set; }
+        public double CaloriesOut { get; set; }
 
         [JsonProperty(PropertyName = "max")]
         public int Max { get; set; }

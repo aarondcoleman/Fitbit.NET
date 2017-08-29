@@ -91,9 +91,9 @@ namespace Fitbit.Api.Portable
                 throw new ArgumentNullException(nameof(heartActivitiesTimeSeries), "heartActivitiesTimeSeries can not be empty, null or whitespace.");
             }
 
-            var activitiesHeartIntraday = JToken.Parse(heartActivitiesTimeSeries)["activities-heart"];
+            var activitiesHeart = JToken.Parse(heartActivitiesTimeSeries)["activities-heart"];
 
-            List<HeartActivitiesTimeSeries> result = activitiesHeartIntraday.Select(x => new HeartActivitiesTimeSeries()
+            List<HeartActivitiesTimeSeries> result = activitiesHeart.Select(x => new HeartActivitiesTimeSeries()
             {
                 DateTime = DateTime.Parse(x["dateTime"].ToString()),
                 Value = new HeartActivitiesValue()

@@ -1020,8 +1020,8 @@ namespace Fitbit.Api.Portable
             }
             else
             {
-                throw new FitbitException("Parameter date must be a date in format yyyy-MM-dd or today", new List<ApiError>());
-
+                ApiError error = new ApiError() { Message = "Parameter date must be a date in format yyyy - MM - dd or today" };
+                throw new FitbitException("Parameter date must be a date in format yyyy-MM-dd or today", new List<ApiError>() { error });
             }
 
             string path = $"1.1/user/{userId}/activities/heart/date/{dateFormatted:yyyy-MM-dd}/{dateRangePeriod.GetStringValue()}.json";
@@ -1110,8 +1110,8 @@ namespace Fitbit.Api.Portable
             }
             else
             {
-                throw new FitbitException("Parameter date must be a date in format yyyy-MM-dd or today", new List<ApiError>());
-
+                ApiError error = new ApiError(){Message = "Parameter date must be a date in format yyyy - MM - dd or today" };
+                throw new FitbitException("Parameter date must be a date in format yyyy-MM-dd or today", new List<ApiError>(){error});
             }
 
             return await GetHeartRateIntradayTimeSeries(dateFormatted, dateFormatted, resolution, TimeSpan.Parse("00:00:00"), TimeSpan.Parse("23:59:59"), encodedUserId);

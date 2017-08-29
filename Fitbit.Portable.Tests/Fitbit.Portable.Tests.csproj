@@ -271,7 +271,9 @@
     <None Include="SampleData\ApiError-Request-BadRequest.json" />
     <None Include="SampleData\ApiSubscriptionNotification.json" />
     <None Include="SampleData\GetActivities.json" />
-    <None Include="SampleData\GetHeartRateTimeSeries.json" />
+    <None Include="SampleData\GetHeartRateTimeSeries.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SampleData\GetHeartRateIntradayTimeSeries.json" />
     <None Include="SampleData\GetActivityLogsList.json" />
     <None Include="SampleData\GetBloodPressure.json" />

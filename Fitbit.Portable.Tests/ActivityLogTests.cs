@@ -17,14 +17,11 @@ namespace Fitbit.Portable.Tests
     {
         [Test]
         [Category("Portable")]
-        public async void GetActivityLogsListAsync_Success()
+        public async Task GetActivityLogsListAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetActivityLogsList.json");
 
-            var responseMessage = new Func<HttpResponseMessage>(() =>
-            {
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
-            });
+            var responseMessage = new Func<HttpResponseMessage>(() => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
 
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
@@ -72,20 +69,29 @@ namespace Fitbit.Portable.Tests
             var stat = stats.First();
 
             stat.ActiveDuration.Should().Be(2764000);
-
             stat.ActivityLevel.First().Minutes.Should().Be(0);
             stat.ActivityLevel.First().Name.Should().Be("sedentary");
-            
             stat.ActivityName.Should().Be("Walk");
             stat.ActivityTypeId.Should().Be(90013);
-            //stat.AverageHeartRate 
-                
+            stat.AverageHeartRate.Should().Be(108);
             stat.Calories.Should().Be(375);
-            //stat.CaloriesLink
             stat.Duration.Should().Be(2764000);
-            //stat.ElevationGain
-            //stat.HeartRateLink
-            //stat.HeartRateZones
+            stat.ElevationGain.Should().Be(3.048);
+
+            var zone1 = stat.HeartRateZones[0];
+            zone1.CaloriesOut.Should().Be(default(double));
+            zone1.Max.Should().Be(95);
+            zone1.Min.Should().Be(30);
+            zone1.Minutes.Should().Be(3);
+            zone1.Name.Should().Be("Out of Range");
+
+            var zone4 = stat.HeartRateZones[3];
+            zone4.CaloriesOut.Should().Be(default(double));
+            zone4.Max.Should().Be(220);
+            zone4.Min.Should().Be(162);
+            zone4.Minutes.Should().Be(0);
+            zone4.Name.Should().Be("Peak");
+
             stat.LastModified.Should().Be(new DateTime(2017, 01, 01, 5, 3, 50));
             stat.LogId.Should().Be(5390522508);
             stat.LogType.Should().Be("auto_detected");
@@ -97,7 +103,7 @@ namespace Fitbit.Portable.Tests
             stat.OriginalDuration.Should().Be(2764000);
             stat.OriginalStartTime.Should().Be(new DateTime(2017, 1, 1, 4, 14, 06));
             stat.StartTime.Should().Be(new DateTime(2017, 1, 1, 4, 14, 06));
-            //stat.Steps
+            stat.Steps.Should().Be(5138);
             stat.TcxLink.Should().Be("https://api.fitbit.com/1/user/-/activities/5390522508.tcx");
         }
     }

@@ -275,7 +275,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SampleData\GetHeartRateIntradayTimeSeries.json" />
-    <None Include="SampleData\GetActivityLogsList.json" />
+    <None Include="SampleData\GetActivityLogsList.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SampleData\GetBloodPressure.json" />
     <None Include="SampleData\GetBodyMeasurements.json" />
     <None Include="SampleData\GetFriends-Single-2.json" />

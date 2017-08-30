@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
     {
         public Fixture fixture { get; set; }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             fixture = new Fixture();

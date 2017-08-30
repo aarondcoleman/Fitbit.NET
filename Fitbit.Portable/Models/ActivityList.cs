@@ -7,7 +7,7 @@ namespace Fitbit.Models
     public class ActivityList
     {
         [JsonProperty(PropertyName = "activeDuration")]
-        public double ActiveDuration { get; set; }
+        public int ActiveDuration { get; set; }
 
         [JsonProperty(PropertyName = "activityLevel")]
         public List<ActivityLevel> ActivityLevel { get; set; }
@@ -16,15 +16,14 @@ namespace Fitbit.Models
         public string ActivityName { get; set; }
 
         [JsonProperty(PropertyName = "activityTypeId")]
-        public double ActivityTypeId { get; set; }
-        
-        //public int averageHeartRate { get; set; }
+        public int ActivityTypeId { get; set; }
+
+        [JsonProperty(PropertyName = "averageHeartRate")]
+        public int AverageHeartRate { get; set; }
 
         [JsonProperty(PropertyName = "calories")]
-        public double Calories { get; set; }
+        public int Calories { get; set; }
         
-        //public string caloriesLink { get; set; }
-
         [JsonProperty(PropertyName = "distance")]
         public double Distance { get; set; }
 
@@ -32,15 +31,19 @@ namespace Fitbit.Models
         public string DistanceUnit { get; set; }
 
         [JsonProperty(PropertyName = "duration")]
-        public double Duration { get; set; }
-        
-        //public string heartRateLink { get; set; }
+        public int Duration { get; set; }
+
+        [JsonProperty(PropertyName = "elevationGain")]
+        public double ElevationGain { get; set; }
+
+        [JsonProperty(PropertyName = "heartRateZones")]
+        public List<HeartRateZone> HeartRateZones { get; set; }
 
         [JsonProperty(PropertyName = "lastModified")]
         public DateTime LastModified { get; set; }
 
         [JsonProperty(PropertyName = "logId")]
-        public double LogId { get; set; }
+        public long LogId { get; set; }
 
         [JsonProperty(PropertyName = "logType")]
         public string LogType { get; set; }
@@ -49,22 +52,25 @@ namespace Fitbit.Models
         public ManualValuesSpecified ManualValuesSpecified { get; set; }
 
         [JsonProperty(PropertyName = "originalDuration")]
-        public double OriginalDuration { get; set; }
+        public int OriginalDuration { get; set; }
 
         [JsonProperty(PropertyName = "originalStartTime")]
         public DateTime OriginalStartTime { get; set; }
 
+        [JsonProperty(PropertyName = "pace")]
+        public double Pace { get; set; }
+
         [JsonProperty(PropertyName = "source")]
-        public Source Source { get; set; }
+        public ActivityLogSource Source { get; set; }
 
         [JsonProperty(PropertyName = "speed")]
         public double Speed { get; set; }
 
         [JsonProperty(PropertyName = "startTime")]
         public DateTime StartTime { get; set; }
-        
-        //public int steps { get; set; }
-        //public List<HeartRateZone> heartRateZones { get; set; }
+
+        [JsonProperty(PropertyName = "steps")]
+        public int Steps { get; set; }
 
         [JsonProperty(PropertyName = "tcxLink")]
         public string TcxLink { get; set; }
@@ -99,7 +105,7 @@ namespace Fitbit.Models
         public bool Steps { get; set; }
     }
 
-    public class Source
+    public class ActivityLogSource
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

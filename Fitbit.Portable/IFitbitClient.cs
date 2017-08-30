@@ -18,8 +18,6 @@ namespace Fitbit.Api.Portable
         Task<SleepLogDateRange> PostLogSleepAsync(string startTime, int duration, DateTime date, string encodedUserId = default(string));
         Task<List<Device>> GetDevicesAsync();
         Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string));
-        Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = null);
-        Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution);
         Task<UserProfile> GetUserProfileAsync(string encodedUserId = default(string));
         Task<TimeSeriesDataList> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = default(string));
         Task<TimeSeriesDataList> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = default(string));
@@ -41,18 +39,8 @@ namespace Fitbit.Api.Portable
         Task<ApiSubscription> AddSubscriptionAsync(APICollectionType apiCollectionType, string uniqueSubscriptionId, string subscriberId = default(string));
         Task DeleteSubscriptionAsync(APICollectionType collection, string uniqueSubscriptionId, string subscriberId = null);
         Task<ActivityLog> LogActivityAsync(ActivityLog model);
-        Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string date, string period,
-            string encodedUserId = default(string));
-        Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string baseDate, DateTime endDate,
-            string encodedUserId = default(string));
-        Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, DateTime endDate, string detailLevel,
-            string encodedUserId = default(string));
-        Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, DateTime endDate, string detailLevel,
-            TimeSpan startTime, TimeSpan endTime, string encodedUserId = default(string));
-        Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, string detailLevel,
-            string encodedUserId = default(string));
-        Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, string detailLevel, TimeSpan startTime,
-            TimeSpan endTime, string encodedUserId = default(string));
+        Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = "-");
+        Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution, string userId = "-");
         Task<List<ActivityList>> GetActivityLogsList(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string));
     }
 }

@@ -80,6 +80,7 @@
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\HeartActivities.cs" />
     <Compile Include="Models\HeartActivitiesIntraday.cs" />
+    <Compile Include="Models\HeartActivitiesIntradayTimeSeries.cs" />
     <Compile Include="Models\HeartActivitiesTimeSeries.cs" />
     <Compile Include="Models\HeartRateResolution.cs" />
     <Compile Include="Models\HeartRateZone.cs" />

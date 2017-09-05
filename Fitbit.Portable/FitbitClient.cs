@@ -948,7 +948,7 @@ namespace Fitbit.Api.Portable
         /// <param name="limit">The max of the number of entries returned (maximum: 20)</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>ActivityLog</returns>
-        public async Task<List<ActivityList>> GetActivityLogsList(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
+        public async Task<List<ActivityLogsList>> GetActivityLogsList(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
         {
             var apiCall = string.Empty;
             limit = limit > 20 ? 20 : limit;
@@ -980,7 +980,7 @@ namespace Fitbit.Api.Portable
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             await HandleResponse(response);
             var responseBody = await response.Content.ReadAsStringAsync();
-            return (new JsonDotNetSerializer() { RootProperty = "activities" }).Deserialize<List<ActivityList>>(responseBody);
+            return (new JsonDotNetSerializer() { RootProperty = "activities" }).Deserialize<List<ActivityLogsList>>(responseBody);
         }
 
 

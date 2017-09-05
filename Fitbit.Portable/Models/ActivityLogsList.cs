@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fitbit.Models;
 using Newtonsoft.Json;
 
-namespace Fitbit.Models
+namespace Fitbit.Api.Portable.Models
 {
-    public class ActivityList
+    public class ActivityLogsList
     {
         [JsonProperty(PropertyName = "activeDuration")]
         public int ActiveDuration { get; set; }
@@ -79,7 +80,7 @@ namespace Fitbit.Models
     public class ActivityLevel
     {
         [JsonProperty(PropertyName = "minutes")]
-        public double Minutes { get; set; }
+        public int Minutes { get; set; }
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }

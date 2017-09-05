@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable;
+using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
 using FluentAssertions;
 using NUnit.Framework;
@@ -47,7 +48,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            Func<Task<List<ActivityList>>> result = () => fitbitClient.GetActivityLogsList(null, new DateTime(2017, 1, 1));
+            Func<Task<List<ActivityLogsList>>> result = () => fitbitClient.GetActivityLogsList(null, new DateTime(2017, 1, 1));
 
             result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
@@ -59,12 +60,12 @@ namespace Fitbit.Portable.Tests
             string content = SampleDataHelper.GetContent("GetActivityLogsList.json");
             var deserializer = new JsonDotNetSerializer {RootProperty = "activities"};
 
-            List<ActivityList> stats = deserializer.Deserialize<List<ActivityList>>(content);
+            List<ActivityLogsList> stats = deserializer.Deserialize<List<ActivityLogsList>>(content);
 
             ValidateActivity(stats);
         }
 
-        private void ValidateActivity(List<ActivityList> stats)
+        private void ValidateActivity(List<ActivityLogsList> stats)
         {
             var stat = stats.First();
 

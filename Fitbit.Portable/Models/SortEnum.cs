@@ -7,8 +7,8 @@ namespace Fitbit.Api.Portable.Models
 {
     public enum SortEnum
     {
-        asc,
-        desc
+        Asc,
+        Desc
 
     }
 }

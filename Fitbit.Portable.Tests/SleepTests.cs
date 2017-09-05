@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -23,7 +22,7 @@ namespace Fitbit.Portable.Tests
 
             var responseMessage = new Func<HttpResponseMessage>(() =>
             {
-                return new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(content)};
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) };
             });
 
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
@@ -110,7 +109,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetSleepLogListAsync(new DateTime(2017,3,27), SleepEnum.Before, SortEnum.desc, 1 );
+            var response = await fitbitClient.GetSleepLogListAsync(new DateTime(2017,3,27), SleepEnum.Before, SortEnum.Desc, 1 );
 
             ValidateSleepLogList(response);
         }
@@ -178,7 +177,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            Func<Task<SleepLogListBase>> result = () => fitbitClient.GetSleepLogListAsync(new DateTime(2017,4,4), SleepEnum.After, SortEnum.asc, 2 );
+            Func<Task<SleepLogListBase>> result = () => fitbitClient.GetSleepLogListAsync(new DateTime(2017,4,4), SleepEnum.After, SortEnum.Asc, 2 );
 
             result.ShouldThrow<FitbitException>();
         }
@@ -474,7 +473,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("https://api.fitbit.com/1.2/user/-/sleep/list.json?offset=1&limit=1&sort=desc&beforeDate=2017-03-27", sleepPagination.Next);
             Assert.IsEmpty(sleepPagination.Previous);
             Assert.AreEqual(0, sleepPagination.Offset);
-            Assert.AreEqual(SortEnum.desc.ToString(), sleepPagination.Sort);
+            Assert.AreEqual(SortEnum.Desc.ToString(), sleepPagination.Sort);
 
             var firstSleep = sleep.Sleep.First();
 

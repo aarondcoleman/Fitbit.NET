@@ -308,7 +308,7 @@ namespace Fitbit.Api.Portable
                         setSort = "asc";
                     break;
                     
-                    case SortEnum.Dsc:
+                    case SortEnum.Desc:
                         setSort = "desc";
                         break;
                 default:

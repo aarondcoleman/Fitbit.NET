@@ -262,6 +262,7 @@
     <Content Include="SampleData\IntradayActivitiesCaloriesMissingDateTime.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="SampleData\SleepLogList.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleData\ApiError.json">

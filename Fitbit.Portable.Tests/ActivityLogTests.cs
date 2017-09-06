@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
     public class ActivityLogTests
     {
         [Test]
-        [System.ComponentModel.Category("Portable")]
+        [Category("Portable")]
         public async void GetActivityLogsListAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetActivityLogsList.json");
@@ -39,7 +39,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
-        [System.ComponentModel.Category("Portable")]
+        [Category("Portable")]
         public void GetActivityLogsListAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse(HttpStatusCode.BadRequest);
@@ -56,7 +56,7 @@ namespace Fitbit.Portable.Tests
         }
 
         [Test]
-        [System.ComponentModel.Category("Portable")]
+        [Category("Portable")]
         public void Can_Deserialize_ActivityLogsList()
         {
             string content = SampleDataHelper.GetContent("GetActivityLogsList.json");

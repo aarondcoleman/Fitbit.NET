@@ -34,7 +34,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetHeartRateTimeSeries("today", "1d");
+            var response = await fitbitClient.GetHeartRateTimeSeriesAsync("today", "1d");
             ValidateHeartRateTimeSeriesData(response);
         }
 
@@ -50,7 +50,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            Func<Task<List<HeartActivitiesTimeSeries>>> result = () => fitbitClient.GetHeartRateTimeSeries("", "");
+            Func<Task<List<HeartActivitiesTimeSeries>>> result = () => fitbitClient.GetHeartRateTimeSeriesAsync("", "");
 
             result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
@@ -86,7 +86,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetHeartRateTimeSeries("today", "1d");
+            var response = await fitbitClient.GetHeartRateTimeSeriesAsync("today", "1d");
             ValidateHeartRateTimeSeriesData(response);
         }
 
@@ -102,7 +102,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            Func<Task<HeartActivitiesIntraday>> result = () => fitbitClient.GetHeartRateIntradayTimeSeries("", "");
+            Func<Task<HeartActivitiesIntraday>> result = () => fitbitClient.GetHeartRateIntradayTimeSeriesAsync("", "");
 
             result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }

@@ -98,7 +98,6 @@ namespace Fitbit.Api.Portable
             CreateHttpClientForOAuth2();
         }
 
-
         public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, bool enableOAuth2TokenRefresh) : this(credentials, accessToken, null, enableOAuth2TokenRefresh)
         {
 
@@ -803,7 +802,7 @@ namespace Fitbit.Api.Portable
         /// <param name="limit">The max of the number of entries returned (maximum: 20)</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>ActivityLog</returns>
-        public async Task<List<ActivityList>> GetActivityLogsList(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
+        public async Task<List<ActivityList>> GetActivityLogsListAsync(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
         {
             var apiCall = string.Empty;
             limit = limit > 20 ? 20 : limit;
@@ -845,7 +844,7 @@ namespace Fitbit.Api.Portable
         /// <param name="period">The range for which data will be returned. Options are 1d, 7d, 30d, 1w, 1m.</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>List of HeartActivitiesTimeSeries</returns>
-        public async Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string date, string period, string encodedUserId = default(string))
+        public async Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeriesAsync(string date, string period, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/{2}.json", encodedUserId, date, period);
 
@@ -862,7 +861,7 @@ namespace Fitbit.Api.Portable
         /// <param name="endDate">The end date of the range.</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>List of HeartActivitiesTimeSeries</returns>
-        public async Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeries(string baseDate, DateTime endDate, string encodedUserId = default(string))
+        public async Task<List<HeartActivitiesTimeSeries>> GetHeartRateTimeSeriesAsync(string baseDate, DateTime endDate, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/{2}.json", encodedUserId, baseDate, endDate.ToFitbitFormat());
 
@@ -880,7 +879,7 @@ namespace Fitbit.Api.Portable
         /// <param name="detailLevel">Number of data points to include. Either 1sec or 1min.</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>List of HeartActivitiesIntraday</returns>
-        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, DateTime endDate, string detailLevel, string encodedUserId = default(string))
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeriesAsync(string date, DateTime endDate, string detailLevel, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/{2}/{3}.json", encodedUserId, date, endDate.ToFitbitFormat(), detailLevel);
 
@@ -900,7 +899,7 @@ namespace Fitbit.Api.Portable
         /// <param name="endTime">The end of the period, in the format HH:mm.</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>List of HeartActivitiesIntraday</returns>
-        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, DateTime endDate, string detailLevel, TimeSpan startTime, TimeSpan endTime, string encodedUserId = default(string))
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeriesAsync(string date, DateTime endDate, string detailLevel, TimeSpan startTime, TimeSpan endTime, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/{2}/{3}/time/{4}/{5}.json", encodedUserId, date, endDate.ToFitbitFormat(), detailLevel, startTime.ToString("HH:mm"), endTime.ToString("HH:mm"));
 
@@ -917,7 +916,7 @@ namespace Fitbit.Api.Portable
         /// <param name="detailLevel">Number of data points to include. Either 1sec or 1min.</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>List of HeartActivitiesIntraday</returns>
-        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, string detailLevel, string encodedUserId = default(string))
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeriesAsync(string date, string detailLevel, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/1d/{2}.json", encodedUserId, date, detailLevel);
 
@@ -936,7 +935,7 @@ namespace Fitbit.Api.Portable
         /// <param name="endTime">The end of the period, in the format HH:mm.</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
         /// <returns>List of HeartActivitiesIntraday</returns>
-        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeries(string date, string detailLevel, TimeSpan startTime, TimeSpan endTime, string encodedUserId = default(string))
+        public async Task<HeartActivitiesIntraday> GetHeartRateIntradayTimeSeriesAsync(string date, string detailLevel, TimeSpan startTime, TimeSpan endTime, string encodedUserId = default(string))
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/heart/date/{1}/1d/{2}/time/{3}/{4}.json", encodedUserId, date, detailLevel, startTime.ToString("HH:mm"), endTime.ToString("HH:mm"));
 

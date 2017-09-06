@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Fitbit.Models
+namespace Fitbit.Api.Portable.Models
 {
     public class ActivityList
     {
@@ -68,49 +68,5 @@ namespace Fitbit.Models
 
         [JsonProperty(PropertyName = "tcxLink")]
         public string TcxLink { get; set; }
-    }
-
-    public class ActivityLevel
-    {
-        [JsonProperty(PropertyName = "minutes")]
-        public double Minutes { get; set; }
-
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-    }
-
-    //public class HeartRateZone
-    //{
-    //    public int max { get; set; }
-    //    public int min { get; set; }
-    //    public int minutes { get; set; }
-    //    public string name { get; set; }
-    //}
-
-    public class ManualValuesSpecified
-    {
-        [JsonProperty(PropertyName = "calories")]
-        public bool Calories { get; set; }
-
-        [JsonProperty(PropertyName = "distance")]
-        public bool Distance { get; set; }
-
-        [JsonProperty(PropertyName = "steps")]
-        public bool Steps { get; set; }
-    }
-
-    public class Source
-    {
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
-
-        [JsonProperty(PropertyName = "url")]
-        public string Url { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Fitbit.Api.Portable;
-using Fitbit.Models;
+using Fitbit.Api.Portable.Models;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
     public class ActivityLogTests
     {
         [Test]
-        [Category("Portable")]
+        [System.ComponentModel.Category("Portable")]
         public async void GetActivityLogsListAsync_Success()
         {
             string content = SampleDataHelper.GetContent("GetActivityLogsList.json");
@@ -34,12 +34,12 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetActivityLogsList(null, new DateTime(2017, 1, 1));
+            var response = await fitbitClient.GetActivityLogsListAsync(null, new DateTime(2017, 1, 1));
             ValidateActivity(response);
         }
 
         [Test]
-        [Category("Portable")]
+        [System.ComponentModel.Category("Portable")]
         public void GetActivityLogsListAsync_Errors()
         {
             var responseMessage = Helper.CreateErrorResponse(HttpStatusCode.BadRequest);
@@ -50,13 +50,13 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            Func<Task<List<ActivityList>>> result = () => fitbitClient.GetActivityLogsList(null, new DateTime(2017, 1, 1));
+            Func<Task<List<ActivityList>>> result = () => fitbitClient.GetActivityLogsListAsync(null, new DateTime(2017, 1, 1));
 
             result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
 
         [Test]
-        [Category("Portable")]
+        [System.ComponentModel.Category("Portable")]
         public void Can_Deserialize_ActivityLogsList()
         {
             string content = SampleDataHelper.GetContent("GetActivityLogsList.json");

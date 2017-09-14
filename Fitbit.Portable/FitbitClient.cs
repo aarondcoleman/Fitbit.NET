@@ -949,8 +949,7 @@ namespace Fitbit.Api.Portable
         /// <returns>ActivityLog</returns>
         public async Task<List<ActivityLogsList>> GetActivityLogsListAsync(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
         {
-            var apiCall = string.Empty;
-            limit = limit > 20 ? 20 : limit;
+            limit = limit > 20 || limit < 1 ? 20 : limit;
             const int offset = 0;
             var sort = string.Empty;
             var dateString = string.Empty;
@@ -974,7 +973,7 @@ namespace Fitbit.Api.Portable
                 sort = "asc";
             }
 
-            apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/list.json?{1}={2}&sort={3}&limit={4}&offset={5}", encodedUserId, dateString, date, sort, limit, offset);
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/list.json?{1}={2}&sort={3}&limit={4}&offset={5}", encodedUserId, dateString, date, sort, limit, offset);
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             await HandleResponse(response);

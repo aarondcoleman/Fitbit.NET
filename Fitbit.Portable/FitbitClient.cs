@@ -881,7 +881,6 @@ namespace Fitbit.Api.Portable
             return serializer.Deserialize<ApiSubscription>(responseBody);
         }
 
-
         public async Task DeleteSubscriptionAsync(APICollectionType collection, string uniqueSubscriptionId, string subscriberId = null)
         {
             var collectionString = string.Empty;
@@ -983,8 +982,6 @@ namespace Fitbit.Api.Portable
             return (new JsonDotNetSerializer() { RootProperty = "activities" }).Deserialize<List<ActivityLogsList>>(responseBody);
         }
 
-
-
         #region HeartRateTimeSeries
 
         private async Task<HeartActivitiesTimeSeries> ProcessHeartRateTimeSeries(string url)
@@ -1008,11 +1005,9 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = "-")
         {
-
             string path = $"1.1/user/{userId}/activities/heart/date/{date:yyyy-MM-dd}/{dateRangePeriod.GetStringValue()}.json";
             string apiCall = FitbitClientHelperExtensions.ToFullUrl(path);
             return await ProcessHeartRateTimeSeries(apiCall);
-
         }
 
         #endregion
@@ -1045,7 +1040,6 @@ namespace Fitbit.Api.Portable
                     return "15min";
             }
         }
-
 
         /// <summary>
         /// Requests the Intraday Heart Rate Time Series for a specific date.

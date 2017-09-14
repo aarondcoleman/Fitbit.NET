@@ -32,7 +32,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetActivityLogsList(null, new DateTime(2017, 1, 1));
+            var response = await fitbitClient.GetActivityLogsListAsync(null, new DateTime(2017, 1, 1));
             ValidateActivity(response);
         }
 
@@ -48,7 +48,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            Func<Task<List<ActivityLogsList>>> result = () => fitbitClient.GetActivityLogsList(null, new DateTime(2017, 1, 1));
+            Func<Task<List<ActivityLogsList>>> result = () => fitbitClient.GetActivityLogsListAsync(null, new DateTime(2017, 1, 1));
 
             result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }

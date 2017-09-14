@@ -203,7 +203,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1198, summary.HeartRateZones[0].Minutes);
             Assert.AreEqual(30, summary.HeartRateZones[0].Min);
             Assert.AreEqual(94, summary.HeartRateZones[0].Max);
-            Assert.AreEqual(1594.36823f, summary.HeartRateZones[0].CaloriesOut);
+            Assert.AreEqual(1594.36823, summary.HeartRateZones[0].CaloriesOut);
 
             // distances
             var d = summary.Distances.First(x => x.Activity == "total");

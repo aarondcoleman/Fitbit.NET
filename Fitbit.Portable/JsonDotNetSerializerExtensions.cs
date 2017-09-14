@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
 using Newtonsoft.Json.Linq;
 
@@ -105,6 +106,7 @@ namespace Fitbit.Api.Portable
 
             var result = new HeartActivitiesIntraday
             {
+                ActivitiesHeart = serializer.Deserialize<IntradayActivitiesHeart>(JToken.Parse(heartRateIntradayJson)["activities-heart"].First()),
                 Dataset = (from item in dataset
                            select new DatasetInterval
                            {
@@ -137,7 +139,8 @@ namespace Fitbit.Api.Portable
                                    {
                                        DateTime = DateTime.Parse(item["dateTime"].ToString()), //here, maybe pass in the date so we have a full object of date and time
                                        HeartRateZones = serializer.Deserialize<List<HeartRateZone>>(item["value"]["heartRateZones"]),
-                                       CustomHeartRateZones = serializer.Deserialize<List<HeartRateZone>>(item["value"]["customHeartRateZones"])
+                                       CustomHeartRateZones = serializer.Deserialize<List<HeartRateZone>>(item["value"]["customHeartRateZones"]),
+                                       RestingHeartRate = serializer.Deserialize<int>(item["value"]["restingHeartRate"])
                                    }).ToList(),
             };
 

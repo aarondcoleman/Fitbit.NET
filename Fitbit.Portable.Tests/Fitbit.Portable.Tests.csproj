@@ -55,8 +55,8 @@
       <HintPath>..\Fitbit\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\Fitbit\packages\NUnit.3.7.1\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\Fitbit\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Ploeh.AutoFixture, Version=3.50.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
       <HintPath>..\Fitbit\packages\AutoFixture.3.50.3\lib\net40\Ploeh.AutoFixture.dll</HintPath>
@@ -86,6 +86,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ActivityLogTests.cs" />
     <Compile Include="AccessTokenTests.cs" />
     <Compile Include="ActivitiesStatsTests.cs" />
     <Compile Include="ApiErrorTests.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="FriendsTests.cs" />
     <Compile Include="GetSubscriptionTests.cs" />
     <Compile Include="GoalsTests.cs" />
+    <Compile Include="HeartRateTests.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Helpers\ResponseFaker.cs" />
     <Compile Include="InterceptorCounter.cs" />
@@ -229,6 +231,9 @@
     <None Include="SampleData\GetHeartRate.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SampleData\GetHeartRateIntradayTimeSeries1.1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SampleData\GetSleepRange.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -256,6 +261,34 @@
     <None Include="SampleData\GetDevices-Single.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SampleData\AccessToken.json" />
+    <None Include="SampleData\ActivitiesStats.json" />
+    <None Include="SampleData\ActivityGoals.json" />
+    <None Include="SampleData\AddSubscriptionResponse.json" />
+    <None Include="SampleData\ApiError-Request-Forbidden.json" />
+    <None Include="SampleData\ApiError-Request-StaleToken.json" />
+    <None Include="SampleData\ApiError-Request-Unauthorized.json" />
+    <None Include="SampleData\ApiError-Request-BadRequest.json" />
+    <None Include="SampleData\ApiSubscriptionNotification.json" />
+    <None Include="SampleData\GetActivities.json" />
+    <None Include="SampleData\GetHeartRateTimeSeries.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleData\GetHeartRateIntradayTimeSeries.json" />
+    <None Include="SampleData\GetActivityLogsList.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleData\GetBloodPressure.json" />
+    <None Include="SampleData\GetBodyMeasurements.json" />
+    <None Include="SampleData\GetFriends-Single-2.json" />
+    <None Include="SampleData\GetHeartRate.json" />
+    <None Include="SampleData\GetWater-WaterData.json" />
+    <None Include="SampleData\GetWeight.json" />
+    <None Include="SampleData\GetFat.json" />
+    <None Include="SampleData\GetFoodLogs.json" />
+    <None Include="SampleData\GetFriends-Multiple.json" />
+    <None Include="SampleData\GetDevices-Double.json" />
+    <None Include="SampleData\GetDevices-Single.json" />
     <Content Include="SampleData\IntradayActivitiesSteps.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

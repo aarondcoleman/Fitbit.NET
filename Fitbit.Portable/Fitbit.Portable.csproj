@@ -66,6 +66,7 @@
     <Compile Include="Models\BodyGoals.cs" />
     <Compile Include="Models\BodyMeasurements.cs" />
     <Compile Include="Models\CaloriesOutStats.cs" />
+    <Compile Include="Models\DatasetInterval.cs" />
     <Compile Include="Models\DateRangePeriod.cs" />
     <Compile Include="Models\Deep.cs" />
     <Compile Include="Models\Device.cs" />
@@ -82,9 +83,11 @@
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\HeartActivities.cs" />
     <Compile Include="Models\HeartActivitiesIntraday.cs" />
+    <Compile Include="Models\HeartActivitiesIntradayConverter.cs" />
     <Compile Include="Models\HeartActivitiesTimeSeries.cs" />
     <Compile Include="Models\HeartRateResolution.cs" />
     <Compile Include="Models\HeartRateZone.cs" />
+    <Compile Include="Models\IntradayActivitiesHeart.cs" />
     <Compile Include="Models\IntradayData.cs" />
     <Compile Include="Models\IntradayResourceType.cs" />
     <Compile Include="Models\Levels.cs" />

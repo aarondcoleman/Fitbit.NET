@@ -6,7 +6,6 @@ using Newtonsoft.Json.Linq;
 
 namespace Fitbit.Models
 {
-    //[JsonConverter(typeof(HeartActivitiesIntradayConverter))]
     public class HeartActivitiesIntraday
     {
         public IntradayActivitiesHeart ActivitiesHeart { get; set; }
@@ -15,7 +14,6 @@ namespace Fitbit.Models
         public string DatasetType { get; set; }
     }
 
-    //[JsonConverter(typeof(DatasetIntervalConverter))]
     public class DatasetInterval
     {
         public DateTime Time { get; set; }
@@ -105,44 +103,4 @@ namespace Fitbit.Models
             return typeof(HeartActivitiesIntraday).IsAssignableFrom(objectType);
         }
     }
-
-    /*
-    public class DatasetIntervalConverter : JsonConverter
-    {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {            
-            var datasetInverval = value as DatasetInterval;
-
-            //{
-            writer.WriteStartObject();
-
-            // "Time" : "2008-09-22T14:01:54.9571247Z"
-            writer.WritePropertyName("Time");
-            writer.WriteValue(datasetInverval.Time.ToString("o"));
-            
-            // "Value": 1
-            writer.WritePropertyName("Value");
-            writer.WriteValue(datasetInverval.Value);
-            
-            //}
-            writer.WriteEndObject();
-
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            JObject jsonObject = JObject.Load(reader);
-            var properties = jsonObject.Properties().ToList();
-            return new DatasetInterval
-            {
-                Time = DateTime.Parse(jsonObject["Time"].ToString()),
-                Value = Convert.ToInt32(jsonObject["Value"])
-            };
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return typeof(DatasetInterval).IsAssignableFrom(objectType);
-        }
-    } */
 }

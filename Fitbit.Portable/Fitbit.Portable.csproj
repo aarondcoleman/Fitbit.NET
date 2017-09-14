@@ -46,8 +46,10 @@
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityDistance.cs" />
     <Compile Include="Models\ActivityGoals.cs" />
+    <Compile Include="Models\ActivityLevel.cs" />
     <Compile Include="Models\ActivityLogsList.cs" />
     <Compile Include="Models\ActivityLog.cs" />
+    <Compile Include="Models\ActivityLogSource.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
     <Compile Include="Models\APICollectionType.cs" />
     <Compile Include="Models\ApiError.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Models\LifetimeTotals.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\LoggedFood.cs" />
+    <Compile Include="Models\ManualValuesSpecified.cs" />
     <Compile Include="Models\MinuteData.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
     <Compile Include="Models\Rem.cs" />

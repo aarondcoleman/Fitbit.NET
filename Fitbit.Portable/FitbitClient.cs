@@ -949,7 +949,9 @@ namespace Fitbit.Api.Portable
         /// <returns>ActivityLog</returns>
         public async Task<List<ActivityLogsList>> GetActivityLogsListAsync(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
         {
-            limit = limit > 20 || limit < 1 ? 20 : limit;
+            //Check to make sure limit is gt 1 and less than 20
+            limit = limit < 1 || limit > 20 ? 20 : limit;
+
             const int offset = 0;
             var sort = string.Empty;
             var dateString = string.Empty;

@@ -946,7 +946,7 @@ namespace Fitbit.Api.Portable
         /// <param name="afterDate">The date in the format yyyy-MM-ddTHH:mm:ss. Only yyyy-MM-dd is required. Either beforeDate or afterDate must be specified. Set sort to asc when using afterDate.</param>
         /// <param name="limit">The max of the number of entries returned (maximum: 20)</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
-        /// <returns>ActivityLog</returns>
+        /// <returns>ActivityLogsList</returns>
         public async Task<List<ActivityLogsList>> GetActivityLogsListAsync(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string))
         {
             //Check to make sure limit is gt 1 and less than 20
@@ -981,6 +981,19 @@ namespace Fitbit.Api.Portable
             await HandleResponse(response);
             var responseBody = await response.Content.ReadAsStringAsync();
             return (new JsonDotNetSerializer() { RootProperty = "activities" }).Deserialize<List<ActivityLogsList>>(responseBody);
+        }
+
+        /// <summary>
+        /// Retrieves a list of a user's activity log entries on a given day
+        /// </summary>
+        /// <param name="date">The date of Activities.</param>
+        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+        /// <returns>ActivityLogsList</returns>
+        public async Task<List<ActivityLogsList>> GetActivityLogsListAsync(DateTime date, string encodedUserId = default(string))
+        {
+            List<ActivityLogsList> logsAfterDate = await GetActivityLogsListAsync(null, date, 20, encodedUserId);
+            List<ActivityLogsList> logsOnDate = logsAfterDate?.Where(x => x.DateOfActivity == date).ToList();
+            return logsOnDate;
         }
 
         #region HeartRateTimeSeries

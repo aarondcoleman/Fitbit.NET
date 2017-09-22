@@ -24,6 +24,8 @@ namespace Fitbit.Api.Portable.Models
 
         [JsonProperty(PropertyName = "calories")]
         public int Calories { get; set; }
+
+        public DateTimeOffset DateOfActivity => StartTime.Date;
         
         [JsonProperty(PropertyName = "distance")]
         public double Distance { get; set; }
@@ -56,7 +58,7 @@ namespace Fitbit.Api.Portable.Models
         public int OriginalDuration { get; set; }
 
         [JsonProperty(PropertyName = "originalStartTime")]
-        public DateTime OriginalStartTime { get; set; }
+        public DateTimeOffset OriginalStartTime { get; set; }
 
         [JsonProperty(PropertyName = "pace")]
         public double Pace { get; set; }
@@ -68,7 +70,7 @@ namespace Fitbit.Api.Portable.Models
         public double Speed { get; set; }
 
         [JsonProperty(PropertyName = "startTime")]
-        public DateTime StartTime { get; set; }
+        public DateTimeOffset StartTime { get; set; }
 
         [JsonProperty(PropertyName = "steps")]
         public int Steps { get; set; }

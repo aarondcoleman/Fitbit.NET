@@ -992,7 +992,7 @@ namespace Fitbit.Api.Portable
         public async Task<List<ActivityLogsList>> GetActivityLogsListAsync(DateTime date, string encodedUserId = default(string))
         {
             List<ActivityLogsList> logsAfterDate = await GetActivityLogsListAsync(null, date, 20, encodedUserId);
-            List<ActivityLogsList> logsOnDate = logsAfterDate?.Where(x => x.DateOfActivity == date).ToList();
+            List<ActivityLogsList> logsOnDate = logsAfterDate?.Where(x => x.StartTime.Date == date.Date).ToList();
             return logsOnDate;
         }
 

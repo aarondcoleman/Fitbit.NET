@@ -965,13 +965,13 @@ namespace Fitbit.Api.Portable
             if (beforeDate != null)
             {
                 dateString = "beforeDate";
-                date = beforeDate.Value.ToString("yyyy-MM-ddTHH:mm:ss");
+                date = beforeDate.Value.ToString("yyyy-MM-dd");
                 sort = "desc";
             }
             if (afterDate != null)
             {
                 dateString = "afterDate";
-                date = afterDate.Value.ToString("yyyy-MM-ddTHH:mm:ss");
+                date = afterDate.Value.ToString("yyyy-MM-dd");
                 sort = "asc";
             }
 

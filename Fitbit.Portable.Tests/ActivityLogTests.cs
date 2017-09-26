@@ -27,7 +27,7 @@ namespace Fitbit.Portable.Tests
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 Assert.AreEqual(HttpMethod.Get, message.Method);
-                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/list.json?afterDate=2017-01-01T00:00:00&sort=asc&limit=20&offset=0", message.RequestUri.AbsoluteUri);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/list.json?afterDate=2017-01-01&sort=asc&limit=20&offset=0", message.RequestUri.AbsoluteUri);
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);

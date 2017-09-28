@@ -41,8 +41,8 @@ namespace Fitbit.Api.Portable
         Task<ActivityLog> LogActivityAsync(ActivityLog model);
         Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = "-");
         Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution, string userId = "-");
-        Task<List<ActivityLogsList>> GetActivityLogsListAsync(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string));
-        Task<List<ActivityLogsList>> GetActivityLogsListAsync(DateTime date, string encodedUserId = default(string));
+        Task<ActivityLogsList> GetActivityLogsListAsync(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string));
+        Task<ActivityLogsList> GetActivityLogsListAsync(DateTime date, string encodedUserId = default(string));
 
     }
 }

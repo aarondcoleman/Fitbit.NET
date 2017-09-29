@@ -25,7 +25,7 @@ namespace Fitbit.Api.Portable.Models
         [JsonProperty(PropertyName = "calories")]
         public int Calories { get; set; }
 
-        public string DateOfActivity => StartTime.Date.ToString("yyyy-MM-dd");
+        public string DateOfActivity => StartTime.Date.ToString("MM-dd-yyyy");
 
         [JsonProperty(PropertyName = "distance")]
         public double Distance { get; set; }

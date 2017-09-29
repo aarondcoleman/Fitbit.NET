@@ -56,6 +56,28 @@ namespace Fitbit.Portable.Tests
 
         [Test]
         [Category("Portable")]
+        public void ActivityLogsList_JsonParse_Errors()
+        {
+            string content = SampleDataHelper.GetContent("GetActivityLogsList2.json");
+            var settings = new JsonSerializerSettings() { DateParseHandling = DateParseHandling.DateTimeOffset };
+            var serializer = new JsonDotNetSerializer(settings) { RootProperty = "activities" };
+
+            try
+            {
+                serializer.Deserialize<ActivityLogsList>(content);
+            }
+            catch (FitbitParseException e){
+                // Success
+            }
+            catch (Exception e)
+            {
+                Assert.Fail();
+            }
+            
+        }
+
+        [Test]
+        [Category("Portable")]
         public void Can_Deserialize_ActivityLogsList()
         {
             string content = SampleDataHelper.GetContent("GetActivityLogsList.json");

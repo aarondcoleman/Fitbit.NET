@@ -39,7 +39,8 @@ namespace Fitbit.Api.Portable
                  only one or the other can be used.*/
                 if (!string.IsNullOrWhiteSpace(RootProperty))
                 {
-                    throw new Exception("Root property not compatible with DateParseHandling.DateTimeOffset");
+                    var message = "Error occured by parsing JSON. Root property not compatible with DateParseHandling.DateTimeOffset";
+                    throw new FitbitParseException(message);
                 }
                 return JsonConvert.DeserializeObject<T>(data);
             }

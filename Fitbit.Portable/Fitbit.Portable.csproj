@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="FitbitAppCredentials.cs" />
     <Compile Include="FitbitHttpMessageHandler.cs" />
+    <Compile Include="FitbitParseException.cs" />
     <Compile Include="FitbitTokenException.cs" />
     <Compile Include="HttpRequestMessageExtensionMethods.cs" />
     <Compile Include="Interceptors\FitbitHttpErrorHandler.cs" />

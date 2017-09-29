@@ -43,7 +43,7 @@ namespace Fitbit.Api.Portable.Models
         public List<HeartRateZone> HeartRateZones { get; set; }
 
         [JsonProperty(PropertyName = "lastModified")]
-        public DateTime LastModified { get; set; }
+        public DateTimeOffset LastModified { get; set; }
 
         [JsonProperty(PropertyName = "logId")]
         public long LogId { get; set; }

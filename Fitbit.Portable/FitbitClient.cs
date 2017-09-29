@@ -980,9 +980,12 @@ namespace Fitbit.Api.Portable
 
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
             await HandleResponse(response);
-            var responseBody = await response.Content.ReadAsStringAsync();
-            var settings = new JsonSerializerSettings { DateParseHandling = DateParseHandling.DateTimeOffset };
-            ActivityLogsList result = JsonConvert.DeserializeObject<ActivityLogsList>(responseBody, settings);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            JsonSerializerSettings settings = new JsonSerializerSettings { DateParseHandling = DateParseHandling.DateTimeOffset };
+            JsonDotNetSerializer serializer = new JsonDotNetSerializer(settings);
+            ActivityLogsList result = serializer.Deserialize<ActivityLogsList>(responseBody);
+
             return result;
         }
 

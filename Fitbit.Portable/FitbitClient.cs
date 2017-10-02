@@ -990,7 +990,7 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// Retrieves a list of a user's activity log entries on a given day
+        /// Retrieves a list of a user's activity log entries on a given day (Max: 20 records)
         /// </summary>
         /// <param name="date">The date of Activities.</param>
         /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>

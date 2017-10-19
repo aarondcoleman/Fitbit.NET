@@ -1030,8 +1030,8 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = "-")
         {
-            string path = $"1.1/user/{userId}/activities/heart/date/{date:yyyy-MM-dd}/{dateRangePeriod.GetStringValue()}.json";
-            string apiCall = FitbitClientHelperExtensions.ToFullUrl(path);
+            string url = "1.1/user/{0}/" + "activities/heart/date/" + date.ToString("yyyy-MM-dd") + "/"+dateRangePeriod.GetStringValue() + ".json";
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, userId);
             return await ProcessHeartRateTimeSeries(apiCall);
         }
 

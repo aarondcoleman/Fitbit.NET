@@ -10,10 +10,12 @@ namespace Fitbit.Api.Portable
         /// <summary>
         /// Converts the REST api resource into the fully qualified url
         /// </summary>
-        /// <param name="apiCall"></param>
+        /// <param name="apiCall">
+        ///"Format String" with one "Format Item" as a placeholder for "UserId"
+        ///</param>
         /// <param name="encodedUserId"></param>
         /// <param name="args"></param>
-        /// <returns></returns>
+        /// <returns>Fully qualified url</returns>
         internal static string ToFullUrl(string apiCall, string encodedUserId = default(string), params object[] args)
         {
             string userSignifier = "-"; //used for current user

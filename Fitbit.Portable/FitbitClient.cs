@@ -1142,7 +1142,7 @@ namespace Fitbit.Api.Portable
                 }
 
                 // if we've got here then something unexpected has occured
-                throw new FitbitException($"An error has occured. Please see error list for details - {response.StatusCode}", errors);
+                throw new FitbitException($"An error has occured. Please see error list for details - {(int)response.StatusCode}", errors);
             }
         }
 

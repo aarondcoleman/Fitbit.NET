@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DefineConstants>DEBUG;NETSTANDARD1_3</DefineConstants>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <AssemblyName>Fitbit</AssemblyName>
+    <RootNamespace>Fitbit</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Fitbit.NET</PackageId>
+    <PackageVersion>3.0.0</PackageVersion>
+    <Authors>Fitbit.Net contributors Team -- @WestDiscGolf, @aarondcoleman, @mxa0079, @joshFitabase</Authors>
+    <PackageLicenseUrl>https://github.com/aarondcoleman/Fitbit.NET</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/aarondcoleman/Fitbit.NET</PackageProjectUrl>
+    <PackageIconUrl>http://static3.fitbit.com/simple.b-dis-png.h76d53d8e6a0653b38326a825b2b9cf57.pack?items=%2Fimages%2Fcommon%2Fbg_branding_b.png</PackageIconUrl>
+    <PackageTags>Fitbit OAuth2 API .NET IoT Wearables</PackageTags>
+    <PackageOutputPath>..\NuGet</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Fitbit.Portable\**\*.cs" Exclude="..\Fitbit.Portable\**\AssemblyInfo.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.3'">
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+</Project>

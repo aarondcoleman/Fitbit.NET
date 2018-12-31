@@ -33,7 +33,7 @@ namespace Fitbit.Portable.Tests
 
         [Test]
         [Category("Portable")]
-        public async Task GetFatAsync_DateRangePeriod_SixMonths()
+        public void GetFatAsync_DateRangePeriod_SixMonths()
         {
             var client = fixture.Create<FitbitClient>();
             Assert.That(

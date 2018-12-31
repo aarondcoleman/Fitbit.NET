@@ -26,7 +26,7 @@ namespace Fitbit.Portable.Tests
 
             DateTime Expected_Date = new DateTime(2012, 5, 24);
 
-            string content = SampleDataHelper.GetContent("SingleSubscriptionNotification.xml");
+            string content = SampleDataHelper.GetContent("SingleSubscriptionNotification.json");
 
             var sut = new SubscriptionManager();
 
@@ -55,7 +55,7 @@ namespace Fitbit.Portable.Tests
 
             DateTime Expected_Date = new DateTime(2012, 7, 25);
 
-            string content = SampleDataHelper.GetContent("MultipleSingleSubscriptionNotification.xml");
+            string content = SampleDataHelper.GetContent("MultipleSingleSubscriptionNotification.json");
 
             var sut = new SubscriptionManager();
 

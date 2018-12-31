@@ -211,8 +211,6 @@ namespace Fitbit.Api.Portable
             return serializer.Deserialize<ActivitiesStats>(responseBody);
         }
 
-        #region  Sleep
-
         /// <summary>
         /// Requests the sleep data for the specified date for the logged in user 
         /// NOTE: This is for the V1 of the sleep api which is now Deprecated
@@ -270,8 +268,7 @@ namespace Fitbit.Api.Portable
 
             return data;
         }
-
-
+        
         /// <summary>
         /// The Get Sleep Logs List endpoint returns a list of a user's sleep logs (including naps) 
         /// before or after a given day with offset, limit, and sort order.
@@ -354,8 +351,6 @@ namespace Fitbit.Api.Portable
             return serialzer.Deserialize<SleepLogDateRange>(responeBody);
         }
 
-        #endregion Sleep
-
         /// <summary>
         /// Requests the devices for the current logged in user
         /// </summary>
@@ -387,61 +382,61 @@ namespace Fitbit.Api.Portable
             return serializer.GetFriends(responseBody);
         }
 
-        /// <summary>
-        /// Request to get heart rate in specific in a range time
-        /// </summary>
-        /// <param name="date"></param>
-        /// <param name="dateRangePeriod"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = null)
-        {
-            if (string.IsNullOrWhiteSpace(userId))
-            {
-                userId = "-";
-            }
+        ///// <summary>
+        ///// Request to get heart rate in specific in a range time
+        ///// </summary>
+        ///// <param name="date"></param>
+        ///// <param name="dateRangePeriod"></param>
+        ///// <param name="userId"></param>
+        ///// <returns></returns>
+        //public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = null)
+        //{
+        //    if (string.IsNullOrWhiteSpace(userId))
+        //    {
+        //        userId = "-";
+        //    }
 
-            string apiCall = String.Format("https://api.fitbit.com/1.1/user/{0}/activities/heart/date/{1}/{2}.json", userId, date.ToString("yyyy-MM-dd"), dateRangePeriod.GetStringValue());
+        //    string apiCall = String.Format("https://api.fitbit.com/1.1/user/{0}/activities/heart/date/{1}/{2}.json", userId, date.ToString("yyyy-MM-dd"), dateRangePeriod.GetStringValue());
             
-            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            await HandleResponse(response);
+        //    HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+        //    await HandleResponse(response);
 
-            string responseBody = await response.Content.ReadAsStringAsync();
-            var seralizer = new JsonDotNetSerializer();
+        //    string responseBody = await response.Content.ReadAsStringAsync();
+        //    var seralizer = new JsonDotNetSerializer();
 
-            var fitbitResponse = seralizer.GetHeartActivitiesTimeSeries(responseBody);
+        //    var fitbitResponse = seralizer.GetHeartActivitiesTimeSeries(responseBody);
 
-            return fitbitResponse;
-        }
+        //    return fitbitResponse;
+        //}
 
-        /// <summary>
-        /// Request to get heart rate in a day
-        /// </summary>
-        /// <param name="date"></param>
-        /// <param name="resolution"></param>
-        /// <returns></returns>
-        public async Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution)
-        {
-            string resolutionText = null;
+        ///// <summary>
+        ///// Request to get heart rate in a day
+        ///// </summary>
+        ///// <param name="date"></param>
+        ///// <param name="resolution"></param>
+        ///// <returns></returns>
+        //public async Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution)
+        //{
+        //    string resolutionText = null;
 
-            //this little big of section is necessary because enums can't start with numbers
-            if (resolution == HeartRateResolution.oneSecond)
-                resolutionText = "1sec";
-            else if (resolution == HeartRateResolution.oneMinute)
-                resolutionText = "1min";
-            else
-                resolutionText = "15min";
+        //    //this little big of section is necessary because enums can't start with numbers
+        //    if (resolution == HeartRateResolution.oneSecond)
+        //        resolutionText = "1sec";
+        //    else if (resolution == HeartRateResolution.oneMinute)
+        //        resolutionText = "1min";
+        //    else
+        //        resolutionText = "15min";
 
-            string apiCall = String.Format("https://api.fitbit.com/1.1/user/-/activities/heart/date/{0}/{1}/{2}/time/00:00:00/23:59:59.json", date.ToString("yyyy-MM-dd"), date.ToString("yyyy-MM-dd"), resolutionText);
+        //    string apiCall = String.Format("https://api.fitbit.com/1.1/user/-/activities/heart/date/{0}/{1}/{2}/time/00:00:00/23:59:59.json", date.ToString("yyyy-MM-dd"), date.ToString("yyyy-MM-dd"), resolutionText);
             
-            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
-            await HandleResponse(response);
+        //    HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+        //    await HandleResponse(response);
 
-            string responseBody = await response.Content.ReadAsStringAsync();
-            var seralizer = new JsonDotNetSerializer();
+        //    string responseBody = await response.Content.ReadAsStringAsync();
+        //    var seralizer = new JsonDotNetSerializer();
 
-            return seralizer.GetHeartRateIntraday(date, responseBody);
-        }
+        //    return seralizer.GetHeartRateIntraday(date, responseBody);
+        //}
 
         /// <summary>
         /// Requests the user profile of the encoded user id or if none specified the current logged in user

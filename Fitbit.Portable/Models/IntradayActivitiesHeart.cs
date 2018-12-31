@@ -5,7 +5,7 @@ using System.Text;
 using Fitbit.Models;
 using Newtonsoft.Json;
 
-namespace Fitbit.Api.Portable.Models
+namespace Fitbit.Api.Models
 {
     public class IntradayActivitiesHeart
     {

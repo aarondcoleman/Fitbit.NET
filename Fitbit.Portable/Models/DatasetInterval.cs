@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Fitbit.Api.Portable.Models
 {
+    //[JsonConverter(typeof(DatasetIntervalConverter))]
     public class DatasetInterval
     {
         public DateTime Time { get; set; }

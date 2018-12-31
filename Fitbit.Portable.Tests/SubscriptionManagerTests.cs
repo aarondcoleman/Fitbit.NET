@@ -39,7 +39,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(Expected_ownerId, result.OwnerId);
             Assert.AreEqual(Expected_subId, result.SubscriptionId);
 
-            Assert.AreEqual(APICollectionType.foods, result.CollectionType);
+            Assert.AreEqual(APICollectionType.activities, result.CollectionType);
             Assert.AreEqual(ResourceOwnerType.User, result.OwnerType);
             Assert.AreEqual(Expected_Date, result.Date);
 

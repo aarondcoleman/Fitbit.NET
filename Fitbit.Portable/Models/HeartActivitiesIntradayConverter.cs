@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Fitbit.Models;
 using Newtonsoft.Json.Linq;
@@ -16,9 +17,6 @@ namespace Fitbit.Api.Portable.Models
 
             //{
             writer.WriteStartObject();
-
-            writer.WritePropertyName("ActivitiesHeart");
-            writer.WriteValue(heartActivitiesIntraday.ActivitiesHeart);
 
             // "DatasetInterval" : "1"
             writer.WritePropertyName("DatasetInterval");
@@ -72,7 +70,11 @@ namespace Fitbit.Api.Portable.Models
 
         public override bool CanConvert(Type objectType)
         {
+#if NETSTANDARD1_3
+            return typeof(HeartActivitiesIntraday).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+#else
             return typeof(HeartActivitiesIntraday).IsAssignableFrom(objectType);
+#endif
         }
     }
 }

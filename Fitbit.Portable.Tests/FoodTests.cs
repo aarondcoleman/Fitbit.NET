@@ -50,7 +50,7 @@ namespace Fitbit.Portable.Tests
             
             Func<Task<Food>> result = () => fitbitClient.GetFoodAsync(new DateTime(2014, 9, 27));
 
-            result.ShouldThrow<FitbitException>();
+            result.Should().Throw<FitbitException>();
         }
 
         [Test] [Category("Portable")]

@@ -75,7 +75,7 @@ namespace Fitbit.Portable.Tests
 
             Func<Task<List<Device>>> result = () => fitbitClient.GetDevicesAsync();
 
-            result.ShouldThrow<FitbitException>();
+            result.Should().Throw<FitbitException>();
         }
 
         [Test] [Category("Portable")]

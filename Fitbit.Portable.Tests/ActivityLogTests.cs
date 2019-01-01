@@ -51,7 +51,7 @@ namespace Fitbit.Portable.Tests
 
             Func<Task<ActivityLogsList>> result = () => fitbitClient.GetActivityLogsListAsync(null, new DateTime(2017, 1, 1));
 
-            result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
+            result.Should().Throw<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
 
         [Test]

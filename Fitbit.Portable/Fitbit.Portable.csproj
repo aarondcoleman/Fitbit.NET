@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
     <PackageId>Fitbit.NET</PackageId>
     <Product>Fitbit.NET</Product>
     <Copyright>Copyright © 2018</Copyright>
@@ -15,6 +15,7 @@
     <PackageIconUrl>http://static3.fitbit.com/simple.b-dis-png.h76d53d8e6a0653b38326a825b2b9cf57.pack?items=/images/common/bg_branding_b.png</PackageIconUrl>
     <PackageTags>Fitbit OAuth2 API .NET IoT Wearables</PackageTags>
     <FileVersion>1.0.0.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

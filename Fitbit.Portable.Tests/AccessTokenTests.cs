@@ -4,7 +4,7 @@ using Fitbit.Api.Portable;
 using Fitbit.Api.Portable.OAuth2;
 using FluentAssertions;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
+using AutoFixture;
 
 namespace Fitbit.Portable.Tests
 {

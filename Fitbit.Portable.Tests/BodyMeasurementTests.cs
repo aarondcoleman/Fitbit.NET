@@ -49,7 +49,7 @@ namespace Fitbit.Portable.Tests
 
             Func<Task<BodyMeasurements>> result = () => fitbitClient.GetBodyMeasurementsAsync(new DateTime(2014, 9, 27));
 
-            result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
+            result.Should().Throw<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
 
         [Test] [Category("Portable")]

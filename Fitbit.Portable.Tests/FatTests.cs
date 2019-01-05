@@ -3,11 +3,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using NUnit.Framework;
+using AutoFixture;
+using System.Threading.Tasks;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
-using NUnit.Framework;
-using Ploeh.AutoFixture;
-using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
 {
@@ -16,7 +16,7 @@ namespace Fitbit.Portable.Tests
     {
         public Fixture fixture { get; set; }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             fixture = new Fixture();

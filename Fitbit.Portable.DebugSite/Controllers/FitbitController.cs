@@ -72,7 +72,7 @@ namespace SampleWebMVC.Controllers
         {
             var fitbitClient = GetFitbitClient();
 
-            ViewBag.AccessToken = await fitbitClient.RefreshOAuth2Token();
+            ViewBag.AccessToken = await fitbitClient.RefreshOAuth2TokenAsync();
 
             return View("Callback");
         }

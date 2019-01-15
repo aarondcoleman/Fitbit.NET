@@ -736,8 +736,9 @@ namespace Fitbit.Api.Portable
         /// <param name="floors"></param>
         /// <param name="steps"></param>
         /// <param name="activeMinutes"></param>
+        /// <param name="period"></param>
         /// <returns></returns>
-        public async Task<ActivityGoals> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int))
+        public async Task<ActivityGoals> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int), GoalPeriod period = GoalPeriod.Daily)
         {
             // parameter checking; at least one needs to be specified
             if ((caloriesOut == default(int))
@@ -776,14 +777,29 @@ namespace Fitbit.Api.Portable
                 messageContentParameters.Add("activeMinutes", activeMinutes.ToString());
             }
 
-            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities/goals/daily.json");
-
-            //caloriesOut=100&distance=1.0&floors=1&steps=8000&activeMinutes=10
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities/goals/{1}.json", args: new object[] { period.GetStringValue() });
+            
             HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new FormUrlEncodedContent(messageContentParameters));
             await HandleResponse(response);
             string responseBody = await response.Content.ReadAsStringAsync();
             var seralizer = new JsonDotNetSerializer { RootProperty = "goals" };
             return seralizer.Deserialize<ActivityGoals>(responseBody);
+        }
+
+        /// <summary>
+        /// Get the Activity Goals for the current logged in user; individual goals, multiple or all can be specified in one call.</summary>
+        /// <param name="period"></param>
+        /// <returns></returns>
+        public async Task<ActivityGoals> GetGoalsAsync(GoalPeriod period)
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/goals/{1}.json", args: new object[] { period });
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+
+            await HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer();
+            return seralizer.GetActivityGoals(responseBody);
         }
 
         /// <summary>

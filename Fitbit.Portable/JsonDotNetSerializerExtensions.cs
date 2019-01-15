@@ -84,25 +84,6 @@ namespace Fitbit.Api.Portable
             return friends.Children().Select(serializer.Deserialize<UserProfile>).ToList();           
         }
 
-
-        /// <summary>
-        /// GetActivityGoals has to do some custom manipulation with the returned representation
-        /// </summary>
-        /// <param name="serializer"></param>
-        /// <param name="activityGoalsJson"></param>
-        /// <returns></returns>
-        internal static ActivityGoals GetActivityGoals(this JsonDotNetSerializer serializer, string activityGoalsJson)
-        {
-            if (string.IsNullOrWhiteSpace(activityGoalsJson))
-            {
-                throw new ArgumentNullException(nameof(activityGoalsJson), "activityGoalsJson can not be empty, null or whitespace");
-            }
-
-            JToken goals = JToken.Parse(activityGoalsJson)["goals"];
-            return serializer.Deserialize<ActivityGoals>(goals);
-        }
-
-
         /// <summary>
         /// GetTimeSeriesDataList has to do some custom manipulation with the returned representation
         /// </summary>

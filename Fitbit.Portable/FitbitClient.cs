@@ -798,8 +798,8 @@ namespace Fitbit.Api.Portable
             await HandleResponse(response);
 
             string responseBody = await response.Content.ReadAsStringAsync();
-            var seralizer = new JsonDotNetSerializer();
-            return seralizer.GetActivityGoals(responseBody);
+            var seralizer = new JsonDotNetSerializer { RootProperty = "goals" };
+            return seralizer.Deserialize<ActivityGoals>(responseBody);
         }
 
         /// <summary>

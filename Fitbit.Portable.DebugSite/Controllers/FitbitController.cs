@@ -36,7 +36,7 @@ namespace SampleWebMVC.Controllers
             //Provide the App Credentials. You get those by registering your app at dev.fitbit.com
             //Configure Fitbit authenticaiton request to perform a callback to this constructor's Callback method
             var authenticator = new OAuth2Helper(appCredentials, Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback");
-            string[] scopes = new string[] {"profile"};
+            string[] scopes = new string[] {"profile", "activity", "weight", "heartrate"};
             
             string authUrl = authenticator.GenerateAuthUrl(scopes, null);
 
@@ -209,6 +209,29 @@ namespace SampleWebMVC.Controllers
         }
 
          */
+
+        [HttpGet()]
+        public async Task<ActionResult> ActivityGoals()
+        {
+            FitbitClient client = GetFitbitClient();
+
+            var response = await client.GetGoalsAsync(GoalPeriod.Daily);
+
+            return View(response);
+
+        }
+
+        [HttpPost()]
+        public async Task<ActionResult> ActivityGoals(ActivityGoals goals)
+        {
+            FitbitClient client = GetFitbitClient();
+
+            var response = await client.SetGoalsAsync(goals.CaloriesOut, (decimal)goals.Distance, (goals.Floors.HasValue ? goals.Floors.Value : default(int)), 
+                goals.Steps, (goals.ActiveMinutes.HasValue ? goals.ActiveMinutes.Value : default(int)), period: GoalPeriod.Daily);
+
+            return View(response);
+
+        }
 
         /// <summary>
         /// HttpClient and hence FitbitClient are designed to be long-lived for the duration of the session. This method ensures only one client is created for the duration of the session.

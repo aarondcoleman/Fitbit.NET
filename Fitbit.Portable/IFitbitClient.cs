@@ -31,6 +31,8 @@ namespace Fitbit.Api.Portable
         Task<Fat> GetFatAsync(DateTime startDate, DateTime? endDate = null);
         Task<Weight> GetWeightAsync(DateTime startDate, DateRangePeriod period);
         Task<Weight> GetWeightAsync(DateTime startDate, DateTime? endDate = null);
+        Task<WeightGoal> GetWeightGoalsAsync();
+        Task<WeightGoal> SetWeightGoalAsync(DateTime startDate, double startWeight, double weight);
         Task<ActivityGoals> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int));
         Task<WaterData> GetWaterAsync(DateTime date);
         Task<WaterLog> LogWaterAsync(DateTime date, WaterLog log);

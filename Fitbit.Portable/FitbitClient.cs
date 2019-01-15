@@ -792,7 +792,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<ActivityGoals> GetGoalsAsync(GoalPeriod period)
         {
-            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/goals/{1}.json", args: new object[] { period });
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/goals/{1}.json", args: new object[] { period.GetStringValue() });
             HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
 
             await HandleResponse(response);

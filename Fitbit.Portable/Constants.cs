@@ -11,7 +11,15 @@
 
         public class Headers
         {
-            public const string XFitbitSubscriberId = "X-Fitbit-Subscriber-Id";   
+            public const string XFitbitSubscriberId = "X-Fitbit-Subscriber-Id";
+            public const string AcceptLanguage = "Accept-Language";
+        }
+
+        public class UnitSystem
+        {
+            public const string US = "en_US";
+            public const string UK = "en_UK";
+            public const string Metric = "en_METRIC"; //Any value besides "en_US" and "en_UK" will be considered METRIC
         }
 
         public class Formatting

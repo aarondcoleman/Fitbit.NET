@@ -149,12 +149,18 @@ namespace Fitbit.Api.Portable
                 this.HttpClient = new HttpClient();
 
             ConfigureAuthorizationHeader();
+            ConfigureAcceptLanguageHeader();
         }
 
         private void ConfigureAuthorizationHeader()
         {
             AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", AccessToken.Token);
             HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
+        }
+
+        private void ConfigureAcceptLanguageHeader()
+        {
+            HttpClient.DefaultRequestHeaders.Add(Constants.Headers.AcceptLanguage, Constants.UnitSystem.US);
         }
 
         public async Task<OAuth2AccessToken> RefreshOAuth2TokenAsync()
@@ -727,6 +733,47 @@ namespace Fitbit.Api.Portable
             string responseBody = await response.Content.ReadAsStringAsync();
             var seralizer = new JsonDotNetSerializer();
             return seralizer.GetWeight(responseBody);
+        }
+
+        /// <summary>
+        /// Get Weight goal for the current logged in user.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WeightGoal> GetWeightGoalsAsync()
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/goal.json");
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer { RootProperty = "goal" };
+            return seralizer.Deserialize<WeightGoal>(responseBody);
+        }
+
+        /// <summary>
+        /// Set the Weight Goal for the current logged in user.</summary>
+        /// <param name="startDate"></param>
+        /// <param name="startWeight"></param>
+        /// <param name="weight"></param>
+        /// <returns></returns>
+        public async Task<WeightGoal> SetWeightGoalAsync(DateTime startDate, double startWeight, double weight)
+        {
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/body/log/weight/goal.json");
+
+            var messageContentParameters = new Dictionary<string, string>
+            {
+                { "startDate", startDate.ToString("yyyy-MM-dd") },
+                { "startWeight", startWeight.ToString() },
+                { "weight", weight.ToString() }
+            };
+
+            HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new FormUrlEncodedContent(messageContentParameters));
+            await HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer { RootProperty = "goal" };
+            return seralizer.Deserialize<WeightGoal>(responseBody);
         }
 
         /// <summary>

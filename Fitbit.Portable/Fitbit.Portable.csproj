@@ -69,6 +69,7 @@
     <Compile Include="Models\BodyMeasurements.cs" />
     <Compile Include="Models\CaloriesOutStats.cs" />
     <Compile Include="Models\DatasetInterval.cs" />
+    <Compile Include="Models\GoalPeriod.cs" />
     <Compile Include="Models\DateRangePeriod.cs" />
     <Compile Include="Models\Deep.cs" />
     <Compile Include="Models\Device.cs" />

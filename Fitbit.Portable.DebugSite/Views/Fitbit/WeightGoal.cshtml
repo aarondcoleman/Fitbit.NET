@@ -1,0 +1,23 @@
+﻿@model Fitbit.Models.WeightGoal
+
+@{
+    ViewBag.Title = "Weight Goal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Weight Goal</h2>
+
+
+<div class="spaced-div">
+    <h3>Current Weight Goal</h3>
+    @Html.DisplayForModel()
+</div>
+
+<div class="spaced-div">
+    <h3>Update Weight Goals</h3>
+    @using (Html.BeginForm("WeightGoal", "Fitbit"))
+    {
+        @Html.EditorForModel()
+        <button type="submit">Update</button>
+    }
+</div>

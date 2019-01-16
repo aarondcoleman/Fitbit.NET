@@ -10,6 +10,8 @@ namespace Fitbit.Models
 
         public double Weight { get; set; }
 
+        public double WeightThreshold { get; set; }
 
+        public string GoalType { get; set; }
     }
 }

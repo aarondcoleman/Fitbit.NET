@@ -101,6 +101,7 @@
     <Compile Include="FoodTests.cs" />
     <Compile Include="FriendsTests.cs" />
     <Compile Include="GetSubscriptionTests.cs" />
+    <Compile Include="WeightGoalTests.cs" />
     <Compile Include="GoalsTests.cs" />
     <Compile Include="HeartRateTests.cs" />
     <Compile Include="Helper.cs" />
@@ -195,6 +196,9 @@
     <None Include="SampleData\ActivitiesStats.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SampleData\WeightGoals.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SampleData\ActivityGoals.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -216,6 +220,9 @@
     <None Include="SampleData\ApiSubscriptionNotification.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="SampleData\GetWeightGoal.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="SampleData\GetActivities.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

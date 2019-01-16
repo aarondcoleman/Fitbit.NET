@@ -238,6 +238,7 @@
     <Content Include="Views\Fitbit\LastWeekSteps.cshtml" />
     <Content Include="Views\Fitbit\Callback.cshtml" />
     <Content Include="Views\Fitbit\TestToken.cshtml" />
+    <Content Include="Views\Fitbit\ActivityGoals.cshtml" />
     <Content Include="Views\Fitbit\WeightGoal.cshtml" />
   </ItemGroup>
   <ItemGroup>

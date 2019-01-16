@@ -244,6 +244,9 @@
     <None Include="SampleData\GetHeartRateIntradayTimeSeries1.1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SampleData\GetGoals.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SampleData\GetSleepRange.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

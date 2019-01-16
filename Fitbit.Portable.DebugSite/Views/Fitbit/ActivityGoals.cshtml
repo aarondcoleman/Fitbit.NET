@@ -1,0 +1,23 @@
+﻿@model Fitbit.Models.ActivityGoals
+
+@{
+    ViewBag.Title = "Activity Goals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Activity Goals</h2>
+
+
+<div class="spaced-div">
+    <h3>Current Daily Goals</h3>
+    @Html.DisplayForModel()
+</div>
+
+<div class="spaced-div">
+    <h3>Update Daily Goals</h3>
+    @using (Html.BeginForm("ActivityGoals", "Fitbit"))
+    {
+        @Html.EditorForModel()
+        <button type="submit">Update</button>
+    }
+</div>

@@ -84,10 +84,6 @@ namespace Fitbit.Api.Portable
             return friends.Children().Select(serializer.Deserialize<UserProfile>).ToList();           
         }
 
-
-
-
-
         /// <summary>
         /// GetTimeSeriesDataList has to do some custom manipulation with the returned representation
         /// </summary>

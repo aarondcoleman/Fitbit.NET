@@ -6,6 +6,7 @@ using Fitbit.Api.Portable;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using System.Threading.Tasks;
+using Fitbit.Models;
 
 namespace Fitbit.Portable.Tests
 {
@@ -86,6 +87,31 @@ namespace Fitbit.Portable.Tests
             var response = await fitbitClient.SetGoalsAsync(2000, 8.5M, 20, 10000, 50);
 
             Assert.IsNotNull(response);
+        }
+
+        [Test]
+        [Category("Portable")]
+        public async Task GetGoalsAsync()
+        {
+            string content = SampleDataHelper.GetContent("GetGoals.json");
+
+            var responseMessage = new Func<HttpResponseMessage>(() => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content) });
+
+            var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
+            {
+                Assert.AreEqual(HttpMethod.Get, message.Method);
+                Assert.AreEqual("https://api.fitbit.com/1/user/-/activities/goals/weekly.json", message.RequestUri.AbsoluteUri);
+            });
+
+            var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
+
+            var response = await fitbitClient.GetGoalsAsync(GoalPeriod.Weekly);
+
+            Assert.AreEqual(300, response.ActiveMinutes);
+            Assert.AreEqual(3000, response.CaloriesOut);
+            Assert.AreEqual(8.05, response.Distance);
+            Assert.AreEqual(100, response.Floors);
+            Assert.AreEqual(10000, response.Steps);
         }
 
         public FitbitClient SetupFitbitClient(string expectedBody)

@@ -53,6 +53,8 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual("2019-01-01", response.StartDate.ToString("yyyy-MM-dd"));
             Assert.AreEqual(500, response.StartWeight);
             Assert.AreEqual(100, response.Weight);
+            Assert.AreEqual("LOSE", response.GoalType);
+            Assert.AreEqual(0.11, response.WeightThreshold);
         }
 
 

@@ -1,0 +1,9 @@
+﻿{
+  "goal": {
+    "goalType": "LOSE",
+    "startDate": "2019-01-01",
+    "startWeight": 500,
+    "weight": 200,
+    "weightThreshold": 0.11
+  }
+}

@@ -10,7 +10,7 @@ namespace SampleWebMVCOAuth2.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction("Authorize", "Fitbit");
+            return View();
         }
 
         public ActionResult About()

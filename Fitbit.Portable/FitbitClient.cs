@@ -730,6 +730,47 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Get Weight goal for the current logged in user.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WeightGoal> GetWeightGoalsAsync()
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/body/log/weight/goal.json");
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer { RootProperty = "goal" };
+            return seralizer.Deserialize<WeightGoal>(responseBody);
+        }
+
+        /// <summary>
+        /// Set the Weight Goal for the current logged in user.</summary>
+        /// <param name="startDate"></param>
+        /// <param name="startWeight"></param>
+        /// <param name="weight"></param>
+        /// <returns></returns>
+        public async Task<WeightGoal> SetWeightGoalAsync(DateTime startDate, double startWeight, double weight)
+        {
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/body/log/weight/goal.json");
+
+            var messageContentParameters = new Dictionary<string, string>
+            {
+                { "startDate", startDate.ToString("yyyy-MM-dd") },
+                { "startWeight", startWeight.ToString() },
+                { "weight", weight.ToString() }
+            };
+
+            HttpResponseMessage response = await HttpClient.PostAsync(apiCall, new FormUrlEncodedContent(messageContentParameters));
+            await HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer { RootProperty = "goal" };
+            return seralizer.Deserialize<WeightGoal>(responseBody);
+        }
+
+        /// <summary>
         /// Set the Goals for the current logged in user; individual goals, multiple or all can be specified in one call.</summary>
         /// <param name="caloriesOut"></param>
         /// <param name="distance"></param>

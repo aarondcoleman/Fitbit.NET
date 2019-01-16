@@ -11,7 +11,7 @@
 
         public class Headers
         {
-            public const string XFitbitSubscriberId = "X-Fitbit-Subscriber-Id";   
+            public const string XFitbitSubscriberId = "X-Fitbit-Subscriber-Id";
         }
 
         public class Formatting

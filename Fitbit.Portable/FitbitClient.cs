@@ -149,18 +149,12 @@ namespace Fitbit.Api.Portable
                 this.HttpClient = new HttpClient();
 
             ConfigureAuthorizationHeader();
-            ConfigureAcceptLanguageHeader();
         }
 
         private void ConfigureAuthorizationHeader()
         {
             AuthenticationHeaderValue authenticationHeaderValue = new AuthenticationHeaderValue("Bearer", AccessToken.Token);
             HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
-        }
-
-        private void ConfigureAcceptLanguageHeader()
-        {
-            HttpClient.DefaultRequestHeaders.Add(Constants.Headers.AcceptLanguage, Constants.UnitSystem.US);
         }
 
         public async Task<OAuth2AccessToken> RefreshOAuth2TokenAsync()

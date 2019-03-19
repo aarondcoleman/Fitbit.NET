@@ -36,7 +36,7 @@ namespace SampleWebMVC.Controllers
             //Provide the App Credentials. You get those by registering your app at dev.fitbit.com
             //Configure Fitbit authenticaiton request to perform a callback to this constructor's Callback method
             var authenticator = new OAuth2Helper(appCredentials, Request.Url.GetLeftPart(UriPartial.Authority) + "/Fitbit/Callback");
-            string[] scopes = new string[] {"profile", "weight", "activity"};
+            string[] scopes = new string[] {"profile", "weight", "activity", "sleep"};
             
             string authUrl = authenticator.GenerateAuthUrl(scopes, null);
 
@@ -249,6 +249,16 @@ namespace SampleWebMVC.Controllers
             FitbitClient client = GetFitbitClient();
 
             var response = await client.SetWeightGoalAsync(weightGoal.StartDate, weightGoal.StartWeight, weightGoal.Weight);
+
+            return View(response);
+        }
+
+        [HttpGet()]
+        public async Task<ActionResult> SleepGoal()
+        {
+            FitbitClient client = GetFitbitClient();
+
+            var response = await client.GetSleepGoalAsync();
 
             return View(response);
         }

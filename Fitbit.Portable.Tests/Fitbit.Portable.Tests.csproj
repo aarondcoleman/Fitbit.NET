@@ -101,6 +101,7 @@
     <Compile Include="FoodTests.cs" />
     <Compile Include="FriendsTests.cs" />
     <Compile Include="GetSubscriptionTests.cs" />
+    <Compile Include="SleepGoalTests.cs" />
     <Compile Include="WeightGoalTests.cs" />
     <Compile Include="GoalsTests.cs" />
     <Compile Include="HeartRateTests.cs" />
@@ -196,6 +197,9 @@
     <None Include="SampleData\ActivitiesStats.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="SampleData\GetSleepGoal.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="SampleData\WeightGoals.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

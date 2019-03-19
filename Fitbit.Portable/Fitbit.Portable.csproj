@@ -107,6 +107,7 @@
     <Compile Include="Models\RequestToken.cs" />
     <Compile Include="Models\ResourceOwnerType.cs" />
     <Compile Include="Models\Restless.cs" />
+    <Compile Include="Models\SleepGoal.cs" />
     <Compile Include="Models\Sleep.cs" />
     <Compile Include="Models\SleepData.cs" />
     <Compile Include="Models\SleepDateRange.cs" />

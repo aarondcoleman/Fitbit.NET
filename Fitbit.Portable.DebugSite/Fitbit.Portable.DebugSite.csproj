@@ -240,6 +240,7 @@
     <Content Include="Views\Fitbit\TestToken.cshtml" />
     <Content Include="Views\Fitbit\ActivityGoals.cshtml" />
     <Content Include="Views\Fitbit\WeightGoal.cshtml" />
+    <Content Include="Views\Fitbit\SleepGoal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

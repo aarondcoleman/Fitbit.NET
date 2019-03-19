@@ -844,6 +844,22 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
+        /// Get current sleep goal for the current logged in user.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<SleepGoal> GetSleepGoalAsync()
+        {
+            string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/sleep/goal.json");
+
+            HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+            await HandleResponse(response);
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var seralizer = new JsonDotNetSerializer { RootProperty = "goal" };
+            return seralizer.Deserialize<SleepGoal>(responseBody);
+        }
+
+        /// <summary>
         /// Gets the water date for the specified date - https://wiki.fitbit.com/display/API/API-Get-Water
         /// </summary>
         /// <remarks>

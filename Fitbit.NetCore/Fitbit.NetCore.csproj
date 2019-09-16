@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
@@ -17,6 +17,8 @@
     <PackageIconUrl>http://static3.fitbit.com/simple.b-dis-png.h76d53d8e6a0653b38326a825b2b9cf57.pack?items=%2Fimages%2Fcommon%2Fbg_branding_b.png</PackageIconUrl>
     <PackageTags>Fitbit OAuth2 API .NET IoT Wearables</PackageTags>
     <PackageOutputPath>..\NuGet</PackageOutputPath>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>FitbitNetCore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

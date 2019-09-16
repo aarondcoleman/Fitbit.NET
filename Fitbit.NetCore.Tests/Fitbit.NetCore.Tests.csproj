@@ -85,26 +85,29 @@
     <Compile Include="..\Fitbit.Portable.Tests\**\*.cs" Exclude="..\Fitbit.Portable.Tests\**\FitbitResponseTests.cs">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
-
     <!-- Add the sample data files-->
     <None Include="..\Fitbit.Portable.Tests\**\*.xml">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-
     <None Include="..\Fitbit.Portable.Tests\**\*.json">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <!-- When testing, we want to use the .NET Standard 1.3 asset and not the 4.5 one -->
   <PropertyGroup>
     <ReferringTargetFrameworkForProjectReferences>netstandard1.3</ReferringTargetFrameworkForProjectReferences>
   </PropertyGroup>
-  
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>FitbitNetCore.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="FitbitNetCore.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

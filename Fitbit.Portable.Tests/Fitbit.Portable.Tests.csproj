@@ -87,6 +87,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AccessTokenTests.cs" />
+    <Compile Include="ActivitiesListTests.cs" />
     <Compile Include="ActivitiesStatsTests.cs" />
     <Compile Include="ApiErrorTests.cs" />
     <Compile Include="BloodPressureTests.cs" />
@@ -187,6 +188,9 @@
     <Content Include="SampleData\GetDevices-Single.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="SampleData\ActivitiesList.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SampleData\AccessToken.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

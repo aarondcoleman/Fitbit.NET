@@ -161,14 +161,41 @@ namespace Fitbit.Api.Portable
             AccessToken = await TokenManager.RefreshTokenAsync(this);
             return AccessToken;
         }
-        
-        /// <summary>
-        /// Requests the activity details of the encoded user id or if none supplied the current logged in user for the specified date
-        /// </summary>
-        /// <param name="activityDate"></param>
-        /// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
-        /// <returns>FitbitResponse of <see cref="ActivitySummary"/></returns>
-        public async Task<Activity> GetDayActivityAsync(DateTime activityDate, string encodedUserId = null)
+
+		/// <summary>
+		/// Requests the activities list of the encoded user id or if none supplied the current logged in user from before or after a certain date with pagination
+		/// </summary>
+		/// <param name="dateTime">The boundary date for the request</param>
+		/// <param name="dateType">Select whether the boundary is before the selected date or after the selected date</param>
+		/// <param name="sort"></param>
+		/// <param name="limit"></param>
+		/// <param name="offset"></param>
+		/// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+		/// <returns>FitbitResponse of <see cref="ActivitiesList"/></returns>
+		public async Task<ActivitiesList> GetActivitiesListAsync(DateTime dateTime, DateTypeEnum dateType, SortEnum sort, int limit = 20, int offset = 0, string encodedUserId = default(string))
+		{
+			string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/list.json?sort={1}&offset={2}&limit={3}&{4}={5}",
+				encodedUserId,
+				sort == SortEnum.Asc ? "asc" : "desc",
+				offset,
+				limit,
+				dateType == DateTypeEnum.AfterDate ? "afterDate" : "beforeDate",
+				dateTime.ToFitbitFormat());
+
+			HttpResponseMessage response = await HttpClient.GetAsync(apiCall);
+			await HandleResponse(response);
+			string responseBody = await response.Content.ReadAsStringAsync();
+			var serializer = new JsonDotNetSerializer();
+			return serializer.Deserialize<ActivitiesList>(responseBody);
+		}
+
+		/// <summary>
+		/// Requests the activity details of the encoded user id or if none supplied the current logged in user for the specified date
+		/// </summary>
+		/// <param name="activityDate"></param>
+		/// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
+		/// <returns>FitbitResponse of <see cref="ActivitySummary"/></returns>
+		public async Task<Activity> GetDayActivityAsync(DateTime activityDate, string encodedUserId = null)
         {
             string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/date/{1}.json", encodedUserId, activityDate.ToFitbitFormat());
 

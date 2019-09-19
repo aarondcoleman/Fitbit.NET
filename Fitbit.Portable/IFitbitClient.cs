@@ -8,7 +8,8 @@ namespace Fitbit.Api.Portable
 {
     public interface IFitbitClient
     {
-        Task<Activity> GetDayActivityAsync(DateTime activityDate, string encodedUserId = default(string));
+	    Task<ActivitiesList> GetActivitiesListAsync(DateTime dateTime, DateTypeEnum dateType, SortEnum sort, int limit = 20, int offset = 0, string encodedUserId = default(string));
+		Task<Activity> GetDayActivityAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<ActivitySummary> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<ActivitiesStats> GetActivitiesStatsAsync(string encodedUserId = default(string));
         Task<SleepData> GetSleepAsync(DateTime sleepDate);

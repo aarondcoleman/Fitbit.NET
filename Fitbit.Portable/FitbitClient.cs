@@ -176,7 +176,7 @@ namespace Fitbit.Api.Portable
 		{
 			string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/list.json?sort={1}&offset={2}&limit={3}&{4}={5}",
 				encodedUserId,
-				sort,
+				sort == SortEnum.Asc ? "asc" : "desc",
 				offset,
 				limit,
 				dateType == DateTypeEnum.AfterDate ? "afterDate" : "beforeDate",

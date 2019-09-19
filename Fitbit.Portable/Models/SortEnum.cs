@@ -9,6 +9,5 @@ namespace Fitbit.Api.Portable.Models
     {
         Asc,
         Dsc
-
     }
 }

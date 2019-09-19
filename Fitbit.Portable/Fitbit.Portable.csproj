@@ -44,9 +44,12 @@
     <Compile Include="Interceptors\FitbitHttpErrorHandler.cs" />
     <Compile Include="Models\ActivitiesStats.cs" />
     <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivityDetail.cs" />
     <Compile Include="Models\ActivityDistance.cs" />
     <Compile Include="Models\ActivityGoals.cs" />
+    <Compile Include="Models\ActivityLevel.cs" />
     <Compile Include="Models\ActivityLog.cs" />
+    <Compile Include="Models\ActivitiesList.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
     <Compile Include="Models\APICollectionType.cs" />
     <Compile Include="Models\ApiError.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Models\BodyMeasurements.cs" />
     <Compile Include="Models\CaloriesOutStats.cs" />
     <Compile Include="Models\DateRangePeriod.cs" />
+    <Compile Include="Models\DateTypeEnum.cs" />
     <Compile Include="Models\Deep.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\DeviceType.cs" />
@@ -91,6 +95,7 @@
     <Compile Include="Models\LifetimeTotals.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\LoggedFood.cs" />
+    <Compile Include="Models\ManualValuesSpecified.cs" />
     <Compile Include="Models\MinuteData.cs" />
     <Compile Include="Models\NutritionalValues.cs" />
     <Compile Include="Models\Rem.cs" />

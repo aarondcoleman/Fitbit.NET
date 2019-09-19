@@ -33,7 +33,7 @@ namespace Fitbit.Portable.Tests
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
 
-            var response = await fitbitClient.GetActivityListAsync(DateTime.Now.AddYears(-1), DateTypeEnum.BeforeDate, SortEnum.Asc);
+            var response = await fitbitClient.GetActivitiesListAsync(DateTime.Now.AddYears(-1), DateTypeEnum.BeforeDate, SortEnum.Asc);
 
             ValidateActivitiesList(response);
         }

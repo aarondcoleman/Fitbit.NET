@@ -163,7 +163,7 @@ namespace Fitbit.Api.Portable
         }
 
 		/// <summary>
-		/// Requests the activity list of the encoded user id or if none supplied the current logged in user from before or after a certain date with pagination
+		/// Requests the activities list of the encoded user id or if none supplied the current logged in user from before or after a certain date with pagination
 		/// </summary>
 		/// <param name="dateTime">The boundary date for the request</param>
 		/// <param name="dateType">Select whether the boundary is before the selected date or after the selected date</param>
@@ -172,7 +172,7 @@ namespace Fitbit.Api.Portable
 		/// <param name="offset"></param>
 		/// <param name="encodedUserId">encoded user id, can be null for current logged in user</param>
 		/// <returns>FitbitResponse of <see cref="ActivitiesList"/></returns>
-		public async Task<ActivitiesList> GetActivityListAsync(DateTime dateTime, DateTypeEnum dateType, SortEnum sort, int limit = 20, int offset = 0, string encodedUserId = default(string))
+		public async Task<ActivitiesList> GetActivitiesListAsync(DateTime dateTime, DateTypeEnum dateType, SortEnum sort, int limit = 20, int offset = 0, string encodedUserId = default(string))
 		{
 			string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/list.json?sort={1}&offset={2}&limit={3}&{4}={5}",
 				encodedUserId,

@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+    <AssetTargetFallback>$(AssetTargetFallback);net461</AssetTargetFallback>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Add all the tests except the FitbitReponseTests which are not used -->
+    <Compile Include="..\Fitbit.Portable.Tests\**\*.cs" Exclude="..\Fitbit.Portable.Tests\**\FitbitResponseTests.cs;..\Fitbit.Portable.Tests\**\AssemblyInfo.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+
+    <!-- Add the sample data files-->
+    <None Include="..\Fitbit.Portable.Tests\**\*.xml">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+    <None Include="..\Fitbit.Portable.Tests\**\*.json">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- When testing, we want to use the .NET Standard 1.3 asset and not the 4.5 one -->
+  <PropertyGroup>
+    <ReferringTargetFrameworkForProjectReferences>netstandard1.3</ReferringTargetFrameworkForProjectReferences>
+    <AssemblyName>Fitbit.NetCore.Tests</AssemblyName>
+    <RootNamespace>Fitbit.NetCore.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="3.50.3" />
+    <PackageReference Include="FluentAssertions" Version="4.19.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170425-07" />
+    <PackageReference Include="Moq" Version="4.7.99" />
+    <PackageReference Include="NUnit" Version="3.7.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fitbit.NetCore\Fitbit.NetCore.csproj" />
+  </ItemGroup>
+</Project>

@@ -79,7 +79,7 @@ namespace Fitbit.Portable.Tests
 
             Func<Task<SleepData>> result = () => fitbitClient.GetSleepAsync(new DateTime(2014, 11, 11));
 
-            result.ShouldThrow<FitbitException>();
+            result.Should().Throw<FitbitException>();
         }
 
         [Test]

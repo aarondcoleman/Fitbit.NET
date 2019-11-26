@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using Fitbit.Api.Portable;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using System.Threading.Tasks;
 using Fitbit.Models;
 

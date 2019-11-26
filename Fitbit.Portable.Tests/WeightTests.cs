@@ -6,7 +6,7 @@ using System.Threading;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests

@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using Fitbit.Api.Portable;
 using Fitbit.Api.Portable.Interceptors;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Kernel;
+using AutoFixture;
+using AutoFixture.Kernel;
 
 namespace Fitbit.Portable.Tests.Interceptors
 {

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Fitbit.NET</id>
-    <version>2.1.0$buildNumber$-RC2-Dev</version>
+    <version>2.3.0$buildNumber$-RC2-Dev</version>
     <title>Fitbit.NET</title>
     <authors>Fitbit.Net contributors Team -- @WestDiscGolf, @aarondcoleman, @mxa0079</authors>
     <owners></owners>
@@ -13,23 +13,17 @@
     <description>Fitbit API client for .NET</description>
     <summary>Authenticates with the Fitbit API using OAuth to allow .NET project to make structured calls for a user's data.</summary>
     <releaseNotes>
-      2.0.0 Adds:
-      *Support for OAuth 2.0
-      *Support for async
-      *Request/Response transparent interception through IFitbitInterceptor
+      With 2.3.0 Fitbit.NET now targets .NET Standard 2.0
     </releaseNotes>
-    <copyright>Copyright 2016</copyright>
-    <tags>Fitbit OAuth API</tags>
+    <copyright>Copyright 2019</copyright>
+    <tags>Fitbit OAuth2 API</tags>
     <dependencies>
-      <dependency id="Microsoft.Bcl.Build" version="1.0.14" />
-	  <dependency id="Microsoft.Bcl" version="1.1.9" />
-	  <dependency id="Microsoft.Bcl.Async" version="1.0.168" />
-	  <dependency id="Microsoft.Net.Http" version="2.2.22" />
-	  <dependency id="Newtonsoft.Json" version="8.0.2" />
+      <dependency id="NETStandard.Library" version="2.0.3" />
+      <dependency id="Newtonsoft.Json" version="12.0.3" />
     </dependencies>
   </metadata>
   <files>
-    <file src="$buildOutputPath$\Fitbit.Portable.dll" target="lib\net451" exclude="" />
-    <file src="$buildOutputPath$\Fitbit.Portable.pdb" target="lib\net451" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.Portable.dll" target="lib\netstandard2.0" exclude="" />
+    <file src="$buildOutputPath$\Fitbit.Portable.pdb" target="lib\netstandard2.0" exclude="" />
   </files>
 </package>

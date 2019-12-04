@@ -78,7 +78,7 @@ namespace Fitbit.Portable.Tests
 
             Func<Task<List<UserProfile>>> result = () => fitbitClient.GetFriendsAsync();
 
-            result.ShouldThrow<FitbitException>();
+            result.Should().Throw<FitbitException>();
         }
 
         [Test]

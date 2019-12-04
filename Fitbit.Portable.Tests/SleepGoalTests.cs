@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests

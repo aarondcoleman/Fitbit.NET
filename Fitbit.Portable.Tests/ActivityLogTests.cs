@@ -51,7 +51,7 @@ namespace Fitbit.Portable.Tests
 
             Func<Task<ActivityLogsList>> result = () => fitbitClient.GetActivityLogsListAsync(null, new DateTime(2017, 1, 1));
 
-            result.ShouldThrow<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
+            result.Should().Throw<FitbitRequestException>().Which.ApiErrors.Count.Should().Be(1);
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace Fitbit.Portable.Tests
             zone4.Minutes.Should().Be(0);
             zone4.Name.Should().Be("Peak");
 
-            stat.LastModified.Should().Be(new DateTime(2017, 01, 01, 5, 3, 50));
+            stat.LastModified.Should().Be(new DateTime(2017, 01, 01, 5, 3, 50, DateTimeKind.Utc));
             stat.LogId.Should().Be(5390522508);
             stat.LogType.Should().Be("auto_detected");
 
@@ -160,8 +160,8 @@ namespace Fitbit.Portable.Tests
             stat.ManualValuesSpecified.Steps.Should().Be(false);
 
             stat.OriginalDuration.Should().Be(2764000);
-            stat.OriginalStartTime.Should().Be(new DateTime(2017, 1, 1, 4, 14, 06));
-            stat.StartTime.Should().Be(new DateTime(2017, 1, 1, 4, 14, 06));
+            stat.OriginalStartTime.Should().Be(new DateTime(2017, 1, 1, 4, 14, 06, DateTimeKind.Utc));
+            stat.StartTime.Should().Be(new DateTime(2017, 1, 1, 4, 14, 06, DateTimeKind.Utc));
             stat.Steps.Should().Be(5138);
             stat.TcxLink.Should().Be("https://api.fitbit.com/1/user/-/activities/5390522508.tcx");
         }

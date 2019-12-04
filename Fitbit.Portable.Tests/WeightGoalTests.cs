@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using Fitbit.Api.Portable;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using System.Threading.Tasks;
 
 namespace Fitbit.Portable.Tests
@@ -25,7 +25,7 @@ namespace Fitbit.Portable.Tests
         public async Task SetWeightGoalAsync()
         {
             var date = new DateTime(2019, 1, 1);
-            var fitbitClient = SetupFitbitClient($"{date}, 500, 200");
+            var fitbitClient = SetupFitbitClient($"startDate={date.ToString("yyyy-MM-dd")}&startWeight=500&weight=200");
 
             var response = await fitbitClient.SetWeightGoalAsync(date, 500, 200);
            

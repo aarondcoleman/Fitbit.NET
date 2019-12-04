@@ -52,7 +52,7 @@ namespace Fitbit.Portable.Tests
 
             Func<Task<HeartActivitiesTimeSeries>> result = () => fitbitClient.GetHeartRateTimeSeries(DateTime.MinValue, DateRangePeriod.OneDay);
 
-            result.ShouldThrow<FitbitException>().Which.ApiErrors.Count.Should().Be(1);
+            result.Should().Throw<FitbitException>().Which.ApiErrors.Count.Should().Be(1);
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace Fitbit.Portable.Tests
 
             Func<Task<HeartActivitiesIntraday>> result = () => fitbitClient.GetHeartRateIntraday(DateTime.MinValue, HeartRateResolution.fifteenMinute);
 
-            result.ShouldThrow<FitbitException>().Which.ApiErrors.Count.Should().Be(1);
+            result.Should().Throw<FitbitException>().Which.ApiErrors.Count.Should().Be(1);
         }
 
         [Test]

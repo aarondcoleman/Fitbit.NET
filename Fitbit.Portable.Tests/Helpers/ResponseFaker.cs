@@ -17,7 +17,7 @@ namespace Fitbit.Portable.Tests.Helpers
         public ResponseFaker(string content, HttpStatusCode code = HttpStatusCode.OK)
         {
             var c = new StringContent(content);
-            this.fakeResponse = new HttpResponseMessage(code) { Content = c };
+            fakeResponse = new HttpResponseMessage(code) { Content = c };
         }
 
         public ResponseFaker(HttpResponseMessage fakeResponse = null)

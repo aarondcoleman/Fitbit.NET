@@ -18,15 +18,13 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(errorJson))
             {
-                throw new ArgumentNullException(nameof(errorJson), "errorJson can not be empty, null or whitespace");
+                throw new ArgumentNullException(nameof(errorJson), $"{nameof(errorJson)} can not be empty, null or whitespace");
             }
 
             serializer.RootProperty = "errors";
             return serializer.Deserialize<List<ApiError>>(errorJson);
         }
-
-
-
+        
         /// <summary>
         /// GetFat has to doe some custom manipulation with the returned representation
         /// </summary>
@@ -37,7 +35,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(fatJson))
             {
-                throw new ArgumentNullException(nameof(fatJson), "fatJson can not be empty, null or whitespace");
+                throw new ArgumentNullException(nameof(fatJson), $"{nameof(fatJson)} can not be empty, null or whitespace");
             }
 
             var fatlogs = JToken.Parse(fatJson)["fat"];
@@ -56,7 +54,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(weightJson))
             {
-                throw new ArgumentNullException(nameof(weightJson), "weightJson can not be empty, null or whitespace");
+                throw new ArgumentNullException(nameof(weightJson), $"{nameof(weightJson)} can not be empty, null or whitespace");
             }
 
             var weightlogs = JToken.Parse(weightJson)["weight"];
@@ -75,7 +73,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(friendsJson))
             {
-                throw new ArgumentNullException(nameof(friendsJson), "friendsJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(friendsJson), $"{nameof(friendsJson)} can not be empty, null or whitespace.");
             }
 
             serializer.RootProperty = "user";
@@ -83,21 +81,18 @@ namespace Fitbit.Api.Portable
             return friends.Children().Select(serializer.Deserialize<UserProfile>).ToList();           
         }
 
-
-
-
-
         /// <summary>
         /// GetTimeSeriesDataList has to do some custom manipulation with the returned representation
         /// </summary>
         /// <param name="serializer"></param>
-        /// <param name="timeSeriesDataJson"></param>
+        /// <param name="date"></param>
+        /// <param name="heartRateIntradayJson"></param>
         /// <returns></returns>
         internal static HeartActivitiesIntraday GetHeartRateIntraday(this JsonDotNetSerializer serializer, DateTime date, string heartRateIntradayJson)
         {
             if (string.IsNullOrWhiteSpace(heartRateIntradayJson))
             {
-                throw new ArgumentNullException("heartRateIntradayJson", "heartRateIntradayJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(heartRateIntradayJson), $"{nameof(heartRateIntradayJson)} can not be empty, null or whitespace.");
             }
 
             var activitiesHeartIntraday = JToken.Parse(heartRateIntradayJson)["activities-heart-intraday"];
@@ -108,7 +103,7 @@ namespace Fitbit.Api.Portable
                 Dataset = (from item in dataset
                            select new DatasetInterval
                            {
-                               Time = DateTime.Parse(date.ToString("yyyy-MM-dd") + " " + item["time"].ToString()), //here, maybe pass in the date so we have a full object of date and time
+                               Time = DateTime.Parse(date.ToString("yyyy-MM-dd") + " " + item["time"]), //here, maybe pass in the date so we have a full object of date and time
                                Value = int.Parse(item["value"].ToString())
                            }).ToList(),
                 DatasetInterval = Convert.ToInt32(activitiesHeartIntraday["datasetInterval"]),
@@ -118,13 +113,12 @@ namespace Fitbit.Api.Portable
 
             return result;
         }
-
-
+        
         internal static HeartActivitiesTimeSeries GetHeartActivitiesTimeSeries(this JsonDotNetSerializer serializer, string heartActivitiesTimeSeries)
         {
             if (string.IsNullOrWhiteSpace(heartActivitiesTimeSeries))
             {
-                throw new ArgumentNullException("heartActivitiesTimeSeries", "heartActivitiesTimeSeries can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(heartActivitiesTimeSeries), $"{nameof(heartActivitiesTimeSeries)} can not be empty, null or whitespace.");
             }
 
             var activitiesHeartIntraday = JToken.Parse(heartActivitiesTimeSeries)["activities-heart"];
@@ -143,10 +137,7 @@ namespace Fitbit.Api.Portable
 
             return result;
         }
-
-
-
-
+        
         /// <summary>
         /// GetTimeSeriesDataList has to do some custom manipulation with the returned representation
         /// </summary>
@@ -157,7 +148,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(timeSeriesDataJson))
             {
-                throw new ArgumentNullException(nameof(timeSeriesDataJson), "timeSeriesDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(timeSeriesDataJson), $"{nameof(timeSeriesDataJson)} can not be empty, null or whitespace.");
             }
 
             var dataPoints = JToken.Parse(timeSeriesDataJson)[serializer.RootProperty];
@@ -184,7 +175,7 @@ namespace Fitbit.Api.Portable
         {
             if (string.IsNullOrWhiteSpace(timeSeriesDataJson))
             {
-                throw new ArgumentNullException(nameof(timeSeriesDataJson), "timeSeriesDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(timeSeriesDataJson), $"{nameof(timeSeriesDataJson)} can not be empty, null or whitespace.");
             }
 
             var dataPoints = JToken.Parse(timeSeriesDataJson)[serializer.RootProperty];
@@ -200,15 +191,12 @@ namespace Fitbit.Api.Portable
 
             return result;
         }
-
-
-
-
+        
         internal static IntradayData GetIntradayTimeSeriesData(this JsonDotNetSerializer serializer, string intradayDataJson)
         {
             if (string.IsNullOrWhiteSpace(intradayDataJson))
             {
-                throw new ArgumentNullException(nameof(intradayDataJson), "intradayDataJson can not be empty, null or whitespace.");
+                throw new ArgumentNullException(nameof(intradayDataJson), $"{nameof(intradayDataJson)} can not be empty, null or whitespace.");
             }
 
             var parsedJToken = JToken.Parse(intradayDataJson);
@@ -219,7 +207,7 @@ namespace Fitbit.Api.Portable
             {
                 date = parsedJToken.SelectToken(serializer.RootProperty).First["dateTime"];
             }
-            catch (NullReferenceException nullReferenceException)
+            catch (NullReferenceException)
             {
                 //We'll nullref here if we're querying a future date - Fitbit omits dateTime in that case.
                 //Return null since this error will, in all cases, coincide with an otherwise empty (all zeros) object
@@ -234,8 +222,8 @@ namespace Fitbit.Api.Portable
                     {
                         Time = DateTime.Parse(date + " " + item["time"]),
                         Value = item["value"].ToObject<double>().ToString("R"), //converting to double is required to keep precision
-                        METs = item["mets"] != null ? item["mets"].ToString() : null,
-                        Level = item["level"] != null ? item["level"].ToString() : null
+                        METs = item["mets"]?.ToString(),
+                        Level = item["level"]?.ToString()
                     }).ToList()
             };
 

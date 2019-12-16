@@ -1,16 +1,12 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
 using Fitbit.Api.Portable.Models;
 using Fitbit.Models;
+using System.Collections.Generic;
 
 namespace Fitbit.Api.Portable
-{
-    using System;
-    using System.Collections.Generic;
-
+{  
     public class SubscriptionManager
     {
         public List<UpdatedResource> ProcessUpdateReponseBody(string bodyContent)

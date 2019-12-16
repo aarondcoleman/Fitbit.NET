@@ -23,7 +23,7 @@ namespace Fitbit.Portable.Tests
             var subId = "320";
             var expectedUrl = @"https://api.fitbit.com/1/user/-/apiSubscriptions/"+subId+".json";
 
-            var sut = this.SetupFitbitClient(null, expectedUrl, HttpMethod.Delete);
+            var sut = SetupFitbitClient(null, expectedUrl, HttpMethod.Delete);
 
             //Any unexpected behavior will throw exception or fail on request checks (in handler)
             //Pass APICollectionType.user to delete subscriptions for all data sets
@@ -39,7 +39,7 @@ namespace Fitbit.Portable.Tests
             var collection = APICollectionType.activities;
             var expectedUrl = @"https://api.fitbit.com/1/user/-/"+ collection +@"/apiSubscriptions/" + subId + ".json";
 
-            var sut = this.SetupFitbitClient(null, expectedUrl, HttpMethod.Delete);
+            var sut = SetupFitbitClient(null, expectedUrl, HttpMethod.Delete);
 
             //Any unexpected behavior will throw exception or fail on request checks (in handler)
             sut.DeleteSubscriptionAsync(collection, subId).Wait();

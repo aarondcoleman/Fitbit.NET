@@ -84,7 +84,7 @@ namespace Fitbit.Api.Portable
         /// <param name="credentials">Obtain this information from your developer dashboard. App credentials are required to perform token refresh</param>
         /// <param name="accessToken">Authenticate with Fitbit API using OAuth2. Authenticator2 class is a helper for this process</param>
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
-        public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, List<IFitbitInterceptor> interceptors, bool enableOAuth2TokenRefresh = true, ITokenManager tokenManager = null)
+        public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, List<IFitbitInterceptor> interceptors, bool enableOAuth2TokenRefresh = true, ITokenManager tokenManager = null, HttpClient httpClient = null)
         {
             this.AppCredentials = credentials;
             this.AccessToken = accessToken;
@@ -98,7 +98,7 @@ namespace Fitbit.Api.Portable
 
             //Auto refresh should always be the last handle to be registered.
             ConfigureAutoRefresh(enableOAuth2TokenRefresh);
-            CreateHttpClientForOAuth2();
+            CreateHttpClientForOAuth2(httpClient);
         }
 
 
@@ -140,14 +140,25 @@ namespace Fitbit.Api.Portable
             TokenManager = tokenManager ?? new DefaultTokenManager();
         }
 
-        private void CreateHttpClientForOAuth2()
-        {
-            var pipeline = this.CreatePipeline(FitbitInterceptorPipeline);
-            if (pipeline != null)
-                this.HttpClient = new HttpClient(pipeline);
-            else
-                this.HttpClient = new HttpClient();
+        private void CreateHttpClientForOAuth2(HttpClient httpClient = null)
+        {           
+            if (httpClient != null)
+            {
+                this.HttpClient = httpClient;
+            }
+            else 
+            {
+                HttpMessageHandler pipeline = this.CreatePipeline(FitbitInterceptorPipeline);
 
+                if (pipeline != null)
+                {
+                    this.HttpClient = new HttpClient(pipeline);
+                }
+                else
+                {
+                    this.HttpClient = new HttpClient();
+                }
+            }
             ConfigureAuthorizationHeader();
         }
 

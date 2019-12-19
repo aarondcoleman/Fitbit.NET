@@ -168,6 +168,33 @@ namespace Fitbit.Api.Portable
             HttpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
         }
 
+        /// <summary>
+        /// Creates the processing request pipeline using the message handlers, not specific to an instance of FitbitClient
+        /// </summary>
+        /// <param name="interceptors"></param>
+        /// <returns>HttpMessageHandler</returns>
+        public static HttpMessageHandler CreatePipeline(List<IFitbitInterceptor> interceptors)
+        {
+            if(interceptors.Count > 0)
+            {
+                // inspired by the code referenced from the web api source; this creates the russian doll effect
+                FitbitHttpMessageHandler innerHandler = new FitbitHttpMessageHandler(null, interceptors[0]);
+
+                var innerHandlers = interceptors.GetRange(1, interceptors.Count - 1);
+
+                foreach (var handler in innerHandlers)
+                {
+                    var messageHandler = new FitbitHttpMessageHandler(null, handler);
+                    messageHandler.InnerHandler = innerHandler;
+                    innerHandler = messageHandler;
+                }
+
+                return innerHandler;
+            }
+            
+            return null;
+        }
+
         public async Task<OAuth2AccessToken> RefreshOAuth2TokenAsync()
         {
             AccessToken = await TokenManager.RefreshTokenAsync(this);

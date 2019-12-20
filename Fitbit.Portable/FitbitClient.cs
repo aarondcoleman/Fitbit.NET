@@ -37,6 +37,11 @@ namespace Fitbit.Api.Portable
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
         public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, IFitbitInterceptor interceptor = null, bool enableOAuth2TokenRefresh = true, ITokenManager tokenManager = null, HttpClient httpClient = null)
         {
+            if (accessToken == null)
+            {
+                throw new ArgumentNullException("accessToken");
+            }
+
             this.AppCredentials = credentials;
             this.AccessToken = accessToken;
 
@@ -72,6 +77,11 @@ namespace Fitbit.Api.Portable
         /// <param name="interceptor">An interface that enables sniffing all outgoing and incoming http requests from FitbitClient</param>
         public FitbitClient(FitbitAppCredentials credentials, OAuth2AccessToken accessToken, List<IFitbitInterceptor> interceptors, bool enableOAuth2TokenRefresh = true, ITokenManager tokenManager = null, HttpClient httpClient = null)
         {
+            if (accessToken == null)
+            {
+                throw new ArgumentNullException("accessToken");
+            }
+
             this.AppCredentials = credentials;
             this.AccessToken = accessToken;
 

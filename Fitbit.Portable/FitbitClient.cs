@@ -685,7 +685,10 @@ namespace Fitbit.Api.Portable
                 }
                 finally
                 {
-                    response.Dispose();
+                    if (response != null)
+                    {
+                        response.Dispose();
+                    }
                 }
             }
         }

@@ -185,15 +185,14 @@ namespace Fitbit.Api.Portable
 
         private HttpRequestMessage GetRequest(HttpMethod method, string requestUri)
         {
-            using (HttpRequestMessage request = new HttpRequestMessage(method, requestUri))
-            {
-                if (!string.IsNullOrEmpty(AccessToken?.Token))
-                {
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken.Token);
-                }
+            HttpRequestMessage request = new HttpRequestMessage(method, requestUri);
 
-                return request;
+            if (!string.IsNullOrEmpty(AccessToken?.Token))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken.Token);
             }
+
+            return request;
         }
 
         /// <summary>

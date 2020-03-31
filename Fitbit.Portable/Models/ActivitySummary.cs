@@ -14,6 +14,7 @@ namespace Fitbit.Models
         public float? Elevation { get; set; }
         public float FairlyActiveMinutes { get; set; }
         public int? Floors { get; set; }
+        public List<HeartRateZone> CustomHeartRateZones { get; set; }
         public List<HeartRateZone> HeartRateZones { get; set; }
         public float LightlyActiveMinutes { get; set; }
         public float MarginalCalories { get; set; }

@@ -11,26 +11,26 @@ namespace Fitbit.Models
         //1d, 7d, 30d, 1w, 1m, 3m, 6m, 1y, max
 
         [StringValue("1d")]
-        OneDay,
+        OneDay = 0,
         [StringValue("7d")]
-        SevenDays,
+        SevenDays = 1,
         [StringValue("30d")]
-        ThirtyDays,
+        ThirtyDays = 2,
         [StringValue("1w")]
-        OneWeek,
+        OneWeek = 3,
         [StringValue("1m")]
-        OneMonth,
+        OneMonth = 4,
         [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         [StringValue("3m")]
-        ThreeMonths,
+        ThreeMonths = 5,
         [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         [StringValue("6m")]
-        SixMonths,
+        SixMonths = 6,
         [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         [StringValue("1y")]
-        OneYear,
+        OneYear = 7,
         [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         [StringValue("max")]
-        Max
+        Max = 8
     }
 }

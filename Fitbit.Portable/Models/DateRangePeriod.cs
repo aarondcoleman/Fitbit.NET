@@ -1,4 +1,5 @@
 ﻿using Fitbit.Api.Portable;
+using System;
 
 namespace Fitbit.Models
 {
@@ -19,12 +20,16 @@ namespace Fitbit.Models
         OneWeek,
         [StringValue("1m")]
         OneMonth,
+        [Obsolete("No longer supported by Fitbit.")]
         [StringValue("3m")]
         ThreeMonths,
+        [Obsolete("No longer supported by Fitbit.")]
         [StringValue("6m")]
         SixMonths,
+        [Obsolete("No longer supported by Fitbit.")]
         [StringValue("1y")]
         OneYear,
+        [Obsolete("No longer supported by Fitbit.")]
         [StringValue("max")]
         Max
     }

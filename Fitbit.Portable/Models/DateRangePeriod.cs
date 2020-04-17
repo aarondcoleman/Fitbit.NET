@@ -20,16 +20,16 @@ namespace Fitbit.Models
         OneWeek,
         [StringValue("1m")]
         OneMonth,
-        [Obsolete("No longer supported by Fitbit.")]
+        [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         [StringValue("3m")]
         ThreeMonths,
-        [Obsolete("No longer supported by Fitbit.")]
+        [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         [StringValue("6m")]
         SixMonths,
-        [Obsolete("No longer supported by Fitbit.")]
+        [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         [StringValue("1y")]
         OneYear,
-        [Obsolete("No longer supported by Fitbit.")]
+        [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         [StringValue("max")]
         Max
     }

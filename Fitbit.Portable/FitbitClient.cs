@@ -1336,7 +1336,7 @@ namespace Fitbit.Api.Portable
         /// <param name="dateRangePeriod">The range for which data will be returned.</param>
         /// <param name="userId">The encoded ID of the user.</param>
         /// <returns></returns>
-        [Obsolete("Version 1.1 of the endpoint is no longer supported by Fitbit.")]
+        [Obsolete("Version 1.1 of the endpoint is no longer supported by Fitbit.  See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = "-")
         {
             string url = "1.1/user/{0}/" + "activities/heart/date/" + date.ToString("yyyy-MM-dd") + "/"+dateRangePeriod.GetStringValue() + ".json";
@@ -1392,7 +1392,7 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        [Obsolete]
+        [Obsolete("No longer supported by Fitbit. See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         private string GetHeartRateResolutionDeprecated(HeartRateResolution res)
         {
             switch (res)
@@ -1415,7 +1415,7 @@ namespace Fitbit.Api.Portable
         /// <param name="resolution">Number of data points to include.</param>
         /// <param name="encodedUserId">Optional: Encoded id of the user.</param>
         /// <returns></returns>
-        [Obsolete("Version 1.1 of the endpoint is no longer supported by Fitbit.")]
+        [Obsolete("Version 1.1 of the endpoint is no longer supported by Fitbit.  See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         public async Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution, string encodedUserId = "-")
         {
             string resolutionText = GetHeartRateResolutionDeprecated(resolution);

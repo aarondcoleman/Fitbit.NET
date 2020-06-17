@@ -23,7 +23,7 @@ namespace Fitbit.Api.Portable
         Task<TimeSeriesDataList> GetTimeSeriesAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = default(string));
         Task<TimeSeriesDataListInt> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime startDate, DateTime endDate, string encodedUserId = default(string));
         Task<TimeSeriesDataListInt> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime endDate, DateRangePeriod period, string encodedUserId = default(string));
-        Task<IntradayData> GetIntraDayTimeSeriesAsync(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan);
+        Task<IntradayData> GetIntraDayTimeSeriesAsync(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan, bool useUtcTimeZone = false);
         Task<Food> GetFoodAsync(DateTime date, string encodedUserId = default(string));
         Task<BloodPressureData> GetBloodPressureAsync(DateTime date, string encodedUserId = default(string));
         Task<BodyMeasurements> GetBodyMeasurementsAsync(DateTime date, string encodedUserId = default(string));

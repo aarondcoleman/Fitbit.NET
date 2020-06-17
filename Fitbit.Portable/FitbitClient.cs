@@ -616,7 +616,7 @@ namespace Fitbit.Api.Portable
             }
         }
 
-        public async Task<IntradayData> GetIntraDayTimeSeriesAsync(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan)
+        public async Task<IntradayData> GetIntraDayTimeSeriesAsync(IntradayResourceType timeSeriesResourceType, DateTime dayAndStartTime, TimeSpan intraDayTimeSpan, bool useUtcTimeZone = false)
         {
             string apiCall;
 
@@ -634,6 +634,11 @@ namespace Fitbit.Api.Portable
                 apiCall = string.Format("/1/user/-{0}/date/{1}/1d.json",
                     timeSeriesResourceType.GetStringValue(),
                     dayAndStartTime.ToFitbitFormat());
+            }
+
+            if (useUtcTimeZone)
+            {
+                apiCall += "?timezone=utc";
             }
 
             apiCall = FitbitClientHelperExtensions.ToFullUrl(apiCall);

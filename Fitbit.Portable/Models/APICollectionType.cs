@@ -9,6 +9,7 @@
         body,
         user,
         weight,
-        deleteUser
+        deleteUser,
+        userRevokedAccess
     }
 }

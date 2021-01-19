@@ -211,7 +211,7 @@ namespace Fitbit.Api.Portable
 
                 foreach (var handler in innerHandlers)
                 {
-                    var messageHandler = new FitbitHttpMessageHandler(null, handler);
+                    var messageHandler = new FitbitHttpMessageHandler(null, handler, maxConnectionsPerServer);
                     messageHandler.InnerHandler = innerHandler;
                     innerHandler = messageHandler;
                 }

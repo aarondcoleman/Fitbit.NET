@@ -18,13 +18,21 @@
 
         public FitbitClient FitbitClient { get; private set; }
 
-        public FitbitHttpMessageHandler(FitbitClient fitbitClient, IFitbitInterceptor interceptor)
+        public FitbitHttpMessageHandler(FitbitClient fitbitClient, IFitbitInterceptor interceptor, int? maxConnectionsPerServer = null)
         {
             this.FitbitClient = fitbitClient;
             this.interceptor = interceptor;
             responseHandler = ResponseHandler;
+
             //Define the inner must handler. Otherwise exception is thrown.
-            InnerHandler = new HttpClientHandler();
+            var innerHandler = new HttpClientHandler();
+
+            if (maxConnectionsPerServer != null)
+            {
+                innerHandler.MaxConnectionsPerServer = maxConnectionsPerServer.Value;
+            }
+
+            InnerHandler = innerHandler;
         }
 
         //Handle the following method with EXTREME care as it will be invoked on ALL requests made by FitbitClient

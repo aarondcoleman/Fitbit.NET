@@ -1,0 +1,21 @@
+{
+  "br": [
+    {
+      "value": {
+        "deepSleepSummary": {
+          "breathingRate": 16.8
+        },
+        "remSleepSummary": {
+          "breathingRate": -1
+        },
+        "fullSleepSummary": {
+          "breathingRate": 17.8
+        },
+        "lightSleepSummary": {
+          "breathingRate": 16.8
+        }
+      },
+      "dateTime": "2021-10-25"
+    }
+  ]
+}

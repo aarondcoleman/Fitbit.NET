@@ -1445,6 +1445,187 @@ namespace Fitbit.Api.Portable
 
         #endregion
 
+        #region SpO2
+
+        public async Task<List<SpO2SummaryLog>> GetSpO2SummaryAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}.json", args: new object[] { startDate.ToFitbitFormat() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer();
+
+                    if (endDate == null)
+                    {
+                        SpO2SummaryLog singleSpo2Summary = seralizer.Deserialize<SpO2SummaryLog>(responseBody);
+                        return new List<SpO2SummaryLog> { singleSpo2Summary };
+                    }
+                    else
+                    {
+                        return seralizer.Deserialize<List<SpO2SummaryLog>>(responseBody);
+                    }
+                }
+            }
+        }
+
+        public async Task<List<SpO2Intraday>> GetSpO2IntradayAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}/all.json", args: new object[] { startDate.ToFitbitFormat() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}/{2}/all.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer();
+
+                    if (endDate == null)
+                    {
+                        SpO2Intraday singleSpo2Intraday = seralizer.Deserialize<SpO2Intraday>(responseBody);
+                        return new List<SpO2Intraday> { singleSpo2Intraday };
+                    }
+                    else
+                    {
+                        return seralizer.Deserialize<List<SpO2Intraday>>(responseBody);
+                    }    
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region HRV
+
+        public async Task<List<HrvSummaryLog>> GetHRVSummaryAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/hrv/date/{1}.json", args: new object[] { startDate.ToFitbitFormat() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/hrv/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer { RootProperty = "hrv" };
+                    return seralizer.Deserialize<List<HrvSummaryLog>>(responseBody);                   
+                }
+            }
+        }
+
+        public async Task<List<HrvIntraday>> GetHRVIntradayAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/hrv/date/{1}/all.json", args: new object[] { startDate.ToFitbitFormat() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/hrv/date/{1}/{2}/all.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer { RootProperty = "hrv" };
+                    return seralizer.Deserialize<List<HrvIntraday>>(responseBody);
+                }
+            }
+        }
+
+        #endregion
+
+        #region BreathingRate
+
+        public async Task<List<BreathingRateSummary>> GetBreathingRateSummaryAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/br/date/{1}.json", args: new object[] { startDate.ToFitbitFormat() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/br/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer { RootProperty = "br" };
+                    return seralizer.Deserialize<List<BreathingRateSummary>>(responseBody);
+                }
+            }
+        }
+
+        public async Task<List<BreathingRateIntraday>> GetBreathingRateIntradayAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/br/date/{1}/all.json", args: new object[] { startDate.ToFitbitFormat() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/br/date/{1}/{2}/all.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer { RootProperty = "br" };
+                    return seralizer.Deserialize<List<BreathingRateIntraday>>(responseBody);
+                }
+            }
+        }
+
+        #endregion
+
         private string FormatKey(APICollectionType apiCollectionType, string format)
         {
             string strValue = apiCollectionType == APICollectionType.user ? string.Empty : apiCollectionType.ToString();

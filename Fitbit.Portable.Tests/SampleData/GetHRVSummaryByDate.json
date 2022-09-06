@@ -1,0 +1,11 @@
+{
+  "hrv": [
+    {
+      "value": {
+        "dailyRmssd": 34.938,
+        "deepRmssd": 31.567
+      },
+      "dateTime": "2021-10-25"
+    }
+  ]
+}

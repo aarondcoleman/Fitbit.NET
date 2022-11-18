@@ -993,6 +993,11 @@ namespace Fitbit.Api.Portable
                 messageContentParameters.Add("activeMinutes", activeMinutes.ToString());
             }
 
+            if (activeZoneMinutes != default(int))
+            {
+                messageContentParameters.Add("activeZoneMinutes", activeZoneMinutes.ToString());
+            }
+
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities/goals/{1}.json", args: new object[] { period.GetStringValue() });
             using (HttpRequestMessage request = GetRequest(HttpMethod.Post, apiCall))
             {

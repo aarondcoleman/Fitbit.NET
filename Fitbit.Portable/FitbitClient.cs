@@ -954,7 +954,7 @@ namespace Fitbit.Api.Portable
         /// <param name="activeMinutes"></param>
         /// <param name="period"></param>
         /// <returns></returns>
-        public async Task<ActivityGoals> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int), GoalPeriod period = GoalPeriod.Daily)
+        public async Task<ActivityGoals> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int), int activeZoneMinutes = default(int), GoalPeriod period = GoalPeriod.Daily)
         {
             // parameter checking; at least one needs to be specified
             if ((caloriesOut == default(int))

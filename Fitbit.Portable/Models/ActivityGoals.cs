@@ -13,5 +13,7 @@ namespace Fitbit.Models
         public int? Floors { get; set; }
 
         public int? ActiveMinutes { get; set; }
+
+        public int? ActiveZoneMinutes { get; set; }
     }
 }

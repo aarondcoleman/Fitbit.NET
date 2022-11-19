@@ -946,63 +946,18 @@ namespace Fitbit.Api.Portable
         }
 
         /// <summary>
-        /// Set the Goals for the current logged in user; individual goals, multiple or all can be specified in one call.</summary>
-        /// <param name="caloriesOut"></param>
-        /// <param name="distance"></param>
-        /// <param name="floors"></param>
-        /// <param name="steps"></param>
-        /// <param name="activeMinutes"></param>
+        /// Set the Goals for the current logged in user; individual goals, multiple or all can be specified in one call.
+        /// NOTE: on 2022-11-18 it was observed that a breaking change occurred. This is reflective of the new Update Activity / Goal. 
+        /// </summary>
+        /// <param name="goalType"></param>
+        /// <param name="value"></param>
         /// <param name="period"></param>
         /// <returns></returns>
-        public async Task<ActivityGoals> SetGoalsAsync(int caloriesOut = default(int), decimal distance = default(decimal), int floors = default(int), int steps = default(int), int activeMinutes = default(int), int activeZoneMinutes = default(int), GoalPeriod period = GoalPeriod.Daily)
+        public async Task<ActivityGoals> SetGoalsAsync(GoalType goalType, Double value, GoalPeriod period = GoalPeriod.Daily)
         {
-            // parameter checking; at least one needs to be specified
-            if ((caloriesOut == default(int))
-                && (distance == default(decimal))
-                && (floors == default(int))
-                && (steps == default(int))
-                && (activeMinutes == default(int)))
-            {
-                throw new ArgumentException("Unable to call SetGoalsAsync without specifying at least one goal parameter to set.");
-            }
-
-            var messageContentParameters = new Dictionary<string, string>();
-
-            if (caloriesOut != default(int))
-            {
-                messageContentParameters.Add("caloriesOut", caloriesOut.ToString());
-            }
-
-            if (distance != default(decimal))
-            {
-                messageContentParameters.Add("distance", distance.ToString());
-            }
-
-            if (floors != default(int))
-            {
-                messageContentParameters.Add("floors", floors.ToString());
-            }
-
-            if (steps != default(int))
-            {
-                messageContentParameters.Add("steps", steps.ToString());
-            }
-
-            if (activeMinutes != default(int))
-            {
-                messageContentParameters.Add("activeMinutes", activeMinutes.ToString());
-            }
-
-            if (activeZoneMinutes != default(int))
-            {
-                messageContentParameters.Add("activeZoneMinutes", activeZoneMinutes.ToString());
-            }
-
-            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities/goals/{1}.json", args: new object[] { period.GetStringValue() });
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities/goals/{1}.json?type={2}&value={3}", args: new object[] { period.GetStringValue(), goalType.GetStringValue(), value});
             using (HttpRequestMessage request = GetRequest(HttpMethod.Post, apiCall))
             {
-                request.Content = new FormUrlEncodedContent(messageContentParameters);
-
                 using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
                 {
                     await HandleResponse(response);

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Fitbit.NET</id>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
     <title>Fitbit.NET</title>
     <authors>Fitbit.Net contributors Team -- @WestDiscGolf, @aarondcoleman, @mxa0079, @joshFitabase</authors>
     <owners></owners>
@@ -13,9 +13,9 @@
     <description>Fitbit API client for .NET</description>
     <summary>.NET client library to make structure calls to Fitbit API using OAuth2 </summary>
     <releaseNotes>
-      2.3 is our full supported version that now targets .NET Standard 2.0. This has been thoroughly tested to be stable, with more endpoints to be added to the master branch of Fitbit.NET going forward.
+      Our full supported version that now targets .NET Standard 2.0. This has been thoroughly tested to be stable, with more endpoints to be added to the master branch of Fitbit.NET going forward.
     </releaseNotes>
-    <copyright>Copyright 2019</copyright>
+    <copyright>Copyright 2022</copyright>
     <tags>Fitbit OAuth2 API .NET IoT Wearables</tags>
     <dependencies>
       <dependency id="NETStandard.Library" version="2.0.3" />

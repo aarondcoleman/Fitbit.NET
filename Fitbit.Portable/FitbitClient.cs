@@ -1648,11 +1648,11 @@ namespace Fitbit.Api.Portable
             string apiCall;
             if (endDate == null)
             {
-                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activites/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
             }
             else
             {
-                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activites/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
             }
 
             using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
@@ -1684,11 +1684,11 @@ namespace Fitbit.Api.Portable
             string apiCall;
             if (endDate == null)
             {
-                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activites/active-zone-minutes/date/{1}/1d/{2}.json", args: new object[] { startDate.ToFitbitFormat(), resolution.GetStringValue() });
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/1d/{2}.json", args: new object[] { startDate.ToFitbitFormat(), resolution.GetStringValue() });
             }
             else
             {
-                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activites/active-zone-minutes/date/{1}/{2}/{3}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat(), resolution.GetStringValue() });
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}/{3}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat(), resolution.GetStringValue() });
             }
 
             using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))

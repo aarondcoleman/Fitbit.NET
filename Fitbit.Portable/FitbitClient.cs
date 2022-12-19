@@ -1641,6 +1641,71 @@ namespace Fitbit.Api.Portable
 
         #endregion
 
+        #region Active Zone Minutes
+
+        public async Task<List<ActiveZoneMinutesSummary>> GetActiveZoneMinutesTimeSeriesAsync(DateTime startDate, DateTime? endDate = null, DateRangePeriod period = DateRangePeriod.OneDay)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer { RootProperty = "activities-active-zone-minutes" };
+                    return seralizer.Deserialize<List<ActiveZoneMinutesSummary>>(responseBody);
+                }
+            }
+        }
+
+        public async Task<List<ActiveZoneMinutesIntraday>> GetActiveZoneMinutesIntradayAsync(DateTime startDate, DateTime? endDate = null, DataResolution resolution = DataResolution.OneMinute)
+        {
+            switch (resolution)
+            {
+                case DataResolution.OneMinute:
+                case DataResolution.FiveMinute:
+                case DataResolution.FifteenMinute:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException("This API endpoint only supports 1min, 5min, 15min resolutions. See https://dev.fitbit.com/build/reference/web-api/intraday/get-azm-intraday-by-interval/");
+            }
+
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/1d/{2}.json", args: new object[] { startDate.ToFitbitFormat(), resolution.GetStringValue() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}/{3}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat(), resolution.GetStringValue() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer { RootProperty = "activities-active-zone-minutes-intraday" };
+                    return seralizer.Deserialize<List<ActiveZoneMinutesIntraday>>(responseBody);
+                }
+            }
+        }
+
+        #endregion
+
         private string FormatKey(APICollectionType apiCollectionType, string format)
         {
             string strValue = apiCollectionType == APICollectionType.user ? string.Empty : apiCollectionType.ToString();

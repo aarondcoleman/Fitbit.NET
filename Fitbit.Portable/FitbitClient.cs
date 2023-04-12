@@ -308,12 +308,12 @@ namespace Fitbit.Api.Portable
             string setDateDirection, setSortDirection;
 
             //decide if date retrieval is before or after
-            setDateDirection = dateDirection.IndexOf("after") != -1 ? DateDirection.After : DateDirection.Before;
+            setDateDirection = dateDirection?.IndexOf("after") != -1 ? DateDirection.After : DateDirection.Before;
 
             //decide if we are sorting asc or dsc
             //suggested in fitbit docs:
             //setSortDirection = setDateDirection == DateDirection.After ? SortDirection.Ascending : SortDirection.Descending;
-            setSortDirection = sortDirection.IndexOf("asc") != -1 ? SortDirection.Ascending : SortDirection.Descending;
+            setSortDirection = sortDirection?.IndexOf("asc") != -1 ? SortDirection.Ascending : SortDirection.Descending;
 
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/ecg/list.json?{1}={2}&sort={3}&limit={4}&offset={5}",
                 encodedUserId, setDateDirection, dateToList.ToFitbitFormat(), setSortDirection, limit, offset);
@@ -332,7 +332,8 @@ namespace Fitbit.Api.Portable
 
                         foreach (var log in data.ECGReadings)
                         {
-                            ECG.AddRange(log.ECGLog);
+                            if (log != null)
+                                ECG.Add(log);
                         }
 
                         if (data.HasMorePages)

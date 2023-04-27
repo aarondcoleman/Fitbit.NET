@@ -11,7 +11,7 @@ namespace Fitbit.Api.Portable
         Task<Activity> GetDayActivityAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<ActivitySummary> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<ActivitiesStats> GetActivitiesStatsAsync(string encodedUserId = default(string));
-        Task<List<ECGLog>> GetECGLogListAsync(DateTime dateToList, string dateDirection, string sortDirection, int limit, int offset, string encodedUserId = default(string));
+        Task<List<ECGLog>> GetECGLogListAsync(DateTime dateToList, string dateDirection, string sortDirection, string encodedUserId = default(string));
         Task<SleepData> GetSleepAsync(DateTime sleepDate);
         Task<SleepLogDateBase> GetSleepDateAsync(DateTime sleepDate, string encodedUserId = default(string));
         Task<SleepDateRangeBase> GetSleepDateRangeAsync(DateTime startDate, DateTime endDate, string encodedUserId = default(string));

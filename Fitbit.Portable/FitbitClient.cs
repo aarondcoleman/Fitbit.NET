@@ -292,27 +292,25 @@ namespace Fitbit.Api.Portable
 
         #region ECG
         /// <summary>
-        /// The Get Sleep Logs List endpoint returns a list of a user's sleep logs (including naps) 
-        /// before or after a given day with offset, limit, and sort order.
+        /// The Get ECG Logs List endpoint returns a list of a user's ECG logs 
+        /// before or after a given day with sort order.
         /// </summary>
-        /// <param name="dateToList">	The date in the format yyyy-MM-ddTHH:mm:ss. Only yyyy-MM-dd is required. Set sort to desc when using beforeDate.</param>
-        /// <param name="decisionDate"></param>
-        /// <param name="sort">The sort order of entries by date. Required. asc for ascending, desc for descending</param>
-        /// <param name="limit">The max of the number of sleep logs returned. Required.</param>
-        /// <param name="encodedUserId"></param>
+        /// <param name="dateToList">Date to begin or end log list. Required.</param>
+        /// <param name="dateDirection">Specify entries before or after the given date. (before/after)</param>
+        /// <param name="sortDirection">The sort order of entries by date. (asc/desc)</param>
+        /// <param name="encodedUserId">Encoded user id, can be null for current logged in user.</param>
         /// <returns></returns>
-        public async Task<List<ECGLog>> GetECGLogListAsync(DateTime dateToList, string dateDirection, string sortDirection, int limit, int offset = 0, string encodedUserId = null)
+        public async Task<List<ECGLog>> GetECGLogListAsync(DateTime dateToList, string dateDirection, string sortDirection, string encodedUserId = null)
         {
             List<ECGLog> ECG = new List<ECGLog>();
             bool getMorePages = true;
             string setDateDirection, setSortDirection;
 
-            //decide if date retrieval is before or after
+            int limit = 10;
+            int offset = 0;
+
             setDateDirection = dateDirection?.IndexOf("after") != -1 ? DateDirection.After : DateDirection.Before;
 
-            //decide if we are sorting asc or dsc
-            //suggested in fitbit docs:
-            //setSortDirection = setDateDirection == DateDirection.After ? SortDirection.Ascending : SortDirection.Descending;
             setSortDirection = sortDirection?.IndexOf("asc") != -1 ? SortDirection.Ascending : SortDirection.Descending;
 
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/ecg/list.json?{1}={2}&sort={3}&limit={4}&offset={5}",

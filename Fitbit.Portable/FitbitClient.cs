@@ -293,7 +293,8 @@ namespace Fitbit.Api.Portable
         #region ECG
         /// <summary>
         /// The Get ECG Logs List endpoint returns a list of a user's ECG logs 
-        /// before or after a given day with sort order.
+        /// before or after a given day with sort order.  
+        /// **WARNING** ECG responses can be much larger than other API requests and this method should be used with caution.
         /// </summary>
         /// <param name="dateToList">Date to begin or end log list. Required.</param>
         /// <param name="dateDirection">Specify entries before or after the given date. (before/after)</param>
@@ -336,7 +337,7 @@ namespace Fitbit.Api.Portable
 
                         if (data.HasMorePages)
                         {
-                            apiCall = data.Pagination.Next;
+                            apiCall = Constants.BaseApiUrl + data.Pagination.Next.Substring(1);
                         }
                         else
                         {
@@ -347,6 +348,74 @@ namespace Fitbit.Api.Portable
             }
 
             return ECG;
+        }
+
+        /// <summary>
+        /// The Get ECG Logs List endpoint returns a list of a user's ECG logs 
+        /// within a specified date range, including result limit and sort direction.
+        /// </summary>
+        /// <param name="startDate">Date to begin log list. Required.</param>
+        /// <param name="endDate">Date to end log list. Required.</param>
+        /// <param name="limit">Specify entries before or after the given date. (before/after)</param>
+        /// <param name="sortDirection">The sort order of entries by date. (asc/desc)</param>
+        /// <param name="encodedUserId">Encoded user id, can be null for current logged in user.</param>
+        /// <returns></returns>
+        public async Task<List<ECGLog>> GetECGLogListAsync(DateTime startDate, DateTime endDate, string sortDirection, int limit, string encodedUserId = null)
+        {
+            List<ECGLog> ECG = new List<ECGLog>();
+            bool getMorePages = true;
+            string dateDirection, getSortDirection;
+
+            limit = limit > 0 && limit <= 10 ? limit : 10;
+            int offset = 0;
+            dateDirection = DateDirection.After;
+            getSortDirection = SortDirection.Ascending;
+
+            sortDirection = sortDirection?.IndexOf("asc") != -1 ? SortDirection.Ascending : SortDirection.Descending;
+
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/ecg/list.json?{1}={2}&sort={3}&limit={4}&offset={5}",
+                encodedUserId, dateDirection, startDate.ToFitbitFormat(), getSortDirection, limit, offset);
+
+            while (getMorePages)
+            {
+                using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+                {
+                    using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                    {
+                        await HandleResponse(response);
+
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        var serializer = new JsonDotNetSerializer();
+                        var data = serializer.Deserialize<ECGLogListBase>(responseBody);
+
+                        foreach (var log in data.ECGReadings)
+                        {
+                            if (log != null)
+                                ECG.Add(log);
+                        }
+
+                        if (data.HasMorePages && ECG.LastOrDefault().StartTime < endDate.AddDays(1))
+                        {
+                            apiCall = Constants.BaseApiUrl + data.Pagination.Next.Substring(1);
+                        }
+                        else
+                        {
+                            getMorePages = false;
+                        }
+                    }
+                }
+            }
+
+            foreach (var ecg in ECG.OrderByDescending(x => x.StartTime).ToList())
+            {
+                if (ecg.StartTime > endDate.AddDays(1))
+                {
+                    ECG.Remove(ecg);
+                }
+            }
+
+            return sortDirection == SortDirection.Ascending ?
+                ECG.OrderBy(x => x.StartTime).ToList() : ECG.OrderByDescending(x => x.StartTime).ToList();
         }
         #endregion ECG
 

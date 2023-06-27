@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Fitbit.Api.Portable.Models;
+using Fitbit.Api.Portable.OAuth2;
+using Fitbit.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using Fitbit.Api.Portable.OAuth2;
-using System.Net.Http.Headers;
-using Fitbit.Api.Portable.Models;
-using Fitbit.Models;
-using Newtonsoft.Json;
 
 namespace Fitbit.Api.Portable
 {
@@ -289,6 +289,135 @@ namespace Fitbit.Api.Portable
                 }
             }
         }
+
+        #region ECG
+        /// <summary>
+        /// The Get ECG Logs List endpoint returns a list of a user's ECG logs 
+        /// before or after a given day with sort order.  
+        /// **WARNING** ECG responses can be much larger than other API requests and this method should be used with caution.
+        /// </summary>
+        /// <param name="dateToList">Date to begin or end log list. Required.</param>
+        /// <param name="dateDirection">Specify entries before or after the given date. (before/after)</param>
+        /// <param name="sortDirection">The sort order of entries by date. (asc/desc)</param>
+        /// <param name="encodedUserId">Encoded user id, can be null for current logged in user.</param>
+        /// <returns></returns>
+        public async Task<List<ECGLog>> GetECGLogListAsync(DateTime dateToList, string dateDirection, string sortDirection, string encodedUserId = null)
+        {
+            List<ECGLog> ECG = new List<ECGLog>();
+            bool getMorePages = true;
+            string setDateDirection, setSortDirection;
+
+            int limit = 10;
+            int offset = 0;
+
+            setDateDirection = dateDirection?.IndexOf("after") != -1 ? DateDirection.After : DateDirection.Before;
+
+            setSortDirection = sortDirection?.IndexOf("asc") != -1 ? SortDirection.Ascending : SortDirection.Descending;
+
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/ecg/list.json?{1}={2}&sort={3}&limit={4}&offset={5}",
+                encodedUserId, setDateDirection, dateToList.ToFitbitFormat(), setSortDirection, limit, offset);
+
+            while (getMorePages)
+            {
+                using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+                {
+                    using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                    {
+                        await HandleResponse(response);
+
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        var serializer = new JsonDotNetSerializer();
+                        var data = serializer.Deserialize<ECGLogListBase>(responseBody);
+
+                        foreach (var log in data.ECGReadings)
+                        {
+                            if (log != null)
+                                ECG.Add(log);
+                        }
+
+                        if (data.HasMorePages)
+                        {
+                            apiCall = Constants.BaseApiUrl + data.Pagination.Next.Substring(1);
+                        }
+                        else
+                        {
+                            getMorePages = false;
+                        }
+                    }
+                }
+            }
+
+            return ECG;
+        }
+
+        /// <summary>
+        /// The Get ECG Logs List endpoint returns a list of a user's ECG logs 
+        /// within a specified date range, including result limit and sort direction.
+        /// </summary>
+        /// <param name="startDate">Date to begin log list. Required.</param>
+        /// <param name="endDate">Date to end log list. Required.</param>
+        /// <param name="limit">Specify entries before or after the given date. (before/after)</param>
+        /// <param name="sortDirection">The sort order of entries by date. (asc/desc)</param>
+        /// <param name="encodedUserId">Encoded user id, can be null for current logged in user.</param>
+        /// <returns></returns>
+        public async Task<List<ECGLog>> GetECGLogListAsync(DateTime startDate, DateTime endDate, string sortDirection, int limit, string encodedUserId = null)
+        {
+            List<ECGLog> ECG = new List<ECGLog>();
+            bool getMorePages = true;
+            string dateDirection, getSortDirection;
+
+            limit = limit > 0 && limit <= 10 ? limit : 10;
+            int offset = 0;
+            dateDirection = DateDirection.After;
+            getSortDirection = SortDirection.Ascending;
+
+            sortDirection = sortDirection?.IndexOf("asc") != -1 ? SortDirection.Ascending : SortDirection.Descending;
+
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/ecg/list.json?{1}={2}&sort={3}&limit={4}&offset={5}",
+                encodedUserId, dateDirection, startDate.ToFitbitFormat(), getSortDirection, limit, offset);
+
+            while (getMorePages)
+            {
+                using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+                {
+                    using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                    {
+                        await HandleResponse(response);
+
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        var serializer = new JsonDotNetSerializer();
+                        var data = serializer.Deserialize<ECGLogListBase>(responseBody);
+
+                        foreach (var log in data.ECGReadings)
+                        {
+                            if (log != null)
+                                ECG.Add(log);
+                        }
+
+                        if (data.HasMorePages && ECG.LastOrDefault().StartTime < endDate.AddDays(1))
+                        {
+                            apiCall = Constants.BaseApiUrl + data.Pagination.Next.Substring(1);
+                        }
+                        else
+                        {
+                            getMorePages = false;
+                        }
+                    }
+                }
+            }
+
+            foreach (var ecg in ECG.OrderByDescending(x => x.StartTime).ToList())
+            {
+                if (ecg.StartTime > endDate.AddDays(1))
+                {
+                    ECG.Remove(ecg);
+                }
+            }
+
+            return sortDirection == SortDirection.Ascending ?
+                ECG.OrderBy(x => x.StartTime).ToList() : ECG.OrderByDescending(x => x.StartTime).ToList();
+        }
+        #endregion ECG
 
         #region  Sleep
 
@@ -955,7 +1084,7 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         public async Task<ActivityGoals> SetGoalsAsync(GoalType goalType, Double value, GoalPeriod period = GoalPeriod.Daily)
         {
-            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities/goals/{1}.json?type={2}&value={3}", args: new object[] { period.GetStringValue(), goalType.GetStringValue(), value});
+            var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/activities/goals/{1}.json?type={2}&value={3}", args: new object[] { period.GetStringValue(), goalType.GetStringValue(), value });
             using (HttpRequestMessage request = GetRequest(HttpMethod.Post, apiCall))
             {
                 using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
@@ -1299,7 +1428,7 @@ namespace Fitbit.Api.Portable
         [Obsolete("Version 1.1 of the endpoint is no longer supported by Fitbit.  See https://github.com/aarondcoleman/Fitbit.NET/issues/283")]
         public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeries(DateTime date, DateRangePeriod dateRangePeriod, string userId = "-")
         {
-            string url = "1.1/user/{0}/" + "activities/heart/date/" + date.ToString("yyyy-MM-dd") + "/"+dateRangePeriod.GetStringValue() + ".json";
+            string url = "1.1/user/{0}/" + "activities/heart/date/" + date.ToString("yyyy-MM-dd") + "/" + dateRangePeriod.GetStringValue() + ".json";
             string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, userId);
             return await ProcessHeartRateTimeSeries(apiCall);
         }
@@ -1470,7 +1599,7 @@ namespace Fitbit.Api.Portable
                     else
                     {
                         return seralizer.Deserialize<List<SpO2Intraday>>(responseBody);
-                    }    
+                    }
                 }
             }
         }
@@ -1500,7 +1629,7 @@ namespace Fitbit.Api.Portable
 
                     string responseBody = await response.Content.ReadAsStringAsync();
                     var seralizer = new JsonDotNetSerializer { RootProperty = "hrv" };
-                    return seralizer.Deserialize<List<HrvSummaryLog>>(responseBody);                   
+                    return seralizer.Deserialize<List<HrvSummaryLog>>(responseBody);
                 }
             }
         }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Fitbit.Api.Portable.Models;
+using Fitbit.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Fitbit.Api.Portable.Models;
-using Fitbit.Models;
 
 namespace Fitbit.Api.Portable
 {
@@ -11,10 +11,11 @@ namespace Fitbit.Api.Portable
         Task<Activity> GetDayActivityAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<ActivitySummary> GetDayActivitySummaryAsync(DateTime activityDate, string encodedUserId = default(string));
         Task<ActivitiesStats> GetActivitiesStatsAsync(string encodedUserId = default(string));
+        Task<List<ECGLog>> GetECGLogListAsync(DateTime dateToList, string dateDirection, string sortDirection, string encodedUserId = default(string));
         Task<SleepData> GetSleepAsync(DateTime sleepDate);
         Task<SleepLogDateBase> GetSleepDateAsync(DateTime sleepDate, string encodedUserId = default(string));
         Task<SleepDateRangeBase> GetSleepDateRangeAsync(DateTime startDate, DateTime endDate, string encodedUserId = default(string));
-        Task<SleepLogListBase> GetSleepLogListAsync(DateTime dateToList, SleepEnum decisionDate, SortEnum sort,  int limit, string encodedUserId = default(string));
+        Task<SleepLogListBase> GetSleepLogListAsync(DateTime dateToList, SleepEnum decisionDate, SortEnum sort, int limit, string encodedUserId = default(string));
         Task<SleepLogDateRange> PostLogSleepAsync(string startTime, int duration, DateTime date, string encodedUserId = default(string));
         Task<List<Device>> GetDevicesAsync();
         Task<List<UserProfile>> GetFriendsAsync(string encodedUserId = default(string));

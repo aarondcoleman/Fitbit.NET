@@ -199,6 +199,12 @@
     <None Update="SampleData\GetBreathingRateSummaryByInterval.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Update="SampleData\GetCardioScoreSummaryByDate.json">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="SampleData\GetCardioScoreSummaryByInterval.json">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
     <None Update="SampleData\GetGoals.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

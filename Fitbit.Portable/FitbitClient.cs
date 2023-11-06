@@ -1835,6 +1835,33 @@ namespace Fitbit.Api.Portable
 
         #endregion
 
+        #region Cardio Fitness Score
+        public async Task<List<CardioScoreSummary>> GetCardioScoreSummaryAsync(DateTime startDate, DateTime? endDate = null)
+        {
+            string apiCall;
+            if (endDate == null)
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/cardioscore/date/{1}.json", args: new object[] { startDate.ToFitbitFormat() });
+            }
+            else
+            {
+                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/cardioscore/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+            }
+
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            {
+                using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
+                {
+                    await HandleResponse(response);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var seralizer = new JsonDotNetSerializer { RootProperty = "cardioScore" };
+                    return seralizer.Deserialize<List<CardioScoreSummary>>(responseBody);
+                }
+            }
+        }
+        #endregion
+
         private string FormatKey(APICollectionType apiCollectionType, string format)
         {
             string strValue = apiCollectionType == APICollectionType.user ? string.Empty : apiCollectionType.ToString();

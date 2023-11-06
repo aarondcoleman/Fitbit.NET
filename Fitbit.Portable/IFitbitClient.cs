@@ -48,6 +48,7 @@ namespace Fitbit.Api.Portable
         Task<HeartActivitiesIntraday> GetHeartRateIntraday(DateTime date, HeartRateResolution resolution, string userId = "-");
         Task<ActivityLogsList> GetActivityLogsListAsync(DateTime? beforeDate, DateTime? afterDate, int limit = 20, string encodedUserId = default(string));
         Task<ActivityLogsList> GetActivityLogsListAsync(DateTime date, string encodedUserId = default(string));
+        Task<List<CardioScoreSummary>> GetCardioScoreSummaryAsync(DateTime startDate, DateTime? endDate = null);
 
     }
 }

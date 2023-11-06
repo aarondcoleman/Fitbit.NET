@@ -1,0 +1,16 @@
+﻿{
+  "cardioScore": [
+    {
+      "dateTime": "2023-10-15",
+      "value": {
+        "vo2Max": "42-46"
+      }
+    },
+    {
+      "dateTime": "2023-10-16",
+      "value": {
+        "vo2Max": "41-45"
+      }
+    }
+  ]
+}

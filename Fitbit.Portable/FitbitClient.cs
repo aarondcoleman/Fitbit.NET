@@ -1447,11 +1447,25 @@ namespace Fitbit.Api.Portable
             return await ProcessHeartRateTimeSeries(apiCall);
         }
 
-        #endregion
+		/// <summary>
+		/// Requests the Heart Rate Time Series for a specific time period.
+		/// </summary>
+		/// <param name="startDate">The start date of the period specified.</param>
+		/// <param name="endDate">The range for which data will be returned.</param>
+		/// <param name="userId">The encoded ID of the user.</param>
+		/// <returns></returns>
+		public async Task<HeartActivitiesTimeSeries> GetHeartRateTimeSeriesV1(DateTime startDate, DateTime endDate, string userId = "-")
+		{
+			string url = "1/user/{0}/" + "activities/heart/date/" + startDate.ToFitbitFormat() + "/" + endDate.ToFitbitFormat() + ".json";
+			string apiCall = FitbitClientHelperExtensions.ToFullUrl(url, userId);
+			return await ProcessHeartRateTimeSeries(apiCall);
+		}
 
-        #region HeartRateIntraday
+		#endregion
 
-        private async Task<HeartActivitiesIntraday> ProcessHeartRateIntradayTimeSeries(DateTime date, string url)
+		#region HeartRateIntraday
+
+		private async Task<HeartActivitiesIntraday> ProcessHeartRateIntradayTimeSeries(DateTime date, string url)
         {
             using (HttpRequestMessage request = GetRequest(HttpMethod.Get, url))
             {

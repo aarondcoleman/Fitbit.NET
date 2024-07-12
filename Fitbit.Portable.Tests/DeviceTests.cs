@@ -107,7 +107,8 @@ namespace Fitbit.Portable.Tests
 
             device = result.Last();
             Assert.AreEqual("High", device.Battery);
-            Assert.AreEqual("Aria", device.DeviceVersion);
+			Assert.AreEqual(70, device.BatteryLevel);
+			Assert.AreEqual("Aria", device.DeviceVersion);
             Assert.AreEqual("5656777", device.Id);
             Assert.AreEqual(DateTime.Parse("2014-07-17T13:38:13.000"), device.LastSyncTime);
             Assert.AreEqual("SC1111111111", device.Mac);
@@ -117,7 +118,8 @@ namespace Fitbit.Portable.Tests
         private void ValidateSingleDevice(Device device)
         {
             Assert.AreEqual("High", device.Battery);
-            Assert.AreEqual("Zip", device.DeviceVersion);
+			Assert.AreEqual(65, device.BatteryLevel);
+			Assert.AreEqual("Zip", device.DeviceVersion);
             Assert.AreEqual("5656888", device.Id);
             Assert.AreEqual(DateTime.Parse("2014-07-17T13:38:13.000"), device.LastSyncTime);
             Assert.AreEqual("FE1111111111", device.Mac);

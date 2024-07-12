@@ -16,7 +16,9 @@ namespace Fitbit.Api.Portable.Models
         public int MinutesToFallAsleep { get; set; }
         public string LogType { get; set; }
         public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public int TimeInBed { get; set; }
         public string Type { get; set; }
+        public int InfoCode { get; set; }
     }
 }

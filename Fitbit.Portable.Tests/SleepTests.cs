@@ -153,8 +153,10 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(86, first.MinutesAwake);
             Assert.AreEqual(0, first.MinutesToFallAsleep);
             Assert.AreEqual(new DateTime(2017, 4, 1), first.StartTime);
+            Assert.AreEqual(new DateTime(2017, 4, 1, 8, 0, 0), first.EndTime);
             Assert.AreEqual(586, first.TimeInBed);
             Assert.AreEqual("stages", first.Type);
+            Assert.AreEqual(0, first.InfoCode);
 
             //sleep log levels
             var levels = first.Levels;
@@ -224,8 +226,10 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(86, first.MinutesAwake);
             Assert.AreEqual(0, first.MinutesToFallAsleep);
             Assert.AreEqual(new DateTime(2017, 4, 1), first.StartTime);
+            Assert.AreEqual(new DateTime(2017, 4, 1, 8, 0, 0), first.EndTime);
             Assert.AreEqual(586, first.TimeInBed);
             Assert.AreEqual("stages", first.Type);
+            Assert.AreEqual(0, first.InfoCode);
 
             //sleep log levels
             var levels = first.Levels;

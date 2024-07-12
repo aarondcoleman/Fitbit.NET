@@ -8,6 +8,9 @@ namespace Fitbit.Models
         [JsonProperty("battery")]
         public string Battery { get; set; }
 
+        [JsonProperty("batteryLevel")]
+        public int BatteryLevel { get; set; }
+
         [JsonProperty("id")]
         public string Id { get; set; }
 

@@ -760,7 +760,7 @@ namespace Fitbit.Api.Portable
             }
             else //just get the today data, there was a date specified but the timerange was likely too large or negative
             {
-                apiCall = string.Format("/1/user/-{0}/date/{1}/1d.json",
+                apiCall = string.Format("/1/user/-{0}/date/{1}/1d/1min.json",
                     timeSeriesResourceType.GetStringValue(),
                     dayAndStartTime.ToFitbitFormat());
             }

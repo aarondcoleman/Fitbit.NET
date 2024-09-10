@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
+using System.ComponentModel;
 
 namespace Fitbit.Api.Portable.Models
 {
     public class ActivityLogSource
     {
         [JsonProperty(PropertyName = "id")]
+        [JsonConverter(typeof(StringConverter))]
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "name")]
@@ -19,5 +18,23 @@ namespace Fitbit.Api.Portable.Models
 
         [JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
+    }
+
+    public class StringConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            return reader.Value.ToString();
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

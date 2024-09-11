@@ -27,7 +27,7 @@ namespace Fitbit.Portable.Tests
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 message.Method.Should().Be(HttpMethod.Get);
-                message.RequestUri.AbsoluteUri.Should().Be("https://api.fitbit.com/1/user/-/activities/calories/date/2015-03-20/1d.json");
+                message.RequestUri.AbsoluteUri.Should().Be("https://api.fitbit.com/1/user/-/activities/calories/date/2015-03-20/1d/1min.json");
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
@@ -52,7 +52,7 @@ namespace Fitbit.Portable.Tests
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 message.Method.Should().Be(HttpMethod.Get);
-                message.RequestUri.AbsoluteUri.Should().Be("https://api.fitbit.com/1/user/-/activities/calories/date/2015-03-20/1d.json");
+                message.RequestUri.AbsoluteUri.Should().Be("https://api.fitbit.com/1/user/-/activities/calories/date/2015-03-20/1d/1min.json");
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);
@@ -76,7 +76,7 @@ namespace Fitbit.Portable.Tests
             var verification = new Action<HttpRequestMessage, CancellationToken>((message, token) =>
             {
                 message.Method.Should().Be(HttpMethod.Get);
-                message.RequestUri.AbsoluteUri.Should().Be("https://api.fitbit.com/1/user/-/activities/steps/date/2016-03-08/1d.json");
+                message.RequestUri.AbsoluteUri.Should().Be("https://api.fitbit.com/1/user/-/activities/steps/date/2016-03-08/1d/1min.json");
             });
 
             var fitbitClient = Helper.CreateFitbitClient(responseMessage, verification);

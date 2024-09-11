@@ -205,7 +205,7 @@ namespace Fitbit.Api.Portable
             if (interceptors.Count > 0)
             {
                 // inspired by the code referenced from the web api source; this creates the russian doll effect
-                FitbitHttpMessageHandler innerHandler = new FitbitHttpMessageHandler(null, interceptors[0], maxConnectionsPerServer);
+                FitbitHttpMessageHandler innerHandler = new FitbitHttpMessageHandler(null, interceptors[0], maxConnectionsPerServer, socketsHttpHandler);
 
                 var innerHandlers = interceptors.GetRange(1, interceptors.Count - 1);
 

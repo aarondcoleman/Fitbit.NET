@@ -200,7 +200,7 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="interceptors"></param>
         /// <returns>HttpMessageHandler</returns>
-        public static HttpMessageHandler CreatePipeline(List<IFitbitInterceptor> interceptors, int? maxConnectionsPerServer = null)
+        public static HttpMessageHandler CreatePipeline(List<IFitbitInterceptor> interceptors, int? maxConnectionsPerServer = null, SocketsHttpHandler socketsHttpHandler = null)
         {
             if (interceptors.Count > 0)
             {

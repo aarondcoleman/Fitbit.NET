@@ -8,7 +8,7 @@ namespace Fitbit.Api.Portable.Models
     public class Activities
     {
         [JsonProperty(PropertyName = "activeDuration")]
-        public int ActiveDuration { get; set; }
+        public long ActiveDuration { get; set; }
 
         [JsonProperty(PropertyName = "activityLevel")]
         public List<ActivityLevel> ActivityLevel { get; set; }
@@ -17,7 +17,7 @@ namespace Fitbit.Api.Portable.Models
         public string ActivityName { get; set; }
 
         [JsonProperty(PropertyName = "activityTypeId")]
-        public int ActivityTypeId { get; set; }
+        public long ActivityTypeId { get; set; }
 
         [JsonProperty(PropertyName = "averageHeartRate")]
         public int AverageHeartRate { get; set; }

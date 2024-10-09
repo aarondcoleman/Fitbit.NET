@@ -200,12 +200,12 @@ namespace Fitbit.Api.Portable
         /// </summary>
         /// <param name="interceptors"></param>
         /// <returns>HttpMessageHandler</returns>
-        public static HttpMessageHandler CreatePipeline(List<IFitbitInterceptor> interceptors, int? maxConnectionsPerServer = null)
+        public static HttpMessageHandler CreatePipeline(List<IFitbitInterceptor> interceptors, int? maxConnectionsPerServer = null, SocketsHttpHandler socketsHttpHandler = null)
         {
             if (interceptors.Count > 0)
             {
                 // inspired by the code referenced from the web api source; this creates the russian doll effect
-                FitbitHttpMessageHandler innerHandler = new FitbitHttpMessageHandler(null, interceptors[0], maxConnectionsPerServer);
+                FitbitHttpMessageHandler innerHandler = new FitbitHttpMessageHandler(null, interceptors[0], maxConnectionsPerServer, socketsHttpHandler);
 
                 var innerHandlers = interceptors.GetRange(1, interceptors.Count - 1);
 

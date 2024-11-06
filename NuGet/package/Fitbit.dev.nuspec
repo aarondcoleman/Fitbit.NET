@@ -13,7 +13,7 @@
     <description>Fitbit API client for .NET</description>
     <summary>Authenticates with the Fitbit API using OAuth to allow .NET project to make structured calls for a user's data.</summary>
     <releaseNotes>
-      With 2.4.0 Fitbit.NET now targets .NET Core 6.0
+      With 2.4.0 Fitbit.NET now targets .NET Core 6.0.
     </releaseNotes>
     <copyright>Copyright 2024</copyright>
     <tags>Fitbit OAuth2 API</tags>

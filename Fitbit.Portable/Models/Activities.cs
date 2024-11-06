@@ -34,7 +34,7 @@ namespace Fitbit.Api.Portable.Models
         public string DistanceUnit { get; set; }
 
         [JsonProperty(PropertyName = "duration")]
-        public int Duration { get; set; }
+        public long Duration { get; set; }
 
         [JsonProperty(PropertyName = "elevationGain")]
         public double ElevationGain { get; set; }
@@ -55,7 +55,7 @@ namespace Fitbit.Api.Portable.Models
         public ManualValuesSpecified ManualValuesSpecified { get; set; }
 
         [JsonProperty(PropertyName = "originalDuration")]
-        public int OriginalDuration { get; set; }
+        public long OriginalDuration { get; set; }
 
         [JsonProperty(PropertyName = "originalStartTime")]
         public DateTimeOffset OriginalStartTime { get; set; }

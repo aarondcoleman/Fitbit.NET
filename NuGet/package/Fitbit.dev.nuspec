@@ -18,7 +18,7 @@
     <copyright>Copyright 2024</copyright>
     <tags>Fitbit OAuth2 API</tags>
     <dependencies>
-	  <dependency id="Newtonsoft.Json" version="14.0.3" />
+	  <dependency id="Newtonsoft.Json" version="13.0.3" />
 	  <dependency id="System.Net.Http" version="4.3.4" />
     </dependencies>
   </metadata>

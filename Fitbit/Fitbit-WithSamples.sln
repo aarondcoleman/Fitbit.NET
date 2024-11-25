@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C284DD15-3355-4C6A-9EE0-D0A3BEA4D8A5}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebMVC.Portable", "..\SampleWebMVC.Portable\SampleWebMVC.Portable.csproj", "{59BAB4ED-CF16-4F5F-BA00-620AB7448970}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebMVCOAuth2", "..\SampleWebMVCOAuth2\SampleWebMVCOAuth2.csproj", "{61C8AD29-A128-442E-BF0B-539A990B15C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleConsole", "..\SampleConsole\SampleConsole\SampleConsole.csproj", "{11886EF6-6527-4061-A859-3191F7E3B192}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +60,12 @@ Global
 		{61C8AD29-A128-442E-BF0B-539A990B15C7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61C8AD29-A128-442E-BF0B-539A990B15C7}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{61C8AD29-A128-442E-BF0B-539A990B15C7}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
+		{11886EF6-6527-4061-A859-3191F7E3B192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11886EF6-6527-4061-A859-3191F7E3B192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11886EF6-6527-4061-A859-3191F7E3B192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11886EF6-6527-4061-A859-3191F7E3B192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11886EF6-6527-4061-A859-3191F7E3B192}.TrialRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{11886EF6-6527-4061-A859-3191F7E3B192}.TrialRelease|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

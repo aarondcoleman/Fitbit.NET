@@ -11,19 +11,19 @@
     <iconUrl>http://static3.fitbit.com/simple.b-dis-png.h76d53d8e6a0653b38326a825b2b9cf57.pack?items=%2Fimages%2Fcommon%2Fbg_branding_b.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fitbit API client for .NET</description>
-    <summary>.NET client library to make structure calls to Fitbit API using OAuth2 </summary>
+    <summary>.NET client library to make structured calls to Fitbit API using OAuth2 </summary>
     <releaseNotes>
-      Our full supported version that now targets .NET Standard 2.0. This has been thoroughly tested to be stable, with more endpoints to be added to the master branch of Fitbit.NET going forward.
-    </releaseNotes>
-    <copyright>Copyright 2022</copyright>
+		With 2.4.0 Fitbit.NET now targets .NET Core 6.0
+	</releaseNotes>
+    <copyright>Copyright 2024</copyright>
     <tags>Fitbit OAuth2 API .NET IoT Wearables</tags>
     <dependencies>
-      <dependency id="NETStandard.Library" version="2.0.3" />
-      <dependency id="Newtonsoft.Json" version="12.0.3" />
+      <dependency id="Newtonsoft.Json" version="13.0.3" />
+	  <dependency id="System.Net.Http" version="4.3.4" />
     </dependencies>
   </metadata>
   <files>
-    <file src="$buildOutputPath$\Fitbit.Portable.dll" target="lib\netstandard2.0" exclude="" />
-    <file src="$buildOutputPath$\Fitbit.Portable.pdb" target="lib\netstandard2.0" exclude="" />
+	<file src="$buildOutputPath$\Fitbit.Portable.dll" target="lib\net6.0" exclude="" />
+	<file src="$buildOutputPath$\Fitbit.Portable.pdb" target="lib\net6.0" exclude="" />
   </files>
 </package>

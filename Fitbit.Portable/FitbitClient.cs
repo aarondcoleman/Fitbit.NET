@@ -1641,6 +1641,11 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
 
+                    if (response == null || response.Content == null)
+                    {
+                        return null;
+                    }
+
                     string responseBody = await response.Content.ReadAsStringAsync();
                     var seralizer = new JsonDotNetSerializer { RootProperty = "hrv" };
                     return seralizer.Deserialize<List<HrvSummaryLog>>(responseBody);
@@ -1665,6 +1670,11 @@ namespace Fitbit.Api.Portable
                 using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
                 {
                     await HandleResponse(response);
+                    
+                    if (response == null || response.Content == null)
+                    {
+                        return null;
+                    }
 
                     string responseBody = await response.Content.ReadAsStringAsync();
                     var seralizer = new JsonDotNetSerializer { RootProperty = "hrv" };

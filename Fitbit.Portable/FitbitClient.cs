@@ -1642,8 +1642,12 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    var seralizer = new JsonDotNetSerializer { RootProperty = "hrv" };
-                    return seralizer.Deserialize<List<HrvSummaryLog>>(responseBody);
+                    if (responseBody == null || responseBody == String.Empty || responseBody == "{ }")
+                    {
+                        return null;
+                    }
+                    var serializer = new JsonDotNetSerializer { RootProperty = "hrv" };
+                    return serializer.Deserialize<List<HrvSummaryLog>>(responseBody);
                 }
             }
         }
@@ -1667,8 +1671,12 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    var seralizer = new JsonDotNetSerializer { RootProperty = "hrv" };
-                    return seralizer.Deserialize<List<HrvIntraday>>(responseBody);
+                    if (responseBody == null || responseBody == String.Empty || responseBody == "{ }")
+                    {
+                        return null;
+                    }
+                    var serializer = new JsonDotNetSerializer { RootProperty = "hrv" };
+                    return serializer.Deserialize<List<HrvIntraday>>(responseBody);
                 }
             }
         }

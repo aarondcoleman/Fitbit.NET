@@ -1768,8 +1768,16 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    var seralizer = new JsonDotNetSerializer { RootProperty = "br" };
-                    return seralizer.Deserialize<List<BreathingRateSummary>>(responseBody);
+
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<BreathingRateSummary>();
+                    }
+
+                    JsonDotNetSerializer serializer = new JsonDotNetSerializer { RootProperty = "br" };
+                    return serializer.Deserialize<List<BreathingRateSummary>>(responseBody);
                 }
             }
         }
@@ -1793,6 +1801,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<BreathingRateIntraday>();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "br" };
                     return seralizer.Deserialize<List<BreathingRateIntraday>>(responseBody);
                 }

@@ -264,6 +264,13 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new ActivitySummary();
+                    }
+
                     var serializer = new JsonDotNetSerializer { RootProperty = "summary" };
                     return serializer.Deserialize<ActivitySummary>(responseBody);
                 }
@@ -640,6 +647,13 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new UserProfile();
+                    }
+
                     var serializer = new JsonDotNetSerializer { RootProperty = "user" };
                     return serializer.Deserialize<UserProfile>(responseBody);
                 }
@@ -690,6 +704,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new TimeSeriesDataList();
+                    }
+
                     var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
                     return serializer.GetTimeSeriesDataList(responseBody);
                 }
@@ -739,6 +760,13 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new TimeSeriesDataListInt();
+                    }
+
                     var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
                     return serializer.GetTimeSeriesDataListInt(responseBody);
                 }
@@ -794,6 +822,13 @@ namespace Fitbit.Api.Portable
                     if (string.IsNullOrWhiteSpace(responseBody))
                     {
                         throw new FitbitRequestException(response, null, "The Intraday data response body was null");
+                    }
+
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (responseBodyNoWhitespace == "{}")
+                    {
+                        return new IntradayData();
                     }
 
                     var serializer = new JsonDotNetSerializer { RootProperty = timeSeriesResourceType.ToTimeSeriesProperty() };
@@ -1037,6 +1072,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new WeightGoal();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "goal" };
                     return seralizer.Deserialize<WeightGoal>(responseBody);
                 }
@@ -1068,6 +1110,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new WeightGoal();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "goal" };
                     return seralizer.Deserialize<WeightGoal>(responseBody);
                 }
@@ -1091,6 +1140,13 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new ActivityGoals();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "goals" };
                     return seralizer.Deserialize<ActivityGoals>(responseBody);
                 }
@@ -1111,6 +1167,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new ActivityGoals();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "goals" };
                     return seralizer.Deserialize<ActivityGoals>(responseBody);
                 }
@@ -1131,6 +1194,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new SleepGoal();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "goal" };
                     return seralizer.Deserialize<SleepGoal>(responseBody);
                 }
@@ -1154,6 +1224,13 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new WaterData();
+                    }
+
                     var serializer = new JsonDotNetSerializer();
                     return serializer.Deserialize<WaterData>(responseBody);
                 }
@@ -1183,6 +1260,13 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new WaterLog();
+                    }
+
                     var serializer = new JsonDotNetSerializer { RootProperty = "waterLog" };
                     return serializer.Deserialize<WaterLog>(responseBody);
                 }
@@ -1222,6 +1306,13 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<ApiSubscription>();
+                    }
+
                     var serializer = new JsonDotNetSerializer { RootProperty = "apiSubscriptions" };
                     return serializer.Deserialize<List<ApiSubscription>>(responseBody);
                 }
@@ -1323,6 +1414,13 @@ namespace Fitbit.Api.Portable
                 {
                     await HandleResponse(response);
                     var responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new ActivityLog();
+                    }
+
                     return (new JsonDotNetSerializer() { RootProperty = "activityLog" }).Deserialize<ActivityLog>(responseBody);
                 }
             }
@@ -1715,6 +1813,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<TemperatureCore>();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "tempCore" };
                     return seralizer.Deserialize<List<TemperatureCore>>(responseBody);
                 }
@@ -1740,6 +1845,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<TemperatureSkin>();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "tempSkin" };
                     return seralizer.Deserialize<List<TemperatureSkin>>(responseBody);
                 }
@@ -1836,6 +1948,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<ActiveZoneMinutesSummary>();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "activities-active-zone-minutes" };
                     return seralizer.Deserialize<List<ActiveZoneMinutesSummary>>(responseBody);
                 }
@@ -1872,6 +1991,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<ActiveZoneMinutesIntraday>();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "activities-active-zone-minutes-intraday" };
                     return seralizer.Deserialize<List<ActiveZoneMinutesIntraday>>(responseBody);
                 }
@@ -1900,6 +2026,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<CardioScoreSummary>();
+                    }
+
                     var seralizer = new JsonDotNetSerializer { RootProperty = "cardioScore" };
                     return seralizer.Deserialize<List<CardioScoreSummary>>(responseBody);
                 }

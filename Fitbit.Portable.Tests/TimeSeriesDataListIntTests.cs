@@ -7,6 +7,9 @@ using Fitbit.Api.Portable;
 using Fitbit.Models;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Moq.Protected;
+using Moq;
 
 namespace Fitbit.Portable.Tests
 {
@@ -59,6 +62,63 @@ namespace Fitbit.Portable.Tests
             var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), new DateTime(2014, 9, 7));
 
             ValidateDataList(response);
+        }
+
+        [Test]
+        [Category("Portable")]
+        public async Task GetTimeSeriesDataListIntAsync_ExtendedDateRange_Success()
+        {
+            string content1 = SampleDataHelper.GetContent("TimeSeries-ActivitiesSteps.json");
+            string content2 = SampleDataHelper.GetContent("TimeSeries-ActivitiesSteps-Empty.json");
+
+            // Define the expected requests
+            var expectedRequests = new List<string>
+            {
+                "https://api.fitbit.com/1/user/-/activities/steps/date/2014-09-04/2017-09-03.json",
+                "https://api.fitbit.com/1/user/-/activities/steps/date/2017-09-04/2018-09-07.json"
+            };
+
+            // Mock the HttpMessageHandler
+            var mockHandler = new Mock<HttpMessageHandler>();
+
+            // Setup the mock to return different responses for each call
+            var responseQueue = new Queue<HttpResponseMessage>();
+            responseQueue.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content1) }); // First call
+            responseQueue.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content2) }); // Second call (empty response)
+
+            mockHandler
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(req => expectedRequests.Contains(req.RequestUri.AbsoluteUri)),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ReturnsAsync(() =>
+                {
+                    Assert.IsTrue(responseQueue.Count > 0, "Unexpected number of requests made.");
+                    return responseQueue.Dequeue();
+                })
+                .Verifiable();
+
+            // Create the FitbitClient with the mocked handler
+            var fitbitClient = new FitbitClient(messageHandler => new HttpClient(mockHandler.Object));
+
+            // Call the method under test
+            var response = await fitbitClient.GetTimeSeriesIntAsync(TimeSeriesResourceType.Steps, new DateTime(2014, 9, 4), new DateTime(2018, 9, 7));
+
+            // Validate the response
+            ValidateDataList(response);
+
+            // Verify that all expected requests were made
+            foreach (var expectedRequest in expectedRequests)
+            {
+                mockHandler.Protected().Verify(
+                    "SendAsync",
+                    Times.Once(),
+                    ItExpr.Is<HttpRequestMessage>(req => req.RequestUri.AbsoluteUri == expectedRequest),
+                    ItExpr.IsAny<CancellationToken>()
+                );
+            }
         }
 
         [Test]

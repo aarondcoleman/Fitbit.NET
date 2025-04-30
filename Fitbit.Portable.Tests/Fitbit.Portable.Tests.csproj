@@ -154,6 +154,9 @@
     <Content Include="SampleData\TimeSeries-ActivitiesDistance.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SampleData\TimeSeries-ActivitiesSteps-Empty.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SampleData\TimeSeries-ActivitiesSteps.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

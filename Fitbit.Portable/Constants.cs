@@ -9,6 +9,8 @@
         public const string LogoutAndAuthorizeUri = "oauth/logout_and_authorize";
         public const string FloorsUnsupportedOnDeviceError = "Invalid time series resource path: /activities/floors";
 
+        public const int MAX_ACTIVITY_TIME_SERIES_DAYS = 1095;
+
         public class Headers
         {
             public const string XFitbitSubscriberId = "X-Fitbit-Subscriber-Id";

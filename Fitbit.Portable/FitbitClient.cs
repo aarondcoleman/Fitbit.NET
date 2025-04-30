@@ -753,6 +753,36 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         private async Task<TimeSeriesDataListInt> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
         {
+            DateTime endDate;
+            bool skipMaxDateRangeCheck = false;
+            //Try to parse the endDateOrPeriod as a DateTime
+            if (!DateTime.TryParse(endDateOrPeriod, out endDate))
+            {
+                //This is a period instead of DateTime endDate, so just make the API call
+                skipMaxDateRangeCheck = true;
+            }
+
+            if (skipMaxDateRangeCheck || (endDate - baseDate).TotalDays <= Constants.MAX_ACTIVITY_TIME_SERIES_DAYS)
+            {
+                return await FetchTimeSeriesDataAsync(timeSeriesResourceType, baseDate, endDateOrPeriod, encodedUserId);
+            }
+
+            var aggregatedData = new TimeSeriesDataListInt { DataList = new List<TimeSeriesDataListInt.Data>() };
+            DateTime currentStartDate = baseDate;
+
+            while (currentStartDate < endDate)
+            {
+                DateTime currentEndDate = currentStartDate.AddDays(1095) < endDate ? currentStartDate.AddDays(Constants.MAX_ACTIVITY_TIME_SERIES_DAYS) : endDate;
+                var partialData = await FetchTimeSeriesDataAsync(timeSeriesResourceType, currentStartDate, currentEndDate.ToString("yyyy-MM-dd"), encodedUserId);
+                aggregatedData.DataList.AddRange(partialData.DataList);
+                currentStartDate = currentEndDate.AddDays(1);
+            }
+
+            return aggregatedData;
+        }
+
+        private async Task<TimeSeriesDataListInt> FetchTimeSeriesDataAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
+        {
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}{1}/date/{2}/{3}.json", encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
             using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
             {

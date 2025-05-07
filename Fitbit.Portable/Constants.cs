@@ -10,6 +10,7 @@
         public const string FloorsUnsupportedOnDeviceError = "Invalid time series resource path: /activities/floors";
 
         public const int MAX_ACTIVITY_TIME_SERIES_DAYS = 1095;
+        public const int MAX_DAYS_THIRTY = 30;
 
         public class Headers
         {

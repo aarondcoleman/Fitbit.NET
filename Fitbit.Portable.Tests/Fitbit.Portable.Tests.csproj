@@ -237,6 +237,9 @@
     <None Update="SampleData\GetSpO2IntradayByDate.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SampleData\GetSpO2IntradayByInterval2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SampleData\GetSpO2IntradayByInterval.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

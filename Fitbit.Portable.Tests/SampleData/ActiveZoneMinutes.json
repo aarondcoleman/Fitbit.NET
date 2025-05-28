@@ -1,0 +1,33 @@
+﻿{
+  "activities-active-zone-minutes": [
+    {
+      "value": {
+        "activeZoneMinutes": 10,
+        "fatBurnActiveZoneMinutes": 8,
+        "cardioActiveZoneMinutes": 2
+      },
+      "dateTime": "2025-03-26"
+    },
+    {
+      "value": {
+        "activeZoneMinutes": 8,
+        "fatBurnActiveZoneMinutes": 8
+      },
+      "dateTime": "2025-03-27"
+    },
+    {
+      "value": {
+        "activeZoneMinutes": 15,
+        "fatBurnActiveZoneMinutes": 15
+      },
+      "dateTime": "2025-03-28"
+    },
+    {
+      "value": {
+        "activeZoneMinutes": 14,
+        "fatBurnActiveZoneMinutes": 14
+      },
+      "dateTime": "2025-03-29"
+    }
+  ]
+}

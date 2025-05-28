@@ -772,7 +772,7 @@ namespace Fitbit.Api.Portable
 
             while (currentStartDate < endDate)
             {
-                DateTime currentEndDate = currentStartDate.AddDays(1095) < endDate ? currentStartDate.AddDays(Constants.MAX_ACTIVITY_TIME_SERIES_DAYS) : endDate;
+                DateTime currentEndDate = currentStartDate.AddDays(Constants.MAX_ACTIVITY_TIME_SERIES_DAYS) < endDate ? currentStartDate.AddDays(Constants.MAX_ACTIVITY_TIME_SERIES_DAYS) : endDate;
                 var partialData = await FetchTimeSeriesDataAsync(timeSeriesResourceType, currentStartDate, currentEndDate.ToString("yyyy-MM-dd"), encodedUserId);
                 aggregatedData.DataList.AddRange(partialData.DataList);
                 currentStartDate = currentEndDate.AddDays(1);

@@ -1569,6 +1569,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<SpO2SummaryLog>();
+                    }
+
                     var seralizer = new JsonDotNetSerializer();
 
                     if (endDate == null)
@@ -1603,6 +1610,13 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    //removes all white space including new lines
+                    string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
+                    {
+                        return new List<SpO2Intraday>();
+                    }
+
                     var seralizer = new JsonDotNetSerializer();
 
                     if (endDate == null)

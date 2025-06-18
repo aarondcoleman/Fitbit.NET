@@ -1765,7 +1765,7 @@ namespace Fitbit.Api.Portable
                         return new List<SpO2Intraday>();
                     }
 
-                    var seralizer = new JsonDotNetSerializer();
+                    var serializer = new JsonDotNetSerializer();
 
                     if (isSingleDay)
                     {

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Fitbit.Api.Portable;
 using Fitbit.Models;
 using FluentAssertions;
+using Moq.Protected;
+using Moq;
 using NUnit.Framework;
 
 namespace Fitbit.Portable.Tests
@@ -89,7 +91,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(96.7, response.Last().Value.Avg);
             Assert.AreEqual(94.0, response.Last().Value.Min);
             Assert.AreEqual(100.0, response.Last().Value.Max);
-        }
+        }     
 
         [Test]
         [Category("Portable")]
@@ -165,6 +167,69 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(3, response.First().Minutes.Count);
             Assert.AreEqual(new DateTime(2021, 10, 2), response.Last().DateTime);
             Assert.AreEqual(2, response.Last().Minutes.Count);
+        }
+
+        [Test]
+        [Category("Portable")]
+        public async Task GetSpO2IntradayAsync_ByInterval_Aggregate_Success()
+        {
+            //Arrange
+            string content1 = SampleDataHelper.GetContent("GetSpO2IntradayByInterval.json");
+            string content2 = SampleDataHelper.GetContent("GetSpO2IntradayByInterval2.json");
+
+            // Define the expected requests
+            var expectedRequests = new List<string>
+            {
+                "https://api.fitbit.com/1/user/-/spo2/date/2021-10-01/2021-10-30/all.json",
+                "https://api.fitbit.com/1/user/-/spo2/date/2021-10-31/2021-11-15/all.json"
+            };
+
+            // Mock the HttpMessageHandler
+            var mockHandler = new Mock<HttpMessageHandler>();
+
+            // Setup the mock to return different responses for each call
+            var responseQueue = new Queue<HttpResponseMessage>();
+            responseQueue.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content1) }); // First call
+            responseQueue.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(content2) }); // Second call (empty response)
+
+            mockHandler
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(req => expectedRequests.Contains(req.RequestUri.AbsoluteUri)),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ReturnsAsync(() =>
+                {
+                    Assert.IsTrue(responseQueue.Count > 0, "Unexpected number of requests made.");
+                    return responseQueue.Dequeue();
+                })
+                .Verifiable();
+
+            // Create the FitbitClient with the mocked handler
+            var fitbitClient = new FitbitClient(messageHandler => new HttpClient(mockHandler.Object));
+
+            // Call the method under test
+            List<SpO2Intraday> response = await fitbitClient.GetSpO2IntradayAsync(new DateTime(2021, 10, 1), new DateTime(2021, 11, 15));
+
+            // Validate the response
+            Assert.IsNotNull(response);
+            Assert.AreEqual(4, response.Count);
+            Assert.AreEqual(new DateTime(2021, 10, 1), response.First().DateTime);
+            Assert.AreEqual(3, response.First().Minutes.Count);
+            Assert.AreEqual(new DateTime(2021, 11, 2), response.Last().DateTime);
+            Assert.AreEqual(3, response.Last().Minutes.Count);
+
+            // Verify that all expected requests were made
+            foreach (var expectedRequest in expectedRequests)
+            {
+                mockHandler.Protected().Verify(
+                    "SendAsync",
+                    Times.Once(),
+                    ItExpr.Is<HttpRequestMessage>(req => req.RequestUri.AbsoluteUri == expectedRequest),
+                    ItExpr.IsAny<CancellationToken>()
+                );
+            }
         }
     }
 }

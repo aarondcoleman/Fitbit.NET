@@ -753,6 +753,36 @@ namespace Fitbit.Api.Portable
         /// <returns></returns>
         private async Task<TimeSeriesDataListInt> GetTimeSeriesIntAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
         {
+            DateTime endDate;
+            bool skipMaxDateRangeCheck = false;
+            //Try to parse the endDateOrPeriod as a DateTime
+            if (!DateTime.TryParse(endDateOrPeriod, out endDate))
+            {
+                //This is a period instead of DateTime endDate, so just make the API call
+                skipMaxDateRangeCheck = true;
+            }
+
+            if (skipMaxDateRangeCheck || (endDate - baseDate).TotalDays <= Constants.MAX_ACTIVITY_TIME_SERIES_DAYS)
+            {
+                return await FetchTimeSeriesDataAsync(timeSeriesResourceType, baseDate, endDateOrPeriod, encodedUserId);
+            }
+
+            var aggregatedData = new TimeSeriesDataListInt { DataList = new List<TimeSeriesDataListInt.Data>() };
+            DateTime currentStartDate = baseDate;
+
+            while (currentStartDate < endDate)
+            {
+                DateTime currentEndDate = currentStartDate.AddDays(Constants.MAX_ACTIVITY_TIME_SERIES_DAYS) < endDate ? currentStartDate.AddDays(Constants.MAX_ACTIVITY_TIME_SERIES_DAYS) : endDate;
+                var partialData = await FetchTimeSeriesDataAsync(timeSeriesResourceType, currentStartDate, currentEndDate.ToString("yyyy-MM-dd"), encodedUserId);
+                aggregatedData.DataList.AddRange(partialData.DataList);
+                currentStartDate = currentEndDate.AddDays(1);
+            }
+
+            return aggregatedData;
+        }
+
+        private async Task<TimeSeriesDataListInt> FetchTimeSeriesDataAsync(TimeSeriesResourceType timeSeriesResourceType, DateTime baseDate, string endDateOrPeriod, string encodedUserId)
+        {
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}{1}/date/{2}/{3}.json", encodedUserId, timeSeriesResourceType.GetStringValue(), baseDate.ToFitbitFormat(), endDateOrPeriod);
             using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
             {
@@ -1691,22 +1721,42 @@ namespace Fitbit.Api.Portable
 
         public async Task<List<SpO2Intraday>> GetSpO2IntradayAsync(DateTime startDate, DateTime? endDate = null)
         {
-            string apiCall;
-            if (endDate == null)
+            List<SpO2Intraday> aggregatedData = new List<SpO2Intraday>();
+
+            if (endDate == null || (endDate - startDate).Value.TotalDays <= Constants.MAX_DAYS_THIRTY)
             {
-                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}/all.json", args: new object[] { startDate.ToFitbitFormat() });
-            }
-            else
-            {
-                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}/{2}/all.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+                string apiCall = endDate == null
+                    ? FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}/all.json", args: new object[] { startDate.ToFitbitFormat() })
+                    : FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}/{2}/all.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+
+                return await FetchSpO2DataAsync(apiCall, endDate == null);
             }
 
+            DateTime currentStartDate = startDate;
+            while (currentStartDate <= endDate)
+            {
+                DateTime currentEndDate = currentStartDate.AddDays(Constants.MAX_DAYS_THIRTY - 1) <= endDate.Value
+                    ? currentStartDate.AddDays(Constants.MAX_DAYS_THIRTY - 1)
+                    : endDate.Value;
+
+                string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/spo2/date/{1}/{2}/all.json", args: new object[] { currentStartDate.ToFitbitFormat(), currentEndDate.ToFitbitFormat() });
+
+                var partialData = await FetchSpO2DataAsync(apiCall, false);
+                aggregatedData.AddRange(partialData);
+
+                currentStartDate = currentEndDate.AddDays(1);
+            }
+
+            return aggregatedData;
+        }
+
+        private async Task<List<SpO2Intraday>> FetchSpO2DataAsync(string apiCall, bool isSingleDay)
+        {
             using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
             {
                 using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
                 {
                     await HandleResponse(response);
-
                     string responseBody = await response.Content.ReadAsStringAsync();
                     //removes all white space including new lines
                     string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
@@ -1715,16 +1765,16 @@ namespace Fitbit.Api.Portable
                         return new List<SpO2Intraday>();
                     }
 
-                    var seralizer = new JsonDotNetSerializer();
+                    var serializer = new JsonDotNetSerializer();
 
-                    if (endDate == null)
+                    if (isSingleDay)
                     {
-                        SpO2Intraday singleSpo2Intraday = seralizer.Deserialize<SpO2Intraday>(responseBody);
+                        SpO2Intraday singleSpo2Intraday = serializer.Deserialize<SpO2Intraday>(responseBody);
                         return new List<SpO2Intraday> { singleSpo2Intraday };
                     }
                     else
                     {
-                        return seralizer.Deserialize<List<SpO2Intraday>>(responseBody);
+                        return serializer.Deserialize<List<SpO2Intraday>>(responseBody);
                     }
                 }
             }
@@ -1945,16 +1995,37 @@ namespace Fitbit.Api.Portable
 
         public async Task<List<ActiveZoneMinutesSummary>> GetActiveZoneMinutesTimeSeriesAsync(DateTime startDate, DateTime? endDate = null, DateRangePeriod period = DateRangePeriod.OneDay)
         {
-            string apiCall;
-            if (endDate == null)
+            List<ActiveZoneMinutesSummary> aggregatedData = new List<ActiveZoneMinutesSummary>();
+
+            if (endDate == null || (endDate - startDate).Value.TotalDays <= Constants.MAX_ACTIVITY_TIME_SERIES_DAYS)
             {
-                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() });
-            }
-            else
-            {
-                apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+                string apiCall = endDate == null
+                    ? FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), period.GetStringValue() })
+                    : FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { startDate.ToFitbitFormat(), endDate.Value.ToFitbitFormat() });
+
+                return await FetchActiveZoneMinutesDataAsync(apiCall);
             }
 
+            DateTime currentStartDate = startDate;
+            while (currentStartDate <= endDate)
+            {
+                DateTime currentEndDate = currentStartDate.AddDays(Constants.MAX_ACTIVITY_TIME_SERIES_DAYS - 1) <= endDate.Value
+                    ? currentStartDate.AddDays(Constants.MAX_ACTIVITY_TIME_SERIES_DAYS - 1)
+                    : endDate.Value;
+
+                string apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/{0}/activities/active-zone-minutes/date/{1}/{2}.json", args: new object[] { currentStartDate.ToFitbitFormat(), currentEndDate.ToFitbitFormat() });
+
+                var partialData = await FetchActiveZoneMinutesDataAsync(apiCall);
+                aggregatedData.AddRange(partialData);
+
+                currentStartDate = currentEndDate.AddDays(1);
+            }
+
+            return aggregatedData;
+        }
+
+        private async Task<List<ActiveZoneMinutesSummary>> FetchActiveZoneMinutesDataAsync(string apiCall)
+        {
             using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
             {
                 using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
@@ -1962,15 +2033,14 @@ namespace Fitbit.Api.Portable
                     await HandleResponse(response);
 
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    //removes all white space including new lines
                     string responseBodyNoWhitespace = new string(responseBody.Where(c => !char.IsWhiteSpace(c)).ToArray());
                     if (string.IsNullOrWhiteSpace(responseBody) || responseBodyNoWhitespace == "{}")
                     {
                         return new List<ActiveZoneMinutesSummary>();
                     }
 
-                    var seralizer = new JsonDotNetSerializer { RootProperty = "activities-active-zone-minutes" };
-                    return seralizer.Deserialize<List<ActiveZoneMinutesSummary>>(responseBody);
+                    var serializer = new JsonDotNetSerializer { RootProperty = "activities-active-zone-minutes" };
+                    return serializer.Deserialize<List<ActiveZoneMinutesSummary>>(responseBody);
                 }
             }
         }

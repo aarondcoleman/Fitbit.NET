@@ -285,8 +285,8 @@ namespace Fitbit.Api
 
         public List<Device> GetDevices()
         {
-            RestRequest request = new RestRequest("/1/user/-/devices.xml");
-           
+            RestRequest request = new RestRequest("/1/user/-/devices.xml", Method.POST);
+
             var response = restClient.Execute<List<Device>>(request);
 
             HandleResponse(response);

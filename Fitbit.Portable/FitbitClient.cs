@@ -601,7 +601,7 @@ namespace Fitbit.Api.Portable
         public async Task<List<Device>> GetDevicesAsync()
         {
             var apiCall = FitbitClientHelperExtensions.ToFullUrl("/1/user/-/devices.json");
-            using (HttpRequestMessage request = GetRequest(HttpMethod.Get, apiCall))
+            using (HttpRequestMessage request = GetRequest(HttpMethod.Post, apiCall))
             {
                 using (HttpResponseMessage response = await HttpClient.SendAsync(request, CancellationToken))
                 {

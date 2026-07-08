@@ -230,6 +230,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1330991999000, log.LogId);
             Assert.AreEqual(14, log.Fat);
             Assert.AreEqual(new DateTime(2012, 3, 5, 23, 59, 59).TimeOfDay, log.Time.TimeOfDay);
+            Assert.AreEqual("API", log.Source);
 
             fat.FatLogs.Remove(log);
             log = fat.FatLogs.First();
@@ -240,6 +241,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(1330991999000, log.LogId);
             Assert.AreEqual(13.5, log.Fat);
             Assert.AreEqual(new DateTime(2012, 3, 5, 21, 20, 59).TimeOfDay, log.Time.TimeOfDay);
+            Assert.AreEqual("Aria", log.Source);
 
         }
     }

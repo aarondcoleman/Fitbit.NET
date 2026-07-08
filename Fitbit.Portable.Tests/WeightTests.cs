@@ -238,6 +238,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(73f, log.Weight);
             Assert.AreEqual(23.57f, log.Bmi);
             Assert.AreEqual(new DateTime(2012, 3, 5, 23, 59, 59).TimeOfDay, log.Time.TimeOfDay);
+            Assert.AreEqual("API", log.Source);
 
             weight.Weights.Remove(log);
             log = weight.Weights.First();
@@ -249,6 +250,7 @@ namespace Fitbit.Portable.Tests
             Assert.AreEqual(72.5f, log.Weight);
             Assert.AreEqual(22.57f, log.Bmi);
             Assert.AreEqual(new DateTime(2012, 3, 5, 21, 10, 59).TimeOfDay, log.Time.TimeOfDay);
+            Assert.AreEqual("Aria", log.Source);
         }
     }
 }
